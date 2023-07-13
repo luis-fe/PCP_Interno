@@ -50,7 +50,7 @@ def criar_usuario():
     nome = novo_usuario.get('nome')
     senha = novo_usuario.get('senha')
     # inserir o novo usuário no banco de dados
-    c, n, f = Usuarios.ObterUsuariosCodigo(codigo)
+    c = Usuarios.ObterUsuariosCodigo(codigo)
     if c != 0:
         return jsonify({'message': f'Novo usuário:{codigo}- {nome} ja existe'}), 201
     else:

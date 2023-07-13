@@ -14,7 +14,12 @@ def ObterUsuariosCodigo(codigo):
 
     usuarios = pd.read_sql('select * from pcp.usuarios where codigo = %s', conn, params=(codigo,))
 
-    return usuarios
+    if usuarios.empty:
+        CodigoAtual = 0
+    else:
+        CodigoAtual = usuarios['codigo'][0]
+
+    return CodigoAtual
 
 def InserirUsuario(codigo, nome, senha):
     conn = ConexaoPostgreMPL.conexao()
