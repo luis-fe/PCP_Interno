@@ -1,5 +1,5 @@
 Flask==2.0.3
-flask-cors=4.0.0
+
 jinja2==3.0.3
 numpy==1.19.5
 markupsafe==2.0.1
