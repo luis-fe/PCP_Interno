@@ -24,7 +24,7 @@ def ObterUsuariosCodigo(codigo):
 def InserirUsuario(codigo, nome, senha):
     conn = ConexaoPostgreMPL.conexao()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO "pcp"."cadusuarios" (codigo, nome, senha) '
+    cursor.execute('INSERT INTO "pcp"."usuarios" (codigo, nome, senha) '
                    'VALUES (%s, %s, %s)',(codigo, nome, senha))
     conn.commit()
     cursor.close()
