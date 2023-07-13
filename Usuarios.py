@@ -29,4 +29,4 @@ def InserirUsuario(codigo, nome, senha):
     conn.commit()
     cursor.close()
     conn.close()
-    return pd.DataFrame['Status':True, 'Mensagem':f'Usuario{nome} cadastrado com sucesso']
+    return True
