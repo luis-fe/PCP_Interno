@@ -20,6 +20,10 @@ def token_required(f):
     return decorated_function
 
 # Rota protegida que requer o token fixo para trazer os Usuarios Cadastrados
+# Rota pagina inicial
+@app.route('/')
+def home():
+    return render_template('index.html')
 @app.route('pcp/api/Usuarios', methods=['GET'])
 @token_required
 def get_Usuarios():
