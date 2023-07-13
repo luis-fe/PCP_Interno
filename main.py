@@ -29,13 +29,16 @@ def home():
 def get_Usuarios():
     usuarios = Usuarios.ObterUsuarios()
     # Obtém os nomes das colunas
-    column_names = ['codigo', 'nome', 'senha']
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
-    usuarios_data = []
-    for row in usuarios:
-        usuario_dict = dict(zip(column_names, row))
-        usuarios_data.append(usuario_dict)
-    return jsonify(usuarios_data)
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
 
 
 if __name__ == '__main__':
