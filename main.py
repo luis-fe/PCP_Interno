@@ -24,7 +24,7 @@ def token_required(f):
 @app.route('/')
 def home():
     return render_template('index.html')
-@app.route('pcp/api/Usuarios', methods=['GET'])
+@app.route('/pcp/api/Usuarios', methods=['GET'])
 @token_required
 def get_Usuarios():
     usuarios = Usuarios.ObterUsuarios()
