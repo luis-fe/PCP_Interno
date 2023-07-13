@@ -22,7 +22,7 @@ def token_required(f):
 # Rota protegida que requer o token fixo para trazer os Usuarios Cadastrados
 @app.route('pcp/api/Usuarios', methods=['GET'])
 @token_required
-def get_usuarios():
+def get_Usuarios():
     usuarios = Usuarios.ObterUsuarios()
     # Obtém os nomes das colunas
     column_names = ['codigo', 'nome', 'senha']
