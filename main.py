@@ -7,7 +7,7 @@ import ConexaoPostgreMPL
 import Usuarios
 
 app = Flask(__name__)
-port = int(os.environ.get('PORT', 2000))
+port = int(os.environ.get('PORT', 8000))
 CORS(app)
 def token_required(f):
     @wraps(f)
