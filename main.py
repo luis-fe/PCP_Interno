@@ -40,6 +40,24 @@ def get_Usuarios():
         OP_data.append(op_dict)
     return jsonify(OP_data)
 
+@app.route('/pcp/api/Usuarios', methods=['PUT'])
+@token_required
+def criar_usuario():
+    # Obtenha os dados do corpo da requisição
+    novo_usuario = request.get_json()
+    # Extraia os valores dos campos do novo usuário
+    codigo = novo_usuario.get('codigo')
+    nome = novo_usuario.get('nome')
+    senha = novo_usuario.get('senha')
+    # inserir o novo usuário no banco de dados
+    c, n, f = Usuarios.ObterUsuariosCodigo(codigo)
+    if c != 0:
+        return jsonify({'message': f'Novo usuário:{codigo}- {nome} ja existe'}), 201
+    else:
+        Usuarios.InserirUsuario(codigo, nome, senha)
+        # Retorne uma resposta indicando o sucesso da operação
+        return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 201
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
