@@ -63,6 +63,7 @@ def criar_usuario():
 def delet_Usuario(codigoUsuario):
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
+    codigoUsuario = str(codigoUsuario)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     dados = Usuarios.DeletarUsuarios(codigoUsuario)
     # Obtém os nomes das colunas
