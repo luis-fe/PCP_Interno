@@ -34,11 +34,12 @@ def InserirUsuario(codigo, nome, senha):
 def DeletarUsuarios(codigo):
     conn = ConexaoPostgreMPL.conexao()
 
-    usuarios = pd.read_sql('delete from pcp.usuarios where codigo = %s', conn, params=(codigo,))
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM pcp.usuarios WHERE codigo = %s', (codigo,))
+    conn.commit()
+    deleted_rows = cursor.rowcount
 
-    if usuarios.empty:
-        return pd.DataFrame['Mensagem':f'Usuario {codigo} nao encontrado !', 'Status':False]
+    if deleted_rows == 0:
+        return pd.DataFrame({'Mensagem': f'Usuário {codigo} não encontrado!', 'Status': False})
     else:
-        codigo = usuarios['codigo'][0]
-
-        return pd.DataFrame['Mensagem':f'Usuario {codigo} excluido com sucesso !','Status':True]
+        return pd.DataFrame({'Mensagem': f'Usuário {codigo} excluído com sucesso!', 'Status': True})
