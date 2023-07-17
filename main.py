@@ -58,9 +58,9 @@ def criar_usuario():
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 201
 
-@app.route('/pcp/api/Usuarios/<string:codigoUsuario', methods=['DELETE'])
+@app.route('/pcp/api/Usuarios/<string:codigoUsuario>', methods=['DELETE'])
 @token_required
-def delet_Endereco(codigoUsuario):
+def delet_Usuario(codigoUsuario):
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     # Verifica se a coluna "funcao" está presente nos dados recebidos
