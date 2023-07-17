@@ -40,6 +40,6 @@ def DeletarUsuarios(codigo):
     deleted_rows = cursor.rowcount
 
     if deleted_rows == 0:
-        return pd.DataFrame({'Mensagem': f'Usuário {codigo} não encontrado!', 'Status': False})
+        return pd.DataFrame([{'Mensagem': f'Usuário {codigo} não encontrado!', 'Status': False}])
     else:
-        return pd.DataFrame({'Mensagem': f'Usuário {codigo} excluído com sucesso!', 'Status': True})
+        return pd.DataFrame([{'Mensagem': f'Usuário {codigo} excluído com sucesso!', 'Status': True}])
