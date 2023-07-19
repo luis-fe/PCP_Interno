@@ -40,7 +40,7 @@ def get_Usuarios():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
-@app.route('/pcp/api/Usuarios/<string:codigoUsuario>', methods=['GET'])
+@app.route('/pcp/api/Usuarios/<int:codigoUsuario>', methods=['GET'])
 @token_required
 def get_Usuarios_consulta(codigoUsuario):
     # Obtém os dados do corpo da requisição (JSON)
