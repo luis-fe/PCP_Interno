@@ -72,7 +72,7 @@ def criar_usuario():
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 201
 
-@app.route('/pcp/api/Usuarios/<int:codigoUsuario>', methods=['DELETE'])
+@app.route('/pcp/api/Usuarios/<string:codigoUsuario>', methods=['DELETE'])
 @token_required
 def delet_Usuario(codigoUsuario):
     # Obtém os dados do corpo da requisição (JSON)
@@ -91,7 +91,7 @@ def delet_Usuario(codigoUsuario):
         end_data.append(end_dict)
     return jsonify(end_data)
 
-@app.route('/pcp/api/Usuarios/<int:codigo>', methods=['POST'])
+@app.route('/pcp/api/Usuarios/<string:codigo>', methods=['POST'])
 @token_required
 def update_usuario(codigo):
     # Obtém os dados do corpo da requisição (JSON)
