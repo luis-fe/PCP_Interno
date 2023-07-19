@@ -40,7 +40,7 @@ def get_Usuarios():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
-@app.route('/pcp/api/Usuarios/<int:codigoUsuario>', methods=['GET'])
+@app.route('/pcp/api/Usuarios/<String:codigoUsuario>', methods=['GET'])
 @token_required
 def get_Usuarios_consulta(codigoUsuario):
     # Obtém os dados do corpo da requisição (JSON)
@@ -121,6 +121,15 @@ def get_Estrutura():
     data = request.get_json()
     colecoes = data.get('colecoes')
     codEngenharias = data.get('codEngenharias')
+
+    # Dividir a string em uma lista de elementos separados por vírgula
+    elementos = codEngenharias.split(", ")
+
+    # Adicionar aspas simples em cada elemento da lista
+    elementos_formatados = ["'" + elemento + "'" for elemento in elementos]
+    # Juntar os elementos formatados em uma única string, separados por vírgula
+    codEngenharias = ", ".join(elementos_formatados)
+
 
     if colecoes is not None and codEngenharias is not None:
         Endereco_det = Estrutura.EstruturaFiltroEngenharia(colecoes, codEngenharias)
