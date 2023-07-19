@@ -49,7 +49,7 @@ def get_Usuarios_consulta(codigoUsuario):
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     codigo, nome , senha = Usuarios.ObterUsuariosCodigo(codigoUsuario)
     if codigo != 0:
-        return jsonify({'message': f'1- Senha do Usuario:{codigo}- {nome}', '2-Senha': f'{senha}'}), 201
+        return jsonify({'1 - message': f'Senha do Usuuario {codigo}- {nome}', '2-Senha': f'{senha}'}), 201
     else:
 
         return jsonify({'message': 'Usuario Nao existe'}), 201
