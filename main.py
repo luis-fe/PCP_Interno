@@ -82,6 +82,7 @@ def delet_Usuario(codigoUsuario):
 def update_usuario(codigo):
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
+    codigo = str(codigo)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     codigo, nome_ant, senha_ant = Usuarios.ObterUsuariosCodigo(codigo)
     if codigo == 0:
