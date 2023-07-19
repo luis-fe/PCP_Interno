@@ -18,7 +18,7 @@ def Estrutura(colecoes):
                             " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+")", conn)
     estrutura.rename(
         columns={'tipo': '1- tipo', "codColecao": '2- codColecao','codProduto':'3- codProduto'
-                 ,'codSortimento':'4- codSortimento'},
+                 ,'codSortimento':'4- codSortimento','tamanho':'5- tamanho','corProduto':'6- corProduto'},
         inplace=True)
 
     data = {
