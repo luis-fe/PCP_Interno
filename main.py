@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from functools import wraps
 import ConexaoPostgreMPL
+import Estrutura
 import Usuarios
 
 app = Flask(__name__)
@@ -99,6 +100,28 @@ def update_usuario(codigo):
         Usuarios.EditarUsuario(codigo, nome_novo, senha_nova)
 
         return jsonify({'message': f'Dados do Usuário {codigo} - {nome_novo} atualizado com sucesso'})
+
+@app.route('/pcp/api/Estrutura', methods=['GET'])
+@token_required
+def get_Estrutura():
+    # Obtém os dados do corpo da requisição (JSON)
+    data = request.get_json()
+    colecoes = data['colecoes']
+
+    Endereco_det = Estrutura.Estrutura(colecoes)
+    Endereco_det = pd.DataFrame(Endereco_det)
+
+    # Obtém os nomes das colunas
+    column_names = Endereco_det.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    end_data = []
+    for index, row in Endereco_det.iterrows():
+        end_dict = {}
+        for column_name in column_names:
+            end_dict[column_name] = row[column_name]
+        end_data.append(end_dict)
+    return jsonify(end_data)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
