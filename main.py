@@ -123,11 +123,8 @@ def get_Estrutura():
     codEngenharias = data.get('codEngenharias')
     codMP = data.get('codMP')
 
-
-
-
     if colecoes is not None and codMP is not None:
-        codMP = DataFrame(codMP, codMP)
+        codMP = DataFrame(codMP, 'codMP')
         Endereco_det = Estrutura.EstruturaFiltroMateriaPrima(colecoes, codMP)
 
     elif colecoes is not None and codEngenharias is not None:
