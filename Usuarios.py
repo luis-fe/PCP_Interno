@@ -16,10 +16,14 @@ def ObterUsuariosCodigo(codigo):
 
     if usuarios.empty:
         CodigoAtual = 0
+        nome = '0'
+        senha = '0'
     else:
         CodigoAtual = usuarios['codigo'][0]
+        nome = usuarios['nome'][0]
+        senha = usuarios['senha'][0]
 
-    return CodigoAtual
+    return CodigoAtual, nome , senha
 
 def InserirUsuario(codigo, nome, senha):
     conn = ConexaoPostgreMPL.conexao()
@@ -43,3 +47,22 @@ def DeletarUsuarios(codigo):
         return pd.DataFrame([{'Mensagem': f'Usuário {codigo} não encontrado!', 'Status': False}])
     else:
         return pd.DataFrame([{'Mensagem': f'Usuário {codigo} excluído com sucesso!', 'Status': True}])
+
+def EditarUsuario(codigo, nome, senha):
+    codigo, nome, senha = ObterUsuariosCodigo(codigo)
+    if codigo != 0:
+
+        conn = ConexaoPostgreMPL.conexao()
+        update = 'update pcp.usuarios' \
+                 'set nome = %s , senha = %s ' \
+                 'where codigo = %s'
+        cursor = conn.cursor()
+        cursor.execute(update,(nome,senha,codigo))
+        conn.commit()
+
+
+        return codigo, nome, senha
+    else:
+        return False, False , False
+
+

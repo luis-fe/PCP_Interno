@@ -77,6 +77,27 @@ def delet_Usuario(codigoUsuario):
         end_data.append(end_dict)
     return jsonify(end_data)
 
+@app.route('/pcp/api/Usuarios/<int:codigoUsuario>', methods=['POST'])
+@token_required
+def update_usuario(codigo):
+    # Obtém os dados do corpo da requisição (JSON)
+    data = request.get_json()
+    # Verifica se a coluna "funcao" está presente nos dados recebidos
+    codigo, nome_ant, senha_ant = Usuarios.ObterUsuariosCodigo(codigo)
+    if codigo == 0:
+        return jsonify({'message': f'Dados do Usuário {codigo} usuario nao existe! ', 'Status': False})
+    else:
+        if 'nome' in data:
+            nome_novo = data['nome']
+        else:
+            nome_novo = nome_ant
+        if 'senha' in data:
+            senha_nova = data['senha']
+        else:
+            senha_nova = senha_ant
+        Usuarios.EditarUsuario(codigo, nome_novo, senha_nova)
+
+        return jsonify({'message': f'Dados do Usuário {codigo} - {nome_novo} atualizado com sucesso'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
