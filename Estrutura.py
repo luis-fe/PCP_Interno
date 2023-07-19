@@ -17,7 +17,8 @@ def Estrutura(colecoes):
                             " FROM tcp.CompVarSorGraTam cv JOIN tcp.DadosGeraisEng d ON cv.codempresa = d.codEmpresa AND cv.codProduto = d.codEngenharia " 
                             " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+")", conn)
     estrutura.rename(
-        columns={'tipo': '1- tipo', "codColecao": '2- codColecao'},
+        columns={'tipo': '1- tipo', "codColecao": '2- codColecao','codProduto':'3- codProduto'
+                 ,'codSortimento':'4- codSortimento'},
         inplace=True)
 
     data = {
