@@ -49,7 +49,7 @@ def DeletarUsuarios(codigo):
         return pd.DataFrame([{'Mensagem': f'Usuário {codigo} excluído com sucesso!', 'Status': True}])
 
 def EditarUsuario(codigo, nome, senha):
-    codigo, nome, senha = ObterUsuariosCodigo(codigo)
+    codigo = ObterUsuariosCodigo(codigo)
     if codigo != 0:
 
         conn = ConexaoPostgreMPL.conexao()
