@@ -123,13 +123,15 @@ def get_Estrutura():
     codEngenharias = data.get('codEngenharias')
     codComponente = data.get('codComponente')
 
-    codEngenharias = Quebrar(codEngenharias,codEngenharias)
-    codComponente = Quebrar(codComponente, codComponente)
+
+
 
     if colecoes is not None and codComponente is not None:
+        codComponente = Quebrar(codComponente, codComponente)
         Endereco_det = Estrutura.EstruturaFiltroMateriaPrima(colecoes, codComponente)
 
     elif colecoes is not None and codEngenharias is not None:
+        codEngenharias = Quebrar(codEngenharias, codEngenharias)
         Endereco_det = Estrutura.EstruturaFiltroEngenharia(colecoes, codEngenharias)
 
     else:
