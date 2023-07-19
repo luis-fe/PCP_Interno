@@ -70,7 +70,7 @@ def EstruturaFiltroMateriaPrima(colecoes, codMP):
                             "cv.quantidade "  
                             " FROM tcp.CompVarSorGraTam cv "
                             "JOIN tcp.DadosGeraisEng d ON cv.codempresa = d.codEmpresa AND cv.codProduto = d.codEngenharia " 
-                            " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+") and codMP in ("+codMP+")", conn)
+                            " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+") ", conn)
     estrutura = pd.merge(estrutura, codMP, on='codMP')
     estrutura.rename(
         columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
