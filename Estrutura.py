@@ -71,11 +71,14 @@ def EstruturaFiltroMateriaPrima(colecoes, codMP):
                             " FROM tcp.CompVarSorGraTam cv "
                             "JOIN tcp.DadosGeraisEng d ON cv.codempresa = d.codEmpresa AND cv.codProduto = d.codEngenharia " 
                             " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+") and codMP in ("+codMP+")", conn)
+    estrutura = pd.merge(estrutura, codMP, on='codMP')
     estrutura.rename(
         columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                  ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
                  ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'},
         inplace=True)
+
+
 
     data = {
         '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')

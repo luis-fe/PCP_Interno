@@ -127,7 +127,7 @@ def get_Estrutura():
 
 
     if colecoes is not None and codMP is not None:
-        codMP = Quebrar(codMP, codMP)
+        codMP = DataFrame(codMP, codMP)
         Endereco_det = Estrutura.EstruturaFiltroMateriaPrima(colecoes, codMP)
 
     elif colecoes is not None and codEngenharias is not None:
@@ -158,6 +158,20 @@ def Quebrar(item, item2):
     # Juntar os elementos formatados em uma única string, separados por vírgula
     item2 = ", ".join(elementos_formatados)
     return item2
+
+
+def DataFrame(item, item2):
+    # Dividir a string em uma lista de elementos
+    elementos = item.split(", ")
+
+    # Criar um DataFrame com uma coluna chamada 'Elementos'
+    df = pd.DataFrame({'Elementos': elementos})
+
+    df.rename(
+    columns = {'Elementos': item2},
+    inplace = True)
+
+    return df
 
 
 if __name__ == '__main__':
