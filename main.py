@@ -77,7 +77,7 @@ def delet_Usuario(codigoUsuario):
         end_data.append(end_dict)
     return jsonify(end_data)
 
-@app.route('/pcp/api/Usuarios/<int:codigoUsuario>', methods=['POST'])
+@app.route('/pcp/api/Usuarios/<int:codigo>', methods=['POST'])
 @token_required
 def update_usuario(codigo):
     # Obtém os dados do corpo da requisição (JSON)
