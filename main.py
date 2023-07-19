@@ -121,18 +121,17 @@ def get_Estrutura():
     data = request.get_json()
     colecoes = data.get('colecoes')
     codEngenharias = data.get('codEngenharias')
+    codComponente = data.get('codComponente')
 
-    # Dividir a string em uma lista de elementos separados por vírgula
-    elementos = codEngenharias.split(", ")
+    codEngenharias = Quebrar(codEngenharias,codEngenharias)
+    codComponente = Quebrar(codComponente, codComponente)
 
-    # Adicionar aspas simples em cada elemento da lista
-    elementos_formatados = ["'" + elemento + "'" for elemento in elementos]
-    # Juntar os elementos formatados em uma única string, separados por vírgula
-    codEngenharias = ", ".join(elementos_formatados)
+    if colecoes is not None and codComponente is not None:
+        Endereco_det = Estrutura.EstruturaFiltroMateriaPrima(colecoes, codComponente)
 
-
-    if colecoes is not None and codEngenharias is not None:
+    elif colecoes is not None and codEngenharias is not None:
         Endereco_det = Estrutura.EstruturaFiltroEngenharia(colecoes, codEngenharias)
+
     else:
         Endereco_det = Estrutura.Estrutura(colecoes)
 
@@ -147,6 +146,16 @@ def get_Estrutura():
         end_data.append(end_dict)
 
     return jsonify(end_data)
+
+
+def Quebrar(item, item2):
+    # Dividir a string em uma lista de elementos separados por vírgula
+    elementos = item.split(", ")
+    # Adicionar aspas simples em cada elemento da lista
+    elementos_formatados = ["'" + elemento + "'" for elemento in elementos]
+    # Juntar os elementos formatados em uma única string, separados por vírgula
+    item2 = ", ".join(elementos_formatados)
+    return item2
 
 
 if __name__ == '__main__':
