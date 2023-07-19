@@ -19,7 +19,7 @@ def Estrutura(colecoes):
     estrutura.rename(
         columns={'tipo': '1- tipo', "codColecao": '2- codColecao','codProduto':'3- codProduto'
                  ,'codSortimento':'4- codSortimento','tamanho':'5- tamanho','corProduto':'6- corProduto'
-                 ,'codMP':'5- codMP','tamanho':'5- tamanho','corProduto':'6- corProduto'},
+                 ,'codMP':'7- codMP','Tamanho':'8- TamanhoMP','nomeComponente':'9- nomeComponente', 'quantidade':'10- Consumo'},
         inplace=True)
 
     data = {
