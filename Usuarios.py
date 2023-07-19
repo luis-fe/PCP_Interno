@@ -54,7 +54,7 @@ def EditarUsuario(codigo, nome, senha):
 
         conn = ConexaoPostgreMPL.conexao()
         update = 'update pcp.usuarios' \
-                 'set nome = %s , senha = %s ' \
+                 ' set nome = %s , senha = %s ' \
                  'where codigo = %s'
         cursor = conn.cursor()
         cursor.execute(update,(nome,senha,codigo))
