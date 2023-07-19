@@ -121,14 +121,14 @@ def get_Estrutura():
     data = request.get_json()
     colecoes = data.get('colecoes')
     codEngenharias = data.get('codEngenharias')
-    codComponente = data.get('codComponente')
+    codMP = data.get('codMP')
 
 
 
 
-    if colecoes is not None and codComponente is not None:
-        codComponente = Quebrar(codComponente, codComponente)
-        Endereco_det = Estrutura.EstruturaFiltroMateriaPrima(colecoes, codComponente)
+    if colecoes is not None and codMP is not None:
+        codMP = Quebrar(codMP, codMP)
+        Endereco_det = Estrutura.EstruturaFiltroMateriaPrima(colecoes, codMP)
 
     elif colecoes is not None and codEngenharias is not None:
         codEngenharias = Quebrar(codEngenharias, codEngenharias)
