@@ -1,9 +1,9 @@
 import pandas as pd
 import ConexaoCSW
 
-def Estrutura(colecoes, pagina=0 ,itensPag=0):
+def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia='0'):
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
-    if pagina == 0:
+    if pagina == 0 and engenharia=='0':
         conn = ConexaoCSW.Conexao()
         estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                 "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
@@ -31,9 +31,17 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0):
             '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
             }
     else:
+        dataframe = pd.read_csv(nomeArquivo)
+        if engenharia !='0':
+            dataframe = dataframe
+        else:
+            dataframe = dataframe[dataframe['03- codProduto']==engenharia]
+            dataframe = dataframe.reset_index(drop=True)
+
+
         final = pagina * itensPag
         inicial =(pagina -1)* itensPag
-        dataframe = pd.read_csv(nomeArquivo)
+
         estrutura = dataframe.iloc[inicial:final]
         data = {
         '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')

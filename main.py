@@ -120,7 +120,7 @@ def get_Estrutura():
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     colecoes = data.get('colecoes')
-    codEngenharias = data.get('codEngenharias')
+    codEngenharias = data.get('codEngenharias', 0)
     codMP = data.get('codMP')
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
@@ -129,12 +129,8 @@ def get_Estrutura():
         codMP = DataFrame(codMP, 'codMP')
         Endereco_det = Estrutura.EstruturaFiltroMateriaPrima(colecoes, codMP)
 
-    elif colecoes is not None and codEngenharias is not None:
-        codEngenharias = Quebrar(codEngenharias, codEngenharias)
-        Endereco_det = Estrutura.EstruturaFiltroEngenharia(colecoes, codEngenharias)
-
     else:
-        Endereco_det = Estrutura.Estrutura(colecoes, pagina, itensPag)
+        Endereco_det = Estrutura.Estrutura(colecoes, pagina, itensPag, codEngenharias)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
