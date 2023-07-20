@@ -2,9 +2,9 @@ import pandas as pd
 import ConexaoCSW
 # Constantes
 SEM_ENGENHARIA = '0'
-def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codmp = '0', nomecomponente ='0'):
+def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0'):
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
-    if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codmp =='0':
+    if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0':
         conn = ConexaoCSW.Conexao()
         estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                 "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
@@ -26,7 +26,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codmp 
                      ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'},
             inplace=True)
 
-
+        estrutura["07- codMP"]=estrutura["07- codMP"].astype(str)
         estrutura.to_csv(nomeArquivo)
         data = {
             '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
@@ -38,7 +38,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codmp 
 
         #Aqui verifico se tem filtros
         dataframe = TemFiltro(engenharia,dataframe,'03- codProduto')
-        dataframe = TemFiltro(codmp, dataframe, '07- codMP')
+        dataframe = TemFiltro(codMP, dataframe, '07- codMP')
         dataframe = TemFiltro(nomecomponente, dataframe, '09- nomeComponente')
 
         # Aqui Verifico se tem paginamento
