@@ -120,7 +120,7 @@ def get_Estrutura():
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     colecoes = data.get('colecoes')
-    codEngenharias = data.get('codEngenharias', 0)
+    codEngenharias = data.get('codEngenharias', '0')
     codMP = data.get('codMP')
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
