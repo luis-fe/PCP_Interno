@@ -29,7 +29,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         estrutura["07- codMP"]=estrutura["07- codMP"].astype(str)
         estrutura.to_csv(nomeArquivo)
         data = {
-            '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
+            '1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')
             }
         return [data]
 
