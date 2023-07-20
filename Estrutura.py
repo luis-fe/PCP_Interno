@@ -58,6 +58,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
 
         # Aqui Verifico se tem paginamento
         estrutura = TemPaginamento(pagina,itensPag,dataframe)
+        estrutura.fillna('-', inplace=True)
 
         data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')}
         return [data]
