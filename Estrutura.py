@@ -30,6 +30,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia='0'):
         data = {
             '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
             }
+
     else:
         dataframe = pd.read_csv(nomeArquivo)
         if engenharia !='0':
@@ -43,12 +44,11 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia='0'):
             inicial =(pagina -1)* itensPag
 
             estrutura = dataframe.iloc[inicial:final]
-            data = {
-        '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
-            }
+
         else:
             estrutura = dataframe
-            data = {
+
+        data = {
                 '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
             }
 
