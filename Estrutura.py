@@ -1,7 +1,8 @@
 import pandas as pd
 import ConexaoCSW
-
-def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia='0'):
+# Constantes
+SEM_ENGENHARIA = '0'
+def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA):
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
     if pagina == 0 and engenharia=='0':
         conn = ConexaoCSW.Conexao()
@@ -33,27 +34,20 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia='0'):
 
     else:
         dataframe = pd.read_csv(nomeArquivo)
-        if engenharia !='0':
-            dataframe = dataframe
-        else:
+        if engenharia != SEM_ENGENHARIA:
             dataframe = dataframe[dataframe['03- codProduto'].str.contains(engenharia)]
             dataframe = dataframe.reset_index(drop=True)
 
-        if pagina!= 0:
+        if pagina != 0:
             final = pagina * itensPag
-            inicial =(pagina -1)* itensPag
-
+            inicial = (pagina - 1) * itensPag
             estrutura = dataframe.iloc[inicial:final]
-
         else:
             estrutura = dataframe
 
         data = {
-                '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
-            }
-
-
-
+            '1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')
+        }
     return [data]
 def EstruturaFiltroEngenharia(colecoes, Engenharia):
     conn = ConexaoCSW.Conexao()
