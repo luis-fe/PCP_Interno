@@ -1,7 +1,7 @@
 import pandas as pd
 import ConexaoCSW
 
-def Estrutura(colecoes):
+def Estrutura(colecoes, pagina=0):
     conn = ConexaoCSW.Conexao()
     estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                             "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
@@ -22,10 +22,17 @@ def Estrutura(colecoes):
                  ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
                  ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'},
         inplace=True)
-
-    data = {
+    if pagina == 0:
+        data = {
         '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
-    }
+        }
+    else:
+        estrutura = estrutura.iloc[16:31]
+        data = {
+        '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
+        }
+
+
 
     return [data]
 def EstruturaFiltroEngenharia(colecoes, Engenharia):

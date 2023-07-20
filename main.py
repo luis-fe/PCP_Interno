@@ -122,6 +122,8 @@ def get_Estrutura():
     colecoes = data.get('colecoes')
     codEngenharias = data.get('codEngenharias')
     codMP = data.get('codMP')
+    pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
+    itensPag = data.get('itensPag')
 
     if colecoes is not None and codMP is not None:
         codMP = DataFrame(codMP, 'codMP')
@@ -132,7 +134,7 @@ def get_Estrutura():
         Endereco_det = Estrutura.EstruturaFiltroEngenharia(colecoes, codEngenharias)
 
     else:
-        Endereco_det = Estrutura.Estrutura(colecoes)
+        Endereco_det = Estrutura.Estrutura(colecoes, pagina)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
