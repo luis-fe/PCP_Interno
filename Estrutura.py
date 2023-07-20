@@ -38,14 +38,19 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia='0'):
             dataframe = dataframe[dataframe['03- codProduto']==engenharia]
             dataframe = dataframe.reset_index(drop=True)
 
+        if pagina!= 0:
+            final = pagina * itensPag
+            inicial =(pagina -1)* itensPag
 
-        final = pagina * itensPag
-        inicial =(pagina -1)* itensPag
-
-        estrutura = dataframe.iloc[inicial:final]
-        data = {
+            estrutura = dataframe.iloc[inicial:final]
+            data = {
         '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
-        }
+            }
+        else:
+            estrutura = dataframe
+            data = {
+                '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
+            }
 
 
 
