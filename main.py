@@ -40,7 +40,7 @@ def get_Usuarios():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
-@app.route('/pcp/api/UsuarioSenha', methods=['GET'])
+@app.route('/pcp/api/UsuarioSenha', methods=['POST'])
 @token_required
 def get_UsuarioSenha():
     # Obtém os dados do corpo da requisição (JSON)
@@ -114,7 +114,7 @@ def update_usuario(codigo):
 
         return jsonify({'message': f'Dados do Usuário {codigo} - {nome_novo} atualizado com sucesso'})
 
-@app.route('/pcp/api/Estrutura', methods=['GET'])
+@app.route('/pcp/api/Estrutura', methods=['POST'])
 @token_required
 def get_Estrutura():
     # Obtém os dados do corpo da requisição (JSON)
