@@ -36,6 +36,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
 
     else:
         dataframe = pd.read_csv(nomeArquivo)
+        dataframe["07- codMP"] = dataframe["07- codMP"].astype(str)
 
         #Aqui verifico se tem filtros
         dataframe = TemFiltro(engenharia,dataframe,'03- codProduto')
