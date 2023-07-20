@@ -32,7 +32,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0):
             }
     else:
         dataframe = pd.read_csv(nomeArquivo)
-        estrutura = dataframe.iloc[0:14]
+        estrutura = dataframe.iloc[0:15]
         data = {
         '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
         }
