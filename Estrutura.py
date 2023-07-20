@@ -31,7 +31,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
                                 " join tcp.DadosGeraisEng d on c.codempresa = d.codEmpresa and c.codProduto = d.codEngenharia"
                                 " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
                                 " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
-                                " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecoes+") ", conn)
+                                " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecoes+") and t.codEngenharia not like '6%' ", conn)
         estrutura.rename(
             columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                      ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
