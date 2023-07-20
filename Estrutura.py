@@ -1,7 +1,7 @@
 import pandas as pd
 import ConexaoCSW
 
-def Estrutura(colecoes, pagina=0):
+def Estrutura(colecoes, pagina=0 ,itensPag=0):
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
     if pagina == 0:
         conn = ConexaoCSW.Conexao()
@@ -32,7 +32,7 @@ def Estrutura(colecoes, pagina=0):
             }
     else:
         dataframe = pd.read_csv(nomeArquivo)
-        estrutura = dataframe.iloc[16:31]
+        estrutura = dataframe.iloc[0:14]
         data = {
         '1- Detalhamento da Estutura:': estrutura.to_dict(orient='records')
         }
