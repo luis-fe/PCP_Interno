@@ -38,7 +38,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codmp 
 
         #Aqui verifico se tem filtros
         dataframe = TemFiltro(engenharia,dataframe,'03- codProduto')
-        dataframe = TemFiltro(codmp, dataframe, '04- codSortimento')
+        dataframe = TemFiltro(codmp, dataframe, '07- codMP')
         dataframe = TemFiltro(nomecomponente, dataframe, '09- nomeComponente')
 
         # Aqui Verifico se tem paginamento
