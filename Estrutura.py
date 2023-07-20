@@ -19,7 +19,19 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
                                 "cv.quantidade "  
                                 " FROM tcp.CompVarSorGraTam cv "
                                 "JOIN tcp.DadosGeraisEng d ON cv.codempresa = d.codEmpresa AND cv.codProduto = d.codEngenharia " 
-                                " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+")", conn)
+                                " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+")"
+                                " union "
+                                " select DISTINCT 'Padrao' as tipo, d.codColecao, c.codProduto, s.codSortimento , (select tm.descricao from tcp.Tamanhos tm WHERE tm.codEmpresa = t.Empresa  and tm.sequencia = t.codSeqTamanho) as tamanho, "
+                                "s.corBase, "
+                                " (select i2.codItemPai from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as codMP,"
+                                " (select i2.codCor from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as corComponente, "
+                                "(select tm.descricao from cgi.Item2  i2   "
+                                " join tcp.Tamanhos tm on tm.CodEmpresa = i2.Empresa and tm.sequencia = i2.codseqtamanho where i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente) as Tamanho,"
+                                " (select i.nome  from   cgi.item i WHERE  i.codigo = c.CodComponente ) as nomeComponente, c.quantidade from tcp.ComponentesPadroes c"
+                                " join tcp.DadosGeraisEng d on c.codempresa = d.codEmpresa and c.codProduto = d.codEngenharia"
+                                " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
+                                " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
+                                " WHERE c.codEmpresa = 1 and d.codColecao in (87, 567, 1001, 1002) ", conn)
         estrutura.rename(
             columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                      ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
