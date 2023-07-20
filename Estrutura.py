@@ -2,7 +2,7 @@ import pandas as pd
 import ConexaoCSW
 # Constantes
 SEM_ENGENHARIA = '0'
-def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codmp = '0'):
+def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codmp = '0', nomecomponente ='0'):
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
     if pagina == 0 and engenharia==SEM_ENGENHARIA:
         conn = ConexaoCSW.Conexao()
@@ -39,6 +39,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codmp 
         #Aqui verifico se tem filtros
         dataframe = TemFiltro(engenharia,dataframe,'03- codProduto')
         dataframe = TemFiltro(codmp, dataframe, '04- codSortimento')
+        dataframe = TemFiltro(nomecomponente, dataframe, '09- nomeComponente')
 
         # Aqui Verifico se tem paginamento
         estrutura = TemPaginamento(pagina,itensPag,dataframe)
