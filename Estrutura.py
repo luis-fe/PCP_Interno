@@ -67,6 +67,7 @@ def TemFiltro(nomedofiltro,dataframe, coluna):
     else:
         dataframe = dataframe[dataframe[coluna].str.contains(nomedofiltro)]
         dataframe = dataframe.reset_index(drop=True)
+        print(coluna)
         return dataframe
 
 
