@@ -121,12 +121,12 @@ def get_Estrutura():
     data = request.get_json()
     colecoes = data.get('colecoes')
     codEngenharias = data.get('codEngenharias', '0')
-    codMP = data.get('codMP')
+    codMP = data.get('codMP', '0')
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
 
 
-    Endereco_det = Estrutura.Estrutura(colecoes, pagina, itensPag, codEngenharias)
+    Endereco_det = Estrutura.Estrutura(colecoes, pagina, itensPag, codEngenharias, codMP)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
