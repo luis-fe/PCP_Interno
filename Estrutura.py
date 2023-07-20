@@ -35,7 +35,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia='0'):
         if engenharia !='0':
             dataframe = dataframe
         else:
-            dataframe = dataframe[dataframe['03- codProduto']==engenharia]
+            dataframe = dataframe[dataframe['03- codProduto'].str.contains(engenharia)]
             dataframe = dataframe.reset_index(drop=True)
 
         if pagina!= 0:
