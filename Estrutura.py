@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 import ConexaoCSW
 # Constantes
@@ -64,7 +66,9 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         estrutura["07- codMP"]=estrutura["07- codMP"].astype(str)
         estrutura = estrutura[~estrutura['07- codMP'].str.startswith('6')]
         estrutura.fillna('-', inplace=True)
+        estrutura = estrutura.reset_index(drop=True)
         estrutura.to_csv(nomeArquivo)
+
         data = {
             '1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')
             }
@@ -81,24 +85,31 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         dataframe = TemFiltro(nomecomponente, dataframe, '09- nomeComponente')
 
         # Aqui Verifico se tem paginamento
-        estrutura = TemPaginamento(pagina,itensPag,dataframe)
+        estrutura, totalPg = TemPaginamento(pagina,itensPag,dataframe)
         estrutura.fillna('-', inplace=True)
-
-        data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')}
-        return [data]
-
+        if  totalPg == False:
+            data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')}
+            return [data]
+        else:
+            data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
+                    '0- ToalPg':f'{totalPg}'}
+            return [data]
 
 
 def TemPaginamento(pagina, itensPag, dataframe):
     if pagina != 0:
+        totalPaginas = dataframe['codMP'].size/itensPag
+        totalPaginas = math.ceil(totalPaginas)
+        totalPaginas = int(totalPaginas)
         final = pagina * itensPag
         inicial = (pagina - 1) * itensPag
         estrutura = dataframe.iloc[inicial:final]
 
-        return estrutura
+
+        return estrutura, totalPaginas
     else:
         estrutura = dataframe
-        return estrutura
+        return estrutura, False
 
 def TemFiltro(nomedofiltro,dataframe, coluna):
     if nomedofiltro == '0':
