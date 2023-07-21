@@ -42,8 +42,8 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
                              " join tcp.DadosGeraisEng d on d.codEmpresa = e.codEmpresa and d.codEngenharia = e.codEngenharia  "
                              "where e.codEmpresa = 1 and e.status in (2,3) and d.codColecao in ("+ colecoes+")", conn)
 
-        fornecedorPref = pd.read_sql("select f.CodItem as codreduzido, f.codFornecedor  from cgi.FornPreferItemFilho f "
-                                     "WHERE f.Empresa = 1 ", conn)
+        fornecedorPref = pd.read_sql("select codItem as codreduzido, codFornecedor  FROM cgi.FornecHomologados fh "
+                                     "WHERE fh.codEmpresa = 1 and fh.fornecedorPreferencial = 1 ", conn)
         fornecedorPref['codreduzido'] =fornecedorPref['codreduzido'].astype(str)
         descricaoFornecdor = pd.read_sql("select DISTINCT f.codFornecedor, f.nomeFornecedor  from cgi.FornecHomologados f "
                                         "WHERE f.codEmpresa = 1 ", conn)
