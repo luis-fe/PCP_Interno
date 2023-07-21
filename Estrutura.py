@@ -67,7 +67,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         estrutura["07- codMP"] = estrutura["07- codMP"].astype(str)
         estrutura = estrutura[~estrutura['07- codMP'].str.startswith('6')]
         estrutura.fillna('-', inplace=True)
-        estrutura['19-teste'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'MPL IND', 'MPL TEXTIL'), axis=1)
+        estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'MPL IND', 'MPL TEXTIL'), axis=1)
 
         estrutura = estrutura.reset_index(drop=True)
         estrutura.to_csv(nomeArquivo)
