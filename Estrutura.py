@@ -69,6 +69,8 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         estrutura.fillna('-', inplace=True)
         estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'MPL IND', 'MPL TEXTIL'), axis=1)
         estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'MENEGOTTI', 'MENEGOTTI'), axis=1)
+        estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'RVB', 'RVB'), axis=1)
+        estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'DALILA', 'DALILA'), axis=1)
         estrutura = estrutura.reset_index(drop=True)
         estrutura.to_csv(nomeArquivo)
 
