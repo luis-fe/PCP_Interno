@@ -28,7 +28,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
                                 " (select i2.codCor from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as corComponente, "
                                 "(select tm.descricao from cgi.Item2  i2   "
                                 " join tcp.Tamanhos tm on tm.CodEmpresa = i2.Empresa and tm.sequencia = i2.codseqtamanho where i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente) as Tamanho,"
-                                " (select i.nome  from   cgi.item i WHERE  i.codigo = c.CodComponente ) as nomeComponente, c.quantidade "
+                                " (select i.nome  from   cgi.item i WHERE  i.codigo = c.CodComponente ) as nomeComponente, c.quantidade, "
                                 " (select i2.codItem from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as codreduzido"
                                 " from tcp.ComponentesPadroes c"
                                 " join tcp.DadosGeraisEng d on c.codempresa = d.codEmpresa and c.codProduto = d.codEngenharia"
