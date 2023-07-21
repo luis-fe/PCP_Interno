@@ -53,10 +53,13 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         conn.close()
         estrutura = pd.merge(estrutura, status, on='codProduto')
         estrutura = pd.merge(estrutura, fornecedorPref, on='codreduzido', how='left')
+        estrutura.drop('codFornecedor', axis=1, inplace=True)
+        estrutura.drop('codreduzido', axis=1, inplace=True)
         estrutura.rename(
             columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                      ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
-                     ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'},
+                     ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'
+                     ,"nomeFornecedor":"12-nomeFornecedor","status":"13-statusEng"},
             inplace=True)
         estrutura["07- codMP"]=estrutura["07- codMP"].astype(str)
         estrutura = estrutura[~estrutura['07- codMP'].str.startswith('6')]
