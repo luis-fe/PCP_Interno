@@ -54,6 +54,21 @@ def get_UsuarioSenha():
 
         return jsonify({'message': 'Usuario Nao existe'}), 201
 
+@app.route('/pcp/api/UsuarioSenha', methods=['GET'])
+@token_required
+def get_UsuarioSenha_():
+    # Obtém o código do usuário e a senha dos parâmetros da URL
+    codigo = request.args.get('codigo')
+    senhaP = request.args.get('senha')
+
+    # Verifica se a coluna "funcao" está presente nos dados recebidos
+    codigo, nome , senha = Usuarios.ObterUsuariosCodigo(codigo)
+    if codigo != 0 and senha == senhaP:
+        return jsonify({'1 - message': f'Usuario {codigo}- {nome}', '2-Senha': f'{senha}', "Status": True}), 201
+    else:
+
+        return jsonify({'message': 'Usuario OU senha Nao existe','Status': False}), 201
+
 @app.route('/pcp/api/Usuarios', methods=['PUT'])
 @token_required
 def criar_usuario():
