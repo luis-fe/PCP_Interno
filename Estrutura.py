@@ -5,7 +5,8 @@ import ConexaoCSW
 # Constantes
 SEM_ENGENHARIA = '0'
 def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0'):
-    nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
+    arquivo = colecoes.replace(", ", "_")
+    nomeArquivo = f'EstruturaMP das Colecoes{arquivo}.csv'
     if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == False:
         conn = ConexaoCSW.Conexao()
         estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
@@ -78,6 +79,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         return [data]
 
     else:
+
         dataframe = pd.read_csv(nomeArquivo)
         dataframe["07- codMP"] = dataframe["07- codMP"].astype(str)
 
