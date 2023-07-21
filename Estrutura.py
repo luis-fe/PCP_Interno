@@ -41,6 +41,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
 
         fornecedorPref = pd.read_sql("select f.CodItem as codMP, f.codFornecedor  from cgi.FornPreferItemFilho f "
                                      "WHERE f.Empresa = 1 ", conn)
+        fornecedorPref['codMP'] =fornecedorPref['codMP'].astype(str)
         descricaoFornecdor = pd.read_sql("select DISTINCT f.codFornecedor, f.nomeFornecedor  from cgi.FornecHomologados f "
                                         "WHERE f.codEmpresa = 1 ", conn)
 
