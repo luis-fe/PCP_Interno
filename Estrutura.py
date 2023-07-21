@@ -73,7 +73,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'DALILA', 'DALILA'), axis=1)
         estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'CONE SUL', 'CONE SUL'), axis=1)
         estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'EXCIM', 'EXCIM'), axis=1)
-
+        estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'ADAR I', 'ADAR'), axis=1)
         estrutura = estrutura.reset_index(drop=True)
         estrutura.to_csv(nomeArquivo)
 
