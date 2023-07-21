@@ -63,7 +63,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
                      ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'
                      ,"nomeFornecedor":"12-nomeFornecedor","status":"13-statusEng"},
             inplace=True)
-        estrutura["07- codMP"]=estrutura["07- codMP"].astype(str)
+        estrutura["07- codMP"] = estrutura["07- codMP"].astype(str)
         estrutura = estrutura[~estrutura['07- codMP'].str.startswith('6')]
         estrutura.fillna('-', inplace=True)
         estrutura['19-teste'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'MPL IND', 'MPL TEXTIL'), axis=1)
