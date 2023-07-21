@@ -7,7 +7,7 @@ SEM_ENGENHARIA = '0'
 def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0'):
 
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
-    if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == False:
+    if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == '0':
         conn = ConexaoCSW.Conexao()
         estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                 "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
