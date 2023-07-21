@@ -35,7 +35,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
 
 
 
-        status = pd.read_sql("select e.codEngenharia as codProduto , e.status, d.codColecao  from tcp.Engenharia e "
+        status = pd.read_sql("select e.codEngenharia as codProduto , e.status  from tcp.Engenharia e "
                              " join tcp.DadosGeraisEng d on d.codEmpresa = e.codEmpresa and d.codEngenharia = e.codEngenharia  "
                              "where e.codEmpresa = 1 and e.status in (2,3) and d.codColecao in ("+ colecoes+")", conn)
         estrutura = pd.merge(estrutura, status, on='codProduto')
