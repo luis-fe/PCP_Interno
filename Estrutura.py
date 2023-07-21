@@ -32,12 +32,18 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
                                 " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
                                 " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
                                 " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecoes+") and t.codEngenharia not like '03%' ", conn)
+
+
+
+        status = pd.read_sql("select e.codEngenharia as codProduto , e.status, d.codColecao  from tcp.Engenharia e "
+                             " join tcp.DadosGeraisEng d on d.codEmpresa = e.codEmpresa and d.codEngenharia = e.codEngenharia  "
+                             "where e.codEmpresa = 1 and e.status in (2,3) and d.codColecao in ("+ colecoes+")", conn)
+        estrutura = pd.merge(estrutura, status, on='codProduto')
         estrutura.rename(
             columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                      ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
                      ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'},
             inplace=True)
-
         estrutura["07- codMP"]=estrutura["07- codMP"].astype(str)
         estrutura = estrutura[~estrutura['07- codMP'].str.startswith('6')]
         estrutura.to_csv(nomeArquivo)
