@@ -38,7 +38,17 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
         status = pd.read_sql("select e.codEngenharia as codProduto , e.status  from tcp.Engenharia e "
                              " join tcp.DadosGeraisEng d on d.codEmpresa = e.codEmpresa and d.codEngenharia = e.codEngenharia  "
                              "where e.codEmpresa = 1 and e.status in (2,3) and d.codColecao in ("+ colecoes+")", conn)
+
+        fornecedorPref = pd.read_sql("select f.CodItem as codMP, f.codFornecedor  from cgi.FornPreferItemFilho f "
+                                     "WHERE f.Empresa = 1 ", conn)
+        descricaoFornecdor = pd.read_sql("select DISTINCT f.codFornecedor, f.nomeFornecedor  from cgi.FornecHomologados f "
+                                        "WHERE f.codEmpresa = 1 ", conn)
+
+        fornecedorPref = pd.merge(fornecedorPref,descricaoFornecdor,on='codFornecedor')
+
+        conn.close()
         estrutura = pd.merge(estrutura, status, on='codProduto')
+        estrutura = pd.merge(estrutura, fornecedorPref, on='codMP')
         estrutura.rename(
             columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                      ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
