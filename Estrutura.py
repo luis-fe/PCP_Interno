@@ -98,7 +98,7 @@ def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP 
 
 def TemPaginamento(pagina, itensPag, dataframe):
     if pagina != 0:
-        totalPaginas = dataframe['codMP'].size/itensPag
+        totalPaginas = dataframe['03- codProduto'].size/itensPag
         totalPaginas = math.ceil(totalPaginas)
         totalPaginas = int(totalPaginas)
         final = pagina * itensPag
