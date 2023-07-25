@@ -50,8 +50,8 @@ def ConsultarPlano(codigo):
 
 
 def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0', finalVendaNova = '0', inicoFatNovo = '0', finalFatNovo ='0'):
-    codigo, descricaoAnt, iniVendaAnt, finalVendaAnt, inicioFatAnt, finalFatAnt = ConsultarPlano(codigo)
-    if codigo != 0:
+    codigo2, descricaoAnt, iniVendaAnt, finalVendaAnt, inicioFatAnt, finalFatAnt = ConsultarPlano(codigo)
+    if codigo2 != 0:
         descricaoNova = Conversao(descricaoNova,descricaoAnt)
         iniVendaNova = Conversao(iniVendaNova,iniVendaAnt)
         finalVendaNova = Conversao(finalVendaNova, finalVendaAnt)
@@ -69,7 +69,7 @@ def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0', finalVendaNova = '
         conn.commit()
 
 
-        return codigo, descricaoNova, iniVendaNova, finalVendaNova, inicoFatNovo, finalFatNovo
+        return codigo2, descricaoNova, iniVendaNova, finalVendaNova, inicoFatNovo, finalFatNovo
     else:
         return False, False , False, False, False
 
