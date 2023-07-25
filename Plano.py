@@ -43,24 +43,25 @@ def ConsultarPlano(codigo):
             inplace=True)
         planos.fillna('-', inplace=True)
 
-        return planos['01- Codigo Plano'][0], planos['02- Descricao do Plano'][0],planos['03- Inicio Venda'][0]
+        return planos['01- Codigo Plano'][0], planos['02- Descricao do Plano'][0],planos['03- Inicio Venda'][0],planos['04- Final Venda'][0]
     else:
         return 0
 
 
-def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0'):
-    codigo, descricaoAnt, iniVendaAnt = ConsultarPlano(codigo)
+def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0', finalVendaNova = '0'):
+    codigo, descricaoAnt, iniVendaAnt, finalVendaAnt = ConsultarPlano(codigo)
     if codigo != 0:
         descricaoNova = Conversao(descricaoNova,descricaoAnt)
         iniVendaNova = Conversao(iniVendaNova,iniVendaAnt)
+        iniVendaNova = Conversao(iniVendaNova, iniVendaAnt)
 
 
         conn = ConexaoPostgreMPL.conexao()
         update = 'update pcp."Plano"' \
-                 ' set "descricao do Plano" = %s , "inicioVenda" = %s ' \
+                 ' set "descricao do Plano" = %s , "inicioVenda" = %s , "FimVenda"= %s ' \
                  'where codigo = %s'
         cursor = conn.cursor()
-        cursor.execute(update,(descricaoNova,iniVendaNova,codigo))
+        cursor.execute(update,(descricaoNova,iniVendaNova,finalVendaNova,codigo))
         conn.commit()
 
 
