@@ -17,20 +17,17 @@ def ObeterPlanos():
 
 def InserirPlano(codigo, descricao, iniVenda, fimVenda, iniFat, fimFat, usuario, datageracao):
     conn = ConexaoPostgreMPL.conexao()
-    consulta = ConsultarPlano(codigo)
-    if consulta != 0:
 
-        query = 'Insert into pcp."Plano" (codigo, "descricao do Plano","inicioVenda","FimVenda","inicoFat","finalFat", ' \
+    query = 'Insert into pcp."Plano" (codigo, "descricao do Plano","inicioVenda","FimVenda","inicoFat","finalFat", ' \
                 '"usuarioGerador","dataGeracao") values (%s, %s, %s, %s, %s, %s, %s, %s)'
 
-        cursor = conn.cursor()
-        cursor.execute(query,(codigo, descricao, iniVenda, fimVenda, iniFat, fimFat, usuario, datageracao))
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return pd.DataFrame([{'Mensagem': f'Plano {codigo}-{descricao} criado com sucesso!', 'Status': True}])
-    else:
-        return pd.DataFrame([{'Mensagem': f'Plano {codigo} já existe!', 'Status': False}])
+    cursor = conn.cursor()
+    cursor.execute(query,(codigo, descricao, iniVenda, fimVenda, iniFat, fimFat, usuario, datageracao))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return pd.DataFrame([{'Mensagem': f'Plano {codigo}-{descricao} criado com sucesso!', 'Status': True}])
+
 
 
 def ConsultarPlano(codigo):
