@@ -43,6 +43,35 @@ def ConsultarPlano(codigo):
             inplace=True)
         planos.fillna('-', inplace=True)
 
-        return planos['01- Codigo Plano'][0]
+        return planos['01- Codigo Plano'][0], planos['02- Descricao do Plano'][0],planos['03- Inicio Venda'][0]
     else:
         return 0
+
+
+def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0'):
+    codigo, descricaoAnt, iniVendaAnt = ConsultarPlano(codigo)
+    if codigo != 0:
+        descricaoNova = Conversao(descricaoNova,descricaoAnt)
+        iniVendaNova = Conversao(iniVendaNova,iniVendaAnt)
+
+
+        conn = ConexaoPostgreMPL.conexao()
+        update = 'update pcp.usuarios' \
+                 ' set "descricao do Plano" = %s , "inicioVenda" = %s ' \
+                 'where codigo = %s'
+        cursor = conn.cursor()
+        cursor.execute(update,(descricaoNova,iniVendaNova,codigo))
+        conn.commit()
+
+
+        return codigo, descricaoNova, iniVendaNova
+    else:
+        return False, False , False
+
+def Conversao(valornovo, valorAntigo):
+    if valornovo == '0':
+        valornovo = valorAntigo
+        return valornovo
+    else:
+        return valornovo
+

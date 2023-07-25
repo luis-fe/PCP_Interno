@@ -222,6 +222,20 @@ def criar_Plano():
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Plano {codigo}-{descricao} criado com sucesso', 'status':True}), 201
 
+@app.route('/pcp/api/Plano/<string:codigo>', methods=['POST'])
+@token_required
+def update_Plano(codigo):
+    # Obtém os dados do corpo da requisição (JSON)
+    data = request.get_json()
+    codigo = str(codigo)
+    descricao = data.get('descricao', '0')
+    # Verifica se a coluna "funcao" está presente nos dados recebidos
+    codigo, nome_ant, senha_ant = Plano.EditarPlano(codigo,descricao)
+    if codigo == False:
+        return jsonify({'message': f'Plano {codigo} usuario nao existe! ', 'Status': False})
+    else:
+        return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
 
