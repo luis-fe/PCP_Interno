@@ -216,11 +216,11 @@ def criar_Plano():
     # inserir o novo usuário no banco de dados
     c = Plano.ConsultarPlano(codigo)
     if c != 0:
-        return jsonify({'message': f'Plano :{codigo}- {descricao} ja existe', 'status':False}), 201
+        return jsonify({'message': f'Plano {codigo}-{descricao} ja existe', 'status':False}), 201
     else:
         Plano.InserirPlano(codigo, descricao, inicoVenda,finalVenda,inicioFat,finalFat,usuario,dataGeracao)
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Plano :{codigo}- {descricao} criado com sucesso'}), 201
+        return jsonify({'message': f'Plano {codigo}-{descricao} criado com sucesso', 'status':True}), 201
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
