@@ -46,7 +46,7 @@ def ConsultarPlano(codigo):
         return planos['01- Codigo Plano'][0], planos['02- Descricao do Plano'][0],planos['03- Inicio Venda'][0],planos['04- Final Venda'][0],\
             planos['05- Inicio Faturamento'][0],planos['06- Final Faturamento'][0]
     else:
-        return 0
+        return 0, 0
 
 
 def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0', finalVendaNova = '0', inicoFatNovo = '0', finalFatNovo ='0'):
@@ -71,7 +71,7 @@ def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0', finalVendaNova = '
 
         return codigo, descricaoNova, iniVendaNova, finalVendaNova, inicoFatNovo, finalFatNovo
     else:
-        return False, False , False
+        return False, False , False, False, False
 
 def Conversao(valornovo, valorAntigo):
     if valornovo == '0':
