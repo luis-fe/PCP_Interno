@@ -5,6 +5,7 @@ import os
 from functools import wraps
 import ConexaoPostgreMPL
 import Estrutura
+import Plano
 import Usuarios
 
 app = Flask(__name__)
@@ -181,7 +182,21 @@ def DataFrame(item, item2):
     inplace = True)
 
     return df
-
+@app.route('/pcp/api/Plano', methods=['GET'])
+@token_required
+def get_Usuarios():
+    plano = Plano.ObeterPlanos()
+    # Obtém os nomes das colunas
+    # Obtém os nomes das colunas
+    column_names = plano.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in plano.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
