@@ -11,4 +11,6 @@ def ObeterPlanos():
                  'FimVenda':'04- Final Venda',"inicoFat":"05- Inicio Faturamento","finalFat":"06- Final Faturamento",
                  'usuarioGerador':'07- Usuario Gerador','dataGeracao':'08- Data Geracao'},
         inplace=True)
+    planos.fillna('-', inplace=True)
+
     return planos
