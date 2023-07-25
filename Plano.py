@@ -36,7 +36,7 @@ def InserirPlano(codigo, descricao, iniVenda, fimVenda, iniFat, fimFat, usuario,
 def ConsultarPlano(codigo):
     conn = ConexaoPostgreMPL.conexao()
     planos = pd.read_sql('SELECT * FROM pcp."Plano" '
-                         ' where codigo = %s;',conn,params=(codigo))
+                         ' where codigo = %s ;',conn,params=(codigo))
 
     if not planos.empty:
         planos.rename(
