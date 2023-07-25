@@ -184,7 +184,7 @@ def DataFrame(item, item2):
     return df
 @app.route('/pcp/api/Plano', methods=['GET'])
 @token_required
-def get_Usuarios():
+def get_Plano():
     plano = Plano.ObeterPlanos()
     # Obtém os nomes das colunas
     # Obtém os nomes das colunas
