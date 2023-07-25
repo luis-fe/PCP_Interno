@@ -225,6 +225,7 @@ def criar_Plano():
 @app.route('/pcp/api/Plano/<string:codigo>', methods=['POST'])
 @token_required
 def update_Plano(codigo):
+
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     codigo = str(codigo)
