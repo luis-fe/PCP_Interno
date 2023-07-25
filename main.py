@@ -198,6 +198,30 @@ def get_Plano():
         OP_data.append(op_dict)
     return jsonify(OP_data)
 
+@app.route('/pcp/api/Plano', methods=['PUT'])
+@token_required
+def criar_Plano():
+    # Obtenha os dados do corpo da requisição
+    novo_usuario = request.get_json()
+    # Extraia os valores dos campos do novo usuário
+    codigo = novo_usuario.get('codigo')
+    descricao = novo_usuario.get('descricao')
+    inicoVenda = novo_usuario.get('inicoVenda')
+    finalVenda = novo_usuario.get('finalVenda')
+    inicioFat = novo_usuario.get('inicioFat')
+    finalFat = novo_usuario.get('finalFat')
+    usuario = novo_usuario.get('usuario')
+    dataGeracao = novo_usuario.get('dataGeracao')
+
+    # inserir o novo usuário no banco de dados
+    c = Plano.ConsultarPlano(codigo)
+    if c != 0:
+        return jsonify({'message': f'Plano :{codigo}- {descricao} ja existe'}), 201
+    else:
+        Plano.InserirPlano(codigo, descricao, inicoVenda,finalVenda,inicioFat,finalFat,usuario,dataGeracao)
+        # Retorne uma resposta indicando o sucesso da operação
+        return jsonify({'message': f'Plano :{codigo}- {descricao} criado com sucesso'}), 201
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
 
