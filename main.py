@@ -246,7 +246,7 @@ def criar_Plano():
     dataGeracao = novo_usuario.get('dataGeracao')
 
     # inserir o novo usuário no banco de dados
-    c, c2 = Plano.ConsultarPlano(codigo)
+    c, c2, c3, c4, c5, c6 = Plano.ConsultarPlano(codigo)
     if c != 0:
         return jsonify({'message': f'Plano {codigo}-{descricao} ja existe', 'status':False}), 201
     else:
