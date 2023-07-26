@@ -238,12 +238,12 @@ def criar_Plano():
     # Extraia os valores dos campos do novo usuário
     codigo = novo_usuario.get('codigo')
     descricao = novo_usuario.get('descricao')
-    inicoVenda = novo_usuario.get('inicoVenda')
-    finalVenda = novo_usuario.get('finalVenda')
-    inicioFat = novo_usuario.get('inicioFat')
-    finalFat = novo_usuario.get('finalFat')
-    usuario = novo_usuario.get('usuario')
-    dataGeracao = novo_usuario.get('dataGeracao')
+    inicoVenda = novo_usuario.get('inicoVenda','-')
+    finalVenda = novo_usuario.get('finalVenda','-')
+    inicioFat = novo_usuario.get('inicioFat','-')
+    finalFat = novo_usuario.get('finalFat','-')
+    usuario = novo_usuario.get('usuario','-')
+    dataGeracao = novo_usuario.get('dataGeracao','-')
 
     # inserir o novo usuário no banco de dados
     c, c2, c3, c4, c5, c6 = Plano.ConsultarPlano(codigo)
