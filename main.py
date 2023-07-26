@@ -309,7 +309,7 @@ def get_PesquisaLotes():
     itensPag = request.args.get('itensPag',100)
     pagina = request.args.get('pagina',1)
 
-    Endereco_det = ObterInfCSW.GetTipoNotas(pagina, itensPag)
+    Endereco_det = ObterInfCSW.GetLotesCadastrados(pagina, itensPag)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
