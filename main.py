@@ -265,7 +265,7 @@ def get_Colecoes():
     return jsonify(end_data)
 @app.route('/pcp/api/PesquisaTipoNotas', methods=['GET'])
 @token_required
-def get_Colecoes():
+def get_PesquisaTipoNotass():
     # Obtém o código do usuário e a senha dos parâmetros da URL
     itensPag = request.args.get('itensPag',100)
     pagina = request.args.get('pagina',1)
