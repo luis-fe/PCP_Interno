@@ -5,6 +5,7 @@ import os
 from functools import wraps
 import ConexaoPostgreMPL
 import Estrutura
+import ObterInfCSW
 import Plano
 import Usuarios
 
@@ -241,6 +242,29 @@ def update_Plano(codigo):
     else:
         Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
         return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
+
+@app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
+@token_required
+def get_Estrutura():
+    # Obtém os dados do corpo da requisição (JSON)
+    data = request.get_json()
+    pagina = data.get('pagina')
+    itensPag = data.get('itensPag')
+
+    Endereco_det = ObterInfCSW.GetColecoes(pagina, itensPag)
+
+    Endereco_det = pd.DataFrame(Endereco_det)
+
+    # Obtém os nomes das colunas
+    column_names = Endereco_det.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    end_data = []
+    for _, row in Endereco_det.iterrows():
+        end_dict = {column_name: row[column_name] for column_name in column_names}
+        end_data.append(end_dict)
+
+    return jsonify(end_data)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
