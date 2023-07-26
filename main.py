@@ -354,6 +354,25 @@ def get_PesquisaLotes():
 
     return jsonify(end_data)
 
+@app.route('/pcp/api/ColecaoPlano/<string: codigoplano>', methods=['PUT'])
+@token_required
+def criar_Plano(codigoplano):
+    # Obtenha os dados do corpo da requisição
+    novo_usuario = request.get_json()
+    # Extraia os valores dos campos do novo usuário
+
+    codcolecao = novo_usuario.get('codcolecao')
+    nomecolecao = novo_usuario.get('nomecolecao')
+
+    # inserir o novo usuário no banco de dados
+    c = Plano.InserirColecaoNoPlano(codigoplano,codcolecao,nomecolecao)
+    if c == False:
+        return jsonify({'message': f'Plano {codigoplano} ou {codcolecao} ja existem', 'status':False}), 201
+    else:
+
+        # Retorne uma resposta indicando o sucesso da operação
+        return jsonify({'message': f'Colecao {codcolecao} incluida no plano {codigoplano} com sucesso', 'status':True}), 201
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
 

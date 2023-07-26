@@ -105,5 +105,31 @@ def ObeterColecoesPlano(plano):
 
     return planos
 
+def InserirColecaoNoPlano(plano, colecao, nomecolecao):
+    conn = ConexaoPostgreMPL.conexao()
+    x = ConsularColecaoPlano(plano, colecao)
+    y = ConsultarPlano(plano)
+    if x == True and y !=0 :
+        qurery = 'insert into pcp."colecoesPlano" (plano, colecao, nomecolecao) values (%s, %s , %s)'
+        cursor = conn.cursor()
+        cursor.execute(qurery, (plano, colecao, nomecolecao))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return True
+    else:
+        return False
+
+
+def ConsularColecaoPlano(plano, colecao):
+    conn = ConexaoPostgreMPL.conexao()
+    planos = pd.read_sql('SELECT plano, colecao, nomecolecao FROM pcp."colecoesPlano" '
+                         ' where plano = %s and colecao = %s',conn,params=(plano,colecao,))
+
+    if  planos.empty:
+        return True
+    else:
+        return False
 
 
