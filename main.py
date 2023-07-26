@@ -222,6 +222,24 @@ def criar_Plano():
         Plano.InserirPlano(codigo, descricao, inicoVenda,finalVenda,inicioFat,finalFat,usuario,dataGeracao)
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Plano {codigo}-{descricao} criado com sucesso', 'status':True}), 201
+@app.route('/pcp/api/Plano/<string:codigoPlano>', methods=['DELETE'])
+@token_required
+def delet_Plano(codigoPlano):
+    # Obtém os dados do corpo da requisição (JSON)
+    data = request.get_json()
+    codigoPlano = str(codigoPlano)
+    # Verifica se a coluna "funcao" está presente nos dados recebidos
+    dados = Usuarios.DeletarUsuarios(codigoPlano)
+    # Obtém os nomes das colunas
+    column_names = dados.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    end_data = []
+    for index, row in dados.iterrows():
+        end_dict = {}
+        for column_name in column_names:
+            end_dict[column_name] = row[column_name]
+        end_data.append(end_dict)
+    return jsonify(end_data)
 
 @app.route('/pcp/api/Plano/<string:codigo>', methods=['POST'])
 @token_required
@@ -284,6 +302,26 @@ def get_PesquisaTipoNotass():
 
     return jsonify(end_data)
 
+@app.route('/pcp/api/PesquisaLotes', methods=['GET'])
+@token_required
+def get_PesquisaLotes():
+    # Obtém o código do usuário e a senha dos parâmetros da URL
+    itensPag = request.args.get('itensPag',100)
+    pagina = request.args.get('pagina',1)
+
+    Endereco_det = ObterInfCSW.GetTipoNotas(pagina, itensPag)
+
+    Endereco_det = pd.DataFrame(Endereco_det)
+
+    # Obtém os nomes das colunas
+    column_names = Endereco_det.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    end_data = []
+    for _, row in Endereco_det.iterrows():
+        end_dict = {column_name: row[column_name] for column_name in column_names}
+        end_data.append(end_dict)
+
+    return jsonify(end_data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)

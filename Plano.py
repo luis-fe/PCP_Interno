@@ -80,5 +80,18 @@ def Conversao(valornovo, valorAntigo):
     else:
         return valornovo
 
+def DeletarPlano(codigo):
+    conn = ConexaoPostgreMPL.conexao()
+
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM pcp."Plano" WHERE codigo = %s', (codigo,))
+    conn.commit()
+    deleted_rows = cursor.rowcount
+
+    if deleted_rows == 0:
+        return pd.DataFrame([{'Mensagem': f'Usuário {codigo} não encontrado!', 'Status': False}])
+    else:
+        return pd.DataFrame([{'Mensagem': f'Usuário {codigo} excluído com sucesso!', 'Status': True}])
+
 
 
