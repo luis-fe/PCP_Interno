@@ -354,7 +354,7 @@ def get_PesquisaLotes():
 
     return jsonify(end_data)
 
-@app.route('/pcp/api/ColecaoPlano/<string: codigoplano>', methods=['PUT'])
+@app.route('/pcp/api/ColecaoPlano/<string:codigoplano>', methods=['PUT'])
 @token_required
 def criar_PlanoColecao(codigoplano):
     # Obtenha os dados do corpo da requisição
