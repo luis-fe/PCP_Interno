@@ -29,7 +29,7 @@ def GetColecoes(pagina, itensPag):
 def GetTipoNotas(pagina, itensPag):
     conn = ConexaoCSW.Conexao()
 
-    contagem = pd.read_sql("select COUNT(c.codigo) as cont from Fat.TipoDeNotaPadrao t ", conn)
+    contagem = pd.read_sql("select COUNT(c.codigo) as cont from Fat.TipoDeNotaPadrao c ", conn)
     pagina = int(pagina)
     itensPag = int(itensPag)
     totalPgs = contagem['cont'][0] /itensPag
