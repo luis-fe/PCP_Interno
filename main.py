@@ -356,7 +356,7 @@ def get_PesquisaLotes():
 
 @app.route('/pcp/api/ColecaoPlano/<string: codigoplano>', methods=['PUT'])
 @token_required
-def criar_Plano(codigoplano):
+def criar_PlanoColecao(codigoplano):
     # Obtenha os dados do corpo da requisição
     novo_usuario = request.get_json()
     # Extraia os valores dos campos do novo usuário
