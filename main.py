@@ -251,7 +251,7 @@ def get_Colecoes():
     pagina = data.get('pagina')
     itensPag = data.get('itensPag')
 
-    Endereco_det = ObterInfCSW.GetColecoes(int(pagina), int(itensPag))
+    Endereco_det = ObterInfCSW.GetColecoes(pagina, itensPag)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 

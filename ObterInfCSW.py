@@ -7,7 +7,8 @@ def GetColecoes(pagina, itensPag):
     conn = ConexaoCSW.Conexao()
 
     contagem = pd.read_sql("select COUNT(c.codcolecao) as cont from tcp.Colecoes c WHERE c.codEmpresa = 1 ", conn)
-
+    pagina = int(pagina)
+    itensPag = int(itensPag)
     totalPgs = contagem['cont'][0] /itensPag
     totalPgs = math.ceil(totalPgs)
     totalPgs = int(totalPgs)
