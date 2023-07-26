@@ -205,13 +205,13 @@ def Status_Plano(codigoPlano):
     data = request.get_json()
     codigoPlano = str(codigoPlano)
     # inserir o novo usuário no banco de dados
-    codigo, descricao, inven = Plano.ConsultarPlano(codigoPlano)
-    if codigo != 0:
-        return jsonify({'message': f'Plano {codigo}-{descricao} ja existe', 'status':True,'01- Codigo Plano':codigoPlano
-                       , '02- Descricao do Plano':descricao, '03- Inicio Venda':inven}), 201
+    codigo2, descricaoAnt, iniVendaAnt, finalVendaAnt, inicioFatAnt, finalFatAnt= Plano.ConsultarPlano(codigoPlano)
+    if codigo2 != 0:
+        return jsonify({'message': f'Plano {codigoPlano}-{descricaoAnt} ja existe', 'status':True,'01- Codigo Plano':codigoPlano
+                       , '02- Descricao do Plano':descricaoAnt, '03- Inicio Venda':iniVendaAnt}), 201
     else:
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Plano {codigo}-{descricao} nao existe', 'status':False}), 201
+        return jsonify({'message': f'Plano {codigoPlano} nao existe', 'status':False}), 201
 
 
 @app.route('/pcp/api/Plano', methods=['PUT'])
