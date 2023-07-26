@@ -132,4 +132,17 @@ def ConsularColecaoPlano(plano, colecao):
     else:
         return False
 
+def DeletarPlanoColecao(codigo, codcolecao):
+    conn = ConexaoPostgreMPL.conexao()
+
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM pcp."Plano" WHERE plano = %s and colecao = %s', (codigo,codcolecao))
+    conn.commit()
+    deleted_rows = cursor.rowcount
+
+    if deleted_rows == 0:
+        return pd.DataFrame([{'Mensagem': f'colecao {codcolecao} não encontrada no plano {codigo}', 'Status': False}])
+    else:
+        return pd.DataFrame([{'Mensagem': f'colecao {codcolecao} excluído com sucesso do plano {codigo}!', 'Status': True}])
+
 
