@@ -198,6 +198,21 @@ def get_Plano():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+@app.route('/pcp/api/StatusPlano/<string:codigoPlano>', methods=['GET'])
+@token_required
+def Status_Plano(codigoPlano):
+    # Obtém os dados do corpo da requisição (JSON)
+    data = request.get_json()
+    codigoPlano = str(codigoPlano)
+    # inserir o novo usuário no banco de dados
+    codigo, descricao, inven = Plano.ConsultarPlano(codigoPlano)
+    if codigo != 0:
+        return jsonify({'message': f'Plano {codigo}-{descricao} ja existe', 'status':True,'01- Codigo Plano':codigoPlano
+                       , '02- Descricao do Plano':descricao, '03- Inicio Venda':inven}), 201
+    else:
+        # Retorne uma resposta indicando o sucesso da operação
+        return jsonify({'message': f'Plano {codigo}-{descricao} nao existe', 'status':False}), 201
+
 
 @app.route('/pcp/api/Plano', methods=['PUT'])
 @token_required
