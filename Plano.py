@@ -136,7 +136,7 @@ def DeletarPlanoColecao(codigo, codcolecao):
     conn = ConexaoPostgreMPL.conexao()
 
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM pcp."Plano" WHERE plano = %s and colecao = %s', (codigo,codcolecao))
+    cursor.execute('DELETE FROM pcp."colecoesPlano" WHERE plano = %s and colecao = %s', (codigo,codcolecao))
     conn.commit()
     deleted_rows = cursor.rowcount
 
