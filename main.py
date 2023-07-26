@@ -263,6 +263,26 @@ def get_Colecoes():
         end_data.append(end_dict)
 
     return jsonify(end_data)
+@app.route('/pcp/api/PesquisaTipoNotas', methods=['GET'])
+@token_required
+def get_Colecoes():
+    # Obtém o código do usuário e a senha dos parâmetros da URL
+    itensPag = request.args.get('itensPag',100)
+    pagina = request.args.get('pagina',1)
+
+    Endereco_det = ObterInfCSW.GetTipoNotas(pagina, itensPag)
+
+    Endereco_det = pd.DataFrame(Endereco_det)
+
+    # Obtém os nomes das colunas
+    column_names = Endereco_det.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    end_data = []
+    for _, row in Endereco_det.iterrows():
+        end_dict = {column_name: row[column_name] for column_name in column_names}
+        end_data.append(end_dict)
+
+    return jsonify(end_data)
 
 
 if __name__ == '__main__':
