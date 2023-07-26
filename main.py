@@ -248,8 +248,8 @@ def update_Plano(codigo):
 def get_Colecoes():
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
-    pagina = data.get('pagina')
-    itensPag = data.get('itensPag')
+    pagina = data.get('pagina',1)
+    itensPag = data.get('itensPag',100)
 
     Endereco_det = ObterInfCSW.GetColecoes(pagina, itensPag)
 
