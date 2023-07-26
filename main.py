@@ -246,10 +246,9 @@ def update_Plano(codigo):
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
 @token_required
 def get_Colecoes():
-    # Obtém os dados do corpo da requisição (JSON)
-    data = request.get_json()
-    pagina = data.get('pagina',1)
-    itensPag = data.get('itensPag',100)
+    # Obtém o código do usuário e a senha dos parâmetros da URL
+    itensPag = request.args.get('itensPag',100)
+    pagina = request.args.get('pagina',1)
 
     Endereco_det = ObterInfCSW.GetColecoes(pagina, itensPag)
 
