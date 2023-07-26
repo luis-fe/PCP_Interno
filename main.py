@@ -245,7 +245,7 @@ def update_Plano(codigo):
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
 @token_required
-def get_Estrutura():
+def get_Colecoes():
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     pagina = data.get('pagina')
