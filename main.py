@@ -217,7 +217,6 @@ def get_ColecoesPlano(codigoplano):
 @token_required
 def Status_Plano(codigoPlano):
     # Obtém os dados do corpo da requisição (JSON)
-    data = request.get_json()
     codigoPlano = str(codigoPlano)
     # inserir o novo usuário no banco de dados
     codigo2, descricaoAnt, iniVendaAnt, finalVendaAnt, inicioFatAnt, finalFatAnt= Plano.ConsultarPlano(codigoPlano)
