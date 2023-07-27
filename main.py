@@ -286,7 +286,7 @@ def update_Plano(codigo):
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     codigo2 = Plano.ConsultarPlano(codigo)
     if codigo2 == 0:
-        return jsonify({'message': f'Plano {codigo} usuario nao existe! ', 'Status': False})
+        return jsonify({'message': f'Plano {codigo}  nao existe! ', 'Status': False})
     else:
         Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
         return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})

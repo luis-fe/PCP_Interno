@@ -63,7 +63,7 @@ def EditarPlano(codigo, descricaoNova='0',iniVendaNova = '0', finalVendaNova = '
         conn = ConexaoPostgreMPL.conexao()
         update = 'update pcp."Plano"' \
                  ' set "descricao do Plano" = %s , "inicioVenda" = %s , "FimVenda"= %s, "inicoFat" = %s , "finalFat" = %s ' \
-                 'where codigo = %s'
+                 'where codigo = %s '
         cursor = conn.cursor()
         cursor.execute(update,(descricaoNova,iniVendaNova,finalVendaNova,inicoFatNovo, finalFatNovo,codigo))
         conn.commit()
