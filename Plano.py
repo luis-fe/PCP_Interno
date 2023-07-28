@@ -115,12 +115,12 @@ def ObeterNotasPlano(plano):
     planos.fillna('-', inplace=True)
 
     return planos
-def ObeterColecoesPlano(plano):
+def ObeterLotesPlano(plano):
     conn = ConexaoPostgreMPL.conexao()
-    planos = pd.read_sql('SELECT plano, colecao, nomecolecao FROM pcp."colecoesPlano" '
+    planos = pd.read_sql('select plano, nomelote, lote from pcp."LoteporPlano" '
                          ' where plano = %s',conn,params=(plano,))
     planos.rename(
-        columns={'plano': '01- Codigo Plano', 'colecao': '02- colecao', 'nomecolecao': '03- nomecolecao'},
+        columns={'plano': '01- Codigo Plano', 'lote': '02- lote', 'nomelote': '03- nomelote'},
         inplace=True)
 
     planos.fillna('-', inplace=True)
