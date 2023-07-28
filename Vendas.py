@@ -28,8 +28,8 @@ def VendasporSku(plano , aprovado= True):
     Pedido = pd.read_sql(
         "SELECT top 100 codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
         " FROM Ped.Pedido "
-        " where codEmpresa = 1 and  dataEmissao >= %s   "
-        " order by codPedido desc ",conn, params=(iniVenda,))
+        " where codEmpresa = 1 and  dataEmissao >= '"+iniVenda +"'"
+        " order by codPedido desc ",conn)
 
 
     return Pedido
