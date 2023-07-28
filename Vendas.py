@@ -33,7 +33,10 @@ def VendasporSku(plano , aprovado= True):
 
     Pedido.fillna('-', inplace=True)
 
-    Pedido = PedidosBloqueado(Pedido)
+    if aprovado == True:
+        Pedido = PedidosBloqueado(Pedido)
+    else:
+        Pedido = Pedido
 
     return Pedido
 
@@ -58,3 +61,16 @@ def PedidosBloqueado(df_Pedidos):
 
     conn.close()
     return  df_Pedidos
+
+
+def ExplosaoPedidoSku():
+    conn = ConexaoCSW.Conexao()
+    # 8 - Consultando o banco de dados do ERP no nivel de Pedios SKU
+    df_ItensPedidos = pd.read_sql(
+        "select top 350000 item.codPedido, item.CodItem as seqCodItem, item.codProduto, item.precoUnitario, item.tipoDesconto, item.descontoItem, case when tipoDesconto = 1 then ( (item.qtdePedida * item.precoUnitario) - item.descontoItem)/item.qtdePedida when item.tipoDesconto = 0 then (item.precoUnitario * (1-(item.descontoItem/100))) else item.precoUnitario end  PrecoLiquido from ped.PedidoItem as item WHERE item.codEmpresa = 1 order by item.codPedido desc",
+        conn)
+    df_SkuPedidos = pd.read_sql(
+        "select top 1000000 now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  where codEmpresa = 1 and (qtdePedida-qtdeCancelada-qtdeFaturada) > 0 order by codPedido desc",
+        conn)
+    conn.close()
+    return df_SkuPedidos
