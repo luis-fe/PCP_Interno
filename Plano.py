@@ -104,6 +104,28 @@ def ObeterColecoesPlano(plano):
     planos.fillna('-', inplace=True)
 
     return planos
+def ObeterNotasPlano(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    planos = pd.read_sql('select plano, "tipo nota", "nome" from pcp."tipoNotaporPlano" '
+                         ' where plano = %s',conn,params=(plano,))
+    planos.rename(
+        columns={'plano': '01- Codigo Plano', 'tipo nota': '02- tipo nota', 'nome': '03- nomeTipoNota'},
+        inplace=True)
+
+    planos.fillna('-', inplace=True)
+
+    return planos
+def ObeterColecoesPlano(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    planos = pd.read_sql('SELECT plano, colecao, nomecolecao FROM pcp."colecoesPlano" '
+                         ' where plano = %s',conn,params=(plano,))
+    planos.rename(
+        columns={'plano': '01- Codigo Plano', 'colecao': '02- colecao', 'nomecolecao': '03- nomecolecao'},
+        inplace=True)
+
+    planos.fillna('-', inplace=True)
+
+    return planos
 
 def InserirColecaoNoPlano(plano, colecao, nomecolecao):
     conn = ConexaoPostgreMPL.conexao()

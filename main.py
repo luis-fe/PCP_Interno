@@ -213,6 +213,23 @@ def get_ColecoesPlano(codigoplano):
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+@app.route('/pcp/api/NotasPlano/<string:codigoplano>', methods=['GET'])
+@token_required
+def get_NotasPlano(codigoplano):
+    plano = Plano.ObeterNotasPlano(codigoplano)
+    # Obtém os nomes das colunas
+    # Obtém os nomes das colunas
+    column_names = plano.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in plano.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
+
 @app.route('/pcp/api/StatusPlano/<string:codigoPlano>', methods=['GET'])
 @token_required
 def Status_Plano(codigoPlano):
