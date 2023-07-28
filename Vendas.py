@@ -17,10 +17,10 @@ def VendasporSku(plano , aprovado= True):
     conn1.close()
 
     iniVenda = vendas['inicioVenda'][0]
-    iniVenda = iniVenda.strptime(iniVenda, "%d/%m/%Y").strftime("%Y-%m-%d")
+    iniVenda = iniVenda[6:] + "-" + iniVenda[3:5] + "-" + iniVenda[:2]
 
     finalVenda = vendas['FimVenda'][0]
-    finalVenda = iniVenda.strptime(finalVenda, "%d/%m/%Y").strftime("%Y-%m-%d")
+    finalVenda = finalVenda[6:] + "-" + finalVenda[3:5] + "-" + finalVenda[:2]
 
 
     conn = ConexaoCSW.Conexao()
