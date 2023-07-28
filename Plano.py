@@ -214,7 +214,7 @@ def DeletarPlanoNota(codigo, tipoNota):
     for i in range(len(tipoNota)):
 
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM pcp."LoteporPlano" WHERE plano = %s and "tipo nota" = %s', (codigo,tipoNota[i]))
+        cursor.execute('DELETE FROM pcp."tipoNotaporPlano" WHERE plano = %s and "tipo nota" = %s', (codigo,tipoNota[i]))
         conn.commit()
         c = 1
 
