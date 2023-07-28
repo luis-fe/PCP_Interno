@@ -366,11 +366,11 @@ def criar_PlanoColecao(codigoplano):
     # inserir o novo usuário no banco de dados
     c = Plano.InserirColecaoNoPlano(codigoplano,codcolecao,nomecolecao)
     if c == 0:
-        return jsonify({'message': f'Plano {codigoplano} ou {codcolecao} ja existem', 'status':False}), 201
+        return jsonify({'message': f'Plano {codigoplano} ou {codcolecao} ja existem', 'status':False})
     else:
 
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Colecao {codcolecao} incluida no plano {codigoplano} com sucesso', 'status':True}), 201
+        return jsonify({'message': f'Colecao {codcolecao} incluida no plano {codigoplano} com sucesso', 'status':True})
 
 @app.route('/pcp/api/ColecaoPlano/<string:codigoPlano>/<string:codigocolecao>', methods=['DELETE'])
 @token_required
