@@ -8,6 +8,7 @@ import Estrutura
 import ObterInfCSW
 import Plano
 import Usuarios
+import Vendas
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8000))
@@ -198,6 +199,7 @@ def get_Plano():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
 @app.route('/pcp/api/ColecoesPlano/<string:codigoplano>', methods=['GET'])
 @token_required
 def get_ColecoesPlano(codigoplano):
@@ -510,6 +512,23 @@ def delet_Lote(codigoPlano):
             end_dict[column_name] = row[column_name]
         end_data.append(end_dict)
     return jsonify(end_data)
+
+@app.route('/pcp/api/Vendas/<string:codigoPlano>', methods=['GET'])
+@token_required
+def get_VendasPlano(codigoPlano):
+    plano = Vendas.VendasporSku(codigoPlano)
+    # Obtém os nomes das colunas
+    # Obtém os nomes das colunas
+    column_names = plano.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in plano.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)

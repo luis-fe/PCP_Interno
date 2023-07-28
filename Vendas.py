@@ -5,16 +5,28 @@ import pandas as pd
 
 def TransformarPlanoTipoNota(plano):
     conn = ConexaoPostgreMPL.conexao()
-    colecao = pd.read_sql('select colecao from pcp."colecoesPlano" where plano = %s', conn,params=(plano,))
-    colecao = ', '.join(colecao['colecao'])
+    tiponota = pd.read_sql('SELECT "tipo nota" from pcp."tipoNotaporPlano" where plano = %s', conn,params=(plano,))
+    tiponota = ', '.join(tiponota['tipo nota'])
     conn.close()
-    return colecao
+    return tiponota
 
-def Projetado(plano):
+def VendasporSku(plano , aprovado= True):
+    tiponota = TransformarPlanoTipoNota(plano)
+    conn1 = ConexaoPostgreMPL.conexao()
+    vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s',conn1,params=(plano,))
+    conn1.close()
+
+    iniVenda = vendas['inicioVenda'][0]
+    finalVenda = vendas['FimVenda'][0]
+
     conn = ConexaoCSW.Conexao()
-    projecao = pd.read_sql('select codEngenharia , (select tm.descricao from tcp.Tamanhos tm WHERE tm.codEmpresa = l.Empresa  and tm.sequencia = l.codSeqTamanho) as tamanho,'
-                           '  (select s.corbase from tcp.SortimentosProduto s WHERE s.codEmpresa = l.Empresa and s.codProduto = l.codEngenharia  and s.codSortimento = l.codSortimento) as corProduto,'
-                           ' l.qtdePecasImplementadas as projetado from tcl.LoteSeqTamanho l '
-                           ' WHERE Empresa = 1 and l.codLote = %s ',conn,params=(lote,))
-    return projecao
+    # 1- Consulta de Pedidos
+    Pedido = pd.read_sql(
+        "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas FROM Ped.Pedido "
+        " where codEmpresa = 1 and  dataEmissao >= %s and dataEmissao <= %s and codTipoNota in (%s)  "
+        " order by codPedido desc ",
+        conn, params=(iniVenda,finalVenda,tiponota,))
+
+
+    return Pedido
 
