@@ -371,6 +371,24 @@ def criar_PlanoColecao(codigoplano):
 
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Colecao {codcolecao} incluida no plano {codigoplano} com sucesso', 'status':True})
+@app.route('/pcp/api/TipoNotaPlano/<string:codigoplano>', methods=['PUT'])
+@token_required
+def criar_PlanoTipoNota(codigoplano):
+    # Obtenha os dados do corpo da requisição
+    novo_usuario = request.get_json()
+    # Extraia os valores dos campos do novo usuário
+
+    tipoNota = novo_usuario.get('tipoNota')
+    nome = novo_usuario.get('nome')
+
+    # inserir o novo usuário no banco de dados
+    c = Plano.InserirNotaNoPlano(codigoplano,tipoNota,nome)
+    if c == 0:
+        return jsonify({'message': f'Plano {codigoplano} ou {tipoNota} ja existem', 'status':False})
+    else:
+
+        # Retorne uma resposta indicando o sucesso da operação
+        return jsonify({'message': f'Tipo nota  {tipoNota} incluida no plano {codigoplano} com sucesso', 'status':True})
 
 @app.route('/pcp/api/ColecaoPlano/<string:codigoPlano>', methods=['DELETE'])
 @token_required

@@ -126,12 +126,52 @@ def InserirColecaoNoPlano(plano, colecao, nomecolecao):
             c = 0
     conn.close()
     return c
+def InserirNotaNoPlano(plano, nota, nome):
+    conn = ConexaoPostgreMPL.conexao()
+   # colecao = colecao.split(", ")
+   # nomecolecao = nomecolecao.split(", ")
+
+    c = 0
+    for i in range(len(nota)):
+        x = ConsularColecaoPlano(plano, nota[i])
+        y = ConsultarPlano(plano)
+        if x == True and y !=0 :
+            qurery = 'insert into pcp."tipoNotaporPlano" (plano, "tipo nota", nome) values (%s, %s , %s)'
+            cursor = conn.cursor()
+            cursor.execute(qurery, (plano, nota[i], nome[i]))
+            conn.commit()
+            cursor.close()
+            c = i
+
+        else:
+            c = 0
+    conn.close()
+    return c
+
 
 
 def ConsularColecaoPlano(plano, colecao):
     conn = ConexaoPostgreMPL.conexao()
     planos = pd.read_sql('SELECT plano, colecao, nomecolecao FROM pcp."colecoesPlano" '
                          ' where plano = %s and colecao = %s',conn,params=(plano,colecao,))
+
+    if  planos.empty:
+        return True
+    else:
+        return False
+def ConsularLote(plano, lote):
+    conn = ConexaoPostgreMPL.conexao()
+    planos = pd.read_sql('SELECT plano, lote, nomelote FROM pcp."LoteporPlano" '
+                         ' where plano = %s and colecao = %s',conn,params=(plano,lote,))
+
+    if  planos.empty:
+        return True
+    else:
+        return False
+def ConsularNota(plano, nota):
+    conn = ConexaoPostgreMPL.conexao()
+    planos = pd.read_sql('SELECT plano, "tipo nota", nome FROM pcp."tipoNotaporPlano" '
+                         ' where plano = %s and "tipo nota" = %s',conn,params=(plano,nota,))
 
     if  planos.empty:
         return True
@@ -148,11 +188,39 @@ def DeletarPlanoColecao(codigo, codcolecao):
         conn.commit()
         c = 1
 
-
-
     if c == 0:
         return pd.DataFrame([{'Mensagem': f'colecao {codcolecao} não encontrada no plano {codigo}', 'Status': False}])
     else:
         return pd.DataFrame([{'Mensagem': f'colecao {codcolecao} excluído com sucesso do plano {codigo}!', 'Status': True}])
+
+def DeletarPlanoLote(codigo, codLote):
+    conn = ConexaoPostgreMPL.conexao()
+    c = 0
+    for i in range(len(codLote)):
+
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM pcp."LoteporPlano" WHERE plano = %s and lote = %s', (codigo,codLote[i]))
+        conn.commit()
+        c = 1
+
+    if c == 0:
+        return pd.DataFrame([{'Mensagem': f'lote {codLote} não encontrada no plano {codigo}', 'Status': False}])
+    else:
+        return pd.DataFrame([{'Mensagem': f'lote {codLote} excluído com sucesso do plano {codigo}!', 'Status': True}])
+
+def DeletarPlanoNota(codigo, tipoNota):
+    conn = ConexaoPostgreMPL.conexao()
+    c = 0
+    for i in range(len(tipoNota)):
+
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM pcp."LoteporPlano" WHERE plano = %s and "tipo nota" = %s', (codigo,tipoNota[i]))
+        conn.commit()
+        c = 1
+
+    if c == 0:
+        return pd.DataFrame([{'Mensagem': f'tipo nota {tipoNota} não encontrada no plano {codigo}', 'Status': False}])
+    else:
+        return pd.DataFrame([{'Mensagem': f'tipo nota {tipoNota} excluído com sucesso do plano {codigo}!', 'Status': True}])
 
 
