@@ -33,4 +33,28 @@ def VendasporSku(plano , aprovado= True):
 
     Pedido.fillna('-', inplace=True)
 
+    Pedido = PedidosBloqueado(Pedido)
+
     return Pedido
+
+
+def PedidosBloqueado(df_Pedidos):
+    conn = ConexaoCSW.Conexao()
+
+    # 4 - Conulta de Bloqueio Comerial do Pedidos
+    df_BloqueioComercial = pd.read_sql(
+        "SELECT codPedido, situacaoBloq from ped.PedidoBloqComl WHERE codEmpresa = 1 ",
+        conn)
+    # 4.1 Unindo o Pedido com a situação do Bloqueio Comercial, preservando a Consulta Pedidos
+    df_Pedidos = pd.merge(df_Pedidos, df_BloqueioComercial, on='codPedido', how='left')
+    # 4.2 - Conulta de Bloqueio Credito do Pedidos
+    df_BloqueioCredito = pd.read_sql(
+        "SELECT situacao, codPedido, Empresa, bloqMotEspPed FROM Cre.PedidoCreditoBloq WHERE Empresa  = 1 ",
+        conn)
+    # 4.2.1 Unindo o Pedido com a situação do Bloqueio Credito, preservando a Consulta Pedidos
+    df_Pedidos = pd.merge(df_Pedidos, df_BloqueioCredito, on='codPedido', how='left')
+    # 4.3 Filtro para puxar somente os pedidos APROVADOS
+    df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] != "1") & (df_Pedidos['situacaoBloq'] != "1")]
+
+    conn.close()
+    return  df_Pedidos
