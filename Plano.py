@@ -120,11 +120,11 @@ def InserirColecaoNoPlano(plano, colecao, nomecolecao):
             cursor.execute(qurery, (plano, colecao[i], nomecolecao[i]))
             conn.commit()
             cursor.close()
-            conn.close()
             c = i
 
         else:
             c = 0
+    conn.close()
     return c
 
 
