@@ -415,7 +415,7 @@ def delet_PlanoColecao(codigoPlano):
 
 @app.route('/pcp/api/TipoNotaPlano/<string:codigoPlano>', methods=['DELETE'])
 @token_required
-def delet_PlanoColecao(codigoPlano):
+def delet_PlanoNota(codigoPlano):
     novo_usuario = request.get_json()
 
     tipoNota = novo_usuario.get('tipoNota')
