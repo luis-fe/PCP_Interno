@@ -22,16 +22,16 @@ def VendasporSku(plano , aprovado= True):
     finalVenda = vendas['FimVenda'][0]
     finalVenda = finalVenda[6:] + "-" + finalVenda[3:5] + "-" + finalVenda[:2]
 
-
+    print(iniVenda)
     conn = ConexaoCSW.Conexao()
     # 1- Consulta de Pedidos
     Pedido = pd.read_sql(
-        "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
+        "SELECT top 100 codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
         " FROM Ped.Pedido "
-        " where codEmpresa = 1 and  dataEmissao >= %s and dataEmissao <= %s  "
+        " where codEmpresa = 1   "
         " order by codPedido desc ",conn, params=(iniVenda,finalVenda,))
 
 
     return Pedido
 
-#--and codTipoNota in ( %s )
+#--and codTipoNota in ( %s ) and  dataEmissao >= %s and dataEmissao <= %s
