@@ -106,7 +106,7 @@ def ObeterColecoesPlano(plano):
     return planos
 def ObeterNotasPlano(plano):
     conn = ConexaoPostgreMPL.conexao()
-    planos = pd.read_sql('select plano, "tipo nota", "nome" from pcp."tipoNotaporPlano" '
+    planos = pd.read_sql('select distinct plano, "tipo nota", "nome" from pcp."tipoNotaporPlano" '
                          ' where plano = %s',conn,params=(plano,))
     planos.rename(
         columns={'plano': '01- Codigo Plano', 'tipo nota': '02- tipo nota', 'nome': '03- nomeTipoNota'},
