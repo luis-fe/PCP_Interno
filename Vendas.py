@@ -29,7 +29,7 @@ def VendasporSku(plano , aprovado= True):
         "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas FROM Ped.Pedido "
         " where codEmpresa = 1 and  dataEmissao >= %s and dataEmissao <= %s and codTipoNota in ('1')  "
         " order by codPedido desc ",
-        conn, params=(iniVenda,finalVenda,tiponota,))
+        conn, params=(iniVenda,finalVenda,))
 
 
     return Pedido
