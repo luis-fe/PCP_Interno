@@ -232,7 +232,7 @@ def get_NotasPlano(codigoplano):
 
 @app.route('/pcp/api/LotesPlano/<string:codigoplano>', methods=['GET'])
 @token_required
-def get_NotasPlano(codigoplano):
+def get_LotePlano(codigoplano):
     plano = Plano.ObeterLotesPlano(codigoplano)
     # Obtém os nomes das colunas
     # Obtém os nomes das colunas
