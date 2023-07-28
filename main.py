@@ -390,6 +390,25 @@ def criar_PlanoTipoNota(codigoplano):
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Tipo nota  {tipoNota} incluida no plano {codigoplano} com sucesso', 'status':True})
 
+@app.route('/pcp/api/LotePlano/<string:codigoplano>', methods=['PUT'])
+@token_required
+def criar_PlanoLote(codigoplano):
+    # Obtenha os dados do corpo da requisição
+    novo_usuario = request.get_json()
+    # Extraia os valores dos campos do novo usuário
+
+    lote = novo_usuario.get('lote')
+    nome = novo_usuario.get('nome')
+
+    # inserir o novo usuário no banco de dados
+    c = Plano.InserirLoteNoPlano(codigoplano,lote,nome)
+    if c == 0:
+        return jsonify({'message': f'Plano {codigoplano} ou {lote} ja existem', 'status':False})
+    else:
+
+        # Retorne uma resposta indicando o sucesso da operação
+        return jsonify({'message': f'Lote  {lote} incluida no plano {codigoplano} com sucesso', 'status':True})
+
 @app.route('/pcp/api/ColecaoPlano/<string:codigoPlano>', methods=['DELETE'])
 @token_required
 def delet_PlanoColecao(codigoPlano):

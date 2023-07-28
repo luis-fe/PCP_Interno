@@ -148,6 +148,28 @@ def InserirNotaNoPlano(plano, nota, nome):
     conn.close()
     return c
 
+def InserirLoteNoPlano(plano, lote, nome):
+    conn = ConexaoPostgreMPL.conexao()
+   # colecao = colecao.split(", ")
+   # nomecolecao = nomecolecao.split(", ")
+
+    c = 0
+    for i in range(len(lote)):
+        x = ConsularColecaoPlano(plano, lote[i])
+        y = ConsultarPlano(plano)
+        if x == True and y !=0 :
+            qurery = 'insert into pcp."LoteporPlano" (plano, "lote", nomelote) values (%s, %s , %s)'
+            cursor = conn.cursor()
+            cursor.execute(qurery, (plano, lote[i], nome[i]))
+            conn.commit()
+            cursor.close()
+            c = i
+
+        else:
+            c = 0
+    conn.close()
+    return c
+
 
 
 def ConsularColecaoPlano(plano, colecao):
