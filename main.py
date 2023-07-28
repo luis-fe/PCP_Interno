@@ -372,9 +372,13 @@ def criar_PlanoColecao(codigoplano):
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Colecao {codcolecao} incluida no plano {codigoplano} com sucesso', 'status':True})
 
-@app.route('/pcp/api/ColecaoPlano/<string:codigoPlano>/<string:codigocolecao>', methods=['DELETE'])
+@app.route('/pcp/api/ColecaoPlano/<string:codigoPlano>', methods=['DELETE'])
 @token_required
-def delet_PlanoColecao(codigoPlano, codigocolecao):
+def delet_PlanoColecao(codigoPlano):
+    novo_usuario = request.get_json()
+
+    codigocolecao = novo_usuario.get('codigocolecao')
+
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     codigoPlano = str(codigoPlano)
