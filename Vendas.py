@@ -26,11 +26,11 @@ def VendasporSku(plano , aprovado= True):
     conn = ConexaoCSW.Conexao()
     # 1- Consulta de Pedidos
     Pedido = pd.read_sql(
-        "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas FROM Ped.Pedido "
-        " where codEmpresa = 1 and  dataEmissao >= %s and dataEmissao <= %s and codTipoNota in ('1')  "
-        " order by codPedido desc ",
-        conn, params=(iniVenda,finalVenda,))
+        "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
+        " FROM Ped.Pedido "
+        " where codEmpresa = 1  and codTipoNota in ('10')  "
+        " order by codPedido desc ",conn, params=(iniVenda,finalVenda,))
 
 
     return Pedido
-
+# and  dataEmissao >= %s and dataEmissao <= %s
