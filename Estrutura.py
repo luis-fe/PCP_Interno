@@ -2,10 +2,20 @@ import math
 
 import pandas as pd
 import ConexaoCSW
+import ConexaoPostgreMPL
 # Constantes
 SEM_ENGENHARIA = '0'
-def Estrutura(colecoes, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0'):
 
+def TransformarPlanoColecao(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    colecao = pd.read_sql('select colecao from pcp."colecoesPlano" where plano = %s', conn,params=(plano,))
+    colecao = ', '.join(colecao['colecao'])
+    conn.close()
+    return colecao
+
+
+def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0'):
+    colecoes = TransformarPlanoColecao(plano)
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
     if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == '0':
         conn = ConexaoCSW.Conexao()
