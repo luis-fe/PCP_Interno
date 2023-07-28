@@ -17,7 +17,11 @@ def VendasporSku(plano , aprovado= True):
     conn1.close()
 
     iniVenda = vendas['inicioVenda'][0]
+    iniVenda = iniVenda.strptime(iniVenda, "%d/%m/%Y").strftime("%Y-%m-%d")
+
     finalVenda = vendas['FimVenda'][0]
+    finalVenda = iniVenda.strptime(finalVenda, "%d/%m/%Y").strftime("%Y-%m-%d")
+
 
     conn = ConexaoCSW.Conexao()
     # 1- Consulta de Pedidos
