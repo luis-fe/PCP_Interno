@@ -31,7 +31,6 @@ def VendasporSku(plano , aprovado= True):
         " where codEmpresa = 1 and  dataEmissao >= '"+iniVenda +"' and dataEmissao <= '"+finalVenda+"' and codTipoNota in ("+tiponota+")"
         " order by codPedido desc ",conn)
 
+    Pedido.fillna('-', inplace=True)
 
     return Pedido
-
-#--and codTipoNota in ( %s ) and  dataEmissao >= %s and dataEmissao <= %s, params=(iniVenda,finalVenda,)
