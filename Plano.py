@@ -107,19 +107,25 @@ def ObeterColecoesPlano(plano):
 
 def InserirColecaoNoPlano(plano, colecao, nomecolecao):
     conn = ConexaoPostgreMPL.conexao()
-    x = ConsularColecaoPlano(plano, colecao)
-    y = ConsultarPlano(plano)
-    if x == True and y !=0 :
-        qurery = 'insert into pcp."colecoesPlano" (plano, colecao, nomecolecao) values (%s, %s , %s)'
-        cursor = conn.cursor()
-        cursor.execute(qurery, (plano, colecao, nomecolecao))
-        conn.commit()
-        cursor.close()
-        conn.close()
+    colecao = colecao.split(", ")
+    nomecolecao = nomecolecao.split(", ")
 
-        return True
-    else:
-        return False
+    c = 0
+    for i in range(len(colecao)):
+        x = ConsularColecaoPlano(plano, colecao[i])
+        y = ConsultarPlano(plano)
+        if x == True and y !=0 :
+            qurery = 'insert into pcp."colecoesPlano" (plano, colecao, nomecolecao) values (%s, %s , %s)'
+            cursor = conn.cursor()
+            cursor.execute(qurery, (plano, colecao[i], nomecolecao[i]))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            c = i
+
+        else:
+            c = 0
+    return c
 
 
 def ConsularColecaoPlano(plano, colecao):

@@ -365,7 +365,7 @@ def criar_PlanoColecao(codigoplano):
 
     # inserir o novo usuário no banco de dados
     c = Plano.InserirColecaoNoPlano(codigoplano,codcolecao,nomecolecao)
-    if c == False:
+    if c == 0:
         return jsonify({'message': f'Plano {codigoplano} ou {codcolecao} ja existem', 'status':False}), 201
     else:
 
