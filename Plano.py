@@ -107,8 +107,8 @@ def ObeterColecoesPlano(plano):
 
 def InserirColecaoNoPlano(plano, colecao, nomecolecao):
     conn = ConexaoPostgreMPL.conexao()
-    colecao = colecao.split(", ")
-    nomecolecao = nomecolecao.split(", ")
+   # colecao = colecao.split(", ")
+   # nomecolecao = nomecolecao.split(", ")
 
     c = 0
     for i in range(len(colecao)):
