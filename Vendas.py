@@ -12,6 +12,7 @@ def TransformarPlanoTipoNota(plano):
 
 def VendasporSku(plano , aprovado= True):
     tiponota = TransformarPlanoTipoNota(plano)
+    tiponota = '10'
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))
     conn1.close()
@@ -26,10 +27,10 @@ def VendasporSku(plano , aprovado= True):
     conn = ConexaoCSW.Conexao()
     # 1- Consulta de Pedidos
     Pedido = pd.read_sql(
-        "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
+        "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
         " FROM Ped.Pedido "
-        " where codEmpresa = 1  and codTipoNota in ('10')  "
-        " order by codPedido desc ",conn, params=(iniVenda,finalVenda,))
+        " where codEmpresa = 1  and codTipoNota in ( %s )  "
+        " order by codPedido desc ",conn, params=(tiponota,))
 
 
     return Pedido
