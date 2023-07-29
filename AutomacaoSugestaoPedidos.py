@@ -19,6 +19,15 @@ def ObtendoPedidos():
                             'join ped.Pedido  p on  p.codEmpresa = s.codEmpresa and p.codPedido = s.codPedido  '
                             'where p.codEmpresa = 1 and s.situacaoSugestao = 0',conn)
 
+    Marca =  pd.read_sql("SELECT t.codPedido as codPedido, case when substring(i.codItemPai,1,3) = '102' then 'M.POLLO'  "
+                         " WHEN substring(i.codItemPai,1,3) = '104' then 'PACO'"
+                         " WHEN substring(i.codItemPai,1,3) = '204' then 'PACO'"
+                         " when substring(i.codItemPai,1,3) = '202' then 'M.POLLO' "
+                         " ELSE '-' END Marca from ("
+                         " select codPedido , max(produto) as produto from ped.SugestaoPedItem p"
+                         " WHERE p.codEmpresa = 1 group by codPedido )t join cgi.Item2  i on i.codItem  = t.produto where i.Empresa = 1",conn)
+
+    dataFrame = pd.merge(dataFrame, Marca, on='codPedido')
     EmbarqueUninco = ObtendoEmbarqueUnico()
     EmbarqueUninco = pd.merge(dataFrame,EmbarqueUninco,on='codPedido')
 
@@ -28,6 +37,9 @@ def ObtendoPedidos():
 
     df_union = pd.concat([dataFrame, EmbarqueUninco], ignore_index=True)
     df_union.fillna('-', inplace=True)
+    df_union.rename(
+        columns={'codPedido': 'pedido'},
+        inplace=True)
 
     return df_union
 def CondicaoPag():
@@ -53,14 +65,19 @@ def ObtendoEmbarqueUnico():
 
 
 def AplicandoAtualizacao():
+    dataframe = ObtendoPedidos()
     url = "https://192.168.0.25/api/customci/v10/atualizarSugestaoFaturamento"
     token = "eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJsdWlzLmZlcm5hbmRvIiwiY3N3VG9rZW4iOiJsU3NVYXNCTyIsImRiTmFtZVNwYWNlIjoiY29uc2lzdGVtIiwiaXNzIjoiYXBpIiwiYXVkIjoi" \
             "YXBpIiwiZXhwIjoxODQ3ODg3Nzg3fQ.xRw6vP87ROIFCs5d-6T5T6LNpUf-bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7AQ"
 
 
     # Defina os parâmetros em um dicionário
+    dataframe = dataframe.iloc[0:5]
+
+    pedido = ','.join(dataframe['pedido'].astype(str))
+
     params = {
-        'pedido': '228268,304684'
+        'pedido': f'{pedido}'
     }
 
     # Defina os headers
@@ -80,9 +97,27 @@ def AplicandoAtualizacao():
 
         # Criar o DataFrame
         df = pd.json_normalize(dados_dict)
-        return df
+        # Explodir os valores das listas em colunas separadas
+        df_exploded = pd.DataFrame({
+            'pedidoCompleto': df['pedidoCompleto'].explode().reset_index(drop=True),
+            'pedidoIncompleto': df['pedidoIncompleto'].explode().reset_index(drop=True)
+        })
+
+        # Preencher células vazias com '-' (ou outro valor desejado)
+        df_exploded = df_exploded.fillna('-')
+        # Derreter o DataFrame para criar a coluna "pedido" e "situacao"
+        df_melted = pd.melt(df_exploded, value_vars=['pedidoCompleto', 'pedidoIncompleto'], var_name='situacao',
+                            value_name='pedido')
+
+        # Mapear os valores de "situacao" para "completo" e "incompleto"
+        df_melted['situacao'] = df_melted['situacao'].map(
+            {'pedidoCompleto': 'completo', 'pedidoIncompleto': 'incompleto'})
+
+        # Remover linhas com valor "-"
+        df_melted = df_melted[df_melted['pedido'] != '-']
+
+        df_melted = pd.merge(df_melted,dataframe,on='pedido')
+
+        return df_melted
     else:
         return pd.DataFrame({'Erro na Requisicao':False})
-
-
-AplicandoAtualizacao()
