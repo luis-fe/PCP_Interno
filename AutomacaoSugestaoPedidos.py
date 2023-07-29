@@ -80,10 +80,9 @@ def AplicandoAtualizacao():
 
         # Criar o DataFrame
         df = pd.json_normalize(dados_dict)
-        print(df)
+        return df
     else:
-        print('Erro na requisição:', response.status_code)
-        print(response.text)  # Imprime a mensagem de erro da resposta, se houver
+        return pd.DataFrame({'Erro na Requisicao':False})
 
 
 AplicandoAtualizacao()
