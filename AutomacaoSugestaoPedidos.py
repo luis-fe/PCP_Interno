@@ -72,7 +72,6 @@ def AplicandoAtualizacao():
 
 
     # Defina os parâmetros em um dicionário
-    dataframe = dataframe.iloc[0:5]
 
     pedido = ','.join(dataframe['pedido'].astype(str))
 
