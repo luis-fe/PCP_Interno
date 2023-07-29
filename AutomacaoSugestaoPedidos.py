@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import ConexaoCSW
+import json
 
 
 def ObtendoPedidos():
@@ -74,10 +75,15 @@ def AplicandoAtualizacao():
 
     # Verifique o resultado da requisição
     if response.status_code == 200:  # Ou qualquer outro código de sucesso que a API retorne
-        print('Requisição bem-sucedida!')
-        print(response.json())  # Se a resposta for em formato JSON
+        # Converter JSON para um dicionário Python
+        dados_dict = response.json()
+
+        # Criar o DataFrame
+        df = pd.json_normalize(dados_dict)
+        print(df)
     else:
         print('Erro na requisição:', response.status_code)
         print(response.text)  # Imprime a mensagem de erro da resposta, se houver
 
 
+AplicandoAtualizacao()
