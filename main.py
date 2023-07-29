@@ -3,6 +3,8 @@ from flask_cors import CORS
 import pandas as pd
 import os
 from functools import wraps
+
+import AutomacaoSugestaoPedidos
 import ConexaoPostgreMPL
 import Estrutura
 import ObterInfCSW
@@ -528,6 +530,11 @@ def get_VendasPlano(codigoPlano):
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+@app.route('/pcp/api/AtualizarAutomacao', methods=['GET'])
+@token_required
+def get_AtualizarAutomacao():
+    AutomacaoSugestaoPedidos.AplicandoAtualizacao()
 
 
 if __name__ == '__main__':
