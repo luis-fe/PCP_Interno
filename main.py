@@ -532,7 +532,6 @@ def get_VendasPlano(codigoPlano):
     return jsonify(OP_data)
 
 @app.route('/pcp/api/AtualizarAutomacao', methods=['GET'])
-@token_required
 def get_AtualizarAutomacao():
     usuarios = AutomacaoSugestaoPedidos.AplicandoAtualizacao()
     # Obtém os nomes das colunas
