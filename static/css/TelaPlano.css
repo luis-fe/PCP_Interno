@@ -1,0 +1,891 @@
+:root {
+    --cor1: rgb(211, 211, 211);
+    --cor2: rgb(17, 45, 126);
+    --cor3: rgb(93, 140, 233);
+    --cor4: #fff
+}
+
+@media screen and (max-width: 870px) {
+
+    .modalPlanos-content{
+    min-width: 80%;
+    max-width: 80%;
+    min-height: 80%;
+    max-height: 80%;
+}
+
+    .CampoTabelas {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .CampoColecoes {
+        width: 80%;
+        min-height: 50vh;
+        max-height: 50vh;
+        margin-bottom: 10px;
+    }
+
+    .CampoLoteProducao {
+        width: 80%;
+        min-height: 50vh;
+        max-height: 50vh;
+        margin-bottom: 10px;
+    }
+
+    .CampoTipoNota {
+        width: 80%;
+        min-height: 50vh;
+        max-height: 50vh;
+        margin-bottom: 10px;
+    }
+}
+
+
+@media screen and (min-width: 871px) {
+
+    .modalPlanos-content{
+        min-width: 40%;
+        max-width: 40%;
+        min-height: 50%;
+        max-height: 50%;
+    }
+
+    .CampoColecoes {
+        width: 30%;
+        min-height: 50vh;
+        max-height: 50vh;
+    }
+
+    .CampoTipoNota {
+        width: 30%;
+        min-height: 50vh;
+        max-height: 50vh;
+    }
+
+    .CampoLoteProducao {
+        width: 30%;
+        min-height: 50vh;
+        max-height: 50vh;
+    }
+}
+.modalPlanos {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .modalPlanos-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #fff;
+    margin: 10% auto;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+
+    overflow-y: auto;
+
+  }
+  
+  .modalPlanos-content h3 {
+    padding: 20px;
+    background-color: var(--cor2);
+    text-align: center;
+    font-size: 20px;
+    font-family: Arial;
+    border: 5px;
+    margin: 0;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: var(--cor4);
+}
+  
+  
+  #botaoSelecionarPlano {
+    font-weight: bold;
+    background-color: var(--cor2);
+    color: white;
+    width: 100%;
+    margin-top: 20px;
+    border: 2px solid darkgray;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  #BotaoPesquisarPlano{
+    font-weight: bold;
+    background-color: var(--cor4);
+    color: black;
+    width: 100%;
+    margin-top: 20px;
+    border: 2px solid darkgray;
+    border-radius: 10px;
+    margin-top: 40px;
+    padding: 10px;
+  }
+  
+  .TesteTabela {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin-top: 20px;
+    width: 100%;
+    height: 75%;
+    overflow-y: auto;
+    border: 2px solid black;
+  }
+  
+  #TabelaPlanos {
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #TabelaPlanos thead {
+    position: sticky;
+    top: 0;
+    background-color: lightgray;
+    z-index: 1;
+    border: 2px solid darkgray;
+    height: 20px;
+    max-height: 20px;
+  }
+  
+  #TabelaPlanos td {
+    text-align: center;
+  }
+  
+
+/* Estilos específicos das outras partes do código */
+.CorpoGeral {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    background-color: var(--cor1);
+    width: 80%;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.CorpoCodigo {
+    display: flex;
+    /* Os elementos dentro desse wrapper ficarão lado a lado */
+    align-items: center;
+    /* Centraliza verticalmente os elementos dentro do wrapper */
+    margin-bottom: 10px;
+    /* Espaçamento entre os wrappers */
+}
+
+.CorpoCodigo label {
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 10px;
+    /* Espaçamento entre o label e o input */
+}
+
+.CorpoCodigo input {
+    border: 2px solid darkgray;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100px;
+}
+
+.CorpoCodigo button {
+    border: 0;
+    margin-left: -20px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.CorpoDescricao {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que os elementos fiquem em várias linhas */
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.CorpoDescricao label {
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 10px;
+    width: 100px;
+    /* Defina uma largura fixa para o label */
+}
+
+.CorpoDescricao input {
+    flex-grow: 1;
+    /* Permite que o input ocupe o espaço restante disponível */
+    border: 2px solid darkgray;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 350px;
+}
+
+.CorpoIntervaloVenda {
+    display: flex;
+    /* Os elementos dentro desse wrapper ficarão lado a lado */
+    align-items: center;
+    /* Centraliza verticalmente os elementos dentro do wrapper */
+    margin-bottom: 10px;
+    /* Espaçamento entre os wrappers */
+}
+
+.CorpoIntervaloVenda label {
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 10px;
+    /* Espaçamento entre o label e o input */
+}
+
+.CorpoIntervaloVenda input {
+    border: 2px solid darkgray;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#InputDataFim {
+    margin-left: 5px;
+}
+
+#LabelIntervaloVenda1 {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.CorpoIntervaloFaturamento {
+    display: flex;
+    /* Os elementos dentro desse wrapper ficarão lado a lado */
+    align-items: center;
+    /* Centraliza verticalmente os elementos dentro do wrapper */
+    margin-bottom: 10px;
+    /* Espaçamento entre os wrappers */
+}
+
+.CorpoIntervaloFaturamento label {
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 10px;
+    /* Espaçamento entre o label e o input */
+}
+
+.CorpoIntervaloFaturamento input {
+    border: 2px solid darkgray;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#InputDataFimFaturamento {
+    margin-left: 5px;
+}
+
+#LabelIntervaloVendaFaturamento1 {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.fechar1 {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.fechar1:hover,
+.fechar1:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.Linha {
+    min-height: 2px;
+    max-height: 2px;
+    width: 100%;
+    background-color: black;
+}
+
+.CampoTabelas {
+
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin: 10px auto;
+    width: 90%;
+    display: none;
+}
+
+
+/* Estilo para o container das coleções */
+.CampoColecoes {
+    margin-right: 2%;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.DivColecoes {
+
+    width: 100%;
+    flex: 1;
+    /* Define a flexibilidade da DivColecoes para que ela ocupe o espaço disponível */
+    overflow-y: auto;
+}
+
+/* Estilo para o título das coleções */
+#LabelColecoes {
+    background-color: lightgray;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+
+}
+
+/* Estilo para a tabela de coleções */
+#TabelaColecoes {
+
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+#TabelaColecoes thead {
+    background-color: var(--cor2);
+    padding: 8px;
+    color: var(--cor4);
+}
+
+
+#TabelaColecoes th {
+    padding: 8px;
+}
+
+/* Estilo para as células da tabela */
+#TabelaColecoes td {
+    border-bottom: 1px solid lightgray;
+    text-align: center;
+}
+
+.CampoTipoNota {
+    margin-right: 2%;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.DivNotas {
+
+    width: 100%;
+    flex: 1;
+    /* Define a flexibilidade da DivColecoes para que ela ocupe o espaço disponível */
+    overflow-y: auto;
+}
+
+#PesquisarColecoes {
+    margin-top: 20px;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border: 2px solid darkgray;
+    border-radius: 10px;
+}
+
+#PesquisarNota {
+    margin-top: 20px;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border: 2px solid darkgray;
+    border-radius: 10px;
+}
+
+#PesquisarLote {
+    margin-top: 20px;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border: 2px solid darkgray;
+    border-radius: 10px;
+}
+
+/* Estilo para o título das coleções */
+#LabelTipoDeNota {
+    background-color: lightgray;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+#LixeiraColecoes {
+    color: var(--cor2);
+    cursor: pointer;
+}
+
+#AdicionarColecao {
+    color: var(--cor2);
+    cursor: pointer;
+}
+
+#LixeiraNotas {
+    color: var(--cor2);
+    cursor: pointer;
+}
+
+#AdicionarNotas {
+    color: var(--cor2);
+    cursor: pointer;
+}
+
+#LixeiraLotes {
+    color: var(--cor2);
+    cursor: pointer;
+}
+
+#AdicionarLotes {
+    color: var(--cor2);
+    cursor: pointer;
+}
+
+
+/* Estilo para a tabela de coleções */
+#TabelaTipoNota {
+    margin-top: 0px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+#TabelaTipoNota thead {
+    background-color: var(--cor2);
+    padding: 8px;
+    color: var(--cor4);
+}
+
+
+#TabelaTipoNota th {
+    padding: 8px;
+}
+
+/* Estilo para as células da tabela */
+#TabelaTipoNota td {
+    border-bottom: 1px solid lightgray;
+    text-align: center;
+}
+
+
+.CampoLoteProducao {
+    margin-right: 2%;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.DivLotes {
+
+    width: 100%;
+    flex: 1;
+    /* Define a flexibilidade da DivColecoes para que ela ocupe o espaço disponível */
+    overflow-y: auto;
+}
+
+
+/* Estilo para o título das coleções */
+#LabelLote {
+    background-color: lightgray;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+/* Estilo para a tabela de coleções */
+#TabelaLote {
+    margin-top: 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+#TabelaLote thead {
+    background-color: var(--cor2);
+    padding: 8px;
+    color: var(--cor4);
+}
+
+
+#TabelaLote th {
+    padding: 8px;
+}
+
+/* Estilo para as células da tabela */
+#TabelaLote td {
+    border-bottom: 1px solid lightgray;
+    text-align: center;
+}
+
+
+.modalColecoesCsw {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos da modal */
+.modalColecoesCsw-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+    min-height: 50%;
+    max-height: 80%;
+    /* Altere o valor da altura máxima para 80% */
+    overflow-y: auto;
+    overflow-x: auto;
+
+}
+
+.modalColecoesCsw-content h3 {
+    padding: 20px;
+    background-color: var(--cor2);
+    text-align: center;
+    font-size: 20px;
+    font-family: Arial;
+    border: 5px;
+    margin: 0;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: var(--cor4);
+}
+
+.modalColecoesCsw-content .TabelaColecoes1 {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 2px solid black;
+}
+
+#TabelaColecoesCsw {
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+}
+
+#TabelaColecoesCsw thead {
+    position: sticky;
+    top: 0;
+    background-color: lightgray;
+    z-index: 1;
+    border: 2px solid darkgray;
+    height: 20px;
+    max-height: 20px;
+
+}
+
+#TabelaColecoesCsw td {
+    text-align: center;
+}
+
+
+#botaoSelecionarColecao {
+    font-weight: bold;
+    margin-top: 350px;
+    border: 2px solid darkgray;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 100%;
+    position: static;
+}
+
+#ButtonCriarPlano {
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px;
+    border: 2px, solid black;
+    border-radius: 10px;
+    text-align: center;
+    width: 100px;
+    background-color: var(--cor2);
+    color: var(--cor4);
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: none;
+}
+
+#ButtonEditarPlano {
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px;
+    border: 2px, solid black;
+    border-radius: 10px;
+    text-align: center;
+    width: 100px;
+    background-color: var(--cor2);
+    color: var(--cor4);
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.modalNotaCws {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos da modal */
+.modalNotaCws-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+    min-height: 50%;
+    max-height: 80%;
+    /* Altere o valor da altura máxima para 80% */
+    overflow-y: auto;
+    overflow-x: auto;
+
+}
+
+.modalNotaCws-content h3 {
+    padding: 20px;
+    background-color: var(--cor2);
+    text-align: center;
+    font-size: 20px;
+    font-family: Arial;
+    border: 5px;
+    margin: 0;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: var(--cor4);
+}
+
+.modalNotaCws-content .TabelaNotas1 {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 2px solid black;
+}
+
+#TabelaNotasCSW {
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+}
+
+#TabelaNotasCSW thead {
+    position: sticky;
+    top: 0;
+    background-color: lightgray;
+    z-index: 1;
+    border: 2px solid darkgray;
+    height: 20px;
+    max-height: 20px;
+
+}
+
+#TabelaNotasCSW td {
+    text-align: center;
+}
+
+
+#botaoSelecionarNota {
+    font-weight: bold;
+    margin-top: 350px;
+    border: 2px solid darkgray;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 100%;
+    position: static;
+}
+
+.modalLoteProdCws {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos da modal */
+.modalLoteProdCws-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+    min-height: 50%;
+    max-height: 80%;
+    /* Altere o valor da altura máxima para 80% */
+    overflow-y: auto;
+    overflow-x: auto;
+
+}
+
+.modalLoteProdCws-content h3 {
+    padding: 20px;
+    background-color: var(--cor2);
+    text-align: center;
+    font-size: 20px;
+    font-family: Arial;
+    border: 5px;
+    margin: 0;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: var(--cor4);
+}
+
+.modalLoteProdCws-content .TabelasLotes1 {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 2px solid black;
+}
+
+#TabelaLotesCsw {
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+}
+
+#TabelaLotesCsw thead {
+    position: sticky;
+    top: 0;
+    background-color: lightgray;
+    z-index: 1;
+    border: 2px solid darkgray;
+    height: 20px;
+    max-height: 20px;
+
+}
+
+#TabelaLotesCsw td {
+    text-align: center;
+}
+
+
+#botaoSelecionarLote {
+    font-weight: bold;
+    margin-top: 350px;
+    border: 2px solid darkgray;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 100%;
+    position: static;
+}
