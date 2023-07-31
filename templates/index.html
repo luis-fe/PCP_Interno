@@ -4,20 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PORTAL PCP</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='TelaLoginEstilo.css') }}">
+    <link rel="stylesheet" href="./static/css/TelaLoginEstilo.css"/>
 </head>
 <body>
-    <div class="mydiv" id="TelaLogin">
-        <label for="login" class="LabelLogin">Login:</label>
-        <input type="text" id="usuario" class="campoUsuario" onkeydown="checkEnter(event, 'password')" placeholder="Usuário">
-        <script>
-            window.onload = function() {
-              document.getElementById('usuario').focus();
-            };
-          </script>
-        <input type="password" id="password" class="campoPassword" onkeydown="Usuarios()" placeholder="Senha">
-        <button id="btnAcesso" class="btnAcesso" onclick="Usuarios()">Acessar</button>
+    <div class="TelaPrincipal">
+        <img src="ImagemPrincipal.jpg" alt="Imagem Mpl" id="imgPrincipal" quality="high">
+        <section id="login">
+            <div id="formulario">
+                <h1>Login</h1>
+                <form action="" method="post" onsubmit="event.preventDefault(); Usuarios();">
+                    <div class="campo">
+                        <input type="text" name="login" id="InputLogin" placeholder="Usuário/Login" required minlength="1">
+                    </div>
+                    <div class="campo">
+                        <input type="password" name="senha" id="InputSenha" placeholder="Senha" required minlength="1">
+                    </div>
+                    <input type="submit" value="Entrar" id="BotaoLogin">
+                    <label for="text" id="UsuarioInválido">Usuário ou Senha Inválidos!</label>
+                </form>
+            </div>
+        </section>
     </div>
-    <script src="{{ url_for('static', filename='TelaLoginJava.js') }}"></script>
+    <script src="./static/js/FuncoesUsuarios.js"></script>
 </body>
 </html>
