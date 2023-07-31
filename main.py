@@ -86,11 +86,11 @@ def criar_usuario():
     # inserir o novo usuário no banco de dados
     c = Usuarios.ObterUsuariosCodigo(codigo)
     if c != 0:
-        return jsonify({'message': f'Novo usuário:{codigo}- {nome} ja existe'}), 201
+        return jsonify({'message': f'Novo usuário:{codigo}- {nome} ja existe'}), 200
     else:
         Usuarios.InserirUsuario(codigo, nome, senha)
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 201
+        return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 200
 
 @app.route('/pcp/api/Usuarios/<string:codigoUsuario>', methods=['DELETE'])
 @token_required
