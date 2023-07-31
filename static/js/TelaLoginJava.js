@@ -21,7 +21,7 @@ function Usuarios() {
     // Verifica o valor do campo "status" na resposta da API
     if (data.status === true) {
       // Prossiga com o código
-      window.location.href = "TelaPrincipal.html";
+      window.location.href = "/TelaPrincipal";
     } else {
       // Bloqueia o código
       console.log('Usuário inválido. Acesso negado.');

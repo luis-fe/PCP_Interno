@@ -23,7 +23,7 @@ function Usuarios() {
       if (data.status === true) {
         const nomeUsuario = data.Usuario;
         localStorage.setItem('nomeUsuario', nomeUsuario);
-        window.location.href = "TelaPrincipal.html";
+        window.location.href = "/TelaPrincipal";
       } else {
         UsuarioInvalido.style.display = "block"
       }

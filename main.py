@@ -30,6 +30,18 @@ def token_required(f):
 @app.route('/')
 def home():
     return render_template('index.html')
+@app.route('/TelaEstrutura')
+def home():
+    return render_template('TelaEstrutura.html')
+@app.route('/TelaPlano')
+def home():
+    return render_template('TelaPlano.html')
+@app.route('/TelaPrincipal')
+def home():
+    return render_template('TelaPrincipal.html')
+@app.route('/TelaUsuarios')
+def home():
+    return render_template('TelaUsuarios.html')
 @app.route('/pcp/api/Usuarios', methods=['GET'])
 @token_required
 def get_Usuarios():
