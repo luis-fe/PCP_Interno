@@ -31,16 +31,16 @@ def token_required(f):
 def home():
     return render_template('index.html')
 @app.route('/TelaEstrutura')
-def home():
+def telaEstrutura():
     return render_template('TelaEstrutura.html')
 @app.route('/TelaPlano')
-def home():
+def TelaPlano():
     return render_template('TelaPlano.html')
 @app.route('/TelaPrincipal')
-def home():
+def TelaPrincipal():
     return render_template('TelaPrincipal.html')
 @app.route('/TelaUsuarios')
-def home():
+def TelaUsuarios():
     return render_template('TelaUsuarios.html')
 @app.route('/pcp/api/Usuarios', methods=['GET'])
 @token_required
