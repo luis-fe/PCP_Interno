@@ -36,6 +36,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
     inputTamanho.setAttribute('placeholder', TextoLabelTamanhos)
     inputTamanho.addEventListener('keydown', event => FiltroTamanho(event))
     const colunaCorProduto = document.createElement('th');
+    const colunaSituacaoCor = document.createElement('th');
     const colunaCodMP = document.createElement('th');
     inputCodMP = document.createElement('input');
     inputCodMP.id = 'inputCodMP';
@@ -47,6 +48,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
     const colunaConsumo = document.createElement('th');
     const colunaFornecedor = document.createElement('th');
     const colunaStatusEng = document.createElement('th');
+   
 
     colunaTipo.textContent = 'Tipo Mp';
     colunaColecao.textContent = 'Coleção';
@@ -54,6 +56,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
     colunaSortimento.textContent = 'Cód. Sortimento';
     colunaTamanho.textContent = 'Tamanho';
     colunaCorProduto.textContent = 'Cor Produto';
+    colunaSituacaoCor.textContent = 'Situação Cor';
     colunaCodMP.textContent = 'Cód M.P';
     colunaTamanhoMP.textContent = 'Tamanho M.P';
     colunaNomeComponente.textContent = 'Descrição Componente';
@@ -61,10 +64,12 @@ function CriarTabelaEstrutura(listaEstrutura) {
     colunaConsumo.textContent = 'Consumo';
     colunaFornecedor.textContent = 'Fornecedor Principal';
     colunaStatusEng.textContent = 'Status Eng.';
+    
 
     colunaTipo.style.width = '120px';
     colunaColecao.style.width = '100px';
     colunaProduto.style.width = '150px';
+    colunaSituacaoCor.style.width = '100px';
     colunaSortimento.style.width = '200px';
     colunaTamanho.style.width = '120px';
     colunaCorProduto.style.width = '150px';
@@ -85,6 +90,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
     cabecalhoRow.appendChild(colunaSortimento);
     cabecalhoRow.appendChild(colunaTamanho);
     cabecalhoRow.appendChild(colunaCorProduto);
+    cabecalhoRow.appendChild(colunaSituacaoCor);
     cabecalhoRow.appendChild(colunaCodMP);
     cabecalhoRow.appendChild(colunaTamanhoMP);
     cabecalhoRow.appendChild(colunaNomeComponente);
@@ -107,6 +113,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
         const colunaSortimento = document.createElement('td');
         const colunaTamanho = document.createElement('td');
         const colunaCorProduto = document.createElement('td');
+        const colunaSituacaoCor = document.createElement('td');
         const colunaCodMP = document.createElement('td');
         const colunaTamanhoMP = document.createElement('td');
         const colunaNomeComponente = document.createElement('td');
@@ -121,6 +128,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
         colunaSortimento.textContent = item['04- codSortimento'];
         colunaTamanho.textContent = item['05- tamanho'];
         colunaCorProduto.textContent = item['06- corProduto'];
+        colunaSituacaoCor.textContent = item['14- situacao cor'];
         colunaCodMP.textContent = item['07- codMP'];
         colunaTamanhoMP.textContent = item['08- TamanhoMP'];
         colunaNomeComponente.textContent = item['09- nomeComponente'];
@@ -135,6 +143,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
         row.appendChild(colunaSortimento);
         row.appendChild(colunaTamanho);
         row.appendChild(colunaCorProduto);
+        row.appendChild(colunaSituacaoCor);
         row.appendChild(colunaCodMP);
         row.appendChild(colunaTamanhoMP);
         row.appendChild(colunaNomeComponente);
