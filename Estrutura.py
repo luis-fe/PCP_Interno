@@ -50,6 +50,8 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
                                 " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
                                 " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecoes+") and t.codEngenharia not like '03%' ", conn)
 
+        estrutura['situacao'] = estrutura.apply(lambda row: '1-Ativo' if row['situacao'] == 1
+                                                                        else '0-Inativo', axis=1)
         status = pd.read_sql("select e.codEngenharia as codProduto , e.status  from tcp.Engenharia e "
                              " join tcp.DadosGeraisEng d on d.codEmpresa = e.codEmpresa and d.codEngenharia = e.codEngenharia  "
                              "where e.codEmpresa = 1 and e.status in (2,3) and d.codColecao in ("+ colecoes+")", conn)
