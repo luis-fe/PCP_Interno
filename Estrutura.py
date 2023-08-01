@@ -22,6 +22,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
         estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                 "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
                                 "(select s.corbase from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as corProduto,"
+                                " (select s.situacao from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as situacao,"
                                 " (select i2.codItemPai from  tcp.ComponentesVariaveis c join cgi.Item2  i2 on i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente WHERE  cv.codEmpresa = c.codEmpresa and cv.codProduto = c.codProduto and cv.sequencia = c.codSequencia ) as codMP,"
                                 " (select i2.codCor from  tcp.ComponentesVariaveis c "
                                 " join cgi.Item2  i2 on i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente WHERE  cv.codEmpresa = c.codEmpresa and cv.codProduto = c.codProduto and cv.sequencia = c.codSequencia ) as corComponente,"
@@ -36,7 +37,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
                                 " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+") and cv.codProduto not like '03%' "
                                 " union "
                                 " select DISTINCT 'Padrao' as tipo, d.codColecao, c.codProduto, s.codSortimento , (select tm.descricao from tcp.Tamanhos tm WHERE tm.codEmpresa = t.Empresa  and tm.sequencia = t.codSeqTamanho) as tamanho, "
-                                "s.corBase, "
+                                "s.corBase, s.situacao, "
                                 " (select i2.codItemPai from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as codMP,"
                                 " (select i2.codCor from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as corComponente, "
                                 "(select tm.descricao from cgi.Item2  i2   "
@@ -48,8 +49,6 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
                                 " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
                                 " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
                                 " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecoes+") and t.codEngenharia not like '03%' ", conn)
-
-
 
         status = pd.read_sql("select e.codEngenharia as codProduto , e.status  from tcp.Engenharia e "
                              " join tcp.DadosGeraisEng d on d.codEmpresa = e.codEmpresa and d.codEngenharia = e.codEngenharia  "
@@ -72,7 +71,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
             columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                      ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
                      ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'
-                     ,"nomeFornecedor":"12-nomeFornecedor","status":"13-statusEng"},
+                     ,"nomeFornecedor":"12-nomeFornecedor","status":"13-statusEng","situacao":"14- situacao cor"},
             inplace=True)
         estrutura["07- codMP"] = estrutura["07- codMP"].astype(str)
         estrutura = estrutura[~estrutura['07- codMP'].str.startswith('6')]
