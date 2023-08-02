@@ -344,7 +344,7 @@ def update_Plano(codigo):
 @token_required
 def get_Colecoes():
     # Obtém o código do usuário e a senha dos parâmetros da URL
-    itensPag = request.args.get('itensPag',100)
+    itensPag = request.args.get('itensPag',100000)
     pagina = request.args.get('pagina',1)
 
     Endereco_det = ObterInfCSW.GetColecoes(pagina, itensPag)
