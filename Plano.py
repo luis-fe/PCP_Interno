@@ -283,7 +283,7 @@ def DuracaoPlano(plano):
     dias = (FimVenda - iniVenda).days
     semanas = dias /7
 
-    return print(semanas)
+    return pd.DataFrame([{'semana':semanas}])
 
 
 
