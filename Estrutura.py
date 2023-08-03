@@ -104,7 +104,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
         dataframe = TemFiltro(codMP, dataframe, '07- codMP')
         dataframe = TemFiltro(nomecomponente, dataframe, '09- nomeComponente')
         dataframe = TemFiltro(tamProduto, dataframe, '05- tamanho')
-        dataframe = TemFiltro(tamProduto, dataframe, '12-nomeFornecedor')
+        dataframe = TemFiltro(fornecedor, dataframe, '12-nomeFornecedor')
 
         # Aqui Verifico se tem paginamento
         estrutura, totalPg = TemPaginamento(pagina,itensPag,dataframe)
