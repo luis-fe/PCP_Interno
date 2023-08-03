@@ -14,6 +14,9 @@ const itensPag = 15;
 let TextoLabel = "";
 let TextoLabelTamanhos = "";
 let TextoLabelMP = "";
+let TextoNomeMp = "";
+let TextoFornecedor = "";
+let TextoDescProduto = "";
 
 function CriarTabelaEstrutura(listaEstrutura) {
     const tabela = document.getElementById('TabelaEstrutura');
@@ -29,6 +32,11 @@ function CriarTabelaEstrutura(listaEstrutura) {
     inputProduto.id = 'inputProduto';
     inputProduto.setAttribute('placeholder', TextoLabel)
     inputProduto.addEventListener('keydown', event => FiltroProduto(event))
+    const colunaDescricaoProduto = document.createElement('th');
+    inputDescProduto = document.createElement('input');
+    inputDescProduto.id = 'inputDescProduto';
+    inputDescProduto.setAttribute('placeholder', TextoDescProduto)
+    inputDescProduto.addEventListener('keydown', event => FiltroDescricao(event))
     const colunaSortimento = document.createElement('th');
     const colunaTamanho = document.createElement('th');
     inputTamanho = document.createElement('input');
@@ -44,15 +52,24 @@ function CriarTabelaEstrutura(listaEstrutura) {
     inputCodMP.addEventListener('keydown', event => FiltroMP(event))
     const colunaTamanhoMP = document.createElement('th');
     const colunaNomeComponente = document.createElement('th');
+    inputNomeMp = document.createElement('input');
+    inputNomeMp.id = 'inputNomeMP';
+    inputNomeMp.setAttribute('placeholder', TextoNomeMp)
+    inputNomeMp.addEventListener('keydown', event => FiltroNomeMp(event))
     const colunaCorComponente = document.createElement('th');
     const colunaConsumo = document.createElement('th');
     const colunaFornecedor = document.createElement('th');
+    inputFornecedor = document.createElement('input');
+    inputFornecedor.id = 'inputFornecedor';
+    inputFornecedor.setAttribute('placeholder', TextoFornecedor)
+    inputFornecedor.addEventListener('keydown', event => FiltroFornecedor(event))
     const colunaStatusEng = document.createElement('th');
    
 
     colunaTipo.textContent = 'Tipo Mp';
     colunaColecao.textContent = 'Coleção';
     colunaProduto.textContent = 'Produto';
+    colunaDescricaoProduto.textContent = 'Desc. Produto';
     colunaSortimento.textContent = 'Cód. Sortimento';
     colunaTamanho.textContent = 'Tamanho';
     colunaCorProduto.textContent = 'Cor Produto';
@@ -69,6 +86,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
     colunaTipo.style.width = '120px';
     colunaColecao.style.width = '100px';
     colunaProduto.style.width = '150px';
+    colunaDescricaoProduto.style.width = '750px';
     colunaSituacaoCor.style.width = '100px';
     colunaSortimento.style.width = '200px';
     colunaTamanho.style.width = '120px';
@@ -84,9 +102,13 @@ function CriarTabelaEstrutura(listaEstrutura) {
     colunaProduto.appendChild(inputProduto);
     colunaTamanho.appendChild(inputTamanho);
     colunaCodMP.appendChild(inputCodMP);
+    colunaFornecedor.appendChild(inputFornecedor);
+    colunaNomeComponente.appendChild(inputNomeMp);
+    colunaDescricaoProduto.appendChild(inputDescProduto);
     cabecalhoRow.appendChild(colunaTipo);
     cabecalhoRow.appendChild(colunaColecao);
     cabecalhoRow.appendChild(colunaProduto);
+    cabecalhoRow.appendChild(colunaDescricaoProduto);
     cabecalhoRow.appendChild(colunaSortimento);
     cabecalhoRow.appendChild(colunaTamanho);
     cabecalhoRow.appendChild(colunaCorProduto);
@@ -110,6 +132,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
         const colunaTipo = document.createElement('td');
         const colunaColecao = document.createElement('td');
         const colunaProduto = document.createElement('td');
+        const colunaDescricaoProduto = document.createElement('td');
         const colunaSortimento = document.createElement('td');
         const colunaTamanho = document.createElement('td');
         const colunaCorProduto = document.createElement('td');
@@ -125,6 +148,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
         colunaTipo.textContent = item['01- tipo'];
         colunaColecao.textContent = item['02- codColecao'];
         colunaProduto.textContent = item['03- codProduto'];
+        colunaDescricaoProduto.textContent = item['15- descricao Produto'];
         colunaSortimento.textContent = item['04- codSortimento'];
         colunaTamanho.textContent = item['05- tamanho'];
         colunaCorProduto.textContent = item['06- corProduto'];
@@ -140,6 +164,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
         row.appendChild(colunaTipo);
         row.appendChild(colunaColecao);
         row.appendChild(colunaProduto);
+        row.appendChild(colunaDescricaoProduto);
         row.appendChild(colunaSortimento);
         row.appendChild(colunaTamanho);
         row.appendChild(colunaCorProduto);
@@ -156,9 +181,12 @@ function CriarTabelaEstrutura(listaEstrutura) {
     
     }
 
-      let LabelProdutos = document.getElementById('LabelProdutos')
-      let LabelTamanhos = document.getElementById('LabelTamanhos')
-      let LabelMP = document.getElementById('LabelMP')
+      let LabelProdutos = document.getElementById('LabelProdutos');
+      let LabelTamanhos = document.getElementById('LabelTamanhos');
+      let LabelMP = document.getElementById('LabelMP');
+      let LabelNomeMp = document.getElementById('LabelNomeMp');
+      let LabelFornecedor = document.getElementById('LabelFornecedor');
+      let LabelDescProduto = document.getElementById('LabelDescProduto');
 
       function FiltroProduto(event) {
         if (event.key === "Enter") {
@@ -174,7 +202,12 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "plano": plano,
             "pagina": 1,
             "itensPag": 15,
-            "codEngenharias": TextoLabel
+            "codEngenharias": TextoLabel,
+            "TamanhoProduto": TextoLabelTamanhos,
+            "codMP": TextoLabelMP,
+            "nomeComponente": TextoNomeMp,
+            "nomeFornecedor": TextoFornecedor,
+            "desproduto": TextoFornecedor
             }
             CarregarDados2(dadosEngenharia)  
         }
@@ -194,11 +227,15 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "itensPag": 15,
             "codEngenharias": TextoLabel,
             "TamanhoProduto": TextoLabelTamanhos,
-            "codMP": TextoLabelMP
+            "codMP": TextoLabelMP,
+            "nomeComponente": TextoNomeMp,
+            "nomeFornecedor": TextoFornecedor,
+            "desproduto": TextoFornecedor
             }
             CarregarDados2(dadosTamanho)  
         }
-      }
+      };
+
 
       function FiltroMP(event) {
         if (event.key === "Enter") {
@@ -215,11 +252,88 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "itensPag": 15,
             "codEngenharias": TextoLabel,
             "TamanhoProduto": TextoLabelTamanhos,
-            "codMP": TextoLabelMP
+            "codMP": TextoLabelMP,
+            "nomeComponente": TextoNomeMp,
+            "nomeFornecedor": TextoFornecedor,
+            "desproduto": TextoFornecedor
             }
             CarregarDados2(dadosMP)  
         }
+      };
+
+      function FiltroNomeMp(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            const FiltroNomeMP1 = inputNomeMp.value;
+            console.log(FiltroNomeMP1);
+            LabelNomeMp.textContent = FiltroNomeMP1;
+            PaginaAtual = 1
+            botaoProximo1.disabled = false
+            TextoNomeMp = LabelNomeMp.textContent;
+            const dadosNomeMP = {
+            "plano": plano,
+            "pagina": 1,
+            "itensPag": 15,
+            "codEngenharias": TextoLabel,
+            "TamanhoProduto": TextoLabelTamanhos,
+            "codMP": TextoLabelMP,
+            "nomeComponente": TextoNomeMp,
+            "nomeFornecedor": TextoFornecedor,
+            "desproduto": TextoFornecedor
+            }
+            CarregarDados2(dadosNomeMP)  
+        }
       }
+
+      function FiltroFornecedor(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            const FiltroFornecedor1 = inputFornecedor.value;
+            console.log(FiltroFornecedor1);
+            LabelFornecedor.textContent = FiltroFornecedor1;
+            PaginaAtual = 1
+            botaoProximo1.disabled = false
+            TextoFornecedor = LabelFornecedor.textContent;
+            const dadosFornecedor = {
+            "plano": plano,
+            "pagina": 1,
+            "itensPag": 15,
+            "codEngenharias": TextoLabel,
+            "TamanhoProduto": TextoLabelTamanhos,
+            "codMP": TextoLabelMP,
+            "nomeComponente": TextoNomeMp,
+            "nomeFornecedor": TextoFornecedor,
+            "desproduto": TextoFornecedor
+            }
+            CarregarDados2(dadosFornecedor)  
+        }
+      }
+
+      function FiltroDescricao(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            const FiltroDescricao1 = inputDescProduto.value;
+            console.log(FiltroDescricao1);
+            LabelDescProduto.textContent = FiltroDescricao1;
+            PaginaAtual = 1
+            botaoProximo1.disabled = false
+            TextoDescProduto = LabelDescProduto.textContent;
+            const dadosDesc = {
+            "plano": plano,
+            "pagina": 1,
+            "itensPag": 15,
+            "codEngenharias": TextoLabel,
+            "TamanhoProduto": TextoLabelTamanhos,
+            "codMP": TextoLabelMP,
+            "nomeComponente": TextoNomeMp,
+            "nomeFornecedor": TextoFornecedor,
+            "desproduto": TextoDescProduto
+
+            }
+            CarregarDados2(dadosDesc)  
+        }
+      }
+
 
     
 
@@ -322,7 +436,10 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "itensPag": 15,
             "codEngenharias": TextoLabel,
             "TamanhoProduto": TextoLabelTamanhos,
-            "codMP": TextoLabelMP
+            "codMP": TextoLabelMP,
+            "nomeComponente": TextoNomeMp,
+            "nomeFornecedor": TextoFornecedor,
+            "desproduto": TextoDescProduto
         };
         CarregarDados2(dados1);
     }
@@ -345,7 +462,10 @@ function carregarUsuariosAnteriores() {
           "itensPag": 15,
           "codEngenharias": TextoLabel,
           "TamanhoProduto": TextoLabelTamanhos,
-          "codMP": TextoLabelMP
+          "codMP": TextoLabelMP,
+          "nomeComponente": TextoNomeMp,
+          "nomeFornecedor": TextoFornecedor,
+          "desproduto": TextoDescProduto
       };
       CarregarDados2(dados1);
   }
@@ -372,7 +492,10 @@ function CarregarUltimaPagina() {
           "itensPag": 15,
           "codEngenharias": TextoLabel,
           "TamanhoProduto": TextoLabelTamanhos,
-          "codMP": TextoLabelMP
+          "codMP": TextoLabelMP,
+          "nomeComponente": TextoNomeMp,
+          "nomeFornecedor": TextoFornecedor,
+          "desproduto": TextoDescProduto
       };
       CarregarDados2(dados1);
   }
@@ -397,7 +520,10 @@ function CarregarPrimeiraPagina() {
         "itensPag": 15,
         "codEngenharias": TextoLabel,
         "TamanhoProduto": TextoLabelTamanhos,
-        "codMP": TextoLabelMP
+        "codMP": TextoLabelMP,
+        "nomeComponente": TextoNomeMp,
+        "nomeFornecedor": TextoFornecedor,
+        "desproduto": TextoDescProduto
     };
     CarregarDados2(dados1);
 }
@@ -445,6 +571,7 @@ if (PaginaAtual < 1) {
       TextoLabel = LabelProdutos.textContent
       TextoLabelTamanhos = LabelTamanhos.textContent
       TextoLabelMP = TextoLabelMP.textContent
+      TextoNomeMp = TextoNomeMp.textContent
 
 
       const dadosParaExportar = {
@@ -452,7 +579,10 @@ if (PaginaAtual < 1) {
         "Excel": true,
         "codEngenharias": TextoLabel,
         "TamanhoProduto": TextoLabelTamanhos,
-        "codMP": TextoLabelMP
+        "codMP": TextoLabelMP,
+        "nomeComponente": TextoNomeMp,
+        "nomeFornecedor": TextoFornecedor,
+        "desproduto": TextoDescProduto
       };
 
       fetch(ApiEstrutura, {
