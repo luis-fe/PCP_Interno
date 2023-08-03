@@ -31,7 +31,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
                                 " WHERE  cv.codEmpresa = c.codEmpresa and cv.codProduto = c.codProduto and cv.sequencia = c.codSequencia ) as Tamanho,"
                                 " (select i.nome  from   tcp.ComponentesVariaveis c join cgi.item i on i.codigo = c.CodComponente WHERE  cv.codEmpresa = c.codEmpresa and cv.codProduto = c.codProduto and cv.sequencia = c.codSequencia ) as nomeComponente, "
                                 "cv.quantidade,"
-                                " (select i2.coditem from  tcp.ComponentesVariaveis c join cgi.Item2  i2 on i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente WHERE  cv.codEmpresa = c.codEmpresa and cv.codProduto = c.codProduto and cv.sequencia = c.codSequencia ) as codreduzido"  
+                                " (select i2.coditem from  tcp.ComponentesVariaveis c join cgi.Item2  i2 on i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente WHERE  cv.codEmpresa = c.codEmpresa and cv.codProduto = c.codProduto and cv.sequencia = c.codSequencia ) as codreduzido "
                                 " FROM tcp.CompVarSorGraTam cv "
                                 "JOIN tcp.DadosGeraisEng d ON cv.codempresa = d.codEmpresa AND cv.codProduto = d.codEngenharia " 
                                 " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+") and cv.codProduto not like '03%' "
@@ -52,7 +52,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
 
         estrutura['situacao'] = estrutura.apply(lambda row: '1-Ativo' if row['situacao'] == 1
                                                                         else '0-Inativo', axis=1)
-        status = pd.read_sql("select e.codEngenharia as codProduto , e.status  from tcp.Engenharia e "
+        status = pd.read_sql("select e.codEngenharia as codProduto , e.status, e,descricao as descricaoeng  from tcp.Engenharia e "
                              " join tcp.DadosGeraisEng d on d.codEmpresa = e.codEmpresa and d.codEngenharia = e.codEngenharia  "
                              "where e.codEmpresa = 1 and e.status in (2,3) and d.codColecao in ("+ colecoes+")", conn)
 
@@ -73,7 +73,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
             columns={'tipo': '01- tipo', "codColecao": '02- codColecao','codProduto':'03- codProduto'
                      ,'codSortimento':'04- codSortimento','tamanho':'05- tamanho','corProduto':'06- corProduto'
                      ,'codMP':'07- codMP','Tamanho':'08- TamanhoMP','nomeComponente':'09- nomeComponente','corComponente':'10- corComponente' ,'quantidade':'11- Consumo'
-                     ,"nomeFornecedor":"12-nomeFornecedor","status":"13-statusEng","situacao":"14- situacao cor"},
+                     ,"nomeFornecedor":"12-nomeFornecedor","status":"13-statusEng","situacao":"14- situacao cor","descricaoeng":"15- descricao Produto"},
             inplace=True)
         estrutura["07- codMP"] = estrutura["07- codMP"].astype(str)
         estrutura = estrutura[~estrutura['07- codMP'].str.startswith('6')]
