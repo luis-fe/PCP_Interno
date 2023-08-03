@@ -14,10 +14,10 @@ def TransformarPlanoColecao(plano):
     return colecao
 
 
-def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0'):
+def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0', fornecedor = '0'):
     colecoes = TransformarPlanoColecao(plano)
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
-    if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == '0':
+    if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == '0' and fornecedor == '0':
         conn = ConexaoCSW.Conexao()
         estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                 "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
@@ -104,6 +104,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
         dataframe = TemFiltro(codMP, dataframe, '07- codMP')
         dataframe = TemFiltro(nomecomponente, dataframe, '09- nomeComponente')
         dataframe = TemFiltro(tamProduto, dataframe, '05- tamanho')
+        dataframe = TemFiltro(tamProduto, dataframe, '12-nomeFornecedor')
 
         # Aqui Verifico se tem paginamento
         estrutura, totalPg = TemPaginamento(pagina,itensPag,dataframe)
