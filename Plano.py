@@ -1,6 +1,8 @@
 import pandas as pd
 import ConexaoCSW
 import ConexaoPostgreMPL
+from datetime import datetime
+
 
 def ObeterPlanos():
     conn = ConexaoPostgreMPL.conexao()
@@ -266,5 +268,22 @@ def DeletarPlanoNota(codigo, tipoNota):
         return pd.DataFrame([{'Mensagem': f'tipo nota {tipoNota} não encontrada no plano {codigo}', 'Status': False}])
     else:
         return pd.DataFrame([{'Mensagem': f'tipo nota {tipoNota} excluído com sucesso do plano {codigo}!', 'Status': True}])
+
+def DuracaoPlano(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    semanas = pd.read_sql('select "inicioVenda", "FimVenda" from pcp."Plano" where "Plano" = s% ',conn,params=(plano,))
+
+    iniVenda = semanas['inicioVenda'][0]
+    FimVenda = semanas['FimVenda'][0]
+    # Converter as strings em objetos de data
+    iniVenda = datetime.strptime(iniVenda, '%Y-%m-%d')
+    FimVenda = datetime.strptime(FimVenda, '%Y-%m-%d')
+
+    # Calcular a diferença em dias entre as datas
+    dias = (FimVenda - iniVenda).days
+    semanas = dias /7
+
+    return print(semanas)
+
 
 

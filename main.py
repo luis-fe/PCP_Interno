@@ -157,12 +157,13 @@ def get_Estrutura():
     nomeComponente = data.get('nomeComponente', '0')
     fornecedor = data.get('nomeFornecedor', '0')
     TamanhoProduto = data.get('TamanhoProduto', '0')
+    desproduto = data.get('desproduto', '0')
     Excel = data.get('Excel', False)
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
 
 
-    Endereco_det = Estrutura.Estrutura(plano, pagina, itensPag, codEngenharias, str(codMP), nomeComponente, Excel, TamanhoProduto, fornecedor)
+    Endereco_det = Estrutura.Estrutura(plano, pagina, itensPag, codEngenharias, str(codMP), nomeComponente, Excel, TamanhoProduto, fornecedor,desproduto)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
