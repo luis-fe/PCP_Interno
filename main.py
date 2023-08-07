@@ -573,10 +573,11 @@ def get_teste(Plano):
         OP_data.append(op_dict)
     return jsonify(OP_data)
 
-@app.route('/pcp/api/VendasPlano/<string:codigoPlano>', methods=['POST'])
+@app.route('/pcp/api/VendasPlano', methods=['POST'])
 @token_required
-def vendas(codigoPlano):
+def vendas():
     data = request.get_json()
+    codigoPlano = data.get('plano')
     excel = data.get('excel', False)
 
     # Obtém os dados do corpo da requisição (JSON)
