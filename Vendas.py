@@ -38,6 +38,9 @@ def VendasporSku(plano , aprovado= True):
     else:
         Pedido = Pedido
 
+    sku = ExplosaoPedidoSku(iniVenda,finalVenda)
+    Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
+
     return Pedido
 
 
@@ -63,14 +66,18 @@ def PedidosBloqueado(df_Pedidos):
     return  df_Pedidos
 
 
-def ExplosaoPedidoSku():
+def ExplosaoPedidoSku(datainicio, datafinal):
     conn = ConexaoCSW.Conexao()
     # 8 - Consultando o banco de dados do ERP no nivel de Pedios SKU
     df_ItensPedidos = pd.read_sql(
         "select top 350000 item.codPedido, item.CodItem as seqCodItem, item.codProduto, item.precoUnitario, item.tipoDesconto, item.descontoItem, case when tipoDesconto = 1 then ( (item.qtdePedida * item.precoUnitario) - item.descontoItem)/item.qtdePedida when item.tipoDesconto = 0 then (item.precoUnitario * (1-(item.descontoItem/100))) else item.precoUnitario end  PrecoLiquido from ped.PedidoItem as item WHERE item.codEmpresa = 1 order by item.codPedido desc",
         conn)
     df_SkuPedidos = pd.read_sql(
-        "select top 1000000 now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  where codEmpresa = 1 and (qtdePedida-qtdeCancelada-qtdeFaturada) > 0 order by codPedido desc",
-        conn)
+        "select  now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
+        "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  where codEmpresa = 1  "
+        "and codPedido in ("
+        " select codPedido from Ped.Pedido where codEmpresa = 1 and dataEmissao >= %s and dataEmissao <= %s"
+        ")",
+        conn,params=(datainicio,datafinal,))
     conn.close()
     return df_SkuPedidos
