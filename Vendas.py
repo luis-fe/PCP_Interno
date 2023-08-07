@@ -25,48 +25,53 @@ def VendasporSku(plano , aprovado= True, excel = False):
     finalVenda = finalVenda[6:] + "-" + finalVenda[3:5] + "-" + finalVenda[:2]
     nomeArquivo = f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
 
+    if iniVenda == '-':
 
-    print(iniVenda)
-    if excel == False:
-
-        conn = ConexaoCSW.Conexao()
-        # 1- Consulta de Pedidos
-        Pedido = pd.read_sql(
-            "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
-            " FROM Ped.Pedido "
-            " where codEmpresa = 1 and  dataEmissao >= '"+iniVenda +"' and dataEmissao <= '"+finalVenda+"' and codTipoNota in ("+tiponota+")"
-            " order by codPedido desc ",conn)
-
-        Pedido.fillna('-', inplace=True)
-
-        if aprovado == True:
-            Pedido = PedidosBloqueado(Pedido)
-        else:
-            Pedido = Pedido
-
-        sku = ExplosaoPedidoSku(iniVenda,finalVenda)
-        Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
-        Pedido.to_csv(nomeArquivo)
-        Pedido = Pedido.groupby('engenharia').agg({
-            'engenharia': 'first',
-        'qtdePedida': 'sum'})
-        conn.close()
-        Pedido['Total Produtos'] = Pedido['engenharia'].count()
-        return Pedido
+        return pd.DataFrame([{'Status':False, "Mensagem":f'Nao há data de inicio de vendas cadastrado no Plano {plano}'}])
     else:
-        Pedido = pd.read_csv(nomeArquivo)
-        Pedido = Pedido.groupby('engenharia').agg({
-            'engenharia': 'first',
+
+
+        print(iniVenda)
+        if excel == False:
+
+            conn = ConexaoCSW.Conexao()
+            # 1- Consulta de Pedidos
+            Pedido = pd.read_sql(
+                "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
+                " FROM Ped.Pedido "
+                " where codEmpresa = 1 and  dataEmissao >= '"+iniVenda +"' and dataEmissao <= '"+finalVenda+"' and codTipoNota in ("+tiponota+")"
+                " order by codPedido desc ",conn)
+
+            Pedido.fillna('-', inplace=True)
+
+            if aprovado == True:
+                Pedido = PedidosBloqueado(Pedido)
+            else:
+                Pedido = Pedido
+
+            sku = ExplosaoPedidoSku(iniVenda,finalVenda)
+            Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
+            Pedido.to_csv(nomeArquivo)
+            Pedido = Pedido.groupby('engenharia').agg({
+                'engenharia': 'first',
             'qtdePedida': 'sum'})
-        print('excel True')
-        Pedido['engenharia'] = Pedido['engenharia'].astype(str)
-        Pedido.sort_values(by='qtdePedida', inplace=True, ascending=False )
-        Pedido['MARCA'] = numpy.where((Pedido['engenharia'].str[:3] == '102') | (Pedido['engenharia'].str[:3] == '202'),
-                                        'M.POLLO', 'PACO')
-        Pedido['Total Produtos'] = Pedido.groupby('MARCA')['engenharia'].transform('count')
-        Pedido['ABC%'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
-        Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
-        return Pedido
+            conn.close()
+            Pedido['Total Produtos'] = Pedido['engenharia'].count()
+            return Pedido
+        else:
+            Pedido = pd.read_csv(nomeArquivo)
+            Pedido = Pedido.groupby('engenharia').agg({
+                'engenharia': 'first',
+                'qtdePedida': 'sum'})
+            print('excel True')
+            Pedido['engenharia'] = Pedido['engenharia'].astype(str)
+            Pedido.sort_values(by='qtdePedida', inplace=True, ascending=False )
+            Pedido['MARCA'] = numpy.where((Pedido['engenharia'].str[:3] == '102') | (Pedido['engenharia'].str[:3] == '202'),
+                                            'M.POLLO', 'PACO')
+            Pedido['Total Produtos'] = Pedido.groupby('MARCA')['engenharia'].transform('count')
+            Pedido['ABC%'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
+            Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
+            return Pedido
 
 
 
