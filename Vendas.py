@@ -17,6 +17,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))
     conn1.close()
+    vendas.fillna('-', inplace=True)
 
     iniVenda = vendas['inicioVenda'][0]
     iniVenda = iniVenda[6:] + "-" + iniVenda[3:5] + "-" + iniVenda[:2]
@@ -24,6 +25,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
     finalVenda = vendas['FimVenda'][0]
     finalVenda = finalVenda[6:] + "-" + finalVenda[3:5] + "-" + finalVenda[:2]
     nomeArquivo = f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
+
 
     if iniVenda == '-':
 
