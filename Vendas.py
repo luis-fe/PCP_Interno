@@ -42,7 +42,9 @@ def VendasporSku(plano , aprovado= True):
     Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
     nomeArquivo= f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
     Pedido.to_csv(nomeArquivo)
-    Pedido = Pedido.groupby('codItem').agg({'codItem':'first'})
+    Pedido = Pedido.groupby('reduzido').agg({
+        'reduzido':'first',
+    'qtdePedida': 'sum'})
     Pedido = Pedido.iloc[0:100]
 
     return Pedido
