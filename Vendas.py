@@ -45,9 +45,8 @@ def VendasporSku(plano , aprovado= True, excel = False):
         sku = ExplosaoPedidoSku(iniVenda,finalVenda)
         Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
         Pedido.to_csv(nomeArquivo)
-        Pedido = Pedido.groupby('reduzido').agg({
-            'reduzido':'first',
-            'engneharia': 'first',
+        Pedido = Pedido.groupby('engenharia').agg({
+            'engenharia': 'first',
         'qtdePedida': 'sum',
         'nome_red':'first'})
         conn.close()
