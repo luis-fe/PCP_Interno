@@ -65,7 +65,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
                                         'M.POLLO', 'PACO')
         Pedido['Total Produtos'] = Pedido.groupby('MARCA')['engenharia'].transform('count')
         Pedido['Contagem'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
-        Pedido['Contagem'] = (Pedido['Contagem']/Pedido['Total Produtos']).round(2)
+        Pedido['Contagem'] = (100 *(Pedido['Contagem']/Pedido['Total Produtos'])).round(2)
         return Pedido
 
 
