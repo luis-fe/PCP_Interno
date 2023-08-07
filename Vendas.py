@@ -47,6 +47,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
         Pedido.to_csv(nomeArquivo)
         Pedido = Pedido.groupby('reduzido').agg({
             'reduzido':'first',
+            'engneharia': 'first',
         'qtdePedida': 'sum',
         'nome_red':'first'})
         conn.close()
@@ -98,7 +99,8 @@ def ExplosaoPedidoSku(datainicio, datafinal):
         "select top 350000 item.codPedido, item.CodItem as seqCodItem, item.codProduto, item.precoUnitario, item.tipoDesconto, item.descontoItem, case when tipoDesconto = 1 then ( (item.qtdePedida * item.precoUnitario) - item.descontoItem)/item.qtdePedida when item.tipoDesconto = 0 then (item.precoUnitario * (1-(item.descontoItem/100))) else item.precoUnitario end  PrecoLiquido from ped.PedidoItem as item WHERE item.codEmpresa = 1 order by item.codPedido desc",
         conn)
     df_SkuPedidos = pd.read_sql(
-        "select  now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido,"
+        "select  now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
+        " (select i.coditempai as engenharia from cgi.item2 i where p.codProduto = i.coditem and p.empresa = 1) as engenharia , "
         " (select i.nome from cgi.item i where p.codProduto = i.codigo) as nome_red, "
         "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  p where codEmpresa = 1  "
         "and codPedido in ("
