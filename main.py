@@ -573,16 +573,17 @@ def get_teste(Plano):
         OP_data.append(op_dict)
     return jsonify(OP_data)
 
-@app.route('/pcp/api/VendasPlano/<string:codigoPlano>', methods=['GET'])
+@app.route('/pcp/api/VendasPlano/<string:codigoPlano>', methods=['POST'])
 @token_required
 def vendas(codigoPlano):
-    novo_usuario = request.get_json()
+    data = request.get_json()
+    excel = data.get('excel', False)
 
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     codigoPlano = str(codigoPlano)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = Vendas.VendasporSku(codigoPlano)
+    dados = Vendas.VendasporSku(codigoPlano,excel)
     # Obtém os nomes das colunas
     column_names = dados.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes

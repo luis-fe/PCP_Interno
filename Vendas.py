@@ -10,7 +10,7 @@ def TransformarPlanoTipoNota(plano):
     conn.close()
     return tiponota
 
-def VendasporSku(plano , aprovado= True):
+def VendasporSku(plano , aprovado= True, excel = False):
     tiponota = TransformarPlanoTipoNota(plano)
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))
@@ -21,33 +21,46 @@ def VendasporSku(plano , aprovado= True):
 
     finalVenda = vendas['FimVenda'][0]
     finalVenda = finalVenda[6:] + "-" + finalVenda[3:5] + "-" + finalVenda[:2]
+    nomeArquivo = f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
+
 
     print(iniVenda)
-    conn = ConexaoCSW.Conexao()
-    # 1- Consulta de Pedidos
-    Pedido = pd.read_sql(
-        "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
-        " FROM Ped.Pedido "
-        " where codEmpresa = 1 and  dataEmissao >= '"+iniVenda +"' and dataEmissao <= '"+finalVenda+"' and codTipoNota in ("+tiponota+")"
-        " order by codPedido desc ",conn)
+    if excel == False:
 
-    Pedido.fillna('-', inplace=True)
+        conn = ConexaoCSW.Conexao()
+        # 1- Consulta de Pedidos
+        Pedido = pd.read_sql(
+            "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
+            " FROM Ped.Pedido "
+            " where codEmpresa = 1 and  dataEmissao >= '"+iniVenda +"' and dataEmissao <= '"+finalVenda+"' and codTipoNota in ("+tiponota+")"
+            " order by codPedido desc ",conn)
 
-    if aprovado == True:
-        Pedido = PedidosBloqueado(Pedido)
+        Pedido.fillna('-', inplace=True)
+
+        if aprovado == True:
+            Pedido = PedidosBloqueado(Pedido)
+        else:
+            Pedido = Pedido
+
+        sku = ExplosaoPedidoSku(iniVenda,finalVenda)
+        Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
+        Pedido.to_csv(nomeArquivo)
+        Pedido = Pedido.groupby('reduzido').agg({
+            'reduzido':'first',
+        'qtdePedida': 'sum'})
+        conn.close()
+
+        return Pedido
     else:
-        Pedido = Pedido
+        Pedido = pd.read_csv(nomeArquivo)
+        Pedido = Pedido.groupby('reduzido').agg({
+            'reduzido': 'first',
+            'qtdePedida': 'sum'})
+        return Pedido
 
-    sku = ExplosaoPedidoSku(iniVenda,finalVenda)
-    Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
-    nomeArquivo= f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
-    Pedido.to_csv(nomeArquivo)
-    Pedido = Pedido.groupby('reduzido').agg({
-        'reduzido':'first',
-    'qtdePedida': 'sum'})
-    Pedido = Pedido.iloc[0:100]
 
-    return Pedido
+
+
 
 
 def PedidosBloqueado(df_Pedidos):
