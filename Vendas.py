@@ -47,8 +47,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
         Pedido.to_csv(nomeArquivo)
         Pedido = Pedido.groupby('engenharia').agg({
             'engenharia': 'first',
-        'qtdePedida': 'sum',
-        'nome_red':'first'})
+        'qtdePedida': 'sum'})
         conn.close()
         Pedido['Total Produtos'] = Pedido['engenharia'].count()
         return Pedido
@@ -56,7 +55,6 @@ def VendasporSku(plano , aprovado= True, excel = False):
         Pedido = pd.read_csv(nomeArquivo)
         Pedido = Pedido.groupby('engenharia').agg({
             'engenharia': 'first',
-            'nome_red': 'first',
             'qtdePedida': 'sum'})
         print('excel True')
         Pedido['engenharia'] = Pedido['engenharia'].astype(str)
