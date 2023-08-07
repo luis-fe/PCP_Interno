@@ -40,7 +40,7 @@ def VendasporSku(plano , aprovado= True):
 
     sku = ExplosaoPedidoSku(iniVenda,finalVenda)
     Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
-    nomeArquivo= f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}'
+    nomeArquivo= f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
     Pedido.to_csv(nomeArquivo)
 
     return Pedido
