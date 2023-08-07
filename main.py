@@ -579,12 +579,13 @@ def vendas():
     data = request.get_json()
     codigoPlano = data.get('plano')
     excel = data.get('excel', False)
+    aprovado = data.get('aprovado', True)
 
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     codigoPlano = str(codigoPlano)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = Vendas.VendasporSku(codigoPlano,excel)
+    dados = Vendas.VendasporSku(codigoPlano,aprovado,excel)
     # Obtém os nomes das colunas
     column_names = dados.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
