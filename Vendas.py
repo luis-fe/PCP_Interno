@@ -56,6 +56,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
         Pedido = Pedido.groupby('reduzido').agg({
             'reduzido': 'first',
             'qtdePedida': 'sum'})
+        print('excel True')
         return Pedido
 
 
