@@ -64,8 +64,8 @@ def VendasporSku(plano , aprovado= True, excel = False):
         Pedido['MARCA'] = numpy.where((Pedido['engenharia'].str[:3] == '102') | (Pedido['engenharia'].str[:3] == '202'),
                                         'M.POLLO', 'PACO')
         Pedido['Total Produtos'] = Pedido.groupby('MARCA')['engenharia'].transform('count')
-        Pedido['Contagem'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
-        Pedido['Contagem'] = (100 *(Pedido['Contagem']/Pedido['Total Produtos'])).round(2)
+        Pedido['ABC%'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
+        Pedido['ABC%'] = (100 *(Pedido['Contagem']/Pedido['Total Produtos'])).round(2)
         return Pedido
 
 
