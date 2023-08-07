@@ -76,7 +76,7 @@ def ExplosaoPedidoSku(datainicio, datafinal):
         "select  now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
         "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  where codEmpresa = 1  "
         "and codPedido in ("
-        " select codPedido from Ped.Pedido where codEmpresa = 1  dataEmissao >= '"+datainicio +"' and dataEmissao <= '"+datafinal+"' "
+        " select codPedido from Ped.Pedido where codEmpresa = 1 and  dataEmissao >= '"+datainicio +"' and dataEmissao <= '"+datafinal+"' "
         ")",conn)
     conn.close()
     return df_SkuPedidos
