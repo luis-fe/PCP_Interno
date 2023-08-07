@@ -98,7 +98,7 @@ def ExplosaoPedidoSku(datainicio, datafinal):
         conn)
     df_SkuPedidos = pd.read_sql(
         "select  now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido,"
-        " (select i.nome from cgi.item i where p.codProduto = i.codigo) as nome_red "
+        " (select i.nome from cgi.item i where p.codProduto = i.codigo) as nome_red, "
         "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  p where codEmpresa = 1  "
         "and codPedido in ("
         " select codPedido from Ped.Pedido where codEmpresa = 1 and  dataEmissao >= '"+datainicio +"' and dataEmissao <= '"+datafinal+"' "
