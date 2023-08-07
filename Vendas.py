@@ -25,7 +25,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
     finalVenda = vendas['FimVenda'][0]
     finalVenda = finalVenda[6:] + "-" + finalVenda[3:5] + "-" + finalVenda[:2]
     nomeArquivo = f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
-
+    print(iniVenda)
 
     if iniVenda == '-':
 
@@ -33,7 +33,6 @@ def VendasporSku(plano , aprovado= True, excel = False):
     else:
 
 
-        print(iniVenda)
         if excel == False:
 
             conn = ConexaoCSW.Conexao()
