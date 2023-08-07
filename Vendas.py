@@ -61,9 +61,10 @@ def VendasporSku(plano , aprovado= True, excel = False):
         print('excel True')
         Pedido['engenharia'] = Pedido['engenharia'].astype(str)
         Pedido.sort_values(by='qtdePedida', inplace=True, ascending=False )
-        Pedido['Total Produtos'] = Pedido['engenharia'].count()
         Pedido['MARCA'] = numpy.where((Pedido['engenharia'].str[:3] == '102') | (Pedido['engenharia'].str[:3] == '202'),
                                         'M.POLLO', 'PACO')
+        Pedido['Total Produtos'] = Pedido.groupby('MARCA')['engenharia'].count()
+
 
         return Pedido
 
