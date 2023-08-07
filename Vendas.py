@@ -30,6 +30,9 @@ def VendasporSku(plano , aprovado= True, excel = False):
     if vendas['inicioVenda'][0] == '-':
 
         return pd.DataFrame([{'Status':False, "Mensagem":f'Nao há data de inicio de vendas cadastrado no Plano {plano}'}])
+    if vendas['FimVenda'][0] == '-':
+
+        return pd.DataFrame([{'Status':False, "Mensagem":f'Nao há data de Final de vendas cadastrado no Plano {plano}'}])
     else:
 
 
