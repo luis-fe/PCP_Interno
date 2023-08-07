@@ -57,6 +57,9 @@ def VendasporSku(plano , aprovado= True, excel = False):
             'reduzido': 'first',
             'qtdePedida': 'sum'})
         print('excel True')
+        Pedido['reduzido'] = Pedido['reduzido'].astype(str)
+        Pedido.sort_values(by='reduzido', inplace=True)
+
         return Pedido
 
 
