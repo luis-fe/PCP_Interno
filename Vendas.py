@@ -27,12 +27,10 @@ def VendasporSku(plano , aprovado= True, excel = False):
     nomeArquivo = f'Plano_{plano}_in_{iniVenda}_fim_{finalVenda}.csv'
     print(iniVenda)
 
-    if vendas['inicioVenda'][0] == '-':
+    if vendas['inicioVenda'][0] == '-' or vendas['FimVenda'][0] == '-':
 
         return pd.DataFrame([{'Status':False, "Mensagem":f'Nao há data de inicio de vendas cadastrado no Plano {plano}'}])
-    if vendas['FimVenda'][0] == '-':
 
-        return pd.DataFrame([{'Status':False, "Mensagem":f'Nao há data de Final de vendas cadastrado no Plano {plano}'}])
     else:
 
 
