@@ -92,7 +92,7 @@ def ABC_Plano(plano):
     conn = ConexaoPostgreMPL.conexao()
     query = pd.read_sql('Select  a, b, c from pcp."ABC_Plano" WHERE plano = %s ',conn,params=(plano,))
 
-    return query['a'][0],query['b'][0],query['c'][0]
+    return (query['a'][0] * 100),(query['b'][0]*100),(query['c'][0]*100)
 
 
 
