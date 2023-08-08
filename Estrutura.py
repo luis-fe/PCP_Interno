@@ -15,7 +15,7 @@ def TransformarPlanoColecao(plano):
     return colecao
 
 
-def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0', fornecedor = '0', desceng ='0'):
+def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0', fornecedor = '0', desceng ='0'):
     colecoes = TransformarPlanoColecao(plano)
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
     if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == '0' and fornecedor == '0' and desceng =='0':
@@ -96,8 +96,10 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
             }
         end_time = time.time()
         execution_time = end_time - start_time
+        execution_time = round(execution_time, 2)
         execution_time = str(execution_time)
-        ConexaoCSW.ControleRequisicao('Consultar Estrutura Csw',execution_time)
+
+        ConexaoCSW.ControleRequisicao('Consultar Estrutura Csw',execution_time, client_ip)
         return [data]
 
     else:

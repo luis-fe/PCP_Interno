@@ -162,9 +162,10 @@ def get_Estrutura():
     Excel = data.get('Excel', False)
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
+    client_ip = request.remote_addr
 
 
-    Endereco_det = Estrutura.Estrutura(plano, pagina, itensPag, codEngenharias, str(codMP), nomeComponente, Excel, TamanhoProduto, fornecedor,desproduto)
+    Endereco_det = Estrutura.Estrutura(client_ip,plano, pagina, itensPag, codEngenharias, str(codMP), nomeComponente, Excel, TamanhoProduto, fornecedor,desproduto)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
