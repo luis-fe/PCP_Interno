@@ -1,4 +1,13 @@
 import jaydebeapi
+import pytz
+import datetime
+import ConexaoPostgreMPL
+def obterHoraAtual():
+    fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
+    agora = datetime.datetime.now(fuso_horario)
+    hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
+    return hora_str
+
 def Conexao():
     conn = jaydebeapi.connect(
     'com.intersys.jdbc.CacheDriver',
@@ -7,3 +16,14 @@ def Conexao():
     'CacheDB.jar'
 )
     return conn
+
+
+def ControleRequisicao(nome):
+    conn = ConexaoPostgreMPL.conexao()
+    datahora = obterHoraAtual()
+    insert = 'Insert into pcp."ControleRequisicaoCSW" ' \
+             '(requisicao, data) values (%s , %s)'
+    cursor = conn.cursor()
+    cursor.execute(insert, (nome, nome, datahora,))
+    conn.commit()
+    cursor.close()

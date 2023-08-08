@@ -91,7 +91,7 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
         data = {
             '1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')
             }
-        print('novo')
+        ConexaoCSW.ControleRequisicao('Consultar Estrutura Csw')
         return [data]
 
     else:
