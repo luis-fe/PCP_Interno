@@ -77,6 +77,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
             Pedido = pd.read_csv(nomeArquivo)
             Pedido = Pedido.groupby('engenharia').agg({
                 'engenharia': 'first',
+                'descrica': 'first',
                 'qtdePedida': 'sum'})
             print('excel True')
             Pedido['engenharia'] = Pedido['engenharia'].astype(str)
