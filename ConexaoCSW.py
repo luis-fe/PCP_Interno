@@ -22,7 +22,7 @@ def ControleRequisicao(nome, tempoexecucao):
     conn = ConexaoPostgreMPL.conexao()
     datahora = obterHoraAtual()
     insert = 'Insert into pcp."ControleRequisicaoCSW" ' \
-             '(requisicao, data) values (%s , %s, %s)'
+             '(requisicao, data, tempoexecucao) values (%s , %s, %s)'
     cursor = conn.cursor()
     cursor.execute(insert, (nome, nome, datahora,tempoexecucao,))
     conn.commit()
