@@ -1,4 +1,5 @@
 import math
+import time
 
 import pandas as pd
 import ConexaoCSW
@@ -19,6 +20,8 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
     if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == '0' and fornecedor == '0' and desceng =='0':
         conn = ConexaoCSW.Conexao()
+        start_time = time.time()
+
         estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                 "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
                                 "(select s.corbase from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as corProduto,"
@@ -91,7 +94,10 @@ def Estrutura(plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '
         data = {
             '1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')
             }
-        ConexaoCSW.ControleRequisicao('Consultar Estrutura Csw')
+        end_time = time.time()
+        execution_time = end_time - start_time
+        execution_time = str(execution_time)
+        ConexaoCSW.ControleRequisicao('Consultar Estrutura Csw',execution_time)
         return [data]
 
     else:
