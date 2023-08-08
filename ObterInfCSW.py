@@ -3,7 +3,7 @@ import time
 import pandas as pd
 import ConexaoCSW
 
-def GetColecoes(pagina, itensPag):
+def GetColecoes(pagina, itensPag,client_ip):
     conn = ConexaoCSW.Conexao()
     start_time = time.time()
     contagem = pd.read_sql("select COUNT(c.codcolecao) as cont from tcp.Colecoes c WHERE c.codEmpresa = 1 ", conn)
@@ -28,7 +28,7 @@ def GetColecoes(pagina, itensPag):
     execution_time = end_time - start_time
     execution_time = round(execution_time, 2)
     execution_time = str(execution_time)
-    ConexaoCSW.ControleRequisicao('Consultar Colecoes Csw', execution_time)
+    ConexaoCSW.ControleRequisicao('Consultar Colecoes Csw', execution_time,client_ip)
     return [data]
 def GetTipoNotas(pagina, itensPag):
     conn = ConexaoCSW.Conexao()
