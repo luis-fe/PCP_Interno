@@ -64,6 +64,10 @@ def VendasporSku(plano , aprovado= True, excel = False):
             Pedido = Pedido.groupby('engenharia').agg({
                 'engenharia': 'first',
             'qtdePedida': 'sum'})
+
+            descricao = pd.read_sql('select e.descricao, e.codItem as engenharia from tcp.engenharia e where e.codEmpresa = 1 ')
+            Pedido = pd.merge(Pedido,descricao,on='engenharia',how='left')
+
             conn.close()
             Pedido['Total Produtos'] = Pedido['engenharia'].count()
             return Pedido
