@@ -60,7 +60,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
 
             sku = ExplosaoPedidoSku(iniVenda,finalVenda)
             Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
-            descricao = pd.read_sql("select e.descricao, SUBSTRING (e.codEngenharia, 2,8) as engenharia  from tcp.engenharia e where e.codEmpresa = 1 and codEngenharia not like '6%' ",conn)
+            descricao = pd.read_sql("select distinct e.descricao, SUBSTRING (e.codEngenharia, 2,8) as engenharia  from tcp.engenharia e where e.codEmpresa = 1 and codEngenharia not like '6%' ",conn)
             Pedido['engenharia'] = Pedido['engenharia'].astype(str)
             Pedido = pd.merge(Pedido,descricao,on='engenharia',how='left')
 
@@ -146,6 +146,6 @@ def ExplosaoPedidoSku(datainicio, datafinal):
         "and codPedido in ("
         " select codPedido from Ped.Pedido where codEmpresa = 1 and  dataEmissao >= '"+datainicio +"' and dataEmissao <= '"+datafinal+"' "
         ")",conn)
-    df_SkuPedidos.to_csv('validar.csv')
+
     conn.close()
     return df_SkuPedidos
