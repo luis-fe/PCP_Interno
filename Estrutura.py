@@ -22,7 +22,7 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
         conn = ConexaoCSW.Conexao()
         start_time = time.time()
 
-        estrutura = pd.read_sql("SELECT 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
+        estrutura = pd.read_sql("SELECT now() as dia, 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                 "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
                                 "(select s.corbase from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as corProduto,"
                                 " (select s.situacao from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as situacao,"
@@ -39,7 +39,7 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
                                 "JOIN tcp.DadosGeraisEng d ON cv.codempresa = d.codEmpresa AND cv.codProduto = d.codEngenharia " 
                                 " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+") and cv.codProduto not like '03%' "
                                 " union "
-                                " select DISTINCT 'Padrao' as tipo, d.codColecao, c.codProduto, s.codSortimento , (select tm.descricao from tcp.Tamanhos tm WHERE tm.codEmpresa = t.Empresa  and tm.sequencia = t.codSeqTamanho) as tamanho, "
+                                " select now() as dia, DISTINCT 'Padrao' as tipo, d.codColecao, c.codProduto, s.codSortimento , (select tm.descricao from tcp.Tamanhos tm WHERE tm.codEmpresa = t.Empresa  and tm.sequencia = t.codSeqTamanho) as tamanho, "
                                 "s.corBase, s.situacao, "
                                 " (select i2.codItemPai from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as codMP,"
                                 " (select i2.codCor from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as corComponente, "
