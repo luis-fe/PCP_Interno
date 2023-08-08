@@ -90,9 +90,9 @@ def VendasporSku(plano , aprovado= True, excel = False):
 
 def ABC_Plano(plano):
     conn = ConexaoPostgreMPL.conexao()
-    query = pd.read_sql('Select "%A", "%B", "%C" from pcp."ABC_Plano" WHERE plano = %s ',conn,params=(plano,))
+    query = pd.read_sql('Select "%A" as a, "%B" as b, "%C" as c from pcp."ABC_Plano" WHERE plano = %s ',conn,params=(plano,))
 
-    return query['%A'][0],query['%B'][0],query['%C'][0]
+    return query['a'][0],query['b'][0],query['c'][0]
 
 
 
