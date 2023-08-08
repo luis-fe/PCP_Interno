@@ -24,6 +24,6 @@ def ControleRequisicao(nome, tempoexecucao):
     insert = 'Insert into pcp."ControleRequisicaoCSW" ' \
              '(requisicao, data, tempoexecucao) values (%s , %s, %s)'
     cursor = conn.cursor()
-    cursor.execute(insert, (nome, nome, datahora,tempoexecucao,))
+    cursor.execute(insert, (nome, datahora,tempoexecucao,))
     conn.commit()
     cursor.close()
