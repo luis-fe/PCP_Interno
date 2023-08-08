@@ -1,11 +1,11 @@
 import math
-
+import time
 import pandas as pd
 import ConexaoCSW
 
 def GetColecoes(pagina, itensPag):
     conn = ConexaoCSW.Conexao()
-
+    start_time = time.time()
     contagem = pd.read_sql("select COUNT(c.codcolecao) as cont from tcp.Colecoes c WHERE c.codEmpresa = 1 ", conn)
     pagina = int(pagina)
     itensPag = int(itensPag)
@@ -24,7 +24,10 @@ def GetColecoes(pagina, itensPag):
         '0- Numerero de Paginas':totalPgs,
         '1- Detalhamento da Consulta:': data.to_dict(orient='records')
     }
-    print('novo')
+    end_time = time.time()
+    execution_time = end_time - start_time
+    execution_time = str(execution_time)
+    ConexaoCSW.ControleRequisicao('Consultar Colecoes Csw', execution_time)
     return [data]
 def GetTipoNotas(pagina, itensPag):
     conn = ConexaoCSW.Conexao()
