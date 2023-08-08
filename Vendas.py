@@ -81,6 +81,8 @@ def VendasporSku(plano , aprovado= True, excel = False):
                 'qtdePedida': 'sum'})
             print('excel True')
             Pedido['engenharia'] = Pedido['engenharia'].astype(str)
+            Pedido['qtdePedida'] = Pedido['qtdePedida'].astype(int)
+
             Pedido.sort_values(by='qtdePedida', inplace=True, ascending=False )
             Pedido['MARCA'] = numpy.where((Pedido['engenharia'].str[:3] == '102') | (Pedido['engenharia'].str[:3] == '202'),
                                             'M.POLLO', 'PACO')
