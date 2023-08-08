@@ -89,11 +89,11 @@ def VendasporSku(plano , aprovado= True, excel = False):
             Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
 
             a, b, c = ABC_Plano(plano)
-
+            Pedido['categoria'] = '-'
             Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('POLO', row['descricao'],'POLO' ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA' ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA' ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('POLO', row['descricao'],'POLO',row['categoria'] ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
 
 
 
@@ -156,11 +156,11 @@ def ExplosaoPedidoSku(datainicio, datafinal):
     conn.close()
     return df_SkuPedidos
 
-def Categoria(contem, valorReferencia, valorNovo):
+def Categoria(contem, valorReferencia, valorNovo, categoria):
     if contem in valorReferencia:
         return valorNovo
     else:
-        return valorReferencia
+        return categoria
 
 
 
