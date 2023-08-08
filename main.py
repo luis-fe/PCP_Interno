@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from functools import wraps
 
+import ABC_PLANO
 import AutomacaoSugestaoPedidos
 import ConexaoPostgreMPL
 import Estrutura
@@ -586,6 +587,32 @@ def vendas():
     codigoPlano = str(codigoPlano)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     dados = Vendas.VendasporSku(codigoPlano,aprovado,excel)
+    # Obtém os nomes das colunas
+    column_names = dados.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    end_data = []
+    for index, row in dados.iterrows():
+        end_dict = {}
+        for column_name in column_names:
+            end_dict[column_name] = row[column_name]
+        end_data.append(end_dict)
+    return jsonify(end_data)
+
+@app.route('/pcp/api/EditarABCPlano', methods=['POST'])
+@token_required
+def EditarABCPlano():
+    data = request.get_json()
+    codigoPlano = data.get('plano')
+    a_ = data.get('a', '0')
+    b_ = data.get('b', '0')
+    c_ = data.get('c', '0')
+    c1_ = data.get('c1', '0')
+    c2_ = data.get('c2', '0')
+    c3_ = data.get('c3', '0')
+
+    codigoPlano = str(codigoPlano)
+    # Verifica se a coluna "funcao" está presente nos dados recebidos
+    dados = ABC_PLANO.Editar(a_,b_,c_,c1_,c2_,c3_,codigoPlano)
     # Obtém os nomes das colunas
     column_names = dados.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
