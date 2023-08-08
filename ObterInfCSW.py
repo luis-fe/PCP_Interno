@@ -26,6 +26,7 @@ def GetColecoes(pagina, itensPag):
     }
     end_time = time.time()
     execution_time = end_time - start_time
+    execution_time = round(execution_time, 2)
     execution_time = str(execution_time)
     ConexaoCSW.ControleRequisicao('Consultar Colecoes Csw', execution_time)
     return [data]
