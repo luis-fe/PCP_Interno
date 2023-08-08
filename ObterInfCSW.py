@@ -30,8 +30,9 @@ def GetColecoes(pagina, itensPag,client_ip):
     execution_time = str(execution_time)
     ConexaoCSW.ControleRequisicao('Consultar Colecoes Csw', execution_time,client_ip)
     return [data]
-def GetTipoNotas(pagina, itensPag):
+def GetTipoNotas(pagina, itensPag,client_ip):
     conn = ConexaoCSW.Conexao()
+    start_time = time.time()
 
     contagem = pd.read_sql("select COUNT(c.codigo) as cont from Fat.TipoDeNotaPadrao c ", conn)
     pagina = int(pagina)
@@ -51,7 +52,11 @@ def GetTipoNotas(pagina, itensPag):
         '0- Numerero de Paginas':totalPgs,
         '1- Detalhamento da Consulta:': data.to_dict(orient='records')
     }
-    print('novo')
+    end_time = time.time()
+    execution_time = end_time - start_time
+    execution_time = round(execution_time, 2)
+    execution_time = str(execution_time)
+    ConexaoCSW.ControleRequisicao('Consultar tipoNotas Csw', execution_time, client_ip)
     return [data]
 
 def GetLotesCadastrados(pagina, itensPag):

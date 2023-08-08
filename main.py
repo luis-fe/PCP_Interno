@@ -371,8 +371,10 @@ def get_PesquisaTipoNotass():
     # Obtém o código do usuário e a senha dos parâmetros da URL
     itensPag = request.args.get('itensPag',100)
     pagina = request.args.get('pagina',1)
+    client_ip = request.remote_addr
 
-    Endereco_det = ObterInfCSW.GetTipoNotas(pagina, itensPag)
+
+    Endereco_det = ObterInfCSW.GetTipoNotas(pagina, itensPag,client_ip)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
