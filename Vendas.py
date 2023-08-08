@@ -146,5 +146,6 @@ def ExplosaoPedidoSku(datainicio, datafinal):
         "and codPedido in ("
         " select codPedido from Ped.Pedido where codEmpresa = 1 and  dataEmissao >= '"+datainicio +"' and dataEmissao <= '"+datafinal+"' "
         ")",conn)
+    df_SkuPedidos.to_csv('validar.csv')
     conn.close()
     return df_SkuPedidos
