@@ -6,7 +6,7 @@ import pandas as pd
 
 def Comparacao(a , b, c, valor):
     if valor <= a:
-        return 'A'
+        return 'A⭐⭐⭐'
     elif valor <= b:
         return 'B'
     else:
