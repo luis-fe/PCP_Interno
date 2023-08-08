@@ -60,14 +60,15 @@ def VendasporSku(plano , aprovado= True, excel = False):
 
             sku = ExplosaoPedidoSku(iniVenda,finalVenda)
             Pedido = pd.merge(Pedido,sku,on='codPedido',how='left')
+            descricao = pd.read_sql('select e.descricao, SUBSTRING (e.codEngenharia, 2,8) as engenharia  from tcp.engenharia e where e.codEmpresa = 1 ',conn)
+            Pedido['engenharia'] = Pedido['engenharia'].astype(str)
+            Pedido = pd.merge(Pedido,descricao,on='engenharia',how='left')
+
             Pedido.to_csv(nomeArquivo)
             Pedido = Pedido.groupby('engenharia').agg({
                 'engenharia': 'first',
             'qtdePedida': 'sum'})
 
-            descricao = pd.read_sql('select e.descricao, SUBSTRING (e.codEngenharia, 2,8) as engenharia  from tcp.engenharia e where e.codEmpresa = 1 ',conn)
-            Pedido['engenharia'] = Pedido['engenharia'].astype(str)
-            Pedido = pd.merge(Pedido,descricao,on='engenharia',how='left')
 
             conn.close()
             Pedido['Total Produtos'] = Pedido['engenharia'].count()
