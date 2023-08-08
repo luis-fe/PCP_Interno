@@ -81,10 +81,8 @@ def VendasporSku(plano , aprovado= True, excel = False):
             Pedido['ABC%'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
             Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
 
-            confABC = ABC_Plano(plano)
-            a = confABC["%A"][0]
-            b = confABC["%B"][0]
-            c = confABC["%C"][0]
+            a, b, c = ABC_Plano(plano)
+
             Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
 
 
@@ -93,7 +91,8 @@ def VendasporSku(plano , aprovado= True, excel = False):
 def ABC_Plano(plano):
     conn = ConexaoPostgreMPL.conexao()
     query = pd.read_sql('Select "%A", "%B", "%C" from pcp."ABC_Plano" WHERE plano = %s ',conn,params=(plano,))
-    return query
+
+    return query['%A'][0],query['%B'][0],query['%C'][0]
 
 
 
