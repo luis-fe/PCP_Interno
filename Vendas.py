@@ -65,7 +65,8 @@ def VendasporSku(plano , aprovado= True, excel = False):
                 'engenharia': 'first',
             'qtdePedida': 'sum'})
 
-            descricao = pd.read_sql('select e.descricao, e.codItem as engenharia from tcp.engenharia e where e.codEmpresa = 1 ',conn)
+            descricao = pd.read_sql('select e.descricao, SUBSTRING (e.codEngenharia, 2,8) as engenharia  from tcp.engenharia e where e.codEmpresa = 1 ',conn)
+            Pedido['engenharia'] = Pedido['engenharia'].astype(str)
             Pedido = pd.merge(Pedido,descricao,on='engenharia',how='left')
 
             conn.close()
