@@ -95,6 +95,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
             Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
             Pedido['categoria'] = Pedido.apply(lambda row: Categoria('REGATA', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
             Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BABY', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('SHORT', row['descricao'],'BOARDSHORT',row['categoria']  ), axis=1)
 
             Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
             Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BATA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
