@@ -81,7 +81,7 @@ def VendasporSku(plano , aprovado= True, excel = False):
             Pedido['ABC%'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
             Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
 
-            a, b, c = ABC_Plano(plano)
+            a, b, c = ABC_Plano('3')
 
             Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
 
