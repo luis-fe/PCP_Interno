@@ -4,6 +4,13 @@ import ConexaoPostgreMPL
 import ConexaoCSW
 import pandas as pd
 
+def Comparacao(a , b, c, valor):
+    if valor <= a:
+        return 'A'
+    elif valor <= b:
+        return 'B'
+    else:
+        return 'C'
 
 def TransformarPlanoTipoNota(plano):
     conn = ConexaoPostgreMPL.conexao()
@@ -73,7 +80,24 @@ def VendasporSku(plano , aprovado= True, excel = False):
             Pedido['Total Produtos'] = Pedido.groupby('MARCA')['engenharia'].transform('count')
             Pedido['ABC%'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
             Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
+
+            confABC = ABC_Plano(plano)
+            a = confABC["%A"][0]
+            b = confABC["%B"][0]
+            c = confABC["%C"][0]
+            Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
+
+
             return Pedido
+
+def ABC_Plano(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    query = pd.read_sql('Select "%A", "%B", "%C" from pcp."ABC_Plano" WHERE plano = %s ',conn,params=(plano,))
+    return query
+
+
+
+
 
 
 
