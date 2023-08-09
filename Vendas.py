@@ -67,21 +67,48 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False):
 
             descricao = pd.read_sql("select distinct e.descricao, SUBSTRING (e.codEngenharia, 2,8) as engenharia  from tcp.engenharia e where e.codEmpresa = 1 and codEngenharia not like '6%' and codEngenharia like '%-0%' ",conn)
             Pedido['engenharia'] = Pedido['engenharia'].astype(str)
-            Pedido = pd.merge(Pedido,descricao,on='engenharia',how='left')
 
-            Pedido.to_csv(nomeArquivo)
-            Pedido = Pedido.groupby('engenharia').agg({
-                'engenharia': 'first',
-            'qtdePedida': 'sum'})
-
-
-            conn.close()
-            Pedido['Total Produtos'] = Pedido['engenharia'].count()
             end_time = time.time()
             execution_time = end_time - start_time
             execution_time = round(execution_time, 2)
             execution_time = str(execution_time)
             ConexaoCSW.ControleRequisicao('Consultar Venda SKU Csw', execution_time, client_ip)
+            conn.close()
+            Pedido = pd.merge(Pedido,descricao,on='engenharia',how='left')
+
+            Pedido.to_csv(nomeArquivo)
+            Pedido = Pedido.groupby('engenharia').agg({
+                'engenharia': 'first',
+                'descricao': 'first',
+                'qtdePedida': 'sum'})
+            Pedido['engenharia'] = Pedido['engenharia'].astype(str)
+            Pedido['qtdePedida'] = Pedido['qtdePedida'].astype(int)
+            Pedido['Total Produtos'] = Pedido['engenharia'].count()
+
+
+            Pedido.sort_values(by='qtdePedida', inplace=True, ascending=False )
+            Pedido['MARCA'] = numpy.where((Pedido['engenharia'].str[:3] == '102') | (Pedido['engenharia'].str[:3] == '202'),
+                                            'M.POLLO', 'PACO')
+            Pedido['Total Produtos'] = Pedido.groupby('MARCA')['engenharia'].transform('count')
+            Pedido['ABC%'] = Pedido.groupby('MARCA')['engenharia'].cumcount() + 1
+            Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
+
+            a, b, c = ABC_Plano(plano)
+            Pedido['categoria'] = '-'
+            Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('POLO', row['descricao'],'POLO',row['categoria'] ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('REGATA', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BABY', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('SHORT', row['descricao'],'BOARDSHORT',row['categoria']  ), axis=1)
+
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BATA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('MEIA', row['descricao'],'MEIA',row['categoria']  ), axis=1)
+            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CUECA', row['descricao'],'CUECA',row['categoria']  ), axis=1)
+
+
+
 
             return Pedido
         else:
