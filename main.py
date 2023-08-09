@@ -585,12 +585,14 @@ def vendas():
     codigoPlano = data.get('plano')
     excel = data.get('excel', False)
     aprovado = data.get('aprovado', True)
+    client_ip = request.remote_addr
+
 
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     codigoPlano = str(codigoPlano)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = Vendas.VendasporSku(codigoPlano,aprovado,excel)
+    dados = Vendas.VendasporSku(client_ip,codigoPlano,aprovado,excel)
     # Obtém os nomes das colunas
     column_names = dados.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes

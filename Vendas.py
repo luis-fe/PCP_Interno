@@ -1,4 +1,5 @@
 import numpy
+import time
 
 import ConexaoPostgreMPL
 import ConexaoCSW
@@ -19,7 +20,7 @@ def TransformarPlanoTipoNota(plano):
     conn.close()
     return tiponota
 
-def VendasporSku(plano , aprovado= True, excel = False):
+def VendasporSku(client_ip,plano , aprovado= True, excel = False):
     tiponota = TransformarPlanoTipoNota(plano)
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))
@@ -44,6 +45,8 @@ def VendasporSku(plano , aprovado= True, excel = False):
         if excel == False:
 
             conn = ConexaoCSW.Conexao()
+            start_time = time.time()
+
             # 1- Consulta de Pedidos
             Pedido = pd.read_sql(
                 "SELECT codPedido, codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "
@@ -74,6 +77,12 @@ def VendasporSku(plano , aprovado= True, excel = False):
 
             conn.close()
             Pedido['Total Produtos'] = Pedido['engenharia'].count()
+            end_time = time.time()
+            execution_time = end_time - start_time
+            execution_time = round(execution_time, 2)
+            execution_time = str(execution_time)
+            ConexaoCSW.ControleRequisicao('Consultar Venda SKU Csw', execution_time, client_ip)
+
             return Pedido
         else:
             Pedido = pd.read_csv(nomeArquivo)
