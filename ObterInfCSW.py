@@ -88,6 +88,6 @@ def GetLotesCadastrados(pagina, itensPag,client_ip):
     execution_time = end_time - start_time
     execution_time = round(execution_time, 2)
     execution_time = str(execution_time)
-    ConexaoCSW.ControleRequisicao('Consultar tipoNotas Csw', execution_time, client_ip)
+    ConexaoCSW.ControleRequisicao('Consultar Lotes Csw', execution_time, client_ip)
     return [data]
 
