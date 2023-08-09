@@ -2,6 +2,8 @@ import pandas as pd
 import requests
 import ConexaoCSW
 import json
+import time
+
 
 
 def ObtendoPedidos():
@@ -64,8 +66,10 @@ def ObtendoEmbarqueUnico():
     return df_Entregas_Solicitadas
 
 
-def AplicandoAtualizacao():
+def AplicandoAtualizacao(client_ip):
     dataframe = ObtendoPedidos()
+    start_time = time.time()
+
     url = "https://192.168.0.25/api/customci/v10/atualizarSugestaoFaturamento"
     token = "eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJsdWlzLmZlcm5hbmRvIiwiY3N3VG9rZW4iOiJsU3NVYXNCTyIsImRiTmFtZVNwYWNlIjoiY29uc2lzdGVtIiwiaXNzIjoiYXBpIiwiYXVkIjoi" \
             "YXBpIiwiZXhwIjoxODQ3ODg3Nzg3fQ.xRw6vP87ROIFCs5d-6T5T6LNpUf-bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7AQ"
@@ -92,10 +96,18 @@ def AplicandoAtualizacao():
     # Verifique o resultado da requisição
     if response.status_code == 200:  # Ou qualquer outro código de sucesso que a API retorne
         # Converter JSON para um dicionário Python
+
         dados_dict = response.json()
 
         # Criar o DataFrame
         df = pd.json_normalize(dados_dict)
+
+        end_time = time.time()
+        execution_time = end_time - start_time
+        execution_time = round(execution_time, 2)
+        execution_time = str(execution_time)
+
+        ConexaoCSW.ControleRequisicao('Automacao Api da Sugestao Automatica Csw',execution_time, client_ip)
         # Explodir os valores das listas em colunas separadas
         df_exploded = pd.DataFrame({
             'pedidoCompleto': df['pedidoCompleto'].explode().reset_index(drop=True),
@@ -116,6 +128,8 @@ def AplicandoAtualizacao():
         df_melted = df_melted[df_melted['pedido'] != '-']
 
         df_melted = pd.merge(df_melted,dataframe,on='pedido')
+
+
 
         return df_melted
     else:

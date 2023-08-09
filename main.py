@@ -554,7 +554,9 @@ def get_VendasPlano(codigoPlano):
 
 @app.route('/pcp/api/AtualizarAutomacao', methods=['GET'])
 def get_AtualizarAutomacao():
-    usuarios = AutomacaoSugestaoPedidos.AplicandoAtualizacao()
+    client_ip = request.remote_addr
+
+    usuarios = AutomacaoSugestaoPedidos.AplicandoAtualizacao(client_ip)
     # Obtém os nomes das colunas
     column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
