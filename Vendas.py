@@ -143,7 +143,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False):
             Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CUECA', row['descricao'],'CUECA',row['categoria']  ), axis=1)
             Pedido['ABC%Categ'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].cumcount() + 1
             Pedido['Total ProdutosCategoria'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].transform('count')
-            Pedido['ABC%Categ%'] = (100 *(Pedido['ABC%Categ%']/Pedido['Total ProdutosCategoria'])).round(2)
+            Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
 
 
 
