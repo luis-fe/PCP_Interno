@@ -59,9 +59,9 @@ def GetTipoNotas(pagina, itensPag,client_ip):
     ConexaoCSW.ControleRequisicao('Consultar tipoNotas Csw', execution_time, client_ip)
     return [data]
 
-def GetLotesCadastrados(pagina, itensPag):
+def GetLotesCadastrados(pagina, itensPag,client_ip):
     conn = ConexaoCSW.Conexao()
-
+    start_time = time.time()
     contagem = pd.read_sql("select COUNT(l.codLote) as cont   from tcl.Lote l "
                            " WHERE l.codEmpresa = 1 and l.descricao like '%PROJ%' OR l.descricao like '%PREV%'"
                            " order by l.codLote desc", conn)
@@ -84,6 +84,10 @@ def GetLotesCadastrados(pagina, itensPag):
         '0- Numerero de Paginas':totalPgs,
         '1- Detalhamento da Consulta:': data.to_dict(orient='records')
     }
-    print('novo')
+    end_time = time.time()
+    execution_time = end_time - start_time
+    execution_time = round(execution_time, 2)
+    execution_time = str(execution_time)
+    ConexaoCSW.ControleRequisicao('Consultar tipoNotas Csw', execution_time, client_ip)
     return [data]
 
