@@ -23,8 +23,11 @@ def Editar(a, b, c, c1, c2, c3, plano):
     return pd.DataFrame([{'status':True,'Mensagem':'Salvo com sucesso !'}])
 
 
-
-
+def getABCPlano(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    query = pd.read_sql('Select * from pcp."ABC_Plano" WHERE plano = %s ',conn,params=(plano,))
+    conn.close()
+    return query
 
 
 def ABC_Plano(plano):
