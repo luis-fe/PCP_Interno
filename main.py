@@ -578,7 +578,7 @@ def get_teste(Plano):
         OP_data.append(op_dict)
     return jsonify(OP_data)
 
-@app.route('/pcp/api/VendasPlano', methods=['POST'])
+@app.route('/pcp/api/RankingABCVendas', methods=['POST'])
 @token_required
 def vendas():
     data = request.get_json()
