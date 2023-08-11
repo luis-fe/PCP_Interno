@@ -343,7 +343,7 @@ def update_Plano(codigo):
     if codigo2 == 0:
         return jsonify({'message': f'Plano {codigo}  nao existe! ', 'Status': False})
     else:
-        avaliar = CalendarioProducao.Avaliar_ExisteFeriadoPadrao()
+        avaliar = CalendarioProducao.Avaliar_ExisteFeriadoPadrao(codigo)
         if avaliar == True:
             CalendarioProducao.InserirPadrao_FeriadosPlano(codigo)
         else:
