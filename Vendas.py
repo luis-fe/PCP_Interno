@@ -101,26 +101,30 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
             Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
 
             a, b, c = ABC_Plano(plano)
-            Pedido['categoria'] = '-'
-            Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('POLO', row['descricao'],'POLO',row['categoria'] ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('REGATA', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BABY', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('SHORT', row['descricao'],'BOARDSHORT',row['categoria']  ), axis=1)
+            if a == False:
+                return pd.DataFrame([{'Status':False, "Mensagem":"Nao foi encontrado ABC para o Plano"}])
+            else:
 
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BATA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('MEIA', row['descricao'],'MEIA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CUECA', row['descricao'],'CUECA',row['categoria']  ), axis=1)
-            Pedido['ABC%Categ'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].cumcount() + 1
-            Pedido['Total ProdutosCategoria'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].transform('count')
-            Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
-            Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
+                Pedido['categoria'] = '-'
+                Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('POLO', row['descricao'],'POLO',row['categoria'] ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('REGATA', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BABY', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('SHORT', row['descricao'],'BOARDSHORT',row['categoria']  ), axis=1)
+
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BATA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('MEIA', row['descricao'],'MEIA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CUECA', row['descricao'],'CUECA',row['categoria']  ), axis=1)
+                Pedido['ABC%Categ'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].cumcount() + 1
+                Pedido['Total ProdutosCategoria'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].transform('count')
+                Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
+                Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
 
 
 
-            return Pedido
+                return Pedido
         else:
             Pedido = pd.read_csv(nomeArquivo)
             Pedido = Pedido.groupby('engenharia').agg({
@@ -140,40 +144,41 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
             Pedido['ABC%'] = (100 *(Pedido['ABC%']/Pedido['Total Produtos'])).round(2)
 
             a, b, c = ABC_Plano(plano)
-            Pedido['categoria'] = '-'
-            Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('POLO', row['descricao'],'POLO',row['categoria'] ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('REGATA', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BABY', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('SHORT', row['descricao'],'BOARDSHORT',row['categoria']  ), axis=1)
+            if a == False:
+                return pd.DataFrame([{'Status':False, "Mensagem":"Nao foi encontrado ABC para o Plano"}])
+            else:
+                Pedido['categoria'] = '-'
+                Pedido['classABC'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%']), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('POLO', row['descricao'],'POLO',row['categoria'] ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('TSHIRT', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('REGATA', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BABY', row['descricao'],'CAMISETA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('SHORT', row['descricao'],'BOARDSHORT',row['categoria']  ), axis=1)
 
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BATA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('MEIA', row['descricao'],'MEIA',row['categoria']  ), axis=1)
-            Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CUECA', row['descricao'],'CUECA',row['categoria']  ), axis=1)
-            Pedido['ABC%Categ'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].cumcount() + 1
-            Pedido['Total ProdutosCategoria'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].transform('count')
-            Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
-            Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
-            # Aqui Verifico se tem paginamento
-            Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido,'engenharia')
-            Pedido.fillna('-', inplace=True)
-
-
-
-
-
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CAMISA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('BATA', row['descricao'],'CAMISA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('MEIA', row['descricao'],'MEIA',row['categoria']  ), axis=1)
+                Pedido['categoria'] = Pedido.apply(lambda row: Categoria('CUECA', row['descricao'],'CUECA',row['categoria']  ), axis=1)
+                Pedido['ABC%Categ'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].cumcount() + 1
+                Pedido['Total ProdutosCategoria'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].transform('count')
+                Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
+                Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
+                # Aqui Verifico se tem paginamento
+                Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido,'engenharia')
+                Pedido.fillna('-', inplace=True)
 
 
-
-            return Pedido
+                return Pedido
 
 def ABC_Plano(plano):
     conn = ConexaoPostgreMPL.conexao()
     query = pd.read_sql('Select  a, b, c from pcp."ABC_Plano" WHERE plano = %s ',conn,params=(plano,))
+    if query.empty:
 
-    return (query['a'][0] * 100),(query['b'][0]*100),(query['c'][0]*100)
+        return False, False, False
+    else:
+
+        return (query['a'][0] * 100),(query['b'][0]*100),(query['c'][0]*100)
 
 
 
