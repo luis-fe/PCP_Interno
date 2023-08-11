@@ -82,7 +82,9 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False):
             Pedido = Pedido.groupby('engenharia').agg({
                 'engenharia': 'first',
                 'descricao': 'first',
-                'qtdePedida': 'sum'})
+                'qtdePedida': 'sum',
+                'qtdeFaturada': 'sum'
+            })
             Pedido['engenharia'] = Pedido['engenharia'].astype(str)
             Pedido['qtdePedida'] = Pedido['qtdePedida'].astype(int)
             Pedido['Total Produtos'] = Pedido['engenharia'].count()
@@ -122,7 +124,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False):
                 'engenharia': 'first',
                 'descricao': 'first',
                 'qtdePedida': 'sum',
-                'codCliente':'count'})
+                'qtdeFaturada':'sum'})
             print('excel True')
             Pedido['engenharia'] = Pedido['engenharia'].astype(str)
             Pedido['qtdePedida'] = Pedido['qtdePedida'].astype(int)
