@@ -5,6 +5,9 @@ import ConexaoPostgreMPL
 import ConexaoCSW
 import pandas as pd
 
+import FuncoesGlobais
+
+
 def Comparacao(a , b, c, valor):
     if valor <= a:
         return 'A⭐'
@@ -20,7 +23,7 @@ def TransformarPlanoTipoNota(plano):
     conn.close()
     return tiponota
 
-def VendasporSku(client_ip,plano , aprovado= True, excel = False):
+def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itensPag=0 ):
     tiponota = TransformarPlanoTipoNota(plano)
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))
@@ -153,6 +156,9 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False):
             Pedido['Total ProdutosCategoria'] = Pedido.groupby(['MARCA','categoria'])['engenharia'].transform('count')
             Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
             Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
+            # Aqui Verifico se tem paginamento
+            Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido)
+            Pedido.fillna('-', inplace=True)
 
 
 
