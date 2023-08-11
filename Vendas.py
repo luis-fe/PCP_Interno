@@ -157,7 +157,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
             Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
             Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
             # Aqui Verifico se tem paginamento
-            Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido)
+            Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido,'engenharia')
             Pedido.fillna('-', inplace=True)
 
 

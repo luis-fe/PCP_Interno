@@ -1,9 +1,9 @@
 import math
 
 
-def TemPaginamento(pagina, itensPag, dataframe):
+def TemPaginamento(pagina, itensPag, dataframe, coluna_tamanho):
     if pagina != 0:
-        totalPaginas = dataframe['03- codProduto'].size/itensPag
+        totalPaginas = dataframe[coluna_tamanho].size/itensPag
         totalPaginas = math.ceil(totalPaginas)
         totalPaginas = int(totalPaginas)
         final = pagina * itensPag
