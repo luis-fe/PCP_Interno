@@ -16,7 +16,7 @@ def Editar(a, b, c, c1, c2, c3, plano):
 
     cursor.execute(update,(a2, b2, c2, plano,))
 
-    cursor.commit()
+    conn.commit()
     cursor.close()
     conn.close()
 
