@@ -1,7 +1,73 @@
+import pandas as pd
+import datetime
+
 import ConexaoPostgreMPL
 
 
+def InserirPadrao_FeriadosPlano(plano):
+    feriados = PlanilhaFeriados(plano)
+    if feriados == False:
+        return False
+    else:
 
-def Inserir_FasePlano():
+        conn = ConexaoPostgreMPL.conexao()
+        query = 'insert into (data, "descricaoFeriado","plano") values (%s, %s, s%) ' \
+                'where plano = %s'
+        cursor = conn.cursor()
+
+        for i in range(feriados['data'].size):
+
+            datai = feriados['data'][i]
+            descricao = feriados['descricao'][i]
+            cursor.execute(query,(datai,descricao,plano,))
+            conn.commit()
+
+        cursor.close()
+        conn.close()
+        return True
+
+
+
+
+def PlanilhaFeriados(plano):
+    data_inicial , data_final = PesquisaPlano(plano)
+    if data_inicial == False:
+        return False
+    else:
+        feriados = pd.read_csv('Feriados.csv',delimiter=';')
+        feriados['data']  = pd.to_datetime(feriados['data'])
+        feriados = feriados[(feriados['data'] >= data_inicial) & (feriados['data'] <= data_final)]
+        feriados = feriados.reset_index(drop=True)
+    return feriados
+
+
+
+def PesquisaPlano (plano):
     conn = ConexaoPostgreMPL.conexao()
-    query = ''
+    plano_df = pd.read_sql('select "inicioVenda", "finalFat" from pcp."Plano" '
+                        'where codigo = %s', conn,params=(plano,))
+    conn.close()
+    plano_df.fillna('-', inplace=True)
+
+    if plano_df['inicioVenda'][0] =='-' or plano_df['finalFat'][0] =='-':
+        return False, False
+    else:
+
+        # Converter as colunas para o formato de data
+        data_inicial = pd.to_datetime(plano_df['inicioVenda'][0]).date()
+        finalFat = pd.to_datetime(plano_df['finalFat'][0]).date()
+
+
+        return data_inicial, finalFat
+
+def Avaliar_ExisteFeriadoPadrao(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    plano_df = pd.read_sql('select * from pcp."CadastroFeriados" '
+                           'where plano = %s', conn, params=(plano,))
+    conn.close()
+
+    if plano_df.empty:
+        return True
+    else:
+        return False
+

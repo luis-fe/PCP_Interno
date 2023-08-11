@@ -6,6 +6,7 @@ from functools import wraps
 
 import ABC_PLANO
 import AutomacaoSugestaoPedidos
+import CalendarioProducao
 import ConexaoPostgreMPL
 import Estrutura
 import ObterInfCSW
@@ -299,6 +300,7 @@ def criar_Plano():
 
     # inserir o novo usuário no banco de dados
     c, c2, c3, c4, c5, c6 = Plano.ConsultarPlano(codigo)
+
     if c != 0:
         return jsonify({'message': f'Plano {codigo}-{descricao} ja existe', 'status':False}), 201
     else:
@@ -341,6 +343,11 @@ def update_Plano(codigo):
     if codigo2 == 0:
         return jsonify({'message': f'Plano {codigo}  nao existe! ', 'Status': False})
     else:
+        avaliar = CalendarioProducao.Avaliar_ExisteFeriadoPadrao()
+        if avaliar == True:
+            CalendarioProducao.InserirPadrao_FeriadosPlano(codigo)
+        else:
+            print('segue o baile')
         Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
         return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
 
