@@ -6,7 +6,7 @@ import ConexaoPostgreMPL
 
 def InserirPadrao_FeriadosPlano(plano):
     feriados = PlanilhaFeriados(plano)
-    if feriados == False:
+    if feriados.empty:
         return False
     else:
 
@@ -32,7 +32,7 @@ def InserirPadrao_FeriadosPlano(plano):
 def PlanilhaFeriados(plano):
     data_inicial , data_final = PesquisaPlano(plano)
     if data_inicial == False:
-        return False
+        return pd.DataFrame([{}])
     else:
         feriados = pd.read_csv('Feriados.csv',delimiter=';')
         feriados['data']  = pd.to_datetime(feriados['data'])
