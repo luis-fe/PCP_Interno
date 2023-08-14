@@ -169,7 +169,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
                 Pedido = TemFiltro(engenharia, Pedido, 'engenharia')
                 Pedido = TemFiltro(descricao.upper(), Pedido, 'descricao')
                 Pedido = TemFiltro(categoria.upper(), Pedido, 'categoria')
-                Pedido = TemFiltro(categoria.upper(), Pedido, 'MARCA')
+                Pedido = TemFiltro(MARCA.upper(), Pedido, 'MARCA')
 
                 Pedido.fillna('-', inplace=True)
 
