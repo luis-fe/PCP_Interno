@@ -45,7 +45,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
     else:
 
 
-        if pagina ==0 and itensPag ==0 and engenharia == '0'and descricao == '0' and categoria == '0' and MARCA == '0':
+        if excel == False and pagina ==0 and itensPag ==0 and engenharia == '0'and descricao == '0' and categoria == '0' and MARCA == '0':
 
             conn = ConexaoCSW.Conexao()
             start_time = time.time()
@@ -252,3 +252,10 @@ def TemFiltro(nomedofiltro,dataframe, coluna):
         dataframe = dataframe.reset_index(drop=True)
         print(coluna)
         return dataframe
+
+def Detalha_EngenhariaABC(engenharias, nomeArquivo):
+    dataframe = pd.read_csv(nomeArquivo)
+    dataframe = TemFiltro(engenharias, dataframe, 'engenharia')
+
+
+
