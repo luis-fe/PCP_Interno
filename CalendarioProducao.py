@@ -48,6 +48,9 @@ def PesquisaPlano (plano):
                         'where codigo = %s', conn,params=(plano,))
     conn.close()
     plano_df.fillna('-', inplace=True)
+    plano_df['inicioVenda'] = pd.to_datetime(plano_df['inicioVenda'], format='%d/%m/%Y')
+    plano_df['finalFat'] = pd.to_datetime(plano_df['finalFat'], format='%d/%m/%Y')
+
 
     if plano_df['inicioVenda'][0] =='-' or plano_df['finalFat'][0] =='-':
         return False, False
