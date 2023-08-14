@@ -285,5 +285,8 @@ def DuracaoPlano(plano):
 
     return pd.DataFrame([{'semana':semanas}])
 
-
+def ConsultarLotesPlanos():
+    conn = ConexaoPostgreMPL.conexao()
+    consulta = pd.read_sql('select distinct lote, plano from pcp."LoteporPlano"',conn)
+    return consulta
 
