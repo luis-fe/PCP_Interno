@@ -38,7 +38,7 @@ def PlanilhaFeriados(plano):
         feriados['data']  = pd.to_datetime(feriados['data'])
         feriados = feriados[(feriados['data'] >= data_inicial) & (feriados['data'] <= data_final)]
         feriados = feriados.reset_index(drop=True)
-    return feriados
+        return feriados
 
 
 
