@@ -124,7 +124,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
 
 
 
-                return Pedido
+                return Pedido, '0'
         else:
             Pedido = pd.read_csv(nomeArquivo)
             Pedido = Pedido.groupby('engenharia').agg({
@@ -174,7 +174,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
                 Pedido.fillna('-', inplace=True)
 
 
-                return Pedido
+                return Pedido, nomeArquivo
 
 def ABC_Plano(plano):
     conn = ConexaoPostgreMPL.conexao()
@@ -254,8 +254,19 @@ def TemFiltro(nomedofiltro,dataframe, coluna):
         return dataframe
 
 def Detalha_EngenhariaABC(engenharias, nomeArquivo):
-    dataframe = pd.read_csv(nomeArquivo)
-    dataframe = TemFiltro(engenharias, dataframe, 'engenharia')
+    df = pd.read_csv(nomeArquivo)
+    df = df[df['engenharia'].isin(engenharias)]
+    df = df.groupby(['engenharia','codPedido']).agg({
+        'engenharia': 'first',
+        'codPedido': 'first',
+        'descricao': 'first',
+        'qtdePedida': 'sum',
+        'qtdeFaturada': 'sum'})
+    return df
+
+
+
+
 
 
 
