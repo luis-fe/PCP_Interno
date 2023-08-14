@@ -345,11 +345,14 @@ def update_Plano(codigo):
     else:
         avaliar = CalendarioProducao.Avaliar_ExisteFeriadoPadrao(codigo)
         if avaliar == True:
+            Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
             CalendarioProducao.InserirPadrao_FeriadosPlano(codigo)
+            return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
+
         else:
             print('segue o baile')
-        Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
-        return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
+            Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
+            return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
 @token_required
