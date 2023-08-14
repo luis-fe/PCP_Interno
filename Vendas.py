@@ -259,6 +259,7 @@ def Detalha_EngenhariaABC(engenharias, nomeArquivo):
     df = df.groupby(['engenharia','codPedido']).agg({
         'engenharia': 'first',
         'codPedido': 'first',
+        'dataEmissao':'first',
         'dataPrevFat':'first',
         'descricao': 'first',
         'qtdePedida': 'sum',
