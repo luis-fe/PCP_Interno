@@ -167,8 +167,8 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
                 Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido,'engenharia')
                 # Aqui verifico se tem filtros
                 Pedido = TemFiltro(engenharia, Pedido, 'engenharia')
-                Pedido = TemFiltro(descricao, Pedido, 'descricao')
-                Pedido = TemFiltro(categoria, Pedido, 'categoria')
+                Pedido = TemFiltro(descricao.upper(), Pedido, 'descricao')
+                Pedido = TemFiltro(categoria.upper(), Pedido, 'categoria')
 
                 Pedido.fillna('-', inplace=True)
 
