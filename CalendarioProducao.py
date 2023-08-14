@@ -15,10 +15,7 @@ def InserirPadrao_FeriadosPlano(plano):
         cursor = conn.cursor()
 
         for i in range(feriados['data'].size):
-
-            datai = feriados['data'][i]
-            datai = datai.split()[0]
-
+            datai = feriados['data'][i].date()  # Convertendo Timestamp para date
             descricao = feriados['descricao'][i]
             cursor.execute(query,(datai,descricao,plano))
             conn.commit()
