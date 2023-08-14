@@ -73,3 +73,11 @@ def Avaliar_ExisteFeriadoPadrao(plano):
     else:
         return False
 
+def Get_feriados(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    plano_df = pd.read_sql('select * from pcp."CadastroFeriados" '
+                           'where plano = %s', conn, params=(plano,))
+    conn.close()
+
+    return plano_df
+
