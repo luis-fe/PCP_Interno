@@ -23,7 +23,7 @@ def TransformarPlanoTipoNota(plano):
     conn.close()
     return tiponota
 
-def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itensPag=0, engenharia = '0', descricao = '0', categoria = '0', marca = '0' ):
+def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itensPag=0, engenharia = '0', descricao = '0', categoria = '0', MARCA = '0' ):
     tiponota = TransformarPlanoTipoNota(plano)
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))
@@ -45,7 +45,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
     else:
 
 
-        if excel == False and pagina ==0 and itensPag ==0 and engenharia == '0'and descricao == '0' and categoria == '0':
+        if pagina ==0 and itensPag ==0 and engenharia == '0'and descricao == '0' and categoria == '0' and MARCA == '0':
 
             conn = ConexaoCSW.Conexao()
             start_time = time.time()
@@ -169,6 +169,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
                 Pedido = TemFiltro(engenharia, Pedido, 'engenharia')
                 Pedido = TemFiltro(descricao.upper(), Pedido, 'descricao')
                 Pedido = TemFiltro(categoria.upper(), Pedido, 'categoria')
+                Pedido = TemFiltro(categoria.upper(), Pedido, 'MARCA')
 
                 Pedido.fillna('-', inplace=True)
 
