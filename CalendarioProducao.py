@@ -59,6 +59,7 @@ def PesquisaPlano (plano):
         # Converter as colunas para o formato de data
         data_inicial = pd.to_datetime(plano_df['inicioVenda'][0]).date()
         finalFat = pd.to_datetime(plano_df['finalFat'][0]).date()
+        print(plano_df.dtypes)
 
 
         return data_inicial, finalFat
