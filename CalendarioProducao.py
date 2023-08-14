@@ -11,7 +11,7 @@ def InserirPadrao_FeriadosPlano(plano):
     else:
 
         conn = ConexaoPostgreMPL.conexao()
-        query = 'insert into (data, "descricaoFeriado","plano") values (%s, %s, s% )'
+        query = 'insert into "CadastroFeriados" (data, "descricaoFeriado","plano") values (%s, %s, s% )'
         cursor = conn.cursor()
 
         for i in range(feriados['data'].size):
