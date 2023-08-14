@@ -599,6 +599,9 @@ def vendas():
     codigoPlano = data.get('plano')
     excel = data.get('excel', False)
     aprovado = data.get('aprovado', True)
+    engenharia = data.get('engenharia', '0')
+    descricao = data.get('descricao', '0')
+    categoria = data.get('categoria', '0')
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     client_ip = request.remote_addr
@@ -608,7 +611,7 @@ def vendas():
     data = request.get_json()
     codigoPlano = str(codigoPlano)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = Vendas.VendasporSku(client_ip,codigoPlano,aprovado,excel,pagina,itensPag)
+    dados = Vendas.VendasporSku(client_ip,codigoPlano,aprovado,excel,pagina,itensPag, engenharia, descricao , categoria)
     # Obtém os nomes das colunas
     column_names = dados.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes

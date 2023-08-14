@@ -23,7 +23,7 @@ def TransformarPlanoTipoNota(plano):
     conn.close()
     return tiponota
 
-def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itensPag=0 ):
+def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itensPag=0, engenharia = '0', descricao = '0', categoria = '0', marca = '0' ):
     tiponota = TransformarPlanoTipoNota(plano)
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))
@@ -45,7 +45,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
     else:
 
 
-        if excel == False and pagina ==0 and itensPag ==0:
+        if excel == False and pagina ==0 and itensPag ==0 and engenharia == '0'and descricao == '0' and categoria == '0':
 
             conn = ConexaoCSW.Conexao()
             start_time = time.time()
@@ -165,6 +165,11 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
                 Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
                 # Aqui Verifico se tem paginamento
                 Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido,'engenharia')
+                # Aqui verifico se tem filtros
+                Pedido = TemFiltro(engenharia, Pedido, 'engenharia')
+                Pedido = TemFiltro(descricao, Pedido, 'descricao')
+                Pedido = TemFiltro(categoria, Pedido, 'categoria')
+
                 Pedido.fillna('-', inplace=True)
 
 
@@ -237,3 +242,12 @@ def Categoria(contem, valorReferencia, valorNovo, categoria):
 
 
 
+def TemFiltro(nomedofiltro,dataframe, coluna):
+    if nomedofiltro == '0':
+        estrutura = dataframe
+        return estrutura
+    else:
+        dataframe = dataframe[dataframe[coluna].str.contains(nomedofiltro)]
+        dataframe = dataframe.reset_index(drop=True)
+        print(coluna)
+        return dataframe
