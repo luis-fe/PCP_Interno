@@ -17,6 +17,8 @@ def InserirPadrao_FeriadosPlano(plano):
         for i in range(feriados['data'].size):
 
             datai = feriados['data'][i]
+            datai = datai.split()[0]
+
             descricao = feriados['descricao'][i]
             cursor.execute(query,(datai,descricao,plano))
             conn.commit()
