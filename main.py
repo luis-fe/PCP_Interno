@@ -46,21 +46,7 @@ def TelaPrincipal():
 @app.route('/TelaUsuarios')
 def TelaUsuarios():
     return render_template('TelaUsuarios.html')
-@app.route('/pcp/api/Usuarios', methods=['GET'])
-@token_required
-def get_Usuarios():
-    usuarios = Usuarios.ObterUsuarios()
-    # Obtém os nomes das colunas
-    # Obtém os nomes das colunas
-    column_names = usuarios.columns
-    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
-    OP_data = []
-    for index, row in usuarios.iterrows():
-        op_dict = {}
-        for column_name in column_names:
-            op_dict[column_name] = row[column_name]
-        OP_data.append(op_dict)
-    return jsonify(OP_data)
+
 @app.route('/pcp/api/UsuarioSenha', methods=['POST'])
 @token_required
 def get_UsuarioSenha():
