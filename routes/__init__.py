@@ -7,6 +7,7 @@ routes_blueprint = Blueprint('routes', __name__)
 from .usuarios_routes import usuarios_routes
 from .plano_routes import plano_routes
 from .IntegracaoBI_routes import integracaoBI
+from .metaPlano_routes import metaPlano
 
 # Importe mais arquivos de rotas conforme necessário
 
@@ -14,3 +15,4 @@ from .IntegracaoBI_routes import integracaoBI
 routes_blueprint.register_blueprint(usuarios_routes)
 routes_blueprint.register_blueprint(plano_routes)
 routes_blueprint.register_blueprint(integracaoBI)
+routes_blueprint.register_blueprint(metaPlano)
