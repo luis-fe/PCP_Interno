@@ -1,7 +1,6 @@
 import pandas as pd
 import requests
 import ConexaoCSW
-import json
 import time
 
 
@@ -107,7 +106,7 @@ def AplicandoAtualizacao(client_ip):
         execution_time = round(execution_time, 2)
         execution_time = str(execution_time)
 
-        ConexaoCSW.ControleRequisicao('Automacao Api da Sugestao Automatica Csw',execution_time, client_ip)
+        ConexaoCSW.ControleRequisicao('Automacao Api da Sugestao Automatica Csw', execution_time, client_ip)
         # Explodir os valores das listas em colunas separadas
         df_exploded = pd.DataFrame({
             'pedidoCompleto': df['pedidoCompleto'].explode().reset_index(drop=True),

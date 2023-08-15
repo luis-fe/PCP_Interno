@@ -3,6 +3,7 @@ import time
 import pandas as pd
 import ConexaoCSW
 
+
 def GetColecoes(pagina, itensPag,client_ip):
     conn = ConexaoCSW.Conexao()
     start_time = time.time()
@@ -28,7 +29,7 @@ def GetColecoes(pagina, itensPag,client_ip):
     execution_time = end_time - start_time
     execution_time = round(execution_time, 2)
     execution_time = str(execution_time)
-    ConexaoCSW.ControleRequisicao('Consultar Colecoes Csw', execution_time,client_ip)
+    ConexaoCSW.ControleRequisicao('Consultar Colecoes Csw', execution_time, client_ip)
     return [data]
 def GetTipoNotas(pagina, itensPag,client_ip):
     conn = ConexaoCSW.Conexao()

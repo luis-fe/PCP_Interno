@@ -4,12 +4,9 @@ import pandas as pd
 import os
 from routes import routes_blueprint
 from functools import wraps
-import ABC_PLANO
+from models import ABC_PLANO, CalendarioProducao, Estrutura
 import AutomacaoSugestaoPedidos
-import CalendarioProducao
-import Estrutura
 import ObterInfCSW
-import Plano
 import Vendas
 
 app = Flask(__name__)
@@ -66,7 +63,7 @@ def get_Estrutura():
     client_ip = request.remote_addr
 
 
-    Endereco_det = Estrutura.Estrutura(client_ip,plano, pagina, itensPag, codEngenharias, str(codMP), nomeComponente, Excel, TamanhoProduto, fornecedor,desproduto)
+    Endereco_det = Estrutura.Estrutura(client_ip, plano, pagina, itensPag, codEngenharias, str(codMP), nomeComponente, Excel, TamanhoProduto, fornecedor, desproduto)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
@@ -104,33 +101,6 @@ def DataFrame(item, item2):
 
     return df
 
-@app.route('/pcp/api/Plano/<string:codigo>', methods=['POST'])
-@token_required
-def update_Plano(codigo):
-
-    # Obtém os dados do corpo da requisição (JSON)
-    data = request.get_json()
-    codigo = str(codigo)
-    descricao = data.get('descricao', '0')
-    inicioVenda = data.get('inicioVenda', '0')
-    finalVenda = data.get('finalVenda', '0')
-    inicioFaturamento = data.get('inicioFaturamento', '0')
-    finalFaturamento = data.get('finalFaturamento', '0')
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    codigo2 = Plano.ConsultarPlano(codigo)
-    if codigo2 == 0:
-        return jsonify({'message': f'Plano {codigo}  nao existe! ', 'Status': False})
-    else:
-        avaliar = CalendarioProducao.Avaliar_ExisteFeriadoPadrao(codigo)
-        if avaliar == True:
-            Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
-            CalendarioProducao.InserirPadrao_FeriadosPlano(codigo)
-            return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
-
-        else:
-            print('segue o baile')
-            Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
-            return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
 @token_required
@@ -199,130 +169,9 @@ def get_PesquisaLotes():
 
     return jsonify(end_data)
 
-@app.route('/pcp/api/ColecaoPlano/<string:codigoplano>', methods=['PUT'])
-@token_required
-def criar_PlanoColecao(codigoplano):
-    # Obtenha os dados do corpo da requisição
-    novo_usuario = request.get_json()
-    # Extraia os valores dos campos do novo usuário
 
-    codcolecao = novo_usuario.get('codcolecao')
-    nomecolecao = novo_usuario.get('nomecolecao')
 
-    # inserir o novo usuário no banco de dados
-    c = Plano.InserirColecaoNoPlano(codigoplano,codcolecao,nomecolecao)
-    if c == 0:
-        return jsonify({'message': f'Plano {codigoplano} ou {codcolecao} ja existem', 'status':False})
-    else:
 
-        # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Colecao {codcolecao} incluida no plano {codigoplano} com sucesso', 'status':True})
-@app.route('/pcp/api/TipoNotaPlano/<string:codigoplano>', methods=['PUT'])
-@token_required
-def criar_PlanoTipoNota(codigoplano):
-    # Obtenha os dados do corpo da requisição
-    novo_usuario = request.get_json()
-    # Extraia os valores dos campos do novo usuário
-
-    tipoNota = novo_usuario.get('tipoNota')
-    nome = novo_usuario.get('nome')
-
-    # inserir o novo usuário no banco de dados
-    c = Plano.InserirNotaNoPlano(codigoplano,tipoNota,nome)
-    if c == 0:
-        return jsonify({'message': f'Plano {codigoplano} ou {tipoNota} ja existem', 'status':False})
-    else:
-
-        # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Tipo nota  {tipoNota} incluida no plano {codigoplano} com sucesso', 'status':True})
-
-@app.route('/pcp/api/LotePlano/<string:codigoplano>', methods=['PUT'])
-@token_required
-def criar_PlanoLote(codigoplano):
-    # Obtenha os dados do corpo da requisição
-    novo_usuario = request.get_json()
-    # Extraia os valores dos campos do novo usuário
-
-    lote = novo_usuario.get('lote')
-    nome = novo_usuario.get('nome')
-
-    # inserir o novo usuário no banco de dados
-    c = Plano.InserirLoteNoPlano(codigoplano,lote,nome)
-    if c == 0:
-        return jsonify({'message': f'Plano {codigoplano} ou {lote} ja existem', 'status':False})
-    else:
-
-        # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Lote  {lote} incluida no plano {codigoplano} com sucesso', 'status':True})
-
-@app.route('/pcp/api/ColecaoPlano/<string:codigoPlano>', methods=['DELETE'])
-@token_required
-def delet_PlanoColecao(codigoPlano):
-    novo_usuario = request.get_json()
-
-    codigocolecao = novo_usuario.get('codigocolecao')
-
-    # Obtém os dados do corpo da requisição (JSON)
-    data = request.get_json()
-    codigoPlano = str(codigoPlano)
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = Plano.DeletarPlanoColecao(codigoPlano, codigocolecao)
-    # Obtém os nomes das colunas
-    column_names = dados.columns
-    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
-    end_data = []
-    for index, row in dados.iterrows():
-        end_dict = {}
-        for column_name in column_names:
-            end_dict[column_name] = row[column_name]
-        end_data.append(end_dict)
-    return jsonify(end_data)
-
-@app.route('/pcp/api/TipoNotaPlano/<string:codigoPlano>', methods=['DELETE'])
-@token_required
-def delet_PlanoNota(codigoPlano):
-    novo_usuario = request.get_json()
-
-    tipoNota = novo_usuario.get('tipoNota')
-
-    # Obtém os dados do corpo da requisição (JSON)
-    data = request.get_json()
-    codigoPlano = str(codigoPlano)
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = Plano.DeletarPlanoNota(codigoPlano, tipoNota)
-    # Obtém os nomes das colunas
-    column_names = dados.columns
-    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
-    end_data = []
-    for index, row in dados.iterrows():
-        end_dict = {}
-        for column_name in column_names:
-            end_dict[column_name] = row[column_name]
-        end_data.append(end_dict)
-    return jsonify(end_data)
-
-@app.route('/pcp/api/LotePlano/<string:codigoPlano>', methods=['DELETE'])
-@token_required
-def delet_Lote(codigoPlano):
-    novo_usuario = request.get_json()
-
-    lote = novo_usuario.get('lote')
-
-    # Obtém os dados do corpo da requisição (JSON)
-    data = request.get_json()
-    codigoPlano = str(codigoPlano)
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = Plano.DeletarPlanoLote(codigoPlano, lote)
-    # Obtém os nomes das colunas
-    column_names = dados.columns
-    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
-    end_data = []
-    for index, row in dados.iterrows():
-        end_dict = {}
-        for column_name in column_names:
-            end_dict[column_name] = row[column_name]
-        end_data.append(end_dict)
-    return jsonify(end_data)
 
 @app.route('/pcp/api/Vendas/<string:codigoPlano>', methods=['GET'])
 @token_required
@@ -356,19 +205,6 @@ def get_AtualizarAutomacao():
         OP_data.append(op_dict)
     return jsonify(OP_data)
 
-@app.route('/pcp/api/teste/<string:Plano>', methods=['GET'])
-def get_teste(Plano):
-    usuarios = Plano.DuracaoPlano(Plano)
-    # Obtém os nomes das colunas
-    column_names = usuarios.columns
-    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
-    OP_data = []
-    for index, row in usuarios.iterrows():
-        op_dict = {}
-        for column_name in column_names:
-            op_dict[column_name] = row[column_name]
-        OP_data.append(op_dict)
-    return jsonify(OP_data)
 
 @app.route('/pcp/api/RankingABCVendas', methods=['POST'])
 @token_required
@@ -421,7 +257,7 @@ def EditarABCPlano():
 
     codigoPlano = str(codigoPlano)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
-    dados = ABC_PLANO.Editar(a_,b_,c_,c1_,c2_,c3_,codigoPlano)
+    dados = ABC_PLANO.Editar(a_, b_, c_, c1_, c2_, c3_, codigoPlano)
     # Obtém os nomes das colunas
     column_names = dados.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes

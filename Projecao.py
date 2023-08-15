@@ -1,4 +1,3 @@
-import ConexaoPostgreMPL
 import ConexaoCSW
 import pandas as pd
 

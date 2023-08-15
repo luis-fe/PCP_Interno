@@ -1,5 +1,4 @@
 import pandas as pd
-import datetime
 
 import ConexaoPostgreMPL
 
@@ -32,7 +31,7 @@ def PlanilhaFeriados(plano):
     if data_inicial == False:
         return pd.DataFrame([{}])
     else:
-        feriados = pd.read_csv('Feriados.csv',delimiter=';')
+        feriados = pd.read_csv('../Feriados.csv', delimiter=';')
         feriados['data']  = pd.to_datetime(feriados['data'])
         feriados = feriados[(feriados['data'] >= data_inicial) & (feriados['data'] <= data_final)]
         feriados = feriados.reset_index(drop=True)

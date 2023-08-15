@@ -2,8 +2,9 @@ import math
 import time
 
 import pandas as pd
-import ConexaoCSW
 import ConexaoPostgreMPL
+import ConexaoCSW
+
 # Constantes
 SEM_ENGENHARIA = '0'
 
@@ -99,7 +100,7 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
         execution_time = round(execution_time, 2)
         execution_time = str(execution_time)
 
-        ConexaoCSW.ControleRequisicao('Consultar Estrutura Csw',execution_time, client_ip)
+        ConexaoCSW.ControleRequisicao('Consultar Estrutura Csw', execution_time, client_ip)
         return [data]
 
     else:
