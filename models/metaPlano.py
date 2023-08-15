@@ -9,8 +9,11 @@ def Get_Consultar(plano):
     get1 = get["MetaR$"].sum()
     get2 = get["Metapç"].sum()
     get1 = "{:,.0f}".format(get1)
+    get2 = "{:,.0f}".format(get2)
     get1 = 'R$'+str(get1)
+    get2 = str(get2)
     get1 = get1.replace(',', '.')
+    get2 = get2.replace(',', '.')
 
 
     get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
