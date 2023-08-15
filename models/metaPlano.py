@@ -80,4 +80,13 @@ def pesquisa(plano, marca):
 
     return get['MetaR$'][0], get['Metapç'][0]
 
+def metasSemanais(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    get = pd.read_sql('select "inicioVenda", "FimVenda" from pcp."Plano"',conn,params=(plano,))
+
+    conn.close()
+
+    return get
+
+
 
