@@ -1,7 +1,7 @@
 import math
 import time
 import pandas as pd
-from conexoesDAO import ConexaoCSW
+from models import ConexaoCSW
 
 
 def GetColecoes(pagina, itensPag,client_ip):

@@ -1,6 +1,6 @@
 import pandas as pd
 
-from conexoesDAO import ConexaoPostgreMPL
+from models import ConexaoPostgreMPL
 
 
 def InserirPadrao_FeriadosPlano(plano):

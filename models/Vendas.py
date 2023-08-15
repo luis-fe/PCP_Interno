@@ -1,10 +1,9 @@
 import numpy
 import time
 
-from conexoesDAO import ConexaoCSW, ConexaoPostgreMPL
 import pandas as pd
 
-from models import FuncoesGlobais
+from models import FuncoesGlobais, ConexaoCSW, ConexaoPostgreMPL
 
 
 def Comparacao(a , b, c, valor):

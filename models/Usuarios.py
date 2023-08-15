@@ -1,4 +1,4 @@
-from conexoesDAO import ConexaoPostgreMPL
+from models import ConexaoPostgreMPL
 import pandas as pd
 
 
