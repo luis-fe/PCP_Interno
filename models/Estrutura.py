@@ -1,7 +1,8 @@
 import math
 import time
 import pandas as pd
-from models import ConexaoCSW, ConexaoPostgreMPL
+import ConexaoPostgreMPL
+import ConexaoCSW
 
 # Constantes
 SEM_ENGENHARIA = '0'

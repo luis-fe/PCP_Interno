@@ -3,7 +3,9 @@ import time
 
 import pandas as pd
 
-from models import FuncoesGlobais, ConexaoCSW, ConexaoPostgreMPL
+from models import FuncoesGlobais
+import ConexaoPostgreMPL
+import ConexaoCSW
 
 
 def Comparacao(a , b, c, valor):

@@ -1,5 +1,5 @@
 import pandas as pd
-from models import ConexaoPostgreMPL
+import ConexaoPostgreMPL
 
 
 def Editar(a, b, c, c1, c2, c3, plano):

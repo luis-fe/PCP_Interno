@@ -1,4 +1,4 @@
-from models import ConexaoCSW
+import ConexaoCSW
 import pandas as pd
 
 
