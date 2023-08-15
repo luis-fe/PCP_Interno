@@ -4,9 +4,7 @@ import pandas as pd
 import os
 from routes import routes_blueprint
 from functools import wraps
-from models import ABC_PLANO, CalendarioProducao, Estrutura, AutomacaoSugestaoPedidos
-import ObterInfCSW
-import Vendas
+from models import ABC_PLANO, CalendarioProducao, Estrutura, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8000))
@@ -109,7 +107,7 @@ def get_Colecoes():
     pagina = request.args.get('pagina',1)
     client_ip = request.remote_addr
 
-    Endereco_det = ObterInfCSW.GetColecoes(pagina, itensPag,client_ip )
+    Endereco_det = ObterInfCSW.GetColecoes(pagina, itensPag, client_ip)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
@@ -131,7 +129,7 @@ def get_PesquisaTipoNotass():
     client_ip = request.remote_addr
 
 
-    Endereco_det = ObterInfCSW.GetTipoNotas(pagina, itensPag,client_ip)
+    Endereco_det = ObterInfCSW.GetTipoNotas(pagina, itensPag, client_ip)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
@@ -154,7 +152,7 @@ def get_PesquisaLotes():
     client_ip = request.remote_addr
 
 
-    Endereco_det = ObterInfCSW.GetLotesCadastrados(pagina, itensPag,client_ip)
+    Endereco_det = ObterInfCSW.GetLotesCadastrados(pagina, itensPag, client_ip)
 
     Endereco_det = pd.DataFrame(Endereco_det)
 
@@ -227,9 +225,9 @@ def vendas():
     codigoPlano = str(codigoPlano)
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     if detalhaengenharias == '0':
-        dados, nome = Vendas.VendasporSku(client_ip,codigoPlano,aprovado,excel,pagina,itensPag, engenharia, descricao , categoria, MARCA)
+        dados, nome = Vendas.VendasporSku(client_ip, codigoPlano, aprovado, excel, pagina, itensPag, engenharia, descricao, categoria, MARCA)
     else:
-        dados1, nome = Vendas.VendasporSku(client_ip,codigoPlano,aprovado,excel,pagina,itensPag, engenharia, descricao , categoria, MARCA)
+        dados1, nome = Vendas.VendasporSku(client_ip, codigoPlano, aprovado, excel, pagina, itensPag, engenharia, descricao, categoria, MARCA)
         dados = Vendas.Detalha_EngenhariaABC(detalhaengenharias, nome)
     # Obtém os nomes das colunas
     column_names = dados.columns
