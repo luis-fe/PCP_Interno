@@ -30,13 +30,54 @@ def Get_Consultar(plano):
     return get
 
 
-def InserirMeta(plano):
+def InserirMeta(plano, marca, metaReais, metaPecas ):
     conn = ConexaoPostgreMPL.conexao()
+    query = 'insert into pcp."planoMetas" (plano, marca, "MetaR$", "Metapç") values (%s, %s, %s ,%s )'
+    cursor = conn.cursor()
+    cursor.execute(query, (plano, marca, metaReais, metaPecas,))
+    conn.commit()
+
+
+    cursor.close()
+    conn.close()
+
+    return pd.DataFrame([{'status':True, "Mensagem":"Inclusao Realizada com sucesso"}])
 
 
 
-def EditarMeta(plano):
+
+
+def EditarMeta(plano, marcaNova, metaReaisNova = '0', metaPecasNova = '0'):
     conn = ConexaoPostgreMPL.conexao()
+    if metaReaisNova == 0:
+        metaReaisNova, x = pesquisa(plano,marcaNova)
 
+    elif metaPecasNova == 0:
+        x, metaPecasNova = pesquisa(plano,marcaNova)
+
+    else:
+        print('segue o baile')
+
+    update = 'update pcp."planoMetas" set marca = %s, "MetaR$" = %s, "Metapç" = %s ' \
+             'where plano = %s and marca = %s '
+    cursor = conn.cursor()
+    cursor.execute(update, ( marcaNova, metaReaisNova, metaPecasNova, plano, marcaNova,))
+    conn.commit()
+
+
+    cursor.close()
+    conn.close()
+
+    return pd.DataFrame([{'status':True, "Mensagem":"Alteracao Realizada com sucesso"}])
+
+
+
+def pesquisa(plano, marca):
+    conn = ConexaoPostgreMPL.conexao()
+    get = pd.read_sql('select plano, marca, "MetaR$", "Metapç" from pcp."planoMetas" '
+                      'where plano = %s and marca = %s',conn,params=(plano,marca))
+    conn.close()
+
+    return get['MetaR$'][0], get['Metapç'][0]
 
 
