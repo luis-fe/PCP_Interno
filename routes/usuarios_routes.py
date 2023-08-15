@@ -1,8 +1,7 @@
-from flask import Blueprint,Flask, render_template, jsonify, request
+from flask import Blueprint, jsonify, request
 from functools import wraps
-from flask_cors import CORS
 
-import Usuarios
+from models import Usuarios
 
 usuarios_routes = Blueprint('usuarios_routes', __name__)
 def token_required(f):

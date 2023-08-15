@@ -7,11 +7,9 @@ from functools import wraps
 import ABC_PLANO
 import AutomacaoSugestaoPedidos
 import CalendarioProducao
-import ConexaoPostgreMPL
 import Estrutura
 import ObterInfCSW
 import Plano
-import Usuarios
 import Vendas
 
 app = Flask(__name__)
