@@ -1,6 +1,6 @@
 import pandas as pd
 import ConexaoPostgreMPL
-
+import numpy as np
 
 def Get_Consultar(plano):
     conn = ConexaoPostgreMPL.conexao()
@@ -89,6 +89,8 @@ def metasSemanais(plano):
     get['intervalo'] = get['intervalo'].astype(str)
     get['semanas'] = get['intervalo'].str.extract('(\d+)').astype(int)
     get['semanas'] = get['semanas']/7
+    get['semanas'] = np.ceil(get['semanas'])
+
     conn.close()
 
     return get
