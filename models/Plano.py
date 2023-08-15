@@ -1,5 +1,4 @@
 import pandas as pd
-import ConexaoCSW
 import ConexaoPostgreMPL
 from datetime import datetime
 
