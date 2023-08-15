@@ -47,34 +47,6 @@ def TelaPrincipal():
 def TelaUsuarios():
     return render_template('TelaUsuarios.html')
 
-@app.route('/pcp/api/UsuarioSenha', methods=['POST'])
-@token_required
-def get_UsuarioSenha():
-    # Obtém os dados do corpo da requisição (JSON)
-    codigo = request.get_json()
-    codigo = codigo.get('codigo')
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    codigo, nome , senha = Usuarios.ObterUsuariosCodigo(codigo)
-    if codigo != 0:
-        return jsonify({'1 - message': f'Usuario {codigo}- {nome}', '2-Senha': f'{senha}'}), 201
-    else:
-
-        return jsonify({'message': 'Usuario Nao existe'}), 201
-
-@app.route('/pcp/api/UsuarioSenha', methods=['GET'])
-@token_required
-def get_UsuarioSenha_():
-    # Obtém o código do usuário e a senha dos parâmetros da URL
-    codigo = request.args.get('codigo')
-    senhaP = request.args.get('senha')
-
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    codigo, nome , senha = Usuarios.ObterUsuariosCodigo(codigo)
-    if codigo != 0 and senha == senhaP:
-        return jsonify({'1 - message': f'Usuario {codigo}- {nome}', '2-Senha': f'{senha}', "status": True, "Usuario":f'{codigo}'}), 201
-    else:
-
-        return jsonify({'message': 'Usuario OU senha Nao existe','status': False}), 201
 
 @app.route('/pcp/api/Usuarios', methods=['PUT'])
 @token_required
