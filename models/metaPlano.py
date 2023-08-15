@@ -9,10 +9,13 @@ def Get_Consultar(plano):
 
     get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
     get["Metapç"] = get["Metapç"].apply(lambda x: "{:,.0f}".format(x))
-    get["TOTAL Metapç"] = get["Metapç"].sum()
+
     get["MetaR$"] = get["MetaR$"].astype(str)
     get["MetaR$"] = 'R$'+get["MetaR$"].str.replace(',', '.')
     get["Metapç"] = get["Metapç"].str.replace(',', '.')
+
+    total = pd.DataFrame([{'marca':'TOTAL',"MetaR$" :get["Metapç"].sum()}])
+    get = pd.concat([get, total])
 
     return get
 
