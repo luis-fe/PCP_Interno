@@ -87,7 +87,7 @@ def metasSemanais(plano):
     get['FimVenda'] = pd.to_datetime(get['FimVenda'], format='%d/%m/%Y')
     get['intervalo'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
     get['intervalo'] = get['intervalo'].astype(str)
-    get['semanas'] = get['intervalo'].replace('days', '')
+    get['semanas'] = get['intervalo'].replace('', 'days')
 
     conn.close()
 
