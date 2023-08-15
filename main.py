@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 import pandas as pd
 import os
-
+from routes import routes_blueprint
 from functools import wraps
 import ABC_PLANO
 import AutomacaoSugestaoPedidos
@@ -16,6 +16,8 @@ import Vendas
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8000))
+app.register_blueprint(routes_blueprint)
+
 CORS(app)
 def token_required(f):
     @wraps(f)
