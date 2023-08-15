@@ -7,6 +7,9 @@ def Get_Consultar(plano):
     get = pd.read_sql('select plano, marca, "MetaR$", "Metapç" from pcp."planoMetas" '
                       'where plano = %s ',conn,params=(plano,))
 
+    get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
+
+
     return get
 
 
