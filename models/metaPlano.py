@@ -85,6 +85,7 @@ def metasSemanais(plano):
     get = pd.read_sql('select "inicioVenda", "FimVenda" from pcp."Plano" where codigo = %s',conn,params=(plano,))
     get['inicioVenda'] = pd.to_datetime(get['inicioVenda'], format='%d/%m/%Y')
     get['FimVenda'] = pd.to_datetime(get['FimVenda'], format='%d/%m/%Y')
+    get['intervalo'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
     conn.close()
 
     return get
