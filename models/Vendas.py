@@ -1,8 +1,7 @@
 import numpy
 import time
 
-import ConexaoPostgreMPL
-import ConexaoCSW
+from conexoesDAO import ConexaoCSW, ConexaoPostgreMPL
 import pandas as pd
 
 from models import FuncoesGlobais

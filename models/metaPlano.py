@@ -1,5 +1,5 @@
 import pandas as pd
-import ConexaoPostgreMPL
+from conexoesDAO import ConexaoPostgreMPL
 
 
 def Get_Consultar(plano):

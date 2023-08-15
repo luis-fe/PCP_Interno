@@ -1,4 +1,4 @@
-import ConexaoPostgreMPL
+from conexoesDAO import ConexaoPostgreMPL
 import pandas as pd
 
 def ConsultarLotesPlanos():

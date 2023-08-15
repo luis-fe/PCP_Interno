@@ -1,5 +1,6 @@
 import pandas as pd
-import ConexaoPostgreMPL
+from conexoesDAO import ConexaoPostgreMPL
+
 
 def Editar(a, b, c, c1, c2, c3, plano):
     a1, b1, c1 = ABC_Plano(plano)
