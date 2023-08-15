@@ -4,8 +4,7 @@ import pandas as pd
 import os
 from routes import routes_blueprint
 from functools import wraps
-from models import ABC_PLANO, CalendarioProducao, Estrutura
-import AutomacaoSugestaoPedidos
+from models import ABC_PLANO, CalendarioProducao, Estrutura, AutomacaoSugestaoPedidos
 import ObterInfCSW
 import Vendas
 
