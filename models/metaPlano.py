@@ -6,8 +6,8 @@ def Get_Consultar(plano):
     conn = ConexaoPostgreMPL.conexao()
     get = pd.read_sql('select plano, marca, "MetaR$", "Metapç" from pcp."planoMetas" '
                       'where plano = %s ',conn,params=(plano,))
-    get1 = get["Metapç"].sum()
-    get2 = get["MetaR$"].sum()
+    get1 = get["MetaR$"].sum()
+    get2 = get["Metapç"].sum()
 
 
     get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
