@@ -90,6 +90,7 @@ def metasSemanais(plano):
     get['semanas'] = get['intervalo'].str.extract('(\d+)').astype(int)
     get['semanas'] = get['semanas']/7
     get['semanas'] = np.ceil(get['semanas'])
+    get['semanas'] = get['semanas'] .astype(int)
 
     conn.close()
 
