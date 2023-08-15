@@ -1,6 +1,5 @@
 import math
 import time
-
 import pandas as pd
 from conexoesDAO import ConexaoCSW, ConexaoPostgreMPL
 
