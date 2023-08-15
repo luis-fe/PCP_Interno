@@ -28,7 +28,7 @@ def get_Usuarios():
         for column_name in column_names:
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
-    return jsonify(OP_data)
+    return jsonify(OP_data),200
 @usuarios_routes.route('/pcp/api/UsuarioSenha', methods=['POST'])
 @token_required
 def get_UsuarioSenha():
@@ -38,10 +38,10 @@ def get_UsuarioSenha():
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     codigo, nome , senha = Usuarios.ObterUsuariosCodigo(codigo)
     if codigo != 0:
-        return jsonify({'1 - message': f'Usuario {codigo}- {nome}', '2-Senha': f'{senha}'}), 201
+        return jsonify({'1 - message': f'Usuario {codigo}- {nome}', '2-Senha': f'{senha}'}), 200
     else:
 
-        return jsonify({'message': 'Usuario Nao existe'}), 201
+        return jsonify({'message': 'Usuario Nao existe'}), 200
 
 @usuarios_routes.route('/pcp/api/UsuarioSenha', methods=['GET'])
 @token_required
