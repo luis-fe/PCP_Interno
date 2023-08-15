@@ -11,7 +11,7 @@ def Get_Consultar(plano):
     get["Metapç"] = get["Metapç"].apply(lambda x: "{:,.0f}".format(x))
     get["MetaR$"] = get["MetaR$"].astype(str)
     get["MetaR$"] = 'R$'+get["MetaR$"].str.replace(',', '.')
-
+    get["Metapç"] = get["Metapç"].str.replace(',', '.')
 
     return get
 
