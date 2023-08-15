@@ -88,7 +88,7 @@ def metasSemanais(plano):
     get['intervalo'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
     get['intervalo'] = get['intervalo'].astype(str)
     get['semanas'] = get['intervalo'].str.extract('(\d+)').astype(int)
-
+    get['semanas'] = get['semanas']/7
     conn.close()
 
     return get
