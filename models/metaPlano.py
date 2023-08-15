@@ -7,6 +7,7 @@ def Get_Consultar(plano):
     get = pd.read_sql('select plano, marca, "MetaR$", "Metapç" from pcp."planoMetas" '
                       'where plano = %s ',conn,params=(plano,))
     get1 = get["Metapç"].sum()
+    get2 = get["Metapç"].sum()
 
 
     get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
@@ -16,7 +17,8 @@ def Get_Consultar(plano):
     get["MetaR$"] = 'R$'+get["MetaR$"].str.replace(',', '.')
     get["Metapç"] = get["Metapç"].str.replace(',', '.')
 
-    total = pd.DataFrame([{'marca':'TOTAL',"MetaR$" :get1}])
+    total = pd.DataFrame([{'marca':'TOTAL',"MetaR$" :get1,"Metapç" :get2}])
+
     get = pd.concat([get, total])
 
     return get
