@@ -9,7 +9,7 @@ def Get_Consultar(plano):
     get1 = get["MetaR$"].sum()
     get2 = get["Metapç"].sum()
     get1 = "{:,.0f}".format(get1)
-    get1 = str(get1)
+    get1 = 'R$'+str(get1)
     get1 = get1.replace(',', '.')
 
 
