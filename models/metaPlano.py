@@ -8,6 +8,8 @@ def Get_Consultar(plano):
                       'where plano = %s ',conn,params=(plano,))
     get1 = get["MetaR$"].sum()
     get2 = get["Metapç"].sum()
+    get1 = str(get1)
+    get1 = get1.replace(',', '.')
 
 
     get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
