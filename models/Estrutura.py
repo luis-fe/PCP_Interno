@@ -122,7 +122,9 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
         estrutura, totalPg = TemPaginamento(pagina,itensPag,dataframe)
         estrutura.fillna('-', inplace=True)
         if  totalPg == False:
-            data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')}
+            data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
+                    '0-numero de paginas': f'{totalPg}'}
+
             return [data]
         else:
             data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
