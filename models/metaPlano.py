@@ -91,6 +91,8 @@ def metasSemanais(plano):
     get['semanas'] = get['semanas']/7
     get['semanas'] = np.ceil(get['semanas'])
     get['semanas'] = get['semanas'] .astype(int)
+    get.drop(['inicioVenda','FimVenda'], axis=1, inplace=True)
+
 
     conn.close()
     data = pd.DataFrame([{'semana':1}])
