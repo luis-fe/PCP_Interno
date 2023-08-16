@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from routes import routes_blueprint
 from functools import wraps
-from models import ABC_PLANO, CalendarioProducao, Estrutura, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas
+from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8000))
@@ -226,8 +226,6 @@ def get_PlanoFeriado(Plano):
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
-
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)

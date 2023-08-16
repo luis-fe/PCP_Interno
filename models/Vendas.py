@@ -166,14 +166,15 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
                 Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
                 Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
                 # Aqui Verifico se tem paginamento
-                Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido, 'engenharia')
                 # Aqui verifico se tem filtros
                 Pedido = TemFiltro(engenharia, Pedido, 'engenharia')
                 Pedido = TemFiltro(descricao.upper(), Pedido, 'descricao')
                 Pedido = TemFiltro(categoria.upper(), Pedido, 'categoria')
                 Pedido = TemFiltro(MARCA.upper(), Pedido, 'MARCA')
 
+
                 Pedido.fillna('-', inplace=True)
+                Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido, 'engenharia')
 
                 data = {'0-numero de paginas':f'{totalPg}',
                         '1- Dados:':Pedido.to_dict(orient='records')}
