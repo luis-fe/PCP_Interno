@@ -1,7 +1,7 @@
 import math
 
 
-def TemPaginamento(pagina, itensPag, dataframe, coluna_tamanho):
+def TemPaginamento(pagina, itensPag , dataframe , coluna_tamanho):
     if pagina != 0:
         totalPaginas = dataframe[coluna_tamanho].size/itensPag
         totalPaginas = math.ceil(totalPaginas)
@@ -14,4 +14,6 @@ def TemPaginamento(pagina, itensPag, dataframe, coluna_tamanho):
         return estrutura, totalPaginas
     else:
         estrutura = dataframe
-        return estrutura, dataframe[coluna_tamanho].size
+        totalPaginas = dataframe[coluna_tamanho].size/itensPag
+
+        return estrutura, totalPaginas

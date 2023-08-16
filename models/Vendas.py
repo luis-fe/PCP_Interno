@@ -23,7 +23,7 @@ def TransformarPlanoTipoNota(plano):
     conn.close()
     return tiponota
 
-def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itensPag=0, engenharia = '0', descricao = '0', categoria = '0', MARCA = '0' ):
+def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itensPag=1, engenharia = '0', descricao = '0', categoria = '0', MARCA = '0' ):
     tiponota = TransformarPlanoTipoNota(plano)
     conn1 = ConexaoPostgreMPL.conexao()
     vendas = pd.read_sql('SELECT * from pcp."Plano" where codigo = %s ',conn1,params=(plano,))

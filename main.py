@@ -217,7 +217,7 @@ def vendas():
     categoria = data.get('categoria', '0')
     MARCA = data.get('MARCA', '0')
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
-    itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
+    itensPag = data.get('itensPag', 1)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     detalhaengenharias =  data.get('detalhaengenharias','0')
     client_ip = request.remote_addr
 
