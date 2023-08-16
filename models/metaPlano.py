@@ -95,11 +95,11 @@ def metasSemanais(plano):
 
 
     conn.close()
-    data = pd.DataFrame([{'semana':1}])
+    data = pd.DataFrame([{'0-semana':1}])
     for i in range(get['semanas'][0]-2):
-        novo = {'semana':(i+2)}
+        novo = {'0-semana':(i+2)}
         data = data.append(novo,ignore_index=True )
-    data['semana'] = data['semana'].astype(str)
+    data['0-semana'] = data['0-semana'].astype(str)
     data['1- PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['semana']), axis=1)
     data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'M.POLLO', row['semana']), axis=1)
     totalreais , totalpçs = pesquisa(plano,'PACO')
