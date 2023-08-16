@@ -28,7 +28,7 @@ def get_Estrutura():
     desproduto = data.get('desproduto', '0')
     Excel = data.get('Excel', False)
     pagina = data.get('pagina', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
-    itensPag = data.get('itensPag', 0)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
+    itensPag = data.get('itensPag', 1)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
     client_ip = request.remote_addr
 
 
