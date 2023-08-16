@@ -98,8 +98,10 @@ def metasSemanais(plano):
     data = pd.DataFrame([{'semana':1}])
 
     for i in range(get['semanas'][0]-2):
-        novo = {'semana':(i+2)}
+        novo = {'semana':(i+2), 'Marca':"PACO"}
         data = data.append(novo,ignore_index=True )
+
+
 
     data = {'1- Informacoes Gerais':get.to_dict(orient='records'),
             '2- Detalhamento Semanal':data.to_dict(orient='records')}
