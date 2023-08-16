@@ -3,6 +3,7 @@ import time
 import pandas as pd
 import ConexaoPostgreMPL
 import ConexaoCSW
+from models import FuncoesGlobais
 
 # Constantes
 SEM_ENGENHARIA = '0'
@@ -90,10 +91,11 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
         estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'ADAR I', 'ADAR'), axis=1)
         estrutura = estrutura.reset_index(drop=True)
         estrutura.to_csv(nomeArquivo)
+        estrutura, totalPg = FuncoesGlobais.TemPaginamento(pagina,itensPag,estrutura,'03- codProduto')
 
-        data = {
-            '1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records')
-            }
+
+        data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
+                '0-numero de paginas': f'{totalPg}'}
         end_time = time.time()
         execution_time = end_time - start_time
         execution_time = round(execution_time, 2)
@@ -124,7 +126,7 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
             return [data]
         else:
             data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
-                    '0- ToalPg':f'{totalPg}'}
+                    '0-numero de paginas':f'{totalPg}'}
             return [data]
 
 
