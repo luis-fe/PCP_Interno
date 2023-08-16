@@ -96,10 +96,12 @@ def metasSemanais(plano):
 
     conn.close()
     data = pd.DataFrame([{'semana':1}])
-    data['PACO %dis'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', '1'), axis=1)
     for i in range(get['semanas'][0]-2):
         novo = {'semana':(i+2)}
         data = data.append(novo,ignore_index=True )
+    data['semana'] = data['semana'].astype(str)
+    data['PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['semana']), axis=1)
+
 
 
 
