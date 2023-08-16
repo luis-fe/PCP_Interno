@@ -15,5 +15,7 @@ def TemPaginamento(pagina, itensPag , dataframe , coluna_tamanho):
     else:
         estrutura = dataframe
         totalPaginas = dataframe[coluna_tamanho].size/itensPag
+        totalPaginas = math.ceil(totalPaginas)
+        totalPaginas = int(totalPaginas)
 
         return estrutura, totalPaginas
