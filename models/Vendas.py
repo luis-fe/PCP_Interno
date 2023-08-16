@@ -122,7 +122,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
                 Pedido['ABC%Categ'] = (100 *(Pedido['ABC%Categ']/Pedido['Total ProdutosCategoria'])).round(2)
                 Pedido['classABC_Cat'] = Pedido.apply(lambda row: Comparacao(a, b, c,row['ABC%Categ']), axis=1)
                 Pedido, totalPg = FuncoesGlobais.TemPaginamento(pagina, itensPag, Pedido, 'engenharia')
-                data = {'0-numero de paginas': {totalPg},
+                data = {'0-numero de paginas':f' {totalPg}',
                         '1- Dados:':Pedido.to_dict(orient='records')}
 
                 return [data], nomeArquivo
