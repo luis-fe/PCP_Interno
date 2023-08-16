@@ -96,6 +96,8 @@ def GetTipoFases():
     fases = pd.read_sql('SELECT f.codFase , f.nome as nomefase, f.tipoFase  FROM tcp.FasesProducao f '
                         'WHERE f.codEmpresa = 1',conn)
     fases['tipoFase'] = fases['tipoFase'].astype(str)
+    fases['codFase'] = fases['codFase'].astype(str)
+
     fases = fases[fases['tipoFase']=='1']
 
     return fases
