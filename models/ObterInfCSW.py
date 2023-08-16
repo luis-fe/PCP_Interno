@@ -91,4 +91,10 @@ def GetLotesCadastrados(pagina, itensPag,client_ip):
     execution_time = str(execution_time)
     ConexaoCSW.ControleRequisicao('Consultar Lotes Csw', execution_time, client_ip)
     return [data]
+def GetTipoFases():
+    conn = ConexaoCSW.Conexao()
+    fases = pd.read_sql('SELECT f.codFase , f.nome as nomefase, tipoFase  FROM tcp.FasesProducao '
+                        'WHERE f.codEmpresa = 1',conn)
+    fases = fases[fases['codFase']=='1']
 
+    return fases
