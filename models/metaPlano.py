@@ -93,10 +93,10 @@ def metasSemanais(plano):
     get['semanas'] = get['semanas'] .astype(int)
 
     conn.close()
-    data = pd.DataFrame([{'semana':[]}])
+    data = pd.DataFrame([{'semana':'1'}])
 
-    for i in range(get['semanas'][0]):
-        novo = {'semana':(i+1)}
+    for i in range(get['semanas'][0]-2):
+        novo = {'semana':(i+2)}
         data = data.append(novo,ignore_index=True )
 
     return data
