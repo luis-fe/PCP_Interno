@@ -175,7 +175,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
 
                 Pedido.fillna('-', inplace=True)
 
-                data = {'0-numero de paginas': {totalPg},
+                data = {'0-numero de paginas':f' {totalPg}',
                         '1- Dados:':Pedido.to_dict(orient='records')}
 
                 return [data], nomeArquivo
