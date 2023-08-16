@@ -108,3 +108,13 @@ def metasSemanais(plano):
 
 
 
+def PesquisarMetaSemana(plano, marca, semana):
+    conn = ConexaoPostgreMPL.conexao()
+    get = pd.read_sql('select plano, marca, "metaR$", "metaPç", "%dist" from pcp."PlanoMetasSemana" '
+                      'where plano = %s and marca = %s and semana = %s' ,conn,params=(plano,marca, semana))
+    conn.close()
+    if get.empty:
+        return '-', '-' ,'-'
+    else:
+
+        return get['metaR$'][0], get['metaPç'][0],get['%dist'][0]
