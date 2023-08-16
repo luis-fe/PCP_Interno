@@ -93,7 +93,7 @@ def GetLotesCadastrados(pagina, itensPag,client_ip):
     return [data]
 def GetTipoFases():
     conn = ConexaoCSW.Conexao()
-    fases = pd.read_sql('SELECT f.codFase , f.nome as nomefase, tipoFase  FROM tcp.FasesProducao '
+    fases = pd.read_sql('SELECT f.codFase , f.nome as nomefase, tipoFase  FROM tcp.FasesProducao f '
                         'WHERE f.codEmpresa = 1',conn)
     fases = fases[fases['codFase']=='1']
 
