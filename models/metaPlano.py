@@ -118,7 +118,7 @@ def metasSemanais(plano):
     data['2.2- M.POLLO R$'] = (data['2- M.POLLO %dist.']/100)*totalreaisMpollo
     data["2.2- M.POLLO R$"] = data['2.2- M.POLLO R$'].apply(lambda x: "{:,.2f}".format(x))
     data['2.2- M.POLLO R$'] = data['2.2- M.POLLO R$'].str.replace('.', ',')
-    data['2.2- M.POLLO R$'] = 'R$'+data['2.2- M.POLLO R$'].str.replace(',', '.')
+    #data['2.2- M.POLLO R$'] = 'R$'+data['2.2- M.POLLO R$'].str.replace(',', '.')
 
 
 
