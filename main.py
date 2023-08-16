@@ -8,10 +8,15 @@ from models import ABC_PLANO, CalendarioProducao, Estrutura, AutomacaoSugestaoPe
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8000))
+
+
 app.register_blueprint(routes_blueprint)
+#Aqui registo todas as rotas , url's DO PROJETO, para acessar bastar ir na pasta "routes",
+#duvidas o contato (62)99351-42-49 ou acessar a documentacao do projeto em:
+
 
 CORS(app)
-def token_required(f):
+def token_required(f): #Aqui passamos o token fixo, que pode ser alterado
     @wraps(f)
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
@@ -38,31 +43,6 @@ def TelaPrincipal():
 @app.route('/TelaUsuarios')
 def TelaUsuarios():
     return render_template('TelaUsuarios.html')
-
-
-def Quebrar(item, item2):
-    # Dividir a string em uma lista de elementos separados por vírgula
-    elementos = item.split(", ")
-    # Adicionar aspas simples em cada elemento da lista
-    elementos_formatados = ["'" + elemento + "'" for elemento in elementos]
-    # Juntar os elementos formatados em uma única string, separados por vírgula
-    item2 = ", ".join(elementos_formatados)
-    return item2
-
-
-def DataFrame(item, item2):
-    # Dividir a string em uma lista de elementos
-    elementos = item.split(", ")
-
-    # Criar um DataFrame com uma coluna chamada 'Elementos'
-    df = pd.DataFrame({'Elementos': elementos})
-
-    df.rename(
-    columns = {'Elementos': item2},
-    inplace = True)
-
-    return df
-
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
 @token_required
