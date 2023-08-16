@@ -119,4 +119,4 @@ def PesquisarMetaSemana(plano, marca, semana):
         return '-'
     else:
 
-        return get['%dist'][0]
+        return (get['%dist'][0]*100)
