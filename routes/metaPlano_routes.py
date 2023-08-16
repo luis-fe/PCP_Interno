@@ -1,6 +1,7 @@
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
+import pandas as pd
 
 from models import metaPlano
 
@@ -22,6 +23,8 @@ def get_metaPlano(codigoplano):
 @metaPlano_routes.route('/pcp/api/metaPlanoSemanal/<string:codigoplano>', methods=['GET'])
 def get_metaPlanoSemana(codigoplano):
     usuarios = metaPlano.metasSemanais(codigoplano)
+    usuarios = pd.DataFrame(usuarios)
+
     # Obtém os nomes das colunas
     column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
