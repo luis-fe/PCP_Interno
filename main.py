@@ -174,6 +174,8 @@ def get_PesquisaLotes():
 @token_required
 def get_VendasPlano(codigoPlano):
     plano = Vendas.VendasporSku(codigoPlano)
+    plano = pd.DataFrame(plano)
+
     # Obtém os nomes das colunas
     # Obtém os nomes das colunas
     column_names = plano.columns
