@@ -14,4 +14,4 @@ def TemPaginamento(pagina, itensPag, dataframe, coluna_tamanho):
         return estrutura, totalPaginas
     else:
         estrutura = dataframe
-        return estrutura, False
+        return estrutura, dataframe[coluna_tamanho].size
