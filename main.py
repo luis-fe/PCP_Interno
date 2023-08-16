@@ -26,23 +26,7 @@ def token_required(f): #Aqui passamos o token fixo, que pode ser alterado
 
     return decorated_function
 
-# Rota protegida que requer o token fixo para trazer os Usuarios Cadastrados
-# Rota pagina inicial
-@app.route('/')
-def home():
-    return render_template('index.html')
-@app.route('/TelaEstrutura')
-def telaEstrutura():
-    return render_template('TelaEstrutura.html')
-@app.route('/TelaPlano')
-def TelaPlano():
-    return render_template('TelaPlano.html')
-@app.route('/TelaPrincipal')
-def TelaPrincipal():
-    return render_template('TelaPrincipal.html')
-@app.route('/TelaUsuarios')
-def TelaUsuarios():
-    return render_template('TelaUsuarios.html')
+
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
 @token_required
