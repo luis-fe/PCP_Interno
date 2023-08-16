@@ -14,7 +14,7 @@ def Inserir(codFase, responsavel):
         insert = 'insert into pcp."responsabilidadeFase"("codFase","responsavel") ' \
                  'values (%s , %s)'
         cursor = conn.cursor()
-        cursor.excute (insert,(codFase,responsavel))
+        cursor.execute (insert,(codFase,responsavel))
         conn.commit()
         cursor.close()
         conn.close()
