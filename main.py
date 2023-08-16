@@ -228,6 +228,8 @@ def vendas():
     # Verifica se a coluna "funcao" está presente nos dados recebidos
     if detalhaengenharias == '0':
         dados, nome = Vendas.VendasporSku(client_ip, codigoPlano, aprovado, excel, pagina, itensPag, engenharia, descricao, categoria, MARCA)
+        dados = pd.DataFrame(dados)
+
     else:
         dados1, nome = Vendas.VendasporSku(client_ip, codigoPlano, aprovado, excel, pagina, itensPag, engenharia, descricao, categoria, MARCA)
         dados = Vendas.Detalha_EngenhariaABC(detalhaengenharias, nome)
