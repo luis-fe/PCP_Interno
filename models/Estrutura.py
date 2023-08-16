@@ -119,17 +119,12 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
 
 
         # Aqui Verifico se tem paginamento
-        estrutura, totalPg = TemPaginamento(pagina,itensPag,dataframe)
+        estrutura, totalPg = FuncoesGlobais.TemPaginamento(pagina,itensPag,dataframe,'03- codProduto')
         estrutura.fillna('-', inplace=True)
-        if  totalPg == False:
-            data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
-                    '0-numero de paginas': f'{totalPg}'}
 
-            return [data]
-        else:
-            data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
+        data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
                     '0-numero de paginas':f'{totalPg}'}
-            return [data]
+        return [data]
 
 
 def TemPaginamento(pagina, itensPag, dataframe):
