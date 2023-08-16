@@ -111,6 +111,8 @@ def metasSemanais(plano):
 
 
     data['1.2- PACO R$'] = (data['1- PACO %dist.']/100)*totalreais
+    data["1.2- PACO R$"] = data['1.2- PACO R$'].apply(lambda x: "{:,.2f}".format(x))
+
 
 
 
