@@ -109,6 +109,7 @@ def metasSemanais(plano):
     data["1.1- PACO pçs"] = data["1.1- PACO pçs"].apply(lambda x: "{:,.0f}".format(x))
     data["1.1- PACO pçs"] = data["1.1- PACO pçs"].str.replace(',', '.')
     data['1.1- PACO pçs'] = data['1.1- PACO pçs'].str.replace('.', '/')
+    data['1.1- PACO pçs'] = 'R$' + data['1.1- PACO pçs'].str.replace(',', '.')
 
 
 
