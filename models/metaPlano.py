@@ -101,6 +101,8 @@ def metasSemanais(plano):
         data = data.append(novo,ignore_index=True )
     data['semana'] = data['semana'].astype(str)
     data['PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['semana']), axis=1)
+    totalreais , totalpçs = pesquisa(plano,'PACO')
+    data['PACO pçs'] = (data['PACO %dist.']/100)*totalpçs
 
 
 
@@ -118,7 +120,7 @@ def PesquisarMetaSemana(plano, marca, semana):
                       'where plano = %s and marca = %s and semana = %s' ,conn,params=(plano,marca, semana))
     conn.close()
     if get.empty:
-        return '-'
+        return 0
     else:
 
         return (get['%dist'][0]*100)
