@@ -100,8 +100,8 @@ def metasSemanais(plano):
         novo = {'0-semana':(i+2)}
         data = data.append(novo,ignore_index=True )
     data['0-semana'] = data['0-semana'].astype(str)
-    data['1- PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['semana']), axis=1)
-    data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'M.POLLO', row['semana']), axis=1)
+    data['1- PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['0-semana']), axis=1)
+    data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'M.POLLO', row['0-semana']), axis=1)
     totalreais , totalpçs = pesquisa(plano,'PACO')
     data['1.1- PACO pçs'] = (data['1- PACO %dist.']/100)*totalpçs
     data['1.2- PACO R$'] = (data['1- PACO %dist.']/100)*totalreais
