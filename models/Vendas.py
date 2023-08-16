@@ -45,7 +45,7 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
     else:
 
 
-        if excel == False and pagina ==0 and itensPag ==1 and engenharia == '0'and descricao == '0' and categoria == '0' and MARCA == '0':
+        if excel == False and pagina ==0  and engenharia == '0'and descricao == '0' and categoria == '0' and MARCA == '0':
 
             conn = ConexaoCSW.Conexao()
             start_time = time.time()
