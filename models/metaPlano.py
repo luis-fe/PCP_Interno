@@ -103,12 +103,14 @@ def metasSemanais(plano):
     data['1- PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['0-semana']), axis=1)
     data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'M.POLLO', row['0-semana']), axis=1)
     totalreais , totalpçs = pesquisa(plano,'PACO')
+    totalreaisMpollo, totalpçsMpollo = pesquisa(plano, 'M.POLLO')
+
     data['1.1- PACO pçs'] = (data['1- PACO %dist.']/100)*totalpçs
     data['1.2- PACO R$'] = (data['1- PACO %dist.']/100)*totalreais
     data['1.1- PACO pçs'] = data['1.1- PACO pçs'] .astype(int)
-    data['1.1- M.POLLO pçs'] = (data['1- M.POLLO  %dist.']/100)*totalpçs
-    data['1.2- M.POLLO  R$'] = (data['1- M.POLLO  %dist.']/100)*totalreais
-    data['1.1- M.POLLO  pçs'] = data['1.1- M.POLLO  pçs'] .astype(int)
+    data['2.1- M.POLLO pçs'] = (data['2- M.POLLO  %dist.']/100)*totalpçsMpollo
+    data['2.2- M.POLLO  R$'] = (data['2- M.POLLO  %dist.']/100)*totalreaisMpollo
+    data['2.1- M.POLLO  pçs'] = data['2.1- M.POLLO  pçs'] .astype(int)
 
 
 
