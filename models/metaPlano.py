@@ -109,7 +109,7 @@ def metasSemanais(plano):
     data["1.1- PACO pçs"] = data["1.1- PACO pçs"].apply(lambda x: "{:,.0f}".format(x))
 
     data['1.2- PACO R$'] = (data['1- PACO %dist.']/100)*totalreais
-    data['1.1- PACO pçs'] = data['1.1- PACO pçs'] .astype(int)
+    #data['1.1- PACO pçs'] = data['1.1- PACO pçs'] .astype(int)
     data['2.1- M.POLLO pçs'] = (data['2- M.POLLO %dist.']/100)*totalpçsMpollo
     data['2.2- M.POLLO R$'] = (data['2- M.POLLO %dist.']/100)*totalreaisMpollo
     data['2.1- M.POLLO pçs'] = data['2.1- M.POLLO pçs'] .astype(int)
