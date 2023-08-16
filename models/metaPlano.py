@@ -85,9 +85,9 @@ def metasSemanais(plano):
     get = pd.read_sql('select "inicioVenda", "FimVenda" from pcp."Plano" where codigo = %s',conn,params=(plano,))
     get['inicioVenda'] = pd.to_datetime(get['inicioVenda'], format='%d/%m/%Y')
     get['FimVenda'] = pd.to_datetime(get['FimVenda'], format='%d/%m/%Y')
-    get['intervalo'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
-    get['intervalo'] = get['intervalo'].astype(str)
-    get['Total semanas'] = get['intervalo'].str.extract('(\d+)').astype(int)
+    get['Duracao'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
+    get['Duracao'] = get['Duracao'].astype(str)
+    get['Total semanas'] = get['Duracao'].str.extract('(\d+)').astype(int)
     get['Total semanas'] = get['Total semanas']/7
     get['Total semanas'] = np.ceil(get['Total semanas'])
     get['Total semanas'] = get['Total semanas'] .astype(int)
@@ -106,6 +106,9 @@ def metasSemanais(plano):
     data['1.1- PACO pçs'] = (data['1- PACO %dist.']/100)*totalpçs
     data['1.2- PACO R$'] = (data['1- PACO %dist.']/100)*totalreais
     data['1.1- PACO pçs'] = data['1.1- PACO pçs'] .astype(int)
+    data['1.1- M.POLLO pçs'] = (data['1- M.POLLO  %dist.']/100)*totalpçs
+    data['1.2- M.POLLO  R$'] = (data['1- M.POLLO  %dist.']/100)*totalreais
+    data['1.1- M.POLLO  pçs'] = data['1.1- M.POLLO  pçs'] .astype(int)
 
 
 
