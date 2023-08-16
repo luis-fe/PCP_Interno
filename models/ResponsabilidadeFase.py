@@ -36,6 +36,8 @@ def ObterFaseResponsais():
     fasecsw = ObterInfCSW.GetTipoFases()
     faseRespo = pd.read_sql('select * from pcp."responsabilidadeFase"',conn)
     fasecsw = pd.merge(fasecsw,faseRespo,on='codFase',how='left')
+    fasecsw.fillna('-', inplace=True)
+
     return fasecsw
 
 
