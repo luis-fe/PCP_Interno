@@ -87,16 +87,16 @@ def metasSemanais(plano):
     get['FimVenda'] = pd.to_datetime(get['FimVenda'], format='%d/%m/%Y')
     get['intervalo'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
     get['intervalo'] = get['intervalo'].astype(str)
-    get['semanas'] = get['intervalo'].str.extract('(\d+)').astype(int)
-    get['semanas'] = get['semanas']/7
-    get['semanas'] = np.ceil(get['semanas'])
-    get['semanas'] = get['semanas'] .astype(int)
+    get['Total semanas'] = get['intervalo'].str.extract('(\d+)').astype(int)
+    get['Total semanas'] = get['Total semanas']/7
+    get['Total semanas'] = np.ceil(get['Total semanas'])
+    get['Total semanas'] = get['Total semanas'] .astype(int)
     get.drop(['inicioVenda','FimVenda'], axis=1, inplace=True)
 
 
     conn.close()
     data = pd.DataFrame([{'0-semana':1}])
-    for i in range(get['semanas'][0]-2):
+    for i in range(get['Total semanas'][0]-2):
         novo = {'0-semana':(i+2)}
         data = data.append(novo,ignore_index=True )
     data['0-semana'] = data['0-semana'].astype(str)
