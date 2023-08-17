@@ -1,7 +1,7 @@
 # Importando os itens para o postgree, acionado via automacao diaria
 import ConexaoCSW
 import pandas as pd
-def ItensCSW(dataIni, dataFim):
+def ItensCSW():
     conn = ConexaoCSW.Conexao()
     itens = pd.read_sql('SELECT i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao'
                         ' (select t.descricao from tcp.Tamanhos t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho '
