@@ -1,7 +1,7 @@
 # Importando os itens para o postgree, acionado via automacao diaria
 import ConexaoCSW
 import pandas as pd
-def ItensCSW(i, paginas, orderby = 'desc'):
+def ItensCSW(i, paginas, orderby):
     i = int(i)
     final = paginas * i
     conn = ConexaoCSW.Conexao()
