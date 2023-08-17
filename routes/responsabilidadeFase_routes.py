@@ -51,3 +51,22 @@ def criar_ResponsabilidadeFase_routes():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data),200
+@ResponsabilidadeFase_routes.route('/pcp/api/ResponsabilidadeFase', methods=['PUT'])
+@token_required
+def get_UsuarioSenha():
+    # Obtém os dados do corpo da requisição (JSON)
+    novo_usuario = request.get_json()
+    codFase = novo_usuario.get('codFase')
+    nome = novo_usuario.get('nome')
+    usuarios = ResponsabilidadeFase.AlterarResponsalvel(codFase, nome)
+    # Obtém os nomes das colunas
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data),200
