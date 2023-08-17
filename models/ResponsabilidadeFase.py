@@ -46,7 +46,7 @@ def AlterarResponsalvel(codFase,responsavel):
 
     if codfase2 != 'novo':
         update = 'update pcp."responsabilidadeFase" ' \
-                 ' set "responsavel" = s% ' \
+                 ' set "responsavel" = %s ' \
                  'where "codFase" = %s '
         cursor = conn.cursor()
         cursor.execute (update,(responsavel,codFase,))
