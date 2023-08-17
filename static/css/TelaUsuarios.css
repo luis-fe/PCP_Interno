@@ -84,7 +84,6 @@ h2 {
   margin: 0 auto;
   background-color: var(--cor2);
   width: 80%;
-  margin-top: 20px;
   border: 2px solid var(--cor2);
   border-radius: 10px;
   min-height: 35px;
@@ -243,6 +242,7 @@ h2 {
   font-weight: bold;
   cursor: pointer;
   z-index: 3;
+  margin-left: 95%;
 }
 
 .fechar:hover,
@@ -426,7 +426,6 @@ h2 {
   min-height: 600px;
   max-height: 650px;
   text-align: center;
-  margin-top: 10px;
   overflow: auto;
 }
 
@@ -434,7 +433,7 @@ h2 {
   font-size: 15px;
   border-collapse: collapse;
   border: 2px solid darkgray;
-  min-width: 2000px;
+  min-width: 2100px;
   overflow: auto;
 }
 
@@ -454,10 +453,10 @@ h2 {
 
 .TabelaContainer .TabelaEstrutura thead {
   position: sticky;
-  top: 0;
-  background-color: lightgray;
-  z-index: 1;
-  border: 2px solid darkgray;
+    top: 0;
+    background-color: lightgray;
+    z-index: 0;
+    border: 2px solid darkgray;
 }
 
 
@@ -554,7 +553,8 @@ h2 {
 .modalSelecionarPlano-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   background-color: #fff;
   margin: 10% auto;
   border-radius: 5px;
@@ -635,4 +635,49 @@ h2 {
 
 #TabelaPlanos2 td {
   text-align: center;
+}
+
+.CampoPesquisaEstrutura{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 20px;
+  width: 80%;
+  margin-left: 10%;
+  border: 2px solid darkgray;
+  border-radius: 10px;
+  height: 50px;
+
+}
+
+#LabelPesquisaEstrutura{
+  margin-left: 10px;
+}
+
+.InputContainerEstrutura {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.InputContainerEstrutura input {
+  padding-right: 40px;
+  color: black;
+  background-color: white;
+  border: 2px solid darkgray;
+  border-radius: 10px;
+  height: 30px;
+  text-align: center;
+
+}
+
+.InputContainerEstrutura button {
+  position: absolute;
+  right: 0;
+  padding: 5px 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
