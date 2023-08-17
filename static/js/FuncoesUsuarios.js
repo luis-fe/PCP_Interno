@@ -712,4 +712,17 @@ function carregarUsuarios() {
     .catch(error => {
       console.error(error);
     });
-}
+};
+
+
+const BotaoSair = document.getElementById("BotaoSair")
+
+
+
+
+
+
+
+
+
+
