@@ -22,3 +22,6 @@ def TelaPrincipal():
 @rotasPlataformaWeb.route('/TelaUsuarios')
 def TelaUsuarios():
     return render_template('TelaUsuarios.html')
+@rotasPlataformaWeb.route('/TelaCurva')
+def TelaCurvaABC():
+    return render_template('TelaCurva.html')
