@@ -32,6 +32,7 @@
                 <li><a href="#">Relatórios</a>
                     <ul>
                         <li><a href="/TelaEstrutura">Estrutura De Produtos</a></li>
+                        <li><a href="TelaCurva">Curva ABC</a></li>
                     </ul>
                 </li>
                 <li><a href="#" id="NomeUsuario"></a>
@@ -50,38 +51,19 @@
 
     <div class="Menu2">
         <button type="button" class="ButtonNovo" id="BotaoCadUsuario" title="Cadastrar Novo Usuário">
-            <img src="/static/imagens/IconeMais.jpg" alt="">
+            <img src="/static/imagens/IconeMais.jpg" alt=""> 
         Novo</button>
 
         <button type="button" class="ButtonEditar" id="ButtonEditar" title="Editar Usuário">
-            <img src="/static/imagens/IconeEditar.jpg" alt="">
+            <img src="/static/imagens/IconeEditar.jpg" alt=""> 
         Editar</button>
 
         <button type="button" class="ButtonRemover" id="ButtonRemover" title="Remover Usuário">
-            <img src="/static/imagens/IconeLixeira.jpg" alt="">
+            <img src="/static/imagens/IconeLixeira.jpg" alt=""> 
         Remover</button>
     </div>
 
-    <div class="ButtonPaginas">
-        <button type="button" class="ButtonPrimeiraPagina" id="ButtonPrimeiraPagina" title="Primeira Página" >
-            <img src="/static/imagens/IconePrimeiraPagina.jpg" alt="" style="width: 25px; height: 22px;">
-        </button>
 
-        <button type="button" class="ButtonPaginaAnterior" id="ButtonPaginaAnterior" title="Página Anterior">
-            <img src="/static/imagens/IconePaginaAnterior.jpg" alt="" style="width: 25px; height: 22px;">
-        </button>
-
-        <label for="LabelContagemPagina" class="LabelContagemPagina" id="LabelContagemPagina"></label>
-
-        <button type="button" class="ButtonProximaPagina" id="ButtonProximaPagina" title="Próxima Página">
-            <img src="/static/imagens/IconeProximaPagina2.jpg" alt="" style="width: 25px; height: 22px;">
-        </button>
-
-        <button type="button" class="ButtonUltimaPagina" id="ButtonUltimaPagina" >
-            <img src="/static/imagens/IconeUltimaPagina.jpg" alt="" style="width: 25px; height: 22px;" title="Última Página">
-        </button>
-    </div>
-    <!-- Este Código é para o Formulário de Cadastro de Usuário -->
 
     <div id="modalNovo" class="modalNovo">
         <div class="modalNovo-content">
@@ -96,6 +78,8 @@
             <button type="button" id="salvar" onclick="salvarUsuario()">Salvar</button>
         </div>
     </div>
+
+    
 
     <div id="ModalEditar" class="ModalEditar">
         <div class="ModalEditar-content">
@@ -135,6 +119,26 @@
     <div class="Tabelausuarios" >
         <table border="2"class="TabelaUsuarios" id="TabelaUsuarios"></table>
       </div>
+
+      <div class="ButtonPaginas">
+        <button type="button" class="ButtonPrimeiraPagina" id="ButtonPrimeiraPagina" title="Primeira Página" >
+            <img src="/static/imagens/IconePrimeiraPagina.jpg" alt="" style="width: 25px; height: 22px;">
+        </button>
+
+        <button type="button" class="ButtonPaginaAnterior" id="ButtonPaginaAnterior" title="Página Anterior">
+            <img src="/static/imagens/IconePaginaAnterior.jpg" alt="" style="width: 25px; height: 22px;">
+        </button>
+
+        <label for="LabelContagemPagina" class="LabelContagemPagina" id="LabelContagemPagina"></label>
+
+        <button type="button" class="ButtonProximaPagina" id="ButtonProximaPagina" title="Próxima Página">
+            <img src="/static/imagens/IconeProximaPagina2.jpg" alt="" style="width: 25px; height: 22px;">
+        </button>
+
+        <button type="button" class="ButtonUltimaPagina" id="ButtonUltimaPagina" >
+            <img src="/static/imagens/IconeUltimaPagina.jpg" alt="" style="width: 25px; height: 22px;" title="Última Página">
+        </button>
+    </div>
 
     <footer class="Rodape">
     <p>Grupo Mpl</p>
