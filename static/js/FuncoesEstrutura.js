@@ -1,7 +1,5 @@
 let IndiceExibicao = 0;
-let TotalDados = 0;
 let TotalPagina;
-let TotalPaginas = 0;
 let PaginaAtual = 1;
 const codApi = 'http://192.168.0.183:8000/pcp/api/Estrutura';
 let plano = [];
@@ -374,11 +372,10 @@ function CriarTabelaEstrutura(listaEstrutura) {
           }
         })
         .then(data => {
+          const detalhamentoCurva = data[0]["0-numero de paginas"];
           const detalhamentoEstrutura = data[0]['1- Detalhamento da Estrutura:'];
-          TotalDados = detalhamentoEstrutura.length;
-          TotalPaginas = Math.ceil(TotalDados / 15);
-          TotalPagina = Math.ceil(TotalDados / 15);
-          labelPagina1.textContent = `Página ${PaginaAtual} de ${TotalPaginas}`;
+          TotalPagina = detalhamentoCurva
+          labelPagina1.textContent = `Página ${PaginaAtual} de ${TotalPagina}`;
           LabelProdutos.textContent = ""
           FecharModalLoading();
           CriarTabelaEstrutura(detalhamentoEstrutura);
