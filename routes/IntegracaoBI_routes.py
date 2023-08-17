@@ -35,8 +35,8 @@ def FasesBI():
 
 @integracaoBI.route('/pcp/api/IntensBI', methods=['GET'])
 def IntensBI():
-    itens = request.args.get('itens')
-    usuarios = itens.ItensCSW(itens)
+    topItem = request.args.get('itens')
+    usuarios = itens.ItensCSW(topItem)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
