@@ -34,6 +34,7 @@
                 <li><a href="#">Relatórios</a>
                     <ul>
                         <li><a href="/TelaEstrutura">Estrutura De Produtos</a></li>
+                        <li><a href="TelaCurva.html">Curva ABC</a></li>
                     </ul>
                 </li>
                 <li><a href="#" id="NomeUsuario"></a>
@@ -75,6 +76,7 @@
             <div class="BotaoPlano">
                 <button id="ButtonCriarPlano"> Criar Plano </button>
                 <button id="ButtonEditarPlano">Editar Plano</button>
+                <button id="ButtonEditarCurvaAbc">Editar %Curva</button>
             </div>
             <div class="Linha"></div>
         </div>
@@ -165,6 +167,42 @@
             <div>
             <button id="botaoSelecionarLote">Selecionar</button>
         </div>
+        </div>
+    </div>
+
+    <div id="modalCurva" class="modalCurva">
+        <div class="modalCurva-content">
+            <span id="fecharmodalCurva" class="fechar1">&times;</span>
+            <h3>% Curva ABC</h3>
+            <div class="curvaA">
+                <label for="text" id="LabelCurvaA">%A</label>
+                <input type="text" id="InputCurvaA">
+            </div>
+            <div class="curvaB">
+                <label for="text" id="LabelCurvaB">%B</label>
+                <input type="text" id="InputCurvaB">
+            </div>
+            <div class="curvaC">
+                <label for="text" id="LabelCurvaC">%C</label>
+                <input type="text" id="InputCurvaC">
+            </div>
+            <div class="linhadiv">
+            </div>
+            <div class="curvaC1">
+                <label for="text" id="LabelCurvaC1">%C1</label>
+                <input type="text" id="InputCurvaC1">
+            </div>
+            <div class="curvaC2">
+                <label for="text" id="LabelCurvaC2">%C2</label>
+                <input type="text" id="InputCurvaC2">
+            </div>
+            <div class="curvaC3">
+                <label for="text" id="LabelCurvaC">%C3</label>
+                <input type="text" id="InputCurvaC3">
+            </div>
+            <div class="BotãoAlterar">
+               <button id="SalvarPercentuais">Salvar</button>
+            </div>
         </div>
     </div>
         
