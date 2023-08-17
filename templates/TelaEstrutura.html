@@ -32,6 +32,7 @@
                 <li><a href="#">Relatórios</a>
                     <ul>
                         <li><a href="/TelaEstrutura">Estrutura De Produtos</a></li>
+                        <li><a href="TelaCurva">Curva ABC</a></li>
                     </ul>
                 </li>
                 <li><a href="#" id="NomeUsuario"></a>
@@ -49,47 +50,51 @@
         <h2>Estrutura de Produtos</h2></div>
 
 
+     <div class="CampoPesquisaEstrutura">
+            <label id="LabelPesquisaEstrutura" for="InputCodPlanoEstrutura">Código Plano:</label>
+            <div class="InputContainerEstrutura">
+                <input type="text" id="InputCodPlanoEstrutura">
+                <button id="ButtonPesquisaPlanoEstrutura"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+
+    <div class="TabelaContainer">
+    <table border="2" class="TabelaEstrutura" id="TabelaEstrutura">
+    </table>
+    </div>
+
     <div class="ButtonPaginas">
         <button type="button" class="ButtonPrimeiraPagina1" id="ButtonPrimeiraPagina1" title="Primeira Página" >
-            <img src="/static/imagens/IconePrimeiraPagina.jpg" alt="" style="width: 25px; height: 22px;">
+            <img src="IconePrimeiraPagina.jpg" alt="" style="width: 25px; height: 22px;">
         </button>
 
         <button type="button" class="ButtonPaginaAnterior1" id="ButtonPaginaAnterior1" title="Página Anterior">
-            <img src="/static/imagens/IconePaginaAnterior.jpg" alt="" style="width: 25px; height: 22px;">
+            <img src="IconePaginaAnterior.jpg" alt="" style="width: 25px; height: 22px;">
         </button>
 
         <label for="LabelContagemPagina" class="LabelContagemPagina1" id="LabelContagemPagina1"></label>
 
         <button type="button" class="ButtonProximaPagina1" id="ButtonProximaPagina1" title="Próxima Página">
-            <img src="/static/imagens/IconeProximaPagina2.jpg" alt="" style="width: 25px; height: 22px;">
+            <img src="IconeProximaPagina2.jpg" alt="" style="width: 25px; height: 22px;">
         </button>
 
         <button type="button" class="ButtonUltimaPagina1" id="ButtonUltimaPagina1" >
-            <img src="/static/imagens/IconeUltimaPagina.jpg" alt="" style="width: 25px; height: 22px;" title="Última Página">
+            <img src="IconeUltimaPagina.jpg" alt="" style="width: 25px; height: 22px;" title="Última Página">
         </button>
 
-        <button type="button" class="ButtonExportarExcel" id="ButtonExportarExcel" title="Exportar para Excel" >
+        <button type="button" class="ButtonExportarExcel" id="ButtonExportarExcel1" title="Exportar para Excel" >
             <i id="ImagemExcel" class="bi bi-file-earmark-spreadsheet-fill"></i>
         </button>
         </div>
 
-
-        
-
-    <div class="TabelaContainer">
-    <table border="2" class="TabelaEstrutura" id="TabelaEstrutura">
-    </table>
-    
-    </div>
-
     <div id="ModalLoading" class="ModalLoading">
-          <span id="loader"><img src="/static/imagens/IconeLoading.gif" style="width: 80px; height: 80px;" id="ImagemLoading">
+          <span id="loader"><img src="IconeLoading.gif" style="width: 80px; height: 80px;" id="ImagemLoading">
         </span>
         </div>
-      </div>
+
 
       <div id="modalSelecionarPlano" class="modalSelecionarPlano">
-        <div class="modalSelecionarPlano-content">
+        <div class="modalSelecionarPlano-content">>
             <span id="fecharModalSelecaoPlanos" class="fechar">&times;</span>
             <h3>Seleção de Planos</h3>
             <input id="PesquisarPlano1" type="search" placeholder="Digite sua Busca!">
@@ -98,7 +103,7 @@
             </div>
             <button id="botaoSelecionarPlano2">Selecionar</button>
         </div>
-    </div>
+    </div>    
 
     <footer class="Rodape">
     <p>Grupo Mpl</p>
