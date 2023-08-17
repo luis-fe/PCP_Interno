@@ -541,7 +541,7 @@ if (PaginaAtual < 1) {
 
 
       const dadosParaExportar = {
-        "plano": BotaoAbrirPlanoEstrutura.value,
+        "plano": inputPlano.value,
         "Excel": true,
         "codEngenharias": TextoLabel,
         "TamanhoProduto": TextoLabelTamanhos,
@@ -708,6 +708,7 @@ if (PaginaAtual < 1) {
               "plano": plano
           };
           console.log(plano)
+          inputPlano.value = plano;
           CarregarDados(passandoDados)
   
           
@@ -726,4 +727,22 @@ if (PaginaAtual < 1) {
       modalPlanos.style.display = "flex";
       ConsultaPlanosExistentes();
   });
+
+
+  const inputPlano = document.getElementById("InputCodPlanoEstrutura");
+
+  inputPlano.addEventListener("keydown", event => {
+    const dadosIniciais = {
+        "plano": inputPlano.value,
+        "itensPag": 15
+    };
+    if (event.key === "Enter") {
+        event.preventDefault(); // Impede o comportamento padrão de submit de formulário
+        console.log("teste")
+        CarregarDados(dadosIniciais);
+    }
+
+});
+
+
 
