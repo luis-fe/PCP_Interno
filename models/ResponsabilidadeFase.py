@@ -49,7 +49,7 @@ def AlterarResponsalvel(codFase,responsavel):
                  ' set "responsavel" = s% ' \
                  'where "codFase" = %s,'
         cursor = conn.cursor()
-        cursor.excute (update,(responsavel,codFase,))
+        cursor.execute (update,(responsavel,codFase,))
         conn.commit()
         cursor.close()
         conn.close()
