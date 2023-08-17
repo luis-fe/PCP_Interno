@@ -86,7 +86,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
     colunaTipo.style.width = '120px';
     colunaColecao.style.width = '100px';
     colunaProduto.style.width = '150px';
-    colunaDescricaoProduto.style.width = '750px';
+    colunaDescricaoProduto.style.width = '800px';
     colunaSituacaoCor.style.width = '100px';
     colunaSortimento.style.width = '200px';
     colunaTamanho.style.width = '120px';
@@ -209,7 +209,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "nomeFornecedor": TextoFornecedor,
             "desproduto": TextoFornecedor
             }
-            CarregarDados2(dadosEngenharia)  
+            (dadosEngenharia)  
         }
       }
       function FiltroTamanho(event) {
@@ -232,7 +232,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "nomeFornecedor": TextoFornecedor,
             "desproduto": TextoFornecedor
             }
-            CarregarDados2(dadosTamanho)  
+            CarregarDados(dadosTamanho)  
         }
       };
 
@@ -257,7 +257,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "nomeFornecedor": TextoFornecedor,
             "desproduto": TextoFornecedor
             }
-            CarregarDados2(dadosMP)  
+            CarregarDados(dadosMP)  
         }
       };
 
@@ -281,7 +281,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "nomeFornecedor": TextoFornecedor,
             "desproduto": TextoFornecedor
             }
-            CarregarDados2(dadosNomeMP)  
+            CarregarDados(dadosNomeMP)  
         }
       }
 
@@ -305,7 +305,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "nomeFornecedor": TextoFornecedor,
             "desproduto": TextoFornecedor
             }
-            CarregarDados2(dadosFornecedor)  
+            CarregarDados(dadosFornecedor)  
         }
       }
 
@@ -330,7 +330,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "desproduto": TextoDescProduto
 
             }
-            CarregarDados2(dadosDesc)  
+            CarregarDados(dadosDesc)  
         }
       }
 
@@ -353,6 +353,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
 
     // Função para carregar dados iniciais
     function CarregarDados(dados) {
+  
 
       AbrirModalLoading()
 
@@ -368,7 +369,8 @@ function CriarTabelaEstrutura(listaEstrutura) {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error('Erro ao obter a lista de usuários');
+            FecharModalLoading();
+            alert("Não foi possível carregar a Estrutura! Procure o Administrador!")
           }
         })
         .then(data => {
@@ -387,32 +389,6 @@ function CriarTabelaEstrutura(listaEstrutura) {
         });
     }
 
-    function CarregarDados2(dados) {
-      fetch(codApi, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'a44pcp22'
-          },
-          body: JSON.stringify(dados),
-      })
-      .then(response => {
-          if (response.ok) {
-              return response.json();
-          } else {
-              throw new Error('Erro ao obter a lista de usuários');
-          }
-      })
-      .then(data => {
-          const detalhamentoEstrutura1 = data[0]['1- Detalhamento da Estrutura:'];
-          TotalPagina = data[0]["0- ToalPg"];
-          labelPagina1.textContent = `Página ${PaginaAtual} de ${TotalPagina}`;
-          AtualizarTabelaEstrutura(detalhamentoEstrutura1);
-      })
-      .catch(error => {
-          console.error(error);
-      });
-  }
 
     function AtualizarTabelaEstrutura(listaEstrutura) {
       const tabela = document.getElementById('TabelaEstrutura');
@@ -441,7 +417,7 @@ function CriarTabelaEstrutura(listaEstrutura) {
             "nomeFornecedor": TextoFornecedor,
             "desproduto": TextoDescProduto
         };
-        CarregarDados2(dados1);
+        CarregarDados(dados1);
     }
     // Desabilita o botão "Próxima página" se a próxima página for maior que o total de páginas
     if (PaginaAtual + 1 > TotalPagina) {
@@ -467,7 +443,7 @@ function carregarUsuariosAnteriores() {
           "nomeFornecedor": TextoFornecedor,
           "desproduto": TextoDescProduto
       };
-      CarregarDados2(dados1);
+      CarregarDados(dados1);
   }
   // Desabilita o botão "Próxima página" se a página atual for 1
   if (PaginaAtual < 1) {
@@ -497,7 +473,7 @@ function CarregarUltimaPagina() {
           "nomeFornecedor": TextoFornecedor,
           "desproduto": TextoDescProduto
       };
-      CarregarDados2(dados1);
+      CarregarDados(dados1);
   }
   // Desabilita o botão "Próxima página" se a próxima página for maior que o total de páginas
   if (PaginaAtual > TotalPagina) {
@@ -525,7 +501,7 @@ function CarregarPrimeiraPagina() {
         "nomeFornecedor": TextoFornecedor,
         "desproduto": TextoDescProduto
     };
-    CarregarDados2(dados1);
+    CarregarDados(dados1);
 }
 
 // Desabilita o botão "Próxima página" se a página atual for 1
@@ -552,13 +528,6 @@ if (PaginaAtual < 1) {
     PrimeiraPagina.addEventListener('click', CarregarPrimeiraPagina);
 
 
-    
-    // Carrega os dados iniciais ao carregar a página
-    window.addEventListener('load', () =>  
-    abrirModalPlano());
-
-  
-
 
     //------------------------------------------------- FUNÇÃO EXCEL ----------------------------------------------------------------//
 
@@ -575,7 +544,7 @@ if (PaginaAtual < 1) {
 
 
       const dadosParaExportar = {
-        "plano": plano,
+        "plano": BotaoAbrirPlanoEstrutura.value,
         "Excel": true,
         "codEngenharias": TextoLabel,
         "TamanhoProduto": TextoLabelTamanhos,
@@ -624,7 +593,7 @@ if (PaginaAtual < 1) {
       });
     }
 
-    const botaoExportarExcel = document.getElementById('ButtonExportarExcel');
+    const botaoExportarExcel = document.getElementById('ButtonExportarExcel1');
     botaoExportarExcel.addEventListener('click', () => exportarParaExcel());
     
     //------------------------------------------------SELECIONANDO PLANO--------------------------------------------------------------//
@@ -718,7 +687,7 @@ if (PaginaAtual < 1) {
   const botaoSelecionarPlano = document.getElementById('botaoSelecionarPlano2')
   
   botaoSelecionarPlano.addEventListener('click', function() {
-      const LinhasTabelaPlano = document.getElementById('TabelaPlanos2').getElementsByTagName('tr');
+  const LinhasTabelaPlano = document.getElementById('TabelaPlanos2').getElementsByTagName('tr');
 
   
       for (let i = 1; i < LinhasTabelaPlano.length; i++) {
@@ -752,37 +721,12 @@ if (PaginaAtual < 1) {
 
 
 
-const InputBuscaPlanos11 = document.getElementById('PesquisarPlano1');
-const PesquisaTabelaPlanos11 = document.getElementById("TabelaPlanos2")
-        
-InputBuscaPlanos11.addEventListener('keyup', () => {
-    console.log(InputBuscaPlanos11.value)
-    const expressao1 = InputBuscaPlanos11.value.trim().toLowerCase();
-    const linhasTabela5 = PesquisaTabelaPlanos11.getElementsByTagName('tr');
-        
-        for (let i = 1; i < linhasTabela5.length; i++) {
-            const linha5 = linhasTabela5[i];
-            const colunas5 = linha5.getElementsByTagName('td');
-            let encontrou1 = false;
-        
-        for (let j = 1; j < colunas5.length; j++) {
-            const conteudoColuna = colunas5[j].textContent.trim().toLowerCase();
-        
-        if (conteudoColuna.includes(expressao1)) {
-          encontrou1 = true;
-            break;
-            }
-        }
-        
-        if (encontrou1) {
-          linha5.style.display = '';
-        } else {
-          linha5.style.display = 'none';
-        }
-        }
-    });
+  const BotaoPesquisaPlano = document.getElementById("ButtonPesquisaPlanoEstrutura");
+  
+  
+  BotaoPesquisaPlano.addEventListener('click', function () {
+      console.log("botão clicado")
+      modalPlanos.style.display = "flex";
+      ConsultaPlanosExistentes();
+  });
 
-
-
-    
-    
