@@ -23,7 +23,7 @@ def ItensCSW():
     itens['categoria'] = itens.apply(lambda row: Categoria('BLAZER', row['nome'], 'JAQUETA', row['categoria']),axis=1)
     itens.fillna('-', inplace=True)
     itens['dataInclusao'] = itens['dataInclusao'].str.replace('-', '2015-01-01')
-    itens = itens.iloc[0:1000]
+    itens = itens.iloc[0:1]
 
     return itens
 
