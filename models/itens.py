@@ -4,7 +4,7 @@ import pandas as pd
 def ItensCSW(itens):
     itens = int(itens)
     conn = ConexaoCSW.Conexao()
-    itens = pd.read_sql('SELECT top %s  i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao, '
+    itens = pd.read_sql('SELECT top '+itens+ ' i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao, '
                         ' (select t.descricao from tcp.Tamanhos t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho '
                         ' FROM Cgi.Item i '
                         ' JOIN Cgi.Item2 i2 on i2.codItem = i.codigo '
