@@ -38,6 +38,8 @@ def IntensBI():
     topItem = request.args.get('itens')
     paginas = request.args.get('paginas',1)
     orderby = request.args.get('orderby', 'desc')
+    data = request.args.get('dataInicial', '2015-01-01')
+
     usuarios = itens.ItensCSW(topItem, int(paginas),orderby)
 
     # Obtém os nomes das colunas
