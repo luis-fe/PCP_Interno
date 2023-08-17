@@ -1,7 +1,7 @@
 # Importando os itens para o postgree, acionado via automacao diaria
 import ConexaoCSW
 import pandas as pd
-def ItensCSW(i, paginas):
+def ItensCSW(i, paginas, orderby = 'desc'):
     i = int(i)
     final = paginas * i
     conn = ConexaoCSW.Conexao()
@@ -10,7 +10,7 @@ def ItensCSW(i, paginas):
                         ' FROM Cgi.Item i '
                         ' JOIN Cgi.Item2 i2 on i2.codItem = i.codigo '
                         " WHERE i.unidadeMedida = 'PC' and i2.Empresa = 1 and i2.codCor > 0 and dataInclusao is not null "
-                                             "order by dataInclusao desc",conn)
+                                             "order by dataInclusao '"+orderby+"'",conn)
     itens['categoria'] = '-'
     itens['categoria'] = itens.apply(lambda row: Categoria('CAMISA', row['nome'], 'CAMISA', row['categoria']),axis=1)
     itens['categoria'] = itens.apply(lambda row: Categoria('TSHORT', row['nome'], 'CAMISETA', row['categoria']),axis=1)
