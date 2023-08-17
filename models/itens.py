@@ -1,10 +1,10 @@
 # Importando os itens para o postgree, acionado via automacao diaria
 import ConexaoCSW
 import pandas as pd
-def ItensCSW(itens, paginas):
+def ItensCSW(i, paginas):
 
     conn = ConexaoCSW.Conexao()
-    itens = pd.read_sql('SELECT top '+itens+ ' i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao, '
+    itens = pd.read_sql('SELECT top '+i+ ' i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao, '
                         ' (select t.descricao from tcp.Tamanhos t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho '
                         ' FROM Cgi.Item i '
                         ' JOIN Cgi.Item2 i2 on i2.codItem = i.codigo '
@@ -25,8 +25,9 @@ def ItensCSW(itens, paginas):
     itens['categoria'] = itens.apply(lambda row: Categoria('BLAZER', row['nome'], 'JAQUETA', row['categoria']),axis=1)
     itens.fillna('--', inplace=True)
     itens['dataInclusao'] = itens['dataInclusao'].str.replace('--', '2015-01-01')
-    final = paginas * itens
-    inicial = (paginas - 1) * itens
+    i = int(i)
+    final = paginas * i
+    inicial = (paginas - 1) * i
     itens = itens.iloc[inicial:final]
 
     return itens

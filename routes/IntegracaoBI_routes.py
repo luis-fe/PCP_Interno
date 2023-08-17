@@ -37,7 +37,7 @@ def FasesBI():
 def IntensBI():
     topItem = request.args.get('itens')
     paginas = request.args.get('paginas',1)
-    usuarios = itens.ItensCSW(topItem, paginas)
+    usuarios = itens.ItensCSW(topItem, int(paginas))
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
