@@ -10,7 +10,8 @@ def ItensCSW(i, paginas, anoLote):
     start_time = time.time()
 
     itens = pd.read_sql('SELECT top '+str(final)+ ' ot.numeroOP, ot.codProduto , ot.codItem, ot.codSortimento, ot.seqTamanho , ot.qtdePecas1Qualidade, '
-                        ' ot.qtdePecas2Qualidade , ot.qtdePecasImplementadas , op.situacao, op.codFaseAtual, op.codTipoOP, op.dataGeracao, op.codLote t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho '
+                        ' ot.qtdePecas2Qualidade , ot.qtdePecasImplementadas , op.situacao, op.codFaseAtual, op.codTipoOP, op.dataGeracao, op.codLote t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho,'
+                        ' op.codSeqRoteiroAtual  '
                         ' from tco.OrdemProdTamanhos ot '
                         ' join tco.OrdemProd op on op.codEmpresa = ot.codEmpresa and ot.numeroOP = op.numeroOP  '
                         " WHERE ot.codEmpresa = 1 and op.codLote  like '"+anoLote+"'",conn)
