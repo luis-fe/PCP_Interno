@@ -1,10 +1,14 @@
 # Importando os itens para o postgree, acionado via automacao diaria
 import ConexaoCSW
 import pandas as pd
+import time
+
 def ItensCSW(i, paginas, orderby, data):
     i = int(i)
     final = paginas * i
     conn = ConexaoCSW.Conexao()
+    start_time = time.time()
+
     itens = pd.read_sql('SELECT top '+str(final)+ ' i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao, '
                         ' (select t.descricao from tcp.Tamanhos t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho '
                         ' FROM Cgi.Item i '
@@ -12,6 +16,14 @@ def ItensCSW(i, paginas, orderby, data):
                         " WHERE i.unidadeMedida = 'PC' and i2.Empresa = 1 and i2.codCor > 0 and dataInclusao is not null"
                                                   " and dataInclusao > '"+data+"' "
                                              " order by dataInclusao "+orderby+"",conn)
+    end_time = time.time()
+    execution_time = end_time - start_time
+    execution_time = round(execution_time, 2)
+    execution_time = str(execution_time)
+    ConexaoCSW.ControleRequisicao('Consultar itens Csw', execution_time, f'powerbi numero de intens {final}')
+
+
+
     itens['categoria'] = '-'
     itens['categoria'] = itens.apply(lambda row: Categoria('CAMISA', row['nome'], 'CAMISA', row['categoria']),axis=1)
     itens['categoria'] = itens.apply(lambda row: Categoria('TSHORT', row['nome'], 'CAMISETA', row['categoria']),axis=1)
