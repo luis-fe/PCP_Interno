@@ -13,7 +13,9 @@ def ItensCSW(i, paginas, orderby, data):
                         ' (select t.descricao from tcp.Tamanhos t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho '
                         ' FROM Cgi.Item i '
                         ' JOIN Cgi.Item2 i2 on i2.codItem = i.codigo '
-                        " WHERE (i.unidadeMedida = 'PC' or i.unidadeMedida = 'UNI' )and i2.Empresa = 1 and i2.codCor > 0 and dataInclusao is not null"
+                        " WHERE (i.unidadeMedida = 'PC' or i.unidadeMedida = 'KIT' )and i2.Empresa = 1 "
+                                                  "AND i2.codItemPai not like '25%'"
+                                                  " and i2.codCor > 0 and dataInclusao is not null"
                                                   " and dataInclusao > '"+data+"' "
                                              " order by dataInclusao "+orderby+"",conn)
     end_time = time.time()
