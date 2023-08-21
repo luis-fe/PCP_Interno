@@ -18,9 +18,9 @@ def token_required(f):
 @token_required
 def get_ResponsabilidadeFase_routes():
     novo_usuario = request.get_json()
-    nomeFase = novo_usuario.get('nomeFase','0')
-    responsavel = novo_usuario.get('responsavel','0')
-    codFase = novo_usuario.get('codFase','0')
+    nomeFase = novo_usuario.get('nomeFase', '0')
+    responsavel = novo_usuario.get('responsavel', '0')
+    codFase = novo_usuario.get('codFase', '0')
 
     usuarios = ResponsabilidadeFase.ObterFaseResponsais(nomeFase, responsavel, codFase)
     # Obtém os nomes das colunas
