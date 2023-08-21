@@ -40,7 +40,7 @@ def ObterFaseResponsais(nomefase = '0', responsavel = '0', codFase = '0'):
 
     fasecsw = TemFiltro(nomefase.upper(), fasecsw, 'nomefase')
     fasecsw = TemFiltro(responsavel.upper(), fasecsw, 'responsavel')
-    fasecsw = TemFiltro(codFase.upper(), fasecsw, 'codFase')
+    fasecsw = TemFiltro(codFase, fasecsw, 'codFase')
 
     return fasecsw
 
