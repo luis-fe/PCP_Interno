@@ -31,14 +31,16 @@ def Pesquisa(codFase):
         return 'novo', 'novo'
     else:
         return procurar['codFase'][0], procurar['responsavel'][0]
-def ObterFaseResponsais(nomefase = '0'):
+def ObterFaseResponsais(nomefase = '0', responsavel = '0', codFase = '0'):
     conn = ConexaoPostgreMPL.conexao()
     fasecsw = ObterInfCSW.GetTipoFases()
     faseRespo = pd.read_sql('select * from pcp."responsabilidadeFase"',conn)
     fasecsw = pd.merge(fasecsw,faseRespo,on='codFase',how='left')
     fasecsw.fillna('-', inplace=True)
 
-    fasecsw = TemFiltro(nomefase, fasecsw, 'nomefase')
+    fasecsw = TemFiltro(nomefase.upper(), fasecsw, 'nomefase')
+    fasecsw = TemFiltro(responsavel.upper(), fasecsw, 'responsavel')
+    fasecsw = TemFiltro(codFase.upper(), fasecsw, 'codFase')
 
     return fasecsw
 
