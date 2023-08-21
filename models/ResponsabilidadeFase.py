@@ -42,27 +42,21 @@ def ObterFaseResponsais():
 
 def AlterarResponsalvel(codFase,responsavel):
     conn = ConexaoPostgreMPL.conexao()
-
+    cursor = conn.cursor()
     tamanho_Lista = len(codFase)
     for i in range(tamanho_Lista):
         codFase2 = codFase[i]
-        print(codFase2)
-    '''''
-    codfase2, nome2 = Pesquisa(codFase)
-
-    if codfase2 != 'novo':
+        nome2 = responsavel[i]
         update = 'update pcp."responsabilidadeFase" ' \
                  ' set "responsavel" = %s ' \
                  'where "codFase" = %s '
         cursor = conn.cursor()
-        cursor.execute (update,(responsavel,codFase,))
+        cursor.execute (update,(nome2,codFase2,))
         conn.commit()
-        cursor.close()
-        conn.close()
-  '''''
-    return pd.DataFrame([{'status':True,"Mensagem":f'responsavel alterado com sucesso {tamanho_Lista}'}])
 
-#    else:
- #       return pd.DataFrame([{'status': False, "Mensagem": 'Fase nao existe'}])
+    cursor.close()
+    conn.close()
+    return pd.DataFrame([{'status':True,"Mensagem":f'responsaveis alterado com sucesso : {tamanho_Lista} alteracoes'}])
+
 
 
