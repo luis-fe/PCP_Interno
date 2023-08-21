@@ -48,8 +48,8 @@ def ItensCSW(i, paginas, orderby, data):
         itens = itens.iloc[inicial:final]
         nomeArquivo = '_itens.csv'
         dados1 = pd.read_csv('_itens.csv')
-        itens = pd.concat([dados1,itens],ignore_index=True)
-        itens.to_csv(nomeArquivo)
+        dados1 = pd.concat([dados1,itens],ignore_index=True)
+        dados1.to_csv(nomeArquivo)
 
         return itens
 
