@@ -4,9 +4,9 @@ import pandas as pd
 import time
 
 def ItensCSW(i, paginas, orderby, data):
-    i = int(i)
-    final = paginas * i
-    if data == '2023-12-20':
+        i = int(i)
+        final = paginas * i
+
 
         conn = ConexaoCSW.Conexao()
         start_time = time.time()
@@ -51,8 +51,7 @@ def ItensCSW(i, paginas, orderby, data):
 
         return itens
 
-    else:
-        return pd.DataFrame([{'status:':True}])
+
 
 
 def Categoria(contem, valorReferencia, valorNovo, categoria):
