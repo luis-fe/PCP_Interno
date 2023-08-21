@@ -42,6 +42,9 @@ def ObterFaseResponsais():
 
 def AlterarResponsalvel(codFase,responsavel):
     conn = ConexaoPostgreMPL.conexao()
+
+    tamanho_Lista = len(codFase)
+    '''''
     codfase2, nome2 = Pesquisa(codFase)
 
     if codfase2 != 'novo':
@@ -53,9 +56,10 @@ def AlterarResponsalvel(codFase,responsavel):
         conn.commit()
         cursor.close()
         conn.close()
-        return pd.DataFrame([{'status':True,"Mensagem":'responsavel alterado com sucesso'}])
-    else:
-        return pd.DataFrame([{'status': False, "Mensagem": 'Fase nao existe'}])
+  '''''
+    return pd.DataFrame([{'status':True,"Mensagem":f'responsavel alterado com sucesso {tamanho_Lista}'}])
 
+#    else:
+ #       return pd.DataFrame([{'status': False, "Mensagem": 'Fase nao existe'}])
 
 
