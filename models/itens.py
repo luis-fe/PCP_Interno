@@ -6,7 +6,7 @@ import time
 def ItensCSW(i, paginas, orderby, data):
     i = int(i)
     final = paginas * i
-    if data == '2023-04-20':
+    if data == '2023-12-20':
 
         conn = ConexaoCSW.Conexao()
         start_time = time.time()
@@ -46,6 +46,8 @@ def ItensCSW(i, paginas, orderby, data):
 
         inicial = (paginas - 1) * i
         itens = itens.iloc[inicial:final]
+        nomeArquivo = data + '_itens.csv'
+        itens.to_csv(nomeArquivo)
 
         return itens
 
