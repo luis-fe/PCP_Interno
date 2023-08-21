@@ -14,10 +14,12 @@ def token_required(f):
         return jsonify({'message': 'Acesso negado'}), 401
 
     return decorated_function
-@ResponsabilidadeFase_routes.route('/pcp/api/ResponsabilidadeFase', methods=['GET'])
+@ResponsabilidadeFase_routes.route('/pcp/api/ResponsabilidadeFase', methods=['POST'])
 @token_required
 def get_ResponsabilidadeFase_routes():
-    usuarios = ResponsabilidadeFase.ObterFaseResponsais()
+    novo_usuario = request.get_json()
+    nomeFase = novo_usuario.get('nomeFase')
+    usuarios = ResponsabilidadeFase.ObterFaseResponsais(nomeFase)
     # Obtém os nomes das colunas
     # Obtém os nomes das colunas
     column_names = usuarios.columns

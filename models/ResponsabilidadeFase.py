@@ -31,12 +31,14 @@ def Pesquisa(codFase):
         return 'novo', 'novo'
     else:
         return procurar['codFase'][0], procurar['responsavel'][0]
-def ObterFaseResponsais():
+def ObterFaseResponsais(nomefase = '0'):
     conn = ConexaoPostgreMPL.conexao()
     fasecsw = ObterInfCSW.GetTipoFases()
     faseRespo = pd.read_sql('select * from pcp."responsabilidadeFase"',conn)
     fasecsw = pd.merge(fasecsw,faseRespo,on='codFase',how='left')
     fasecsw.fillna('-', inplace=True)
+
+    fasecsw = TemFiltro(nomefase, fasecsw, 'nomefase')
 
     return fasecsw
 
@@ -59,4 +61,12 @@ def AlterarResponsalvel(codFase,responsavel):
     return pd.DataFrame([{'status':True,"Mensagem":f'responsaveis alterado com sucesso : {tamanho_Lista} alteracoes'}])
 
 
-
+def TemFiltro(nomedofiltro,dataframe, coluna):
+    if nomedofiltro == '0':
+        estrutura = dataframe
+        return estrutura
+    else:
+        dataframe = dataframe[dataframe[coluna].str.contains(nomedofiltro)]
+        dataframe = dataframe.reset_index(drop=True)
+        print(coluna)
+        return dataframe
