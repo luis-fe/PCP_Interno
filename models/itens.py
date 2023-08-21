@@ -46,7 +46,7 @@ def ItensCSW(i, paginas, orderby, data):
 
         inicial = (paginas - 1) * i
         itens = itens.iloc[inicial:final]
-        nomeArquivo = data + '_itens.csv'
+        nomeArquivo = '_itens.csv'
         itens.to_csv(nomeArquivo)
 
         return itens
