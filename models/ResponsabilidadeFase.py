@@ -44,6 +44,9 @@ def AlterarResponsalvel(codFase,responsavel):
     conn = ConexaoPostgreMPL.conexao()
 
     tamanho_Lista = len(codFase)
+    for i in range(tamanho_Lista):
+        codFase2 = codFase[i]
+        print(codFase2)
     '''''
     codfase2, nome2 = Pesquisa(codFase)
 
