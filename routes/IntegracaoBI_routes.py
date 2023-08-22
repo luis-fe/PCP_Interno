@@ -2,6 +2,7 @@ from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
 from models import IntegracaoBI, ResponsabilidadeFase, ObterInfCSW, itens, op_csw
+import pandas as pd
 
 integracaoBI = Blueprint('integracaoBI_routes', __name__)
 
@@ -41,6 +42,8 @@ def IntensBI():
     data = request.args.get('dataInicial', '2015-01-01')
 
     usuarios = itens.ItensCSW(topItem, int(paginas),orderby,data)
+    usuarios = pd.DataFrame(usuarios)
+
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
