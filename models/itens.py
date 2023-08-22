@@ -18,7 +18,7 @@ def ItensCSW(i, paginas, orderby, data):
                             " WHERE (i.unidadeMedida = 'PC' or i.unidadeMedida = 'KIT' )and i2.Empresa = 1 "
                                                       "AND i2.codItemPai not like '25%'"
                                                       " and i2.codCor > 0 and dataInclusao is not null"
-                                                      " and dataInclusao > '"+data+"' "
+                                                      " and dataInclusao = '"+data+"' "
                                                  " order by dataInclusao "+orderby+"",conn)
         end_time = time.time()
         execution_time = end_time - start_time
@@ -46,10 +46,7 @@ def ItensCSW(i, paginas, orderby, data):
 
         inicial = (paginas - 1) * i
         itens = itens.iloc[inicial:final]
-        nomeArquivo = '_itens.csv'
-        dados1 = pd.read_csv('_itens.csv')
-        dados1 = pd.concat([dados1,itens],ignore_index=True)
-        dados1.to_csv(nomeArquivo)
+
 
         return itens
 
