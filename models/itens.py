@@ -2,10 +2,10 @@
 import ConexaoCSW
 import pandas as pd
 import time
-
+import math
 def ItensCSW(i, paginas, orderby, data):
         i = int(i)
-        final = paginas * i
+
 
 
         conn = ConexaoCSW.Conexao()
@@ -45,10 +45,18 @@ def ItensCSW(i, paginas, orderby, data):
         itens['dataInclusao'] = itens['dataInclusao'].str.replace('--', '2015-01-01')
 
         tamanho = itens['categoria'].size
+        totalPaginas = tamanho/10000
+        totalPaginas = math.ceil(totalPaginas)
 
+        inicial = (paginas - 1) *1000
+        final = (paginas ) * 1000
+
+
+        itens = itens.iloc[inicial:final]
         data = {
             '0- Data:':f'{data}',
             '1- Numero de itens':f'{tamanho}',
+            '2- Total Paginas':f'{totalPaginas}',
             '2- dados': itens.to_dict(orient='records')
         }
         return [data]
