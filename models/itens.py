@@ -47,9 +47,11 @@ def ItensCSW(i, paginas, orderby, data):
         inicial = (paginas - 1) * i
         itens = itens.iloc[inicial:final]
 
-
-        return itens
-
+        data = {
+            '0- Data:':f'{data}',
+            '1- dados': itens.to_dict(orient='records')
+        }
+        return [data]
 
 
 
