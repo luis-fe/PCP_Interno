@@ -18,7 +18,7 @@ def ItensCSW(i, paginas, orderby, data):
                             " WHERE (i.unidadeMedida = 'PC' or i.unidadeMedida = 'KIT' )and i2.Empresa = 1 "
                                                       "AND i2.codItemPai not like '25%'"
                                                       " and i2.codCor > 0 and dataInclusao is not null"
-                                                      " and dataInclusao = '"+data+"' "
+                                                      " and dataInclusao > '"+data+"' "
                                                  " order by dataInclusao "+orderby+"",conn)
         end_time = time.time()
         execution_time = end_time - start_time
