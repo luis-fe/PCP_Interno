@@ -119,10 +119,8 @@ def update_usuario(codigo):
 
 @usuarios_routes.route('/pcp/api/Usuarios/<string:codigo>', methods=['GET'])
 @token_required
-def get_usuarioSenha(codigo):
+def get_usuarioSenhas(codigo):
         # Obtém os dados do corpo da requisição (JSON)
-        codigo = request.get_json()
-        codigo = codigo.get('codigo')
         # Verifica se a coluna "funcao" está presente nos dados recebidos
         codigo, nome, senha = Usuarios.ObterUsuariosCodigo(codigo)
         if codigo != 0:
