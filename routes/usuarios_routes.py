@@ -119,7 +119,7 @@ def update_usuario(codigo):
 
 @usuarios_routes.route('/pcp/api/Usuarios/<string:codigo>', methods=['GET'])
 @token_required
-def update_usuario(codigo):
+def get_usuarioSenha(codigo):
     # Obtém os dados do corpo da requisição (JSON)
     data = request.get_json()
     codigo = str(codigo)
