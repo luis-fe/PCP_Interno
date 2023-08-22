@@ -120,22 +120,13 @@ def update_usuario(codigo):
 @usuarios_routes.route('/pcp/api/Usuarios/<string:codigo>', methods=['GET'])
 @token_required
 def get_usuarioSenha(codigo):
-    # Obtém os dados do corpo da requisição (JSON)
-    data = request.get_json()
-    codigo = str(codigo)
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    codigo, nome_ant, senha_ant = Usuarios.ObterUsuariosCodigo(codigo)
-    if codigo == 0:
-        return jsonify({'message': f'Dados do Usuário {codigo} usuario nao existe! ', 'Status': False})
-    else:
-        if 'nome' in data:
-            nome_novo = data['nome']
+        # Obtém os dados do corpo da requisição (JSON)
+        codigo = request.get_json()
+        codigo = codigo.get('codigo')
+        # Verifica se a coluna "funcao" está presente nos dados recebidos
+        codigo, nome, senha = Usuarios.ObterUsuariosCodigo(codigo)
+        if codigo != 0:
+            return jsonify({'1 - message': f'Usuario {codigo}- {nome}', '2-Senha': f'{senha}'}), 200
         else:
-            nome_novo = nome_ant
-        if 'senha' in data:
-            senha_nova = data['senha']
-        else:
-            senha_nova = senha_ant
-        Usuarios.EditarUsuario(codigo, nome_novo, senha_nova)
 
-        return jsonify({'message': f'Dados do Usuário {codigo} - {nome_novo} atualizado com sucesso'})
+            return jsonify({'message': 'Usuario Nao existe'}), 200
