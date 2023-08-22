@@ -36,7 +36,7 @@ def FasesBI():
 
 @integracaoBI.route('/pcp/api/IntensBI', methods=['GET'])
 def IntensBI():
-    topItem = request.args.get('itens',1000)
+    topItem = request.args.get('itens',10000)
     paginas = request.args.get('paginas',1)
     orderby = request.args.get('orderby', 'desc')
     data = request.args.get('dataInicial', '2015-01-01')

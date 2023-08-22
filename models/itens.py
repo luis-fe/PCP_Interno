@@ -11,7 +11,7 @@ def ItensCSW(i, paginas, orderby, data):
         conn = ConexaoCSW.Conexao()
         start_time = time.time()
 
-        itens = pd.read_sql('SELECT  i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao, '
+        itens = pd.read_sql('SELECT top '+str(i)+' i.codigo , i.nome, i2.codCor, i2.codSortimento, i2.codItemPai, i.dataInclusao, '
                             ' (select t.descricao from tcp.Tamanhos t WHERE t.codEmpresa = 1 and t.sequencia = i2.codSeqTamanho) as tamanho '
                             ' FROM Cgi.Item i '
                             ' JOIN Cgi.Item2 i2 on i2.codItem = i.codigo '
@@ -46,19 +46,10 @@ def ItensCSW(i, paginas, orderby, data):
         itens.fillna('--', inplace=True)
         itens['dataInclusao'] = itens['dataInclusao'].str.replace('--', '2015-01-01')
 
-        totalPaginas = tamanho/10000
-        totalPaginas = math.ceil(totalPaginas)
 
-        inicial = (paginas - 1) *1000
-        final = (paginas ) * 1000
-
-
-
-        itens = itens.iloc[inicial:final]
         data = {
             '0- Data:':f'{data}',
             '1- Numero de itens':f'{tamanho}',
-            '2- Total Paginas':f'{totalPaginas}',
             '2- dados': itens.to_dict(orient='records')
         }
         return [data]
