@@ -24,7 +24,9 @@ def ItensCSW(i, paginas, orderby, data):
         execution_time = end_time - start_time
         execution_time = round(execution_time, 2)
         execution_time = str(execution_time)
-        ConexaoCSW.ControleRequisicao('Consultar itens Csw', execution_time, f'powerbi numero de intens {final}')
+        tamanho = itens['codigo'].size
+
+        ConexaoCSW.ControleRequisicao('Consultar itens Csw', execution_time, f'powerbi numero de intens {tamanho}')
 
 
 
@@ -44,12 +46,12 @@ def ItensCSW(i, paginas, orderby, data):
         itens.fillna('--', inplace=True)
         itens['dataInclusao'] = itens['dataInclusao'].str.replace('--', '2015-01-01')
 
-        tamanho = itens['categoria'].size
         totalPaginas = tamanho/10000
         totalPaginas = math.ceil(totalPaginas)
 
         inicial = (paginas - 1) *1000
         final = (paginas ) * 1000
+
 
 
         itens = itens.iloc[inicial:final]
