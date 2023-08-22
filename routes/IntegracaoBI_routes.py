@@ -38,7 +38,7 @@ def FasesBI():
 def IntensBI():
     topItem = request.args.get('itens',10000)
     paginas = request.args.get('paginas',1)
-    orderby = request.args.get('orderby', 'desc')
+    orderby = request.args.get('orderby', 'asc')
     data = request.args.get('dataInicial', '2015-01-01')
 
     usuarios = itens.ItensCSW(topItem, int(paginas),orderby,data)
