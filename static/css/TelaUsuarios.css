@@ -76,82 +76,49 @@ h2 {
   margin-left: 2px;
 }
 
-.ButtonPaginas {
-  display: flex;
+.PaginamentoUsuarios {
+  display: none;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   flex-wrap: wrap;
   margin: 0 auto;
-  background-color: var(--cor2);
+  background-color: rgb(17, 45, 126);
   width: 80%;
-  border: 2px solid var(--cor2);
+  border: 2px solid rgb(17, 45, 126);
   border-radius: 10px;
   min-height: 35px;
   max-height: 35px;
 }
 
-.ButtonPaginas button {
+
+.PaginamentoUsuarios botao-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.PaginamentoUsuarios button {
+  
+  width: 40px;
+  height: 30px;
   background-color: white;
-  font-weight: bolder;
-  ;
-  margin-top: 0, 5px;
-  border: 2px solid lightgray;
-  border-radius: 10px;
+  border: 2px solid darkgray;
+  color: rgb(17, 45, 126);
+  border-radius: 5px;
   cursor: pointer;
-
 }
 
-.ButtonPaginaAnterior {
-  margin-left: 2px;
+#ButtonPaginaAnteriorUsuarios{
+  margin-right: 5px;
 }
 
-.ButtonProximaPagina {
-  margin-left: 15px;
+#ButtonProximaPaginaUsuarios{
+  margin-left: 5px;
 }
 
-#LabelContagemPagina {
-  color: var(--cor4);
-  margin-top: 7px;
-  margin-left: 7px;
-  margin-right: 7px;
-  font-weight: bolder;
+#ButtonExportarExcelUsuarios{
+  margin-left: 10px;
 }
 
-#LabelContagemPagina1 {
-  color: var(--cor4);
-  margin-top: 7px;
-  margin-left: 7px;
-  margin-right: 7px;
-  font-weight: bolder;
-}
-
-.ButtonUltimaPagina {
-  margin-left: 2px;
-}
-
-.ButtonPaginaAnterior1 {
-  margin-left: 2px;
-}
-
-.ButtonUltimaPagina1 {
-  margin-left: 2px;
-}
-
-
-#ButtonExportarExcel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: right;
-  text-align: center;
-
-}
-
-#ImagemExcel {
-  font-size: 20px;
-  /* Ajuste o tamanho da imagem conforme necessário */
-  color: green;
-}
 
 .modalNovo {
   display: none;
@@ -212,6 +179,7 @@ h2 {
   z-index: 1;
   overflow-x: hidden;
   align-items: center;
+  height: 30vh;
 
 }
 
@@ -314,6 +282,13 @@ h2 {
   font-weight: bold
 }
 
+#LabelSenhasConferidas{
+  display: none;
+  color: red;
+  align-items: center;
+  font-size: 25px;
+}
+
 
 .ModalEditar-content {
   display: flex;
@@ -329,6 +304,7 @@ h2 {
   z-index: 1;
   overflow-x: hidden;
   align-items: center;
+  height: 35vh;
 }
 
 .ModalEditar-content h3 {
@@ -417,6 +393,8 @@ h2 {
   cursor: pointer;
 }
 
+
+
 .TabelaContainer {
   border-collapse: collapse;
   border: 2px solid darkgray;
@@ -429,7 +407,7 @@ h2 {
   overflow: auto;
 }
 
-.TabelaContainer .TabelaEstrutura {
+.TabelaContainer .TabelaUsuarios {
   font-size: 15px;
   border-collapse: collapse;
   border: 2px solid darkgray;
@@ -437,12 +415,12 @@ h2 {
   overflow: auto;
 }
 
-.TabelaContainer .TabelaEstrutura th {
+.TabelaContainer .TabelaUsuarios th {
   background-color: lightgray;
   max-height: 20px;
 }
 
-.TabelaContainer .TabelaEstrutura td {
+.TabelaContainer .TabelaUsuarios td {
   height: 40px;
   /* Defina a altura desejada em pixels */
   vertical-align: middle;
@@ -451,7 +429,7 @@ h2 {
   /* Oculta o conteúdo extra que ultrapassar a altura definida */
 }
 
-.TabelaContainer .TabelaEstrutura thead {
+.TabelaContainer .TabelaUsuarios thead {
   position: sticky;
     top: 0;
     background-color: lightgray;
@@ -460,7 +438,7 @@ h2 {
 }
 
 
-#loader {
+#loaderUsuarios {
   position: absolute;
   top: 15%;
   left: 50%;
@@ -469,30 +447,7 @@ h2 {
 }
 
 
-.ModalLoading {
-  display: none;
-  /* Oculta o modal por padrão */
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Fundo escuro semi-transparente */
-}
-
-#loader1 {
-  position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-}
-
-
-.ModalLoading1 {
+.ModalLoadingUsuarios {
   display: none;
   /* Oculta o modal por padrão */
   position: fixed;
@@ -507,177 +462,11 @@ h2 {
 }
 
 
-#TabelaEstrutura thead input {
+
+#TabelaUsuarios thead input {
   max-height: 20px;
   width: 80%;
   padding: 5px;
   border: black solid 2px;
   border-radius: 10px;
-}
-
-#ContainerOculto Label {
-
-  color: white;
-}
-
-@media screen and (max-width: 870px) {
-
-  .modalSelecionarPlano-content{
-  min-width: 80%;
-  max-width: 80%;
-  min-height: 80%;
-  max-height: 80%;
-}}
-
-@media screen and (min-width: 871px) {
-
-  .modalSelecionarPlano-content{
-      min-width: 40%;
-      max-width: 40%;
-      min-height: 50%;
-      max-height: 50%;
-  }}
-
-.modalSelecionarPlano {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  margin: 0;
-  padding: 0;
-}
-
-.modalSelecionarPlano-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  margin: 10% auto;
-  border-radius: 5px;
-  position: relative;
-  z-index: 1;
-
-  overflow-y: auto;
-
-}
-
-.modalSelecionarPlano-content h3 {
-  padding: 20px;
-  background-color: var(--cor2);
-  text-align: center;
-  font-size: 20px;
-  font-family: Arial;
-  border: 5px;
-  margin: 0;
-  z-index: 2;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  color: var(--cor4);
-}
-
-
-#botaoSelecionarPlano2 {
-  font-weight: bold;
-  background-color: var(--cor2);
-  color: white;
-  width: 100%;
-  margin-top: 20px;
-  border: 2px solid darkgray;
-  border-radius: 10px;
-  cursor: pointer;
-  padding: 10px;
-}
-
-#PesquisarPlano1{
-  font-weight: bold;
-  background-color: var(--cor4);
-  color: black;
-  width: 100%;
-  margin-top: 20px;
-  border: 2px solid darkgray;
-  border-radius: 10px;
-  margin-top: 40px;
-  padding: 10px;
-}
-
-.TabelaPlanos1 {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  margin-top: 20px;
-  width: 100%;
-  height: 75%;
-  overflow-y: auto;
-  border: 2px solid black;
-}
-
-#TabelaPlanos2 {
-  border: none;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#TabelaPlanos2 thead {
-  position: sticky;
-  top: 0;
-  background-color: lightgray;
-  z-index: 1;
-  border: 2px solid darkgray;
-  height: 20px;
-  max-height: 20px;
-}
-
-#TabelaPlanos2 td {
-  text-align: center;
-}
-
-.CampoPesquisaEstrutura{
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  text-align: center;
-  font-size: 20px;
-  margin-top: 20px;
-  width: 80%;
-  margin-left: 10%;
-  border: 2px solid darkgray;
-  border-radius: 10px;
-  height: 50px;
-
-}
-
-#LabelPesquisaEstrutura{
-  margin-left: 10px;
-}
-
-.InputContainerEstrutura {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.InputContainerEstrutura input {
-  padding-right: 40px;
-  color: black;
-  background-color: white;
-  border: 2px solid darkgray;
-  border-radius: 10px;
-  height: 30px;
-  text-align: center;
-
-}
-
-.InputContainerEstrutura button {
-  position: absolute;
-  right: 0;
-  padding: 5px 10px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
 }
