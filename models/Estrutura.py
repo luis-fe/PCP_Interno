@@ -91,7 +91,7 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
         estrutura['12-nomeFornecedor'] = estrutura.apply(lambda row: TratamentoNomeFornecedor(row['12-nomeFornecedor'], 'ADAR I', 'ADAR'), axis=1)
         estrutura = estrutura.reset_index(drop=True)
         estrutura.to_csv(nomeArquivo)
-        estrutura, totalPg = FuncoesGlobais.TemPaginamento(pagina,itensPag,estrutura,'03- codProduto')
+        estrutura, totalPg = FuncoesGlobais.TemPaginamento(pagina,15,estrutura,'03- codProduto')
 
 
         data = {'1- Detalhamento da Estrutura:': estrutura.to_dict(orient='records'),
