@@ -77,7 +77,7 @@ function CriarTabelaEstrutura(listaCurva) {
     tabela.appendChild(cabecalho);
 
 
-    const Teste1 = listaCurva.slice(IndiceExibicao, IndiceExibicao + 15);
+    const Teste1 = listaCurva.slice(IndiceExibicao, IndiceExibicao + itensPag);
 
     // Preenche a tabela com os dados da estrutura
     Teste1.forEach(item => {
@@ -350,7 +350,7 @@ function CarregarPrimeiraPagina() {
 
 
 const BotaoPesquisaPlano = document.getElementById("ButtonPesquisaPlanoCurva");
-const ModalPlanosCurva = document.getElementById("modalSelecionarPlano");
+const ModalPlanosCurva = document.getElementById("modalSelecionarPlanoCurva");
 
 BotaoPesquisaPlano.addEventListener('click', function () {
     console.log("botão clicado")
@@ -358,7 +358,7 @@ BotaoPesquisaPlano.addEventListener('click', function () {
     ConsultaPlanosExistentes()
 });
 
-const fecharModalPlanosCurva = document.getElementById('fecharModalSelecaoPlanos');
+const fecharModalPlanosCurva = document.getElementById('fecharModalSelecaoPlanosCurva');
   
 
 fecharModalPlanosCurva.addEventListener('click', function() {
@@ -394,7 +394,7 @@ function ConsultaPlanosExistentes() {
 
 
 function criarTabelaPlanos(listaPlanos) {
-    const tabelaPlanos = document.getElementById('TabelaPlanos2');
+    const tabelaPlanos = document.getElementById('TabelaPlanosCurva');
     tabelaPlanos.innerHTML = '';
 
     const cabecalho = document.createElement('thead');
@@ -435,10 +435,10 @@ function criarTabelaPlanos(listaPlanos) {
     });
 };
 
-const botaoSelecionarPlano = document.getElementById('botaoSelecionarPlano2')
+const botaoSelecionarPlano = document.getElementById('botaoSelecionarPlanoCurva')
   
   botaoSelecionarPlano.addEventListener('click', function() {
-  const LinhasTabelaPlano = document.getElementById('TabelaPlanos2').getElementsByTagName('tr');
+  const LinhasTabelaPlano = document.getElementById('TabelaPlanosCurva').getElementsByTagName('tr');
 
   
       for (let i = 1; i < LinhasTabelaPlano.length; i++) {
