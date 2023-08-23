@@ -7,7 +7,7 @@ import pandas as pd
 
 rotasPlataformaWeb = Blueprint('rotasPlataformaWeb', __name__)
 
-@rotasPlataformaWeb.route('/')
+@rotasPlataformaWeb.route('/Home')
 def home():
     return render_template('index.html')
 @rotasPlataformaWeb.route('/TelaEstrutura')
@@ -25,3 +25,6 @@ def TelaUsuarios():
 @rotasPlataformaWeb.route('/TelaCurva')
 def TelaCurvaABC():
     return render_template('TelaCurva.html')
+@rotasPlataformaWeb.route('/TelaControleFase')
+def TelaControleFase():
+    return render_template('TelaControleFase.html')
