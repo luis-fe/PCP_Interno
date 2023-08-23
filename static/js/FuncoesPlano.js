@@ -118,6 +118,7 @@ const InputDataFinallFat = document.getElementById('InputDataFimFaturamento')
 const AbrirColecoes = document.getElementsByClassName("CampoTabelas")[0];
 const ButtonCriar = document.getElementById('ButtonCriarPlano');
 const ButtonEditar = document.getElementById('ButtonEditarPlano');
+const ButtonEditarAbc = document.getElementById('ButtonEditarCurvaAbc');
 
 function carregarDadosFromCodigo() {
     const valorInput = InputCodigo.value.trim();
@@ -133,6 +134,8 @@ function carregarDadosFromCodigo() {
         AbrirColecoes.style.display = "none";
         ButtonCriar.style.display = "none";
         ButtonEditar.style.display = "none";
+        ButtonEditarAbc.style.display = "none"
+
     } else {
         console.log(valorInput)
 
@@ -160,8 +163,6 @@ function carregarDadosFromCodigo() {
                 document.getElementById('InputDataFimFaturamento').value = "";
                 ButtonEditar.style.display = "none";
                 ButtonCriar.style.display = "flex";
-                ButtonCriar.style.justifyContent = 'center';
-                ButtonCriar.style.alignItems = 'center';
                 AbrirColecoes.style.display = "none";
             } else {
                 document.getElementById('InputDescricao').value = data["02- Descricao do Plano"];
@@ -170,9 +171,9 @@ function carregarDadosFromCodigo() {
                 document.getElementById('InputDatainicioFaturamento').value = formatDate(data["05- Inicio Faturamento"]);
                 document.getElementById('InputDataFimFaturamento').value = formatDate(data["06- Final Faturamento"]);
                 ButtonEditar.style.display = 'flex';
-                ButtonEditar.style.justifyContent = 'center';
-                ButtonEditar.style.alignItems = 'center';
                 ButtonCriar.style.display = "none";
+                ButtonEditarAbc.style.display = "flex";
+                ButtonEditarAbc.style.marginLeft = "10px"
                 AbrirColecoes.style.display = "flex";
                 ConsultaColecoesVinculadas();
                 ConsultaTiposDeNotasVinculadas();
@@ -271,6 +272,10 @@ BotaoCriarPlano.addEventListener('click', function () {
         .then(data => {
             console.log(data);
             AbrirColecoes.style.display = "flex";
+            ButtonEditarAbc.style.display = "flex";
+            ButtonEditarAbc.style.marginLeft = "10px";
+            ButtonEditar.style.display = "flex";
+            ButtonCriar.style.display = "none"
             ConsultaColecoesVinculadas();
             ConsultaTiposDeNotasVinculadas();
             ConsultaLotesVinculados();
@@ -1283,3 +1288,167 @@ SelecionarPlano.addEventListener('click', function() {
   
       modalPlanos.style.display = 'none';
   });
+
+
+  //------------------------------------------------ FUNÇÃO CURVA ---------------------------------------------------------------
+  const modalABC = document.getElementById('modalCurva');
+  const fecharModalABC = document.getElementById('fecharmodalCurva');
+
+
+  
+  ButtonEditarAbc.addEventListener('click', function () {
+    modalABC.style.display = 'block';
+    ObterCurva();
+});
+
+fecharModalABC.addEventListener('click', function () {
+    modalABC.style.display = 'none';
+});
+
+function ObterCurva() {
+    const InputA = document.getElementById("InputCurvaA");
+    const InputB = document.getElementById("InputCurvaB");
+    const InputC = document.getElementById("InputCurvaC");
+    const InputC1 = document.getElementById("InputCurvaC1");
+    const InputC2 = document.getElementById("InputCurvaC2");
+    const InputC3 = document.getElementById("InputCurvaC3");
+    const CodPlano = document.getElementById("InputPlano");
+
+    fetch(`http://192.168.0.183:8000/pcp/api/ABCPlano/${CodPlano.value}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'a44pcp22'
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Erro ao obter a lista de usuários');
+            }
+        })
+        .then(data => {
+            InputA.value = data[0]["a"] * 100;
+            InputB.value = data[0]["b"] * 100;
+            InputC.value = data[0]["c"] * 100;
+            InputC1.value = data[0]["%C1"] * 100;
+            InputC2.value = data[0]["%C2"] * 100;
+            InputC3.value = data[0]["%C3"] * 100;
+            console.log(data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+const SalvarPercentuais = document.getElementById("SalvarPercentuais")
+SalvarPercentuais.addEventListener('click', function () {
+    SalvarNovosPercentuais();
+});
+
+function SalvarNovosPercentuais() {
+    const InputA = document.getElementById("InputCurvaA");
+    const InputB = document.getElementById("InputCurvaB");
+    const InputC = document.getElementById("InputCurvaC");
+    const InputC1 = document.getElementById("InputCurvaC1");
+    const InputC2 = document.getElementById("InputCurvaC2");
+    const InputC3 = document.getElementById("InputCurvaC3");
+    const CodPlano = document.getElementById("InputPlano");
+
+    const valorA = parseFloat(InputA.value);
+    const valorB = parseFloat(InputB.value);
+    const valorC = parseFloat(InputC.value);
+    const valorC1 = parseFloat(InputC1.value);
+    const valorC2 = parseFloat(InputC2.value);
+    const valorC3 = parseFloat(InputC3.value);
+
+
+    if (valorA + valorB + valorC > 100) {
+        alert("A soma dos Percentuais de A, B e C não podem ultrapassar 100%");
+        return;
+    }
+
+    if (valorA + valorB + valorC < 100) {
+        alert("A soma dos Percentuais de A, B e C não podem ser menor que 100%");
+        return;
+    }
+
+    if (valorC1 + valorC2 + valorC3 > 100) {
+        alert("A soma dos Percentuais de C1, C2 e C3 não podem ultrapassar 100%");
+        return;
+    }
+
+    if (valorC1 + valorC2 + valorC3 < 100) {
+        alert("A soma dos Percentuais de C1, C2 e C3  não podem ser menor que 100%");
+        return;
+    }
+
+    const dadosPercentuais = {
+        "plano": CodPlano.value,
+        "a": valorA / 100,
+        "b": valorB / 100,
+        "c": valorC / 100,
+        "c1": valorC1 / 100,
+        "c2": valorC2 / 100,
+        "c3": valorC3 / 100,
+
+
+
+    }
+
+    fetch("http://192.168.0.183:8000/pcp/api/EditarABCPlano", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'a44pcp22'
+        },
+        body: JSON.stringify(dadosPercentuais),
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Erro ao obter a lista de usuários');
+            }
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+};
+
+
+// Pega todos os campos de entrada que você deseja controlar
+const inputFields = [
+    document.getElementById("InputCurvaA"),
+    document.getElementById("InputCurvaB"),
+    document.getElementById("InputCurvaC"),
+    document.getElementById("InputCurvaC1"),
+    document.getElementById("InputCurvaC2"),
+    document.getElementById("InputCurvaC3")
+];
+
+// Adiciona os event listeners para cada campo de entrada
+inputFields.forEach((input, index) => {
+    input.addEventListener("keydown", event => {
+        const key = event.key;
+
+        if (key === "ArrowUp") {
+            event.preventDefault(); // Impede a ação padrão do ArrowUp
+            const previousIndex = index > 0 ? index - 1 : inputFields.length - 1;
+            inputFields[previousIndex].focus();
+        } else if (key === "ArrowDown" || key === "Enter") {
+            event.preventDefault(); // Impede a ação padrão do ArrowDown e Enter
+            const nextIndex = index < inputFields.length - 1 ? index + 1 : 0;
+            inputFields[nextIndex].focus();
+        }
+    });
+});
+
+
+
+
+
