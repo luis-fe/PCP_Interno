@@ -61,6 +61,7 @@ def InserirMeta(plano, marca, metaReais, metaPecas ):
 
 def EditarMeta(plano, marcaNova, metaReaisNova = '0', metaPecasNova = '0'):
     conn = ConexaoPostgreMPL.conexao()
+    plano = str(plano)
     if metaReaisNova == 0:
         metaReaisNova, x = pesquisa(plano,marcaNova)
 
