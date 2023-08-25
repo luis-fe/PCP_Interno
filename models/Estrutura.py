@@ -11,7 +11,7 @@ SEM_ENGENHARIA = '0'
 def TransformarPlanoColecao(plano):
     conn = ConexaoPostgreMPL.conexao()
     colecao = pd.read_sql('select colecao from pcp."colecoesPlano" where plano = %s', conn,params=(plano,))
-    if colecao['colecao'].size > 12:
+    if colecao['colecao'].size < 12:
         colecao = ', '.join(colecao['colecao'])
         conn.close()
         return colecao, True
