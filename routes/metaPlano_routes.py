@@ -37,7 +37,7 @@ def get_metaPlanoSemana(codigoplano):
     return jsonify(OP_data)
 
 @metaPlano_routes.route('/pcp/api/metaPlano', methods=['POST'])
-def post_metaPlano:
+def post_metaPlano():
     novo_usuario = request.get_json()
     codigoplano = novo_usuario.get('codigoplano')
     marca = novo_usuario.get('marca')
