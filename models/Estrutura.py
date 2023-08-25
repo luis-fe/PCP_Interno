@@ -14,17 +14,17 @@ def TransformarPlanoColecao(plano):
     if colecao['colecao'].size < 13:
         colecao = ', '.join(colecao['colecao'])
         conn.close()
-        return colecao, True
+        return colecao, True, pd.DataFrame([1])
     else:
         colecao1 = colecao.iloc[0:12]
         colecao1 = ', '.join(colecao1['colecao'])
         colecao2 = colecao.iloc[12:]
         conn.close()
-        return colecao1, colecao2
+        return colecao1, False, colecao2
 
 
 def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA, codMP = '0', nomecomponente ='0', Excel = False, tamProduto ='0', fornecedor = '0', desceng ='0'):
-    colecoes, boleano = TransformarPlanoColecao(plano)
+    colecoes, boleano, colecao2 = TransformarPlanoColecao(plano)
     nomeArquivo = f'EstruturaMP das Colecoes{colecoes}.csv'
     if pagina == 0 and engenharia==SEM_ENGENHARIA and nomecomponente =='0' and codMP =='0' and Excel == False and tamProduto == '0' and fornecedor == '0' and desceng =='0':
         conn = ConexaoCSW.Conexao()
@@ -105,7 +105,7 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
                                     " join tcp.DadosGeraisEng d on c.codempresa = d.codEmpresa and c.codProduto = d.codEngenharia"
                                     " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
                                     " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
-                                    " WHERE c.codEmpresa = 1 and d.codColecao in (" + boleano + ") and t.codEngenharia not like '03%' "
+                                    " WHERE c.codEmpresa = 1 and d.codColecao in (" + colecao2 + ") and t.codEngenharia not like '03%' "
 
                                     , conn)
 
