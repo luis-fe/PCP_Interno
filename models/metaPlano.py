@@ -36,8 +36,9 @@ def Get_Consultar(plano):
 
 def InserirMeta(plano, marca, metaReais, metaPecas ):
     conn = ConexaoPostgreMPL.conexao()
-    pesquisa = pd.read_sql('select marca  from pcp."planoMetas" where plano = %s',conn,params=(plano,))
     plano = str(plano)
+
+    pesquisa = pd.read_sql('select marca  from pcp."planoMetas" where plano = %s',conn,params=(plano,))
     if pesquisa['marca'][0] == marca:
         return pd.DataFrame([{'mensagem':'Ja existe cadastro para essa marca no plano','status':False}])
     else:
