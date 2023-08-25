@@ -6,28 +6,32 @@ def Get_Consultar(plano):
     conn = ConexaoPostgreMPL.conexao()
     get = pd.read_sql('select plano, marca, "MetaR$", "Metapç" from pcp."planoMetas" '
                       'where plano = %s ',conn,params=(plano,))
-    get1 = get["MetaR$"].sum()
-    get2 = get["Metapç"].sum()
-    get1 = "{:,.0f}".format(get1)
-    get2 = "{:,.0f}".format(get2)
-    get1 = 'R$'+str(get1)
-    get2 = str(get2)
-    get1 = get1.replace(',', '.')
-    get2 = get2.replace(',', '.')
+
+    if not get.empty:
+        get1 = get["MetaR$"].sum()
+        get2 = get["Metapç"].sum()
+        get1 = "{:,.0f}".format(get1)
+        get2 = "{:,.0f}".format(get2)
+        get1 = 'R$'+str(get1)
+        get2 = str(get2)
+        get1 = get1.replace(',', '.')
+        get2 = get2.replace(',', '.')
 
 
-    get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
-    get["Metapç"] = get["Metapç"].apply(lambda x: "{:,.0f}".format(x))
+        get["MetaR$"] = get["MetaR$"].apply(lambda x: "{:,.0f}".format(x))
+        get["Metapç"] = get["Metapç"].apply(lambda x: "{:,.0f}".format(x))
 
-    get["MetaR$"] = get["MetaR$"].astype(str)
-    get["MetaR$"] = 'R$'+get["MetaR$"].str.replace(',', '.')
-    get["Metapç"] = get["Metapç"].str.replace(',', '.')
+        get["MetaR$"] = get["MetaR$"].astype(str)
+        get["MetaR$"] = 'R$'+get["MetaR$"].str.replace(',', '.')
+        get["Metapç"] = get["Metapç"].str.replace(',', '.')
 
-    total = pd.DataFrame([{'marca':'TOTAL',"MetaR$" :get1,"Metapç" :get2,"plano":get["plano"][0]}])
+        total = pd.DataFrame([{'marca':'TOTAL',"MetaR$" :get1,"Metapç" :get2,"plano":get["plano"][0]}])
 
-    get = pd.concat([get, total])
+        get = pd.concat([get, total])
 
-    return get
+        return get
+    else:
+        return pd.DataFrame([{'stataus':False,'Mensagem:':'Ainda nao possue meta cadastrada'}])
 
 
 def InserirMeta(plano, marca, metaReais, metaPecas ):
