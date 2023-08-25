@@ -36,16 +36,22 @@ def Get_Consultar(plano):
 
 def InserirMeta(plano, marca, metaReais, metaPecas ):
     conn = ConexaoPostgreMPL.conexao()
-    query = 'insert into pcp."planoMetas" (plano, marca, "MetaR$", "Metapç") values (%s, %s, %s ,%s )'
-    cursor = conn.cursor()
-    cursor.execute(query, (plano, marca, metaReais, metaPecas,))
-    conn.commit()
+    pesquisa = pd.read_sql('select marca * from pcp."planoMetas" where plano = %s',conn,params=(plano,))
+
+    if pesquisa['marca'][0] == marca:
+        return pd.DataFrame([{'mensagem':'Ja existe cadastro para essa marca no plano','status':False}])
+    else:
+        query = 'insert into pcp."planoMetas" (plano, marca, "MetaR$", "Metapç") values (%s, %s, %s ,%s )'
+
+        cursor = conn.cursor()
+        cursor.execute(query, (plano, marca, metaReais, metaPecas,))
+        conn.commit()
 
 
-    cursor.close()
-    conn.close()
+        cursor.close()
+        conn.close()
 
-    return pd.DataFrame([{'status':True, "Mensagem":"Inclusao Realizada com sucesso"}])
+        return pd.DataFrame([{'status':True, "Mensagem":"Inclusao Realizada com sucesso"}])
 
 
 
