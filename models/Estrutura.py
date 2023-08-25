@@ -30,8 +30,8 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
         conn = ConexaoCSW.Conexao()
         start_time = time.time()
 
-        if boleano == True:
-            estrutura = pd.read_sql("SELECT now() as dia, 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
+
+        estrutura = pd.read_sql("SELECT now() as dia, 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                     "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
                                     "(select s.corbase from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as corProduto,"
                                     " (select s.situacao from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as situacao,"
@@ -61,8 +61,10 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
                                     " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
                                     " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
                                     " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecoes+") and t.codEngenharia not like '03%' ", conn)
+        if boleano == True:
+            estrutura = estrutura
         else:
-            estrutura = pd.read_sql("SELECT now() as dia, 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
+            esturura2 = pd.read_sql("SELECT now() as dia, 'Variavel' AS tipo, d.codColecao, cv.codProduto, cv.codSortimento, " 
                                     "(SELECT t.descricao FROM tcp.Tamanhos t WHERE t.codEmpresa = cv.codEmpresa AND t.sequencia = cv.seqTamanho) AS tamanho, "
                                     "(select s.corbase from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as corProduto,"
                                     " (select s.situacao from tcp.SortimentosProduto s WHERE s.codEmpresa = cv.codEmpresa and s.codProduto = cv.codProduto and s.codSortimento = cv.codSortimento) as situacao,"
@@ -77,7 +79,7 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
                                     " (select i2.coditem from  tcp.ComponentesVariaveis c join cgi.Item2  i2 on i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente WHERE  cv.codEmpresa = c.codEmpresa and cv.codProduto = c.codProduto and cv.sequencia = c.codSequencia ) as codreduzido "
                                     " FROM tcp.CompVarSorGraTam cv "
                                     "JOIN tcp.DadosGeraisEng d ON cv.codempresa = d.codEmpresa AND cv.codProduto = d.codEngenharia " 
-                                    " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecoes+") and cv.codProduto not like '03%' "
+                                    " WHERE cv.codEmpresa = 1 AND d.codColecao in ("+ colecao2+") and cv.codProduto not like '03%' "
                                     " union "
                                     " select DISTINCT now() as dia, 'Padrao' as tipo, d.codColecao, c.codProduto, s.codSortimento , (select tm.descricao from tcp.Tamanhos tm WHERE tm.codEmpresa = t.Empresa  and tm.sequencia = t.codSeqTamanho) as tamanho, "
                                     "s.corBase, s.situacao, "
@@ -91,23 +93,9 @@ def Estrutura(client_ip,plano, pagina=0 ,itensPag=0 , engenharia=SEM_ENGENHARIA,
                                     " join tcp.DadosGeraisEng d on c.codempresa = d.codEmpresa and c.codProduto = d.codEngenharia"
                                     " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
                                     " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
-                                    " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecoes+") and t.codEngenharia not like '03%' "
-                                    " union "
-                                    " select DISTINCT now() as dia, 'Padrao' as tipo, d.codColecao, c.codProduto, s.codSortimento , (select tm.descricao from tcp.Tamanhos tm WHERE tm.codEmpresa = t.Empresa  and tm.sequencia = t.codSeqTamanho) as tamanho, "
-                                    "s.corBase, s.situacao, "
-                                    " (select i2.codItemPai from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as codMP,"
-                                    " (select i2.codCor from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as corComponente, "
-                                    "(select tm.descricao from cgi.Item2  i2   "
-                                    " join tcp.Tamanhos tm on tm.CodEmpresa = i2.Empresa and tm.sequencia = i2.codseqtamanho where i2.Empresa = c.codEmpresa and i2.coditem = c.CodComponente) as Tamanho,"
-                                    " (select i.nome  from   cgi.item i WHERE  i.codigo = c.CodComponente ) as nomeComponente, c.quantidade, "
-                                    " (select i2.codItem from  cgi.Item2  i2 WHERE  i2.Empresa = c.codEmpresa and i2.coditem = c.codComponente ) as codreduzido"
-                                    " from tcp.ComponentesPadroes c"
-                                    " join tcp.DadosGeraisEng d on c.codempresa = d.codEmpresa and c.codProduto = d.codEngenharia"
-                                    " join tcp.SortimentosProduto s on s.codEmpresa = c.codEmpresa and s.codProduto = c.codProduto "
-                                    " join tcp.IndEngenhariasPorSeqTam t on t.Empresa = c.codEmpresa and t.codEngenharia = c.codProduto "
-                                    " WHERE c.codEmpresa = 1 and d.codColecao in (" + colecao2 + ") and t.codEngenharia not like '03%' "
+                                    " WHERE c.codEmpresa = 1 and d.codColecao in ("+ colecao2+") and t.codEngenharia not like '03%' ", conn)
 
-                                    , conn)
+            estrutura = pd.concat([estrutura, esturura2], ignore_index= True)
 
         estrutura['situacao'] = estrutura.apply(lambda row: '1-Ativo' if row['situacao'] == 1
                                                                         else '0-Inativo', axis=1)
