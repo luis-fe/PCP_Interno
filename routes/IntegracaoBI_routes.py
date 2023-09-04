@@ -5,6 +5,15 @@ from models import IntegracaoBI, ResponsabilidadeFase, ObterInfCSW, itens, op_cs
 import pandas as pd
 
 integracaoBI = Blueprint('integracaoBI_routes', __name__)
+def token_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if token == 'a44pcp22':  # Verifica se o token é igual ao token fixo
+            return f(*args, **kwargs)
+        return jsonify({'message': 'Acesso negado'}), 401
+
+    return decorated_function
 
 @integracaoBI.route('/pcp/api/LoteBI', methods=['GET'])
 def LoteBI():
@@ -35,6 +44,7 @@ def FasesBI():
     return jsonify(OP_data)
 
 @integracaoBI.route('/pcp/api/IntensBI', methods=['GET'])
+@token_required
 def IntensBI():
     topItem = request.args.get('itens',10000)
     paginas = request.args.get('paginas',1)
