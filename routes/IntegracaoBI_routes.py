@@ -1,7 +1,7 @@
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
-from models import IntegracaoBI, ResponsabilidadeFase, ObterInfCSW, itens, op_csw
+from models import IntegracaoBI, ResponsabilidadeFase, ObterInfCSW, itens, op_csw, Vendas
 import pandas as pd
 
 integracaoBI = Blueprint('integracaoBI_routes', __name__)
@@ -73,6 +73,25 @@ def OPSBI():
     data = request.args.get('anoLote', '23')
 
     usuarios = op_csw.ItensCSW(topItem, int(paginas),data)
+
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
+
+@integracaoBI.route('/pcp/api/prioridadeFatBI', methods=['GET'])
+def prioridadeFatBI():
+    empresa = request.args.get('empresa')
+    dataInicio = request.args.get('dataInicio','2023-06-01')
+    dataFinal = request.args.get('dataFinal', '2024-01-01')
+
+    usuarios = Vendas.PedidosAbertos(empresa, dataInicio,dataFinal)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
