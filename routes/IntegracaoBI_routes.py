@@ -85,6 +85,7 @@ def OPSBI():
         OP_data.append(op_dict)
     return jsonify(OP_data)
 
+
 @integracaoBI.route('/pcp/api/prioridadeFatBI', methods=['GET'])
 def prioridadeFatBI():
     empresa = request.args.get('empresa')
