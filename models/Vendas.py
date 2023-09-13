@@ -290,6 +290,10 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         Pedido = PedidosBloqueado(Pedido)
     else:
         Pedido = Pedido
+    sku = ExplosaoPedidoSku(dataInicio, dataFim)
+    Pedido = pd.merge(Pedido, sku, on='codPedido', how='left')
+    Pedido = Pedido.loc[(Pedido['qtdeFaturada'] == 0) & (Pedido['bloqMotEspPed'] == "0")]
+
     Pedido.fillna('-', inplace=True)
 
     return Pedido
