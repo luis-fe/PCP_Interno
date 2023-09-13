@@ -290,6 +290,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         Pedido = PedidosBloqueado(Pedido)
     else:
         Pedido = Pedido
+    Pedido.fillna('-', inplace=True)
 
     return Pedido
 
