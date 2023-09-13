@@ -98,6 +98,6 @@ def GetTipoFases():
     fases['tipoFase'] = fases['tipoFase'].astype(str)
     fases['codFase'] = fases['codFase'].astype(str)
 
-    fases = fases[fases['tipoFase']=='1']
+    #fases = fases[fases['tipoFase']=='1']
 
     return fases
