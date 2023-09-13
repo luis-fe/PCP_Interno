@@ -273,7 +273,7 @@ def Detalha_EngenhariaABC(engenharias, nomeArquivo):
 
 
 def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoCSW.Conexao()
     tiponota = '1, 2, 3, 4, 5, 6, 7, 8'
     # 1- Consulta de Pedidos
     Pedido = pd.read_sql(
