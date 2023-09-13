@@ -296,6 +296,8 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
 
     Pedido.fillna('-', inplace=True)
 
+    Pedido = Pedido[0:1000]
+
     return Pedido
 
 
