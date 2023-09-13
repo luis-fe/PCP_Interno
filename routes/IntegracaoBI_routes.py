@@ -88,7 +88,7 @@ def OPSBI():
 
 @integracaoBI.route('/pcp/api/prioridadeFatBI', methods=['GET'])
 def prioridadeFatBI():
-    empresa = request.args.get('empresa')
+    empresa = request.args.get('empresa','1')
     dataInicio = request.args.get('dataInicio','2023-06-01')
     dataFinal = request.args.get('dataFinal', '2024-01-01')
 
