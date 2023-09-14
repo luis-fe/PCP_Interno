@@ -295,8 +295,14 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     Pedido = Pedido.loc[(Pedido['qtdeFaturada'] == 0) & (Pedido['bloqMotEspPed'] == "0")]
 
     Pedido.fillna('-', inplace=True)
+    # 5- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
+    df_Entregas_Enviados= pd.read_sql("select  top 300000 codPedido, count(codNumNota) as entregas_enviadas, "
+                                      "max(dataFaturamento) as ultimo_fat from fat.NotaFiscal  where codEmpresa = 1 and codRepresentante "
+                                      "not in ('200','800','300','600','700','511') and situacao = 2  group by codPedido order by codPedido desc",conn)
+    #5.1 Unindo a tabela pedidos com a quantidade de embarques entregues - preservando a tabela pedidos
+    Pedido = pd.merge(Pedido,df_Entregas_Enviados, on = 'codPedido', how='left')
 
-    Pedido = Pedido[0:100000]
+    Pedido = Pedido[0:400000]
     Pedido.to_csv('Pedidos_teste.csv')
 
     return Pedido
