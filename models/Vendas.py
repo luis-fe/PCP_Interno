@@ -314,6 +314,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     Pedido['dias_a_adicionar'] = pd.to_timedelta(Pedido['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
 
 
+
     Pedido.fillna('-', inplace=True)
     Pedido = Pedido[0:400000]
     Pedido.to_csv('Pedidos_teste.csv')
