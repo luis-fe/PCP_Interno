@@ -301,6 +301,10 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
 
     return Pedido
 
+def abrircsv():
+    pedidos = pd.read_csv("Pedidos_teste.csv")
+
+    return pedidos
 
 
 

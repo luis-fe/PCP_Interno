@@ -92,8 +92,8 @@ def prioridadeFatBI():
     dataInicio = request.args.get('dataInicio','2023-06-01')
     dataFinal = request.args.get('dataFinal', '2024-01-01')
 
-    usuarios = Vendas.PedidosAbertos(empresa, dataInicio,dataFinal)
-
+  # usuarios = Vendas.PedidosAbertos(empresa, dataInicio,dataFinal)
+    usuarios = Vendas.abrircsv()
     # Obtém os nomes das colunas
     column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
