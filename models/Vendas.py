@@ -316,7 +316,6 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
                                                         axis=1)
 
 
-
     Pedido.fillna('-', inplace=True)
     Pedido = Pedido[0:400000]
     Pedido.to_csv('Pedidos_teste.csv')
