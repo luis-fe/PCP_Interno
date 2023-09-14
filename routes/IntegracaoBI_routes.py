@@ -96,6 +96,7 @@ def prioridadeFatBI():
     fim = request.args.get('fim', 25000)
     if calcular == 'True':
         calculo = Vendas.PedidosAbertos(empresa, dataInicio,dataFinal)
+
     else:
         print('sem calcular')
 
