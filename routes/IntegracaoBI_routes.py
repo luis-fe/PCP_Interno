@@ -91,7 +91,7 @@ def prioridadeFatBI():
     empresa = request.args.get('empresa','1')
     dataInicio = request.args.get('dataInicio','2023-06-01')
     dataFinal = request.args.get('dataFinal', '2024-01-01')
-    calcular = request.args.get('calcular', 'True')
+    calcular = request.args.get('calcular', 'False')
 
     if calcular == 'True':
         calculo = Vendas.PedidosAbertos(empresa, dataInicio,dataFinal)
