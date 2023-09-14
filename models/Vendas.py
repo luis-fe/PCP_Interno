@@ -301,6 +301,19 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
                                       "not in ('200','800','300','600','700','511') and situacao = 2  group by codPedido order by codPedido desc",conn)
     #5.1 Unindo a tabela pedidos com a quantidade de embarques entregues - preservando a tabela pedidos
     Pedido = pd.merge(Pedido,df_Entregas_Enviados, on = 'codPedido', how='left')
+    #5.2 Fortando a coluna Entrega Enviadas
+    Pedido['entregas_enviadas'] = Pedido['entregas_enviadas'].fillna(0)
+    Pedido['entregas_enviadas'] = Pedido['entregas_enviadas'].astype(int)
+    # 6- Consulta de Embarques Solicitado pelo Cliente , informacao extraida do ERP
+    df_Entregas_Solicitadas= pd.read_sql("select top 100000 CAST(codPedido as varchar) as codPedido,numeroEntrega as entregas_Solicitadas from asgo_ped.Entregas where codEmpresa = 1 order by codPedido desc",conn)
+    # 6.1 - Unindo a tabela pedidos com a quantidade de embarques solicitados - Preservando a tabela de pedidos
+    Pedido = pd.merge(Pedido,df_Entregas_Solicitadas, on = 'codPedido', how='left')
+    # 6.2 Fortando a coluna Entrega Enviadas
+    Pedido['entregas_Solicitadas'] = Pedido['entregas_Solicitadas'].fillna(0)
+    Pedido['entregas_Solicitadas'] = Pedido['entregas_Solicitadas'].astype(int)
+    Pedido['dias_a_adicionar'] = pd.to_timedelta(Pedido['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
+
+
     Pedido.fillna('-', inplace=True)
     Pedido = Pedido[0:400000]
     Pedido.to_csv('Pedidos_teste.csv')
