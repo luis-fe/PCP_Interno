@@ -312,6 +312,8 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     Pedido['entregas_Solicitadas'] = Pedido['entregas_Solicitadas'].fillna(0)
     Pedido['entregas_Solicitadas'] = Pedido['entregas_Solicitadas'].astype(int)
     Pedido['dias_a_adicionar'] = pd.to_timedelta(Pedido['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
+    Pedido['dataPrevAtualizada'] = pd.to_datetime(Pedido['dataPrevFat'], errors='coerce',
+                                                      infer_datetime_format=True)
     Pedido['dataPrevAtualizada'] = Pedido.apply(lambda row: row['dataPrevAtualizada'] + row['dias_a_adicionar'],
                                                         axis=1)
 
