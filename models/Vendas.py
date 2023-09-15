@@ -360,7 +360,11 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     Pedido = pd.merge(Pedido,df_sugestao,on=['codPedido','reduzido'], how='left')
 
     Pedido['qtdeSugerida'] = Pedido['qtdeSugerida'].replace('', numpy.nan).fillna('0')
+    Pedido['estoqueAtual'] = Pedido['estoqueAtual'].replace('', numpy.nan).fillna('0')
+    Pedido['estReservPedido'] = Pedido['estReservPedido'].replace('', numpy.nan).fillna('0')
     Pedido['qtdeSugerida'] = Pedido['qtdeSugerida'].astype(int)
+    Pedido['estoqueAtual'] = Pedido['estoqueAtual'].astype(int)
+    Pedido['estReservPedido'] = Pedido['estReservPedido'].astype(int)
 
 
     Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
