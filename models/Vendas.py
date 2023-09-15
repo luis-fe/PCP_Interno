@@ -277,7 +277,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     start_time = time.time() # Iniciar o relogio para registrar o tempo da query
 
     Pedido = pd.read_sql(
-        "SELECT dataEmissao, codPedido, "
+        "SELECT now() as atualizacao, dataEmissao, codPedido, "
         "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
         " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
         " FROM Ped.Pedido p"
@@ -303,7 +303,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     # 2- Consulta de Pedidos a nivel de Sku
     start_time = time.time()# Iniciar o relogio para registrar o tempo da query
     sku = pd.read_sql(
-        "select top 2000000 now() as atualizacao, codPedido, codProduto as reduzido, "
+        "select top 2000000  codPedido, codProduto as reduzido, "
         "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  p where codEmpresa = 1 order by codpedido desc  ",conn)
     end_time = time.time()
     execution_time = end_time - start_time
