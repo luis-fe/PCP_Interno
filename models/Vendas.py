@@ -328,7 +328,10 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         "WHERE o.codEmpresa = 1 and o.situacao = 3 and o.codFaseAtual = '210' and ot.qtdePecas1Qualidade is not null and codItem is not null) dt "
         "group by dt.reduzido ", conn)
     Pedido = pd.merge(Pedido, df_estoque, on='reduzido', how='left')
-
+    Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
+    Pedido['reduzido'] = Pedido['reduzido'].astype(str)
+    # Clasificando o Dataframe para analise
+    Pedido = Pedido.sort_values(by='dataPrevAtualizada', ascending=True)  # escolher como deseja classificar
 
     Pedido.fillna('-', inplace=True)
     Pedido = Pedido[0:400000]
