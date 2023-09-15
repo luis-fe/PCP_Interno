@@ -366,7 +366,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
     Pedido['reduzido'] = Pedido['reduzido'].astype(str)
     # Clasificando o Dataframe para analise
-    Pedido = Pedido.sort_values(by='dataPrevAtualizada', ascending=False)  # escolher como deseja classificar
+    Pedido = Pedido.sort_values(by='dataPrevAtualizada', ascending=True)  # escolher como deseja classificar
     Pedido['EstoqueLivre'] = Pedido['estoqueAtual'] - Pedido['estReservPedido']
 
     # Apenas fazer a Necessidade dos pedidos "sem sugestao"
@@ -377,6 +377,11 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         lambda row: row['QtdSaldo'] if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
     Pedido["Qtd Atende"] = Pedido.apply(
         lambda row: row['qtdeSugerida'] if row['qtdeSugerida'] > 0 else row['Qtd Atende'], axis=1)
+
+    Pedido["Pedido||Prod.||Cor"] = Pedido['codPedido'].str.cat([Pedido['codProduto'],Pedido['codCor']], sep='||')
+    Pedido['Saldo Grade'] = Pedido.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
+    Pedido['X QTDE ATENDE'] = Pedido.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
+    Pedido['Qtd Atende por Cor'] = Pedido.apply(lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
 
 
 
