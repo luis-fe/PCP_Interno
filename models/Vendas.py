@@ -362,7 +362,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
     Pedido['reduzido'] = Pedido['reduzido'].astype(str)
     # Clasificando o Dataframe para analise
-    Pedido = Pedido.sort_values(by='dataPrevAtualizada', ascending=True)  # escolher como deseja classificar
+    Pedido = Pedido.sort_values(by='dataPrevAtualizada', ascending=False)  # escolher como deseja classificar
 
     Pedido.fillna('-', inplace=True)
     Pedido = Pedido[0:400000]
