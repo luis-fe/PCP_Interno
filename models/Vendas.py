@@ -287,9 +287,14 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         Pedido = PedidosBloqueado(Pedido)
     else:
         Pedido = Pedido
-    sku = ExplosaoPedidoSku(dataInicio, dataFim)
+    sku = pd.read_sql(
+        "select top 2000000 now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
+        " (select i.coditempai as engenharia from cgi.item2 i where p.codProduto = i.coditem and i.empresa = 1) as engenharia , "
+        " (select i.nome from cgi.item i where p.codProduto = i.codigo) as nome_red, "
+        "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  p where codEmpresa = 1 order by codpedido desc  ",conn)
+
     Pedido = pd.merge(Pedido, sku, on='codPedido', how='left')
-    Pedido = Pedido.loc[(Pedido['qtdeFaturada'] == 0) & (Pedido['bloqMotEspPed'] == "0")]
+    Pedido = Pedido.loc[(Pedido['situacao'] != "1") & (Pedido['situacaoBloq'] != "1")]
 
 
     # 5- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
