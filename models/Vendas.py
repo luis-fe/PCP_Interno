@@ -281,7 +281,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
         " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
         " FROM Ped.Pedido p"
-        " where codEmpresa = s% and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in (" + tiponota + ")"
+        " where codEmpresa = %s and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in (" + tiponota + ")"
         " order by codPedido desc ",conn, params=(empresa,))
 
     # 1.1 registrar o tempo de execucao dessa query
