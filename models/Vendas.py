@@ -272,6 +272,7 @@ def Detalha_EngenhariaABC(engenharias, nomeArquivo):
 def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     conn = ConexaoCSW.Conexao()
     tiponota = '1, 2, 3, 4, 5, 6, 7, 8'
+    start_time = time.time()
     # 1- Consulta de Pedidos
     Pedido = pd.read_sql(
         "SELECT dataEmissao, codPedido, "
@@ -281,6 +282,12 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         " where codEmpresa = "+empresa+" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in (" + tiponota + ")"
                                                                                                                                                  " order by codPedido desc ",
         conn)
+    end_time = time.time()
+    execution_time = end_time - start_time
+    execution_time = round(execution_time, 2)
+    execution_time = str(execution_time)
+    ConexaoCSW.ControleRequisicao('Consultar Venda SKU Csw', execution_time, 'Automacao BI')
+
     Pedido.fillna('-', inplace=True)
 
     if aprovado == True:
@@ -328,7 +335,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         "WHERE o.codEmpresa = 1 and o.situacao = 3 and o.codFaseAtual = '210' and ot.qtdePecas1Qualidade is not null and codItem is not null) dt "
         "group by dt.reduzido ", conn)
     Pedido = pd.merge(Pedido, df_estoque, on='reduzido', how='left')
-    Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
+    #Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
     Pedido['reduzido'] = Pedido['reduzido'].astype(str)
     # Clasificando o Dataframe para analise
     Pedido = Pedido.sort_values(by='dataPrevAtualizada', ascending=True)  # escolher como deseja classificar
