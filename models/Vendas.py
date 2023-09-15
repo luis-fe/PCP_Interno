@@ -282,7 +282,7 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
         " FROM Ped.Pedido p"
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in (" + tiponota + ")"
-        " order by codPedido desc ",conn, params=(empresa,))
+        " order by codPedido desc ",conn)
 
     # 1.1 registrar o tempo de execucao dessa query
     end_time = time.time()
