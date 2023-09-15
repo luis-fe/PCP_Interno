@@ -359,6 +359,10 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     # 12.1 - Transferindo a Informação para o dataframe de Pedidos
     Pedido = pd.merge(Pedido,df_sugestao,on=['codPedido','reduzido'], how='left')
 
+    Pedido['qtdeSugerida'] = Pedido['qtdeSugerida'].replace('', numpy.nan).fillna('0')
+    Pedido['qtdeSugerida'] = Pedido['qtdeSugerida'].astype(int)
+
+
     Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
     Pedido['reduzido'] = Pedido['reduzido'].astype(str)
     # Clasificando o Dataframe para analise
