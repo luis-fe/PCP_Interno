@@ -272,33 +272,38 @@ def Detalha_EngenhariaABC(engenharias, nomeArquivo):
 def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
     conn = ConexaoCSW.Conexao()
     tiponota = '1, 2, 3, 4, 5, 6, 7, 8'
-    start_time = time.time()
+
     # 1- Consulta de Pedidos
+    start_time = time.time() # Iniciar o relogio para registrar o tempo da query
+
     Pedido = pd.read_sql(
         "SELECT dataEmissao, codPedido, "
         "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
         " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
         " FROM Ped.Pedido p"
-        " where codEmpresa = "+empresa+" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in (" + tiponota + ")"
-                                                                                                                                                 " order by codPedido desc ",
-        conn)
+        " where codEmpresa = s% and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in (" + tiponota + ")"
+        " order by codPedido desc ",conn, params=(empresa,))
+
+    # 1.1 registrar o tempo de execucao dessa query
     end_time = time.time()
     execution_time = end_time - start_time
     execution_time = round(execution_time, 2)
     execution_time = str(execution_time)
     ConexaoCSW.ControleRequisicao('Consultar Pedido entre datas', execution_time, 'Automacao BI')
 
-    Pedido.fillna('-', inplace=True)
+    Pedido.fillna('-', inplace=True) # aqui limpo os possiveis Null's do dataframe
+
+
 
     if aprovado == True:
         Pedido = PedidosBloqueado(Pedido)
     else:
         Pedido = Pedido
-    start_time = time.time()
+
+    # 2- Consulta de Pedidos a nivel de Sku
+    start_time = time.time()# Iniciar o relogio para registrar o tempo da query
     sku = pd.read_sql(
-        "select top 2000000 now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
-        " (select i.coditempai as engenharia from cgi.item2 i where p.codProduto = i.coditem and i.empresa = 1) as engenharia , "
-        " (select i.nome from cgi.item i where p.codProduto = i.codigo) as nome_red, "
+        "select top 2000000 now() as atualizacao, codPedido, codProduto as reduzido, "
         "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  p where codEmpresa = 1 order by codpedido desc  ",conn)
     end_time = time.time()
     execution_time = end_time - start_time
@@ -341,7 +346,20 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
         "WHERE o.codEmpresa = 1 and o.situacao = 3 and o.codFaseAtual = '210' and ot.qtdePecas1Qualidade is not null and codItem is not null) dt "
         "group by dt.reduzido ", conn)
     Pedido = pd.merge(Pedido, df_estoque, on='reduzido', how='left')
-    #Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
+    # 10 - Consultando a Sugestao do Pedido a Nivel de SKU
+    df_sugestao = pd.read_sql('SELECT top 1000000 codPedido , produto as reduzido, qtdePecasConf , qtdeSugerida  from ped.SugestaoPedItem WHERE codEmpresa =1 ORDER by codPedido desc',conn)
+
+    #11- Consultando a Sugesteao de Peidos no nivel de capa e trazendo a hora da listagem
+    df_sugestao_capa =pd.read_sql("SELECT codPedido, situacaoSugestao, dataHoraListagem, case when (situacaoSugestao = 2 and dataHoraListagem>0) then 'Sugerido(Em Conferencia)' WHEN situacaoSugestao = 0 then 'Sugerido(Gerado)' WHEN situacaoSugestao = 2 then 'Sugerido(A listar)' else '' end StatusSugestao from ped.SugestaoPed WHERE codEmpresa = 1 and situacaoSugestao <> 3",conn)
+
+    conn.close() # Fechando a conexao com o banco
+
+    # 12- Realizando o join entre Sugestao nivel sku e sugestao de capa
+    df_sugestao = pd.merge(df_sugestao,df_sugestao_capa,on='codPedido')
+    # 12.1 - Transferindo a Informação para o dataframe de Pedidos
+    Pedido = pd.merge(Pedido,df_sugestao,on=['codPedido','reduzido'], how='left')
+
+    Pedido['QtdSaldo'] = Pedido['qtdePedida'] - Pedido['qtdeFaturada'] - Pedido['qtdeSugerida']- Pedido['qtdeCancelada']
     Pedido['reduzido'] = Pedido['reduzido'].astype(str)
     # Clasificando o Dataframe para analise
     Pedido = Pedido.sort_values(by='dataPrevAtualizada', ascending=True)  # escolher como deseja classificar
