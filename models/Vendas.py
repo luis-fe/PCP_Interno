@@ -225,17 +225,14 @@ def PedidosBloqueado(df_Pedidos):
 def ExplosaoPedidoSku(datainicio, datafinal):
     conn = ConexaoCSW.Conexao()
     # 8 - Consultando o banco de dados do ERP no nivel de Pedios SKU
-    df_ItensPedidos = pd.read_sql(
-        "select top 350000 item.codPedido, item.CodItem as seqCodItem, item.codProduto, item.precoUnitario, item.tipoDesconto, item.descontoItem, case when tipoDesconto = 1 then ( (item.qtdePedida * item.precoUnitario) - item.descontoItem)/item.qtdePedida when item.tipoDesconto = 0 then (item.precoUnitario * (1-(item.descontoItem/100))) else item.precoUnitario end  PrecoLiquido from ped.PedidoItem as item WHERE item.codEmpresa = 1 order by item.codPedido desc",
-        conn)
+    #df_ItensPedidos = pd.read_sql(
+     #   "select top 350000 item.codPedido, item.CodItem as seqCodItem, item.codProduto, item.precoUnitario, item.tipoDesconto, item.descontoItem, case when tipoDesconto = 1 then ( (item.qtdePedida * item.precoUnitario) - item.descontoItem)/item.qtdePedida when item.tipoDesconto = 0 then (item.precoUnitario * (1-(item.descontoItem/100))) else item.precoUnitario end  PrecoLiquido from ped.PedidoItem as item WHERE item.codEmpresa = 1 order by item.codPedido desc",
+     #   conn)
     df_SkuPedidos = pd.read_sql(
-        "select  now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
+        "select top 2000000 now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
         " (select i.coditempai as engenharia from cgi.item2 i where p.codProduto = i.coditem and i.empresa = 1) as engenharia , "
         " (select i.nome from cgi.item i where p.codProduto = i.codigo) as nome_red, "
-        "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  p where codEmpresa = 1  "
-        "and codPedido in ("
-        " select codPedido from Ped.Pedido where codEmpresa = 1 and  dataEmissao >= '"+datainicio +"' and dataEmissao <= '"+datafinal+"' "
-        ")",conn)
+        "qtdeCancelada, qtdeFaturada, qtdePedida  from ped.PedidoItemGrade  p where codEmpresa = 1 order by codpedido desc  ",conn)
 
     conn.close()
     return df_SkuPedidos
@@ -316,6 +313,16 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
                                                       infer_datetime_format=True)
     Pedido['dataPrevAtualizada'] = Pedido.apply(lambda row: row['dataPrevAtualizada'] + row['dias_a_adicionar'],
                                                         axis=1)
+    # 8.1 Consultando n banco de dados do ERP o saldo de estoque
+    df_estoque = pd.read_sql(
+        "select dt.reduzido, SUM(dt.estoqueAtual) as estoqueAtual, sum(estReservPedido) as estReservPedido from  "
+        "(select codItem as reduzido, estoqueAtual,estReservPedido  from est.DadosEstoque where codEmpresa = 1 and codNatureza = 5 and estoqueAtual > 0 "
+        "UNION "
+        "select  ot.codItem as reduzido , ot.qtdePecas1Qualidade as estoqueAtual, 0 as estReservPedido  from Tco.OrdemProd o "
+        "join Tco.OrdemProdTamanhos ot on ot.codEmpresa = o.codEmpresa and ot.numeroOP = o.numeroOP "
+        "WHERE o.codEmpresa = 1 and o.situacao = 3 and o.codFaseAtual = '210' and ot.qtdePecas1Qualidade is not null and codItem is not null) dt "
+        "group by dt.reduzido ", conn)
+    Pedido = pd.merge(Pedido, df_estoque, on='reduzido', how='left')
 
 
     Pedido.fillna('-', inplace=True)
