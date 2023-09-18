@@ -44,6 +44,8 @@ def Roteiro(like, empresa):
 
     query = pd.merge(query, query3, on='numeroOP')
 
+    query.to_csv('roteiro_op.csv')
+
 
 
 
