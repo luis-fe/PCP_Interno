@@ -1,5 +1,6 @@
 import ConexaoCSW
 import pandas as pd
+import numpy
 
 
 
@@ -16,9 +17,11 @@ def Roteiro(like, empresa):
 
 
     conn.close()
+    query['codSeqRoteiroAtual']  = query['codSeqRoteiroAtual'] .replace('', numpy.nan).fillna('0')
     query.fillna('-', inplace=True)
     query2['codFase'] = query2['codFase'].astype(str)
     query['codSeqRoteiroAtual'] = query['codSeqRoteiroAtual'].astype(int)
+
 
 
     query = pd.merge(query, query2, on='numeroOP')
