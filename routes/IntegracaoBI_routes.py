@@ -113,7 +113,7 @@ def prioridadeFatBI():
     return jsonify(OP_data)
 
 @integracaoBI.route('/pcp/api/roteiroOP', methods=['GET'])
-def roteiroOP():
+def roteiroOPs():
     empresa = request.args.get('empresa','1')
     like = request.args.get('like','23')
 
