@@ -1,7 +1,7 @@
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
-from models import IntegracaoBI, ResponsabilidadeFase, ObterInfCSW, itens, op_csw, Vendas
+from models import IntegracaoBI, ResponsabilidadeFase, ObterInfCSW, itens, op_csw, Vendas, roteiroOP
 import pandas as pd
 
 integracaoBI = Blueprint('integracaoBI_routes', __name__)
@@ -101,6 +101,24 @@ def prioridadeFatBI():
         print('sem calcular')
 
     usuarios = Vendas.abrircsv(ini, fim)
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
+
+@integracaoBI.route('/pcp/api/roteiroOP', methods=['GET'])
+def roteiroOP():
+    empresa = request.args.get('empresa','1')
+    like = request.args.get('like','23')
+
+
+    usuarios = roteiroOP.Roteiro(like, empresa)
     # Obtém os nomes das colunas
     column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
