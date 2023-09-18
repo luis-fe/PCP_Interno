@@ -48,6 +48,7 @@ def Roteiro(like, empresa):
 
 
     query = query[0:1000]
+    query.fillna('-', inplace=True)
 
     return query
 
