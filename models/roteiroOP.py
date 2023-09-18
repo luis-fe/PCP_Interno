@@ -47,7 +47,7 @@ def Roteiro(like, empresa):
     query.to_csv('roteiro_op.csv')
 
 
-    query = query[0:50000]
+    query = query[0:100000]
     query.fillna('-', inplace=True)
 
     return query
