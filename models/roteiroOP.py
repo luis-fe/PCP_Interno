@@ -30,10 +30,13 @@ def Roteiro(like, empresa):
     query["situacaoMovOP"] = query.apply(lambda row: 'em processo' if row['codFaseAtual'] == row['codFase']
         else '-', axis=1)
 
-    query["situacaoMovOP"] = query.apply(lambda row: 'movimentado'
+    query["situacaoMovOP"] = query.apply(lambda row: 'em fila'
     if row['situacaoMovOP'] != 'em processo' and row['codSeqRoteiro'] > row['codSeqRoteiroAtual']
         else row['situacaoMovOP'], axis=1)
 
+    query["situacaoMovOP"] = query.apply(lambda row: 'movimentado'
+    if row['situacaoMovOP'] == '-'
+        else row['situacaoMovOP'], axis=1)
 
     return query
 
