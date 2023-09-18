@@ -15,6 +15,10 @@ def Roteiro(like, empresa):
     query2 = pd.read_sql('SELECT  r.numeroOP , r.codSeqRoteiro , r.codFase  from tco.RoteiroOP r '
                          ' WHERE r.codEmpresa = '+empresa+"  and r.codLote like "+ like, conn )
 
+    query3 = pd.read_sql('select ot.numeroOP , ot.codItem, ot.codSortimento, ot.qtdePecas1Qualidade '
+                         'FROM tco.OrdemProdTamanhos ot '
+                         ' WHERE ot.codEmpresa = ' + empresa + "  and ot.codLote like " + like, conn)
+
 
     conn.close()
     query['codSeqRoteiroAtual']  = query['codSeqRoteiroAtual'] .replace('', numpy.nan).fillna('0')
@@ -37,6 +41,11 @@ def Roteiro(like, empresa):
     query["situacaoMovOP"] = query.apply(lambda row: 'movimentado'
     if row['situacaoMovOP'] == '-' or row['situacao']== '2'
         else row['situacaoMovOP'], axis=1)
+
+    query = pd.merge(query, query3, on='numeroOP')
+
+
+
 
     return query
 
