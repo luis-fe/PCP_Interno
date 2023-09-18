@@ -17,7 +17,7 @@ def Roteiro(like, empresa):
 
     conn.close()
     query.fillna('-', inplace=True)
-    query['codFase'] = query['codFase'].astype(str)
+    query2['codFase'] = query2['codFase'].astype(str)
 
     query = pd.merge(query, query2, on='numeroOP')
 
