@@ -12,7 +12,7 @@ def Roteiro(like, empresa):
 
 
     query2 = pd.read_sql('SELECT top 1000  r.numeroOP , r.codSeqRoteiro , r.codFase  from tco.RoteiroOP r '
-                         ' WHERE r.codEmpresa = '+empresa+" and r.situacao > 0 and r.codLote like "+ like, conn )
+                         ' WHERE r.codEmpresa = '+empresa+"  and r.codLote like "+ like, conn )
 
     conn.close()
     query.fillna('-', inplace=True)
