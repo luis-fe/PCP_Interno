@@ -8,7 +8,7 @@ def Roteiro(like, empresa):
     conn = ConexaoCSW.Conexao()
     query = pd.read_sql('select top 2000 op.codLote, op.numeroOP, op.situacao, op.codFaseAtual, op.codSeqRoteiroAtual '
                         ' FROM tco.OrdemProd op '
-                        ' WHERE op.codEmpresa = '+empresa+" and op.situacao > 0 and op.codLote like "+ like, conn )
+                        ' WHERE op.codEmpresa = '+empresa+" and op.situacao > 1 and op.codLote like "+ like, conn )
 
 
     query2 = pd.read_sql('SELECT top 10000  r.numeroOP , r.codSeqRoteiro , r.codFase  from tco.RoteiroOP r '
