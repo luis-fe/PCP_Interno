@@ -10,6 +10,10 @@ def Roteiro(like, empresa):
                         ' FROM tco.OrdemProd op '
                         ' WHERE op.codEmpresa = '+empresa+" and op.situacao > 0 and op.codLote like "+ like, conn )
     conn.close()
+    query.fillna('-', inplace=True)
+    query["situacaoMovOP"] = query.apply(lambda row: 'em processo' if row['codFaseAtual'] != '-' else '-', axis=1)
+
+
     return query
 
 
