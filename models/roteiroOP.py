@@ -18,11 +18,18 @@ def Roteiro(like, empresa):
     conn.close()
     query.fillna('-', inplace=True)
     query2['codFase'] = query2['codFase'].astype(str)
+    query['codSeqRoteiroAtual'] = query['codSeqRoteiroAtual'].astype(int)
+
 
     query = pd.merge(query, query2, on='numeroOP')
 
 
-    query["situacaoMovOP"] = query.apply(lambda row: 'em processo' if row['codFaseAtual'] == row['codFase'] else '-', axis=1)
+    query["situacaoMovOP"] = query.apply(lambda row: 'em processo' if row['codFaseAtual'] == row['codFase']
+        else '-', axis=1)
+
+    query["situacaoMovOP"] = query.apply(lambda row: 'movimentado'
+    if row['situacaoMovOP'] != 'em processo' and row['codSeqRoteiro'] > row['codSeqRoteiroAtual']
+        else row['situacaoMovOP'], axis=1)
 
 
     return query
