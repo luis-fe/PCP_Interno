@@ -35,7 +35,7 @@ def Roteiro(like, empresa):
         else row['situacaoMovOP'], axis=1)
 
     query["situacaoMovOP"] = query.apply(lambda row: 'movimentado'
-    if row['situacaoMovOP'] == '-'
+    if row['situacaoMovOP'] == '-' or row['situacao']== '2'
         else row['situacaoMovOP'], axis=1)
 
     return query
