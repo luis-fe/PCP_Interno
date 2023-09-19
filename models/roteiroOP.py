@@ -24,9 +24,13 @@ def Roteiro(like, empresa, ini, fim):
                              'FROM tco.OrdemProdTamanhos ot '
                              ' WHERE ot.codEmpresa = ' + empresa + "  and ot.codLote like " + like, conn)
 
+        query4 = pd.read_sql('SELECT f.codLote , f.numeroOP , f.codFase , f.seqRoteiro as codSeqRoteiro, f.dataMov, f.codFaccionista as faccionista_baixa  FROM tco.MovimentacaoOPFase f '
+                             ' WHERE f.codEmpresa = '+empresa+"  and f.codLote like "+ like, conn )
+
 
         conn.close()
         query['codSeqRoteiroAtual']  = query['codSeqRoteiroAtual'] .replace('', numpy.nan).fillna('0')
+
         query.fillna('-', inplace=True)
         query2['codFase'] = query2['codFase'].astype(str)
         query['codSeqRoteiroAtual'] = query['codSeqRoteiroAtual'].astype(int)
@@ -48,6 +52,9 @@ def Roteiro(like, empresa, ini, fim):
             else row['situacaoMovOP'], axis=1)
 
         query = pd.merge(query, query3, on='numeroOP')
+        query = pd.merge(query, query4, on=['numeroOP','codSeqRoteiro'])
+
+
 
         query.to_csv('roteiro_op.csv')
 
