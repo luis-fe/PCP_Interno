@@ -116,9 +116,10 @@ def prioridadeFatBI():
 def roteiroOPs():
     empresa = request.args.get('empresa','1')
     like = request.args.get('like','23')
+    ini = request.args.get('ini', '0')
+    fim = request.args.get('fim', '1000')
 
-
-    usuarios = roteiroOP.Roteiro(like, empresa)
+    usuarios = roteiroOP.Roteiro(like, empresa,ini,fim)
     # Obtém os nomes das colunas
     column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
