@@ -55,7 +55,7 @@ def Roteiro(like, empresa, ini, fim):
         query4 = query4.drop(['codLote','codFase'], axis=1)
         inicioPcp = query4[query4['codSeqRoteiro']==1]
 
-        inicioPcp =  inicioPcp['numeroOP','dataMov']
+        inicioPcp =  inicioPcp[['numeroOP','dataMov']]
         inicioPcp.rename(columns={'dataMov': 'inicioProducao'}, inplace=True)
 
         query = pd.merge(query, query4, on=['numeroOP','codSeqRoteiro'])
