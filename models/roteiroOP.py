@@ -80,7 +80,7 @@ def TamnhoDataFrame():
     CapaOP = pd.read_csv('roteiro_op.csv')
     tamanho = CapaOP['numeroOP'].size
 
-    return pd.DataFrame({'Mensagem':f'O tamanho do dataframe é {tamanho} linhas'})
+    return pd.DataFrame([{'Mensagem':f'O tamanho do dataframe é {tamanho} linhas'}])
 
 
 
