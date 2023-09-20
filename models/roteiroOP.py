@@ -76,5 +76,12 @@ def Roteiro(like, empresa, ini, fim):
 
         return CapaOP
 
+def TamnhoDataFrame():
+    CapaOP = pd.read_csv('roteiro_op.csv')
+    tamanho = CapaOP['numeroOP'].size
+
+    return pd.DataFrame({'Mensagem':f'O tamanho do dataframe é {tamanho} linhas'})
+
+
 
 
