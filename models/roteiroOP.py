@@ -60,10 +60,7 @@ def Roteiro(like, empresa, ini, fim):
 
         query = pd.merge(query, query4, on=['numeroOP','codSeqRoteiro'])
         query = pd.merge(query, inicioPcp, on=['numeroOP'])
-
-
-
-
+        query = query.sort_values(by='inicioProducao', ascending=True)  # escolher como deseja classificar
 
         query.to_csv('roteiro_op.csv')
 
