@@ -38,8 +38,8 @@ def InserirMeta(plano, marca, metaReais, metaPecas ):
     conn = ConexaoPostgreMPL.conexao()
     plano = str(plano)
 
-    pesquisa = pd.read_sql('select marca  from pcp."planoMetas" where plano = %s',conn,params=(plano,))
-    if not pesquisa.empty and (pesquisa['marca'][0] == marca or pesquisa['marca'][1] == marca ):
+    pesquisa = pd.read_sql('select marca  from pcp."planoMetas" where plano = %s and marca = %s',conn,params=(plano,marca,))
+    if not pesquisa.empty :
             return pd.DataFrame([{'mensagem':'Ja existe cadastro para essa marca no plano','status':False}])
     else:
         query = 'insert into pcp."planoMetas" (plano, marca, "MetaR$", "Metapç") values (%s, %s, %s ,%s )'
