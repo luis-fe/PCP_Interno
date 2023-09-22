@@ -62,11 +62,11 @@ def Roteiro(like, empresa, ini, fim):
         CapaOP = pd.merge(CapaOP, inicioPcp, on=['numeroOP'])
         CapaOP = CapaOP.sort_values(by='inicioProducao', ascending=False)  # escolher como deseja classificar
 
-        CapaOP['codProduto'] = CapaOP['codProduto'].replace('-0','')
+        CapaOP['codProduto'] = CapaOP['codProduto'].str.replace('-0', '')
         CapaOP['codSortimento'] = CapaOP['codSortimento'].astype(str)
         CapaOP['seqTamanho'] = CapaOP['seqTamanho'].astype(str)
 
-        CapaOP['Id_reduzido'] =CapaOP['codProduto']+CapaOP['codSortimento']+CapaOP['seqTamanho']
+        CapaOP['Id_reduzido'] =CapaOP['codProduto']+"||"+CapaOP['codSortimento']+"||"+CapaOP['seqTamanho']
 
         CapaOP.to_csv('roteiro_op.csv')
 
