@@ -20,7 +20,7 @@ def Roteiro(like, empresa, ini, fim):
         RoteiroOP = pd.read_sql('SELECT  r.numeroOP , r.codSeqRoteiro , r.codFase  from tco.RoteiroOP r '
                              ' WHERE r.codEmpresa = '+empresa+"  and r.codLote like "+ like, conn )
 
-        DesdobramentoOP = pd.read_sql('select ot.numeroOP , ot.codItem, ot.codSortimento, ot.qtdePecas1Qualidade, ot.seqTamanho '
+        DesdobramentoOP = pd.read_sql('select ot.numeroOP , ot.codItem, ot.codSortimento, ot.qtdePecas1Qualidade, ot.seqTamanho, ot.codProduto '
                              'FROM tco.OrdemProdTamanhos ot '
                              ' WHERE ot.codEmpresa = ' + empresa + "  and ot.codLote like " + like, conn)
 
