@@ -33,8 +33,8 @@ UPLOAD_FOLDER = 'imagens'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Rota para enviar a imagem
-@app.route('/pcp/api/upload', methods=['POST'])
-def upload_image():
+@app.route('/pcp/api/upload/<string: idchamado>', methods=['POST'])
+def upload_image(idchamado):
     # Verifique se a solicitação possui um arquivo anexado
     if 'file' not in request.files:
         return jsonify({'message': 'chamado sem anexo'}), 200
@@ -54,7 +54,7 @@ def upload_image():
     if file:
         filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
 
-        file.save(f'idChamado'+filename)
+        file.save(f'{idchamado}'+filename)
         return jsonify({'message': 'Arquivo enviado com sucesso'}), 201
 
 
