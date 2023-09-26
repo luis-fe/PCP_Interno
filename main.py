@@ -68,7 +68,7 @@ def upload_image(idchamado):
 @app.route('/pcp/api/get_image/<string:idchamado>', methods=['GET'])
 def get_image(idchamado):
     filename = idchamado
-    return send_from_directory(f'uploads/{idchamado}', filename)
+    return send_from_directory(f'imagens/{idchamado}', filename)
 
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
