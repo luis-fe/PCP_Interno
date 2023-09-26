@@ -5,6 +5,7 @@ import os
 from routes import routes_blueprint
 from functools import wraps
 from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8000))
@@ -33,7 +34,7 @@ UPLOAD_FOLDER = 'imagens'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Rota para enviar a imagem
-@app.route('/pcp/api/upload/<string: idchamado>', methods=['POST'])
+@app.route('/pcp/api/upload/<string:idchamado>', methods=['POST'])
 def upload_image(idchamado):
     # Verifique se a solicitação possui um arquivo anexado
     if 'file' not in request.files:
@@ -50,14 +51,19 @@ def upload_image(idchamado):
     if not file.filename.rsplit('.', 1)[1].lower() in allowed_extensions:
         return jsonify({'message': 'Extensão de arquivo não permitida'}), 400
 
+    # Salve o arquivo na pasta de uploads usando idchamado como diretório
+    upload_directory = os.path.join(app.config['UPLOAD_FOLDER'], idchamado)
+
+    # Verifique se o diretório existe e crie-o se não existir
+    os.makedirs(upload_directory, exist_ok=True)
+
+    # Defina o nome do arquivo como o nome original do arquivo enviado
+    filename = secure_filename(file.filename)
+
     # Salve o arquivo na pasta de uploads
-    if file:
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(os.path.join(upload_directory, filename))
 
-        file.save(f'{idchamado}'+filename)
-        return jsonify({'message': 'Arquivo enviado com sucesso'}), 201
-
-
+    return jsonify({'message': 'Arquivo enviado com sucesso'}), 201
 
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
