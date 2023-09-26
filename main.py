@@ -52,7 +52,7 @@ def upload_image(idchamado):
         return jsonify({'message': 'Extensão de arquivo não permitida'}), 400
 
     # Renomeie o arquivo com o ID do chamado
-    filename = secure_filename(f'{idchamado}_{file.filename}')
+    filename = secure_filename(f'{idchamado}')
 
     # Salve o arquivo na pasta de uploads usando idchamado como diretório
     upload_directory = os.path.join(app.config['UPLOAD_FOLDER'], idchamado)
