@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_cors import CORS
 import pandas as pd
 import os
@@ -51,19 +51,23 @@ def upload_image(idchamado):
     if not file.filename.rsplit('.', 1)[1].lower() in allowed_extensions:
         return jsonify({'message': 'Extensão de arquivo não permitida'}), 400
 
+    # Renomeie o arquivo com o ID do chamado
+    filename = secure_filename(f'{idchamado}_{file.filename}')
+
     # Salve o arquivo na pasta de uploads usando idchamado como diretório
     upload_directory = os.path.join(app.config['UPLOAD_FOLDER'], idchamado)
 
     # Verifique se o diretório existe e crie-o se não existir
     os.makedirs(upload_directory, exist_ok=True)
 
-    # Defina o nome do arquivo como o nome original do arquivo enviado
-    filename = secure_filename(file.filename)
-
-    # Salve o arquivo na pasta de uploads
+    # Salve o arquivo com o novo nome
     file.save(os.path.join(upload_directory, filename))
 
     return jsonify({'message': 'Arquivo enviado com sucesso'}), 201
+
+@app.route('/pcp/api/get_image/<string:idchamado>/<string:filename>', methods=['GET'])
+def get_image(idchamado, filename):
+    return send_from_directory(f'uploads/{idchamado}', filename)
 
 
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
