@@ -8,7 +8,7 @@ from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, Obte
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-port = int(os.environ.get('PORT', 8080))
+port = int(os.environ.get('PORT', 8001))
 
 
 app.register_blueprint(routes_blueprint)
