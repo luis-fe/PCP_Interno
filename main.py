@@ -28,6 +28,37 @@ def token_required(f): #Aqui passamos o token fixo, que pode ser alterado
 
 
 
+# Defina o diretório onde as imagens serão armazenadas
+UPLOAD_FOLDER = 'imagens'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Rota para enviar a imagem
+@app.route('/pcp/api/upload', methods=['POST'])
+def upload_image():
+    # Verifique se a solicitação possui um arquivo anexado
+    if 'file' not in request.files:
+        return jsonify({'message': 'Nenhum arquivo enviado'}), 400
+
+    file = request.files['file']
+
+    # Verifique se o nome do arquivo é vazio
+    if file.filename == '':
+        return jsonify({'message': 'Nome do arquivo vazio'}), 400
+
+    # Verifique se a extensão do arquivo é permitida (opcional)
+    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+    if not file.filename.rsplit('.', 1)[1].lower() in allowed_extensions:
+        return jsonify({'message': 'Extensão de arquivo não permitida'}), 400
+
+    # Salve o arquivo na pasta de uploads
+    if file:
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(filename)
+        return jsonify({'message': 'Arquivo enviado com sucesso'}), 201
+
+
+
+
 @app.route('/pcp/api/PesquisaColecoes', methods=['GET'])
 @token_required
 def get_Colecoes():
