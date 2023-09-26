@@ -65,8 +65,9 @@ def upload_image(idchamado):
 
     return jsonify({'message': 'Arquivo enviado com sucesso'}), 201
 
-@app.route('/pcp/api/get_image/<string:idchamado>/<string:filename>', methods=['GET'])
-def get_image(idchamado, filename):
+@app.route('/pcp/api/get_image/<string:idchamado>', methods=['GET'])
+def get_image(idchamado):
+    filename = idchamado
     return send_from_directory(f'uploads/{idchamado}', filename)
 
 
