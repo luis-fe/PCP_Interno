@@ -37,13 +37,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def upload_image():
     # Verifique se a solicitação possui um arquivo anexado
     if 'file' not in request.files:
-        return jsonify({'message': 'Nenhum arquivo enviado'}), 400
+        return jsonify({'message': 'chamado sem anexo'}), 200
 
     file = request.files['file']
 
     # Verifique se o nome do arquivo é vazio
     if file.filename == '':
-        return jsonify({'message': 'Nome do arquivo vazio'}), 400
+        return jsonify({'message': 'chamado sem anexo'}), 200
 
     # Verifique se a extensão do arquivo é permitida (opcional)
     allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
@@ -53,7 +53,8 @@ def upload_image():
     # Salve o arquivo na pasta de uploads
     if file:
         filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filename)
+
+        file.save(f'idChamado'+filename)
         return jsonify({'message': 'Arquivo enviado com sucesso'}), 201
 
 
