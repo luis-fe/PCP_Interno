@@ -95,56 +95,61 @@ def pesquisa(plano, marca):
 def metasSemanais(plano):
     conn = ConexaoPostgreMPL.conexao()
     get = pd.read_sql('select "inicioVenda", "FimVenda" from pcp."Plano" where codigo = %s',conn,params=(plano,))
-    get['inicioVenda'] = pd.to_datetime(get['inicioVenda'], format='%d/%m/%Y')
-    get['FimVenda'] = pd.to_datetime(get['FimVenda'], format='%d/%m/%Y')
-    get['Duracao'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
-    get['Duracao'] = get['Duracao'].astype(str)
-    get['Total semanas'] = get['Duracao'].str.extract('(\d+)').astype(int)
-    get['Total semanas'] = get['Total semanas']/7
-    get['Total semanas'] = np.ceil(get['Total semanas'])
-    get['Total semanas'] = get['Total semanas'] .astype(int)
-    get.drop(['inicioVenda','FimVenda'], axis=1, inplace=True)
+    try:
+        get['inicioVenda'] = pd.to_datetime(get['inicioVenda'], format='%d/%m/%Y')
+
+        get['FimVenda'] = pd.to_datetime(get['FimVenda'], format='%d/%m/%Y')
+        get['Duracao'] = get['FimVenda'] [0] - get['inicioVenda'] [0]
+        get['Duracao'] = get['Duracao'].astype(str)
+        get['Total semanas'] = get['Duracao'].str.extract('(\d+)').astype(int)
+        get['Total semanas'] = get['Total semanas']/7
+        get['Total semanas'] = np.ceil(get['Total semanas'])
+        get['Total semanas'] = get['Total semanas'] .astype(int)
+        get.drop(['inicioVenda','FimVenda'], axis=1, inplace=True)
 
 
-    conn.close()
-    data = pd.DataFrame([{'0-semana':1}])
-    for i in range(get['Total semanas'][0]-2):
-        novo = {'0-semana':(i+2)}
-        data = data.append(novo,ignore_index=True )
-    data['0-semana'] = data['0-semana'].astype(str)
-    data['1- PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['0-semana']), axis=1)
-    data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'MPOLLO', row['0-semana']), axis=1)
-    totalreais , totalpçs = pesquisa(plano,'PACO')
-    totalreaisMpollo, totalpçsMpollo = pesquisa(plano, 'M.POLLO')
+        conn.close()
+        data = pd.DataFrame([{'0-semana':1}])
+        for i in range(get['Total semanas'][0]-2):
+            novo = {'0-semana':(i+2)}
+            data = data.append(novo,ignore_index=True )
+        data['0-semana'] = data['0-semana'].astype(str)
+        data['1- PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['0-semana']), axis=1)
+        data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'MPOLLO', row['0-semana']), axis=1)
+        totalreais , totalpçs = pesquisa(plano,'PACO')
+        totalreaisMpollo, totalpçsMpollo = pesquisa(plano, 'M.POLLO')
 
-    data['1.1- PACO pçs'] = (data['1- PACO %dist.']/100)*totalpçs
-    data["1.1- PACO pçs"] = data["1.1- PACO pçs"].apply(lambda x: "{:,.0f}".format(x))
-
-
-    data['1.2- PACO R$'] = (data['1- PACO %dist.']/100)*totalreais
-    data["1.2- PACO R$"] = data['1.2- PACO R$'].apply(lambda x: "{:,.2f}".format(x))
-    data['1.2- PACO R$'] = data['1.2- PACO R$'].str.replace('.', '/')
-    data['1.2- PACO R$'] = 'R$' + data['1.2- PACO R$'].str.replace(',', '.')
-    data['1.2- PACO R$'] = data['1.2- PACO R$'].str.replace('/', ',')
-
-    data['2.1- M.POLLO pçs'] = (data['2- M.POLLO %dist.']/100)*totalpçsMpollo
-    data["2.1- M.POLLO pçs"] = data['2.1- M.POLLO pçs'].apply(lambda x: "{:,.0f}".format(x))
-    data['2.1- M.POLLO pçs'] = data['2.1- M.POLLO pçs'].str.replace(',', '.')
-    data['2.2- M.POLLO R$'] = (data['2- M.POLLO %dist.']/100)*totalreaisMpollo
-    data["2.2- M.POLLO R$"] = data['2.2- M.POLLO R$'].apply(lambda x: "{:,.2f}".format(x))
-    data['2.2- M.POLLO R$'] = data['2.2- M.POLLO R$'].str.replace('.', '/')
-    data['2.2- M.POLLO R$'] = 'R$'+data['2.2- M.POLLO R$'].str.replace(',', '.')
-    data['2.2- M.POLLO R$'] = data['2.2- M.POLLO R$'].str.replace('/', ',')
+        data['1.1- PACO pçs'] = (data['1- PACO %dist.']/100)*totalpçs
+        data["1.1- PACO pçs"] = data["1.1- PACO pçs"].apply(lambda x: "{:,.0f}".format(x))
 
 
+        data['1.2- PACO R$'] = (data['1- PACO %dist.']/100)*totalreais
+        data["1.2- PACO R$"] = data['1.2- PACO R$'].apply(lambda x: "{:,.2f}".format(x))
+        data['1.2- PACO R$'] = data['1.2- PACO R$'].str.replace('.', '/')
+        data['1.2- PACO R$'] = 'R$' + data['1.2- PACO R$'].str.replace(',', '.')
+        data['1.2- PACO R$'] = data['1.2- PACO R$'].str.replace('/', ',')
+
+        data['2.1- M.POLLO pçs'] = (data['2- M.POLLO %dist.']/100)*totalpçsMpollo
+        data["2.1- M.POLLO pçs"] = data['2.1- M.POLLO pçs'].apply(lambda x: "{:,.0f}".format(x))
+        data['2.1- M.POLLO pçs'] = data['2.1- M.POLLO pçs'].str.replace(',', '.')
+        data['2.2- M.POLLO R$'] = (data['2- M.POLLO %dist.']/100)*totalreaisMpollo
+        data["2.2- M.POLLO R$"] = data['2.2- M.POLLO R$'].apply(lambda x: "{:,.2f}".format(x))
+        data['2.2- M.POLLO R$'] = data['2.2- M.POLLO R$'].str.replace('.', '/')
+        data['2.2- M.POLLO R$'] = 'R$'+data['2.2- M.POLLO R$'].str.replace(',', '.')
+        data['2.2- M.POLLO R$'] = data['2.2- M.POLLO R$'].str.replace('/', ',')
 
 
 
 
-    data = {'1- Informacoes Gerais':get.to_dict(orient='records'),
-            '2- Detalhamento Semanal':data.to_dict(orient='records')}
 
-    return [data]
+
+        data = {'1- Informacoes Gerais':get.to_dict(orient='records'),
+                '2- Detalhamento Semanal':data.to_dict(orient='records')}
+
+        return [data]
+    except:
+
+        return [{'Mensagem':'O Plano nao tem intervalo planejado de inicio e fim'}]
 
 
 
