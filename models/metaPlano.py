@@ -206,6 +206,6 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
 
 
     conn.close()
-    return pd.DataFrame([{'status':True}])
+    return pd.DataFrame([{'status':'True'}])
 
 
