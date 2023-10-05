@@ -194,11 +194,11 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
     else:
 
         #insert = 'insert into pcp."PlanoMetasSemana" (plano, marca, semana, "%dist","metaR$","metaPç" ) values (%s, %s, %s, %s, %s, %s) '
-        insert = 'insert into pcp."PlanoMetasSemana" (plano, marca, semana) values (%s, %s, %s) '
+        insert = 'insert into pcp."PlanoMetasSemana" (plano, marca, semana, "%dist") values (%s, %s, %s, %s) '
 
         cursor = conn.cursor()
        # cursor.execute(insert, (plano, marca, semana, Percentual_dist, metaReais,metaPecas))
-        cursor.execute(insert, (plano, marca, semana,))
+        cursor.execute(insert, (plano, marca, semana,Percentual_dist))
         conn.commit()
         cursor.close()
 
