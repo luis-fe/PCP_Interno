@@ -163,3 +163,47 @@ def PesquisarMetaSemana(plano, marca, semana):
     else:
 
         return (get['%dist'][0]*100)
+
+def InserindoPercentual(plano, marca, semana, Percentual_dist ):
+    conn = ConexaoPostgreMPL.conexao()
+
+    # Verificando se existe
+    consulta = pd.read_sql('select * from pcp."PlanoMetasSemana" '
+                      'where plano = %s and marca = %s and semana = %s' ,conn,params=(plano,marca, semana))
+
+    metaTotalReais, metaTotalPecas = pesquisa(plano, marca)
+
+    Percentual_dist = Percentual_dist/100
+
+    metaReais = Percentual_dist * metaTotalReais
+    metaPecas = Percentual_dist * metaTotalPecas
+
+    if not consulta.empty:
+
+
+
+        update = 'update pcp."PlanoMetasSemana"  ' \
+                 'set "%dist" = %s, "metaR$" = %s, "metaPç"= %s ' \
+                 'where plano = %s and marca = %s and semana = %s'
+
+        cursor = conn.cursor()
+        cursor.execute(update, (Percentual_dist, metaReais, metaPecas, plano, marca,semana))
+        conn.commit()
+        cursor.close()
+
+    else:
+
+        insert = 'insert into pcp."PlanoMetasSemana" (plano, marca, semana, "%dist","metaR$","metaPç" ) values (%s, %s, %s, %s, %s, %s) '
+
+        cursor = conn.cursor()
+        cursor.execute(insert, (plano, marca, semana, Percentual_dist, metaReais,metaPecas))
+        conn.commit()
+        cursor.close()
+
+
+
+
+    conn.close()
+    return pd.DataFrame([{'status':True}])
+
+
