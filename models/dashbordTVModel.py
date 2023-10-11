@@ -32,6 +32,7 @@ def Faturamento_ano(ano, empresa):
         faturamento_mes = faturamento_mes.replace('.', ";")
         faturamento_mes = faturamento_mes.replace(',',".")
         faturamento_mes = faturamento_mes.replace(';', ",")
+        faturamento_mes = faturamento_mes.replace('R$ 0,00', "")
 
 
         faturamento_por_mes.append(faturamento_mes)
