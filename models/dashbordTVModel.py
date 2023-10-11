@@ -55,8 +55,9 @@ def Faturamento_ano(ano, empresa):
     retornaCswMPLUS = retornaCswMPLUS[retornaCswMPLUS['conf'] == 0]
 
     retorna = retornaCswSB['vlrSugestao'].sum()
+    retorna = 'R$ ' + retorna.replace(',', ';').replace('.', ',').replace(';', '.')
     ValorRetornaMplus = retornaCswMPLUS['vlrSugestao'].sum()
-
+    ValorRetornaMplus = 'R$ ' + ValorRetornaMplus.replace(',', ';').replace('.', ',').replace(';', '.')
 
 
     dataframe = pd.read_sql(query, conn)
@@ -112,7 +113,7 @@ def Faturamento_ano(ano, empresa):
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
         '3- No Retorna':f"{retorna}",
-        '3.1- Retorna Mplus': f"{''}",
+        '3.1- Retorna Mplus': f"{ValorRetornaMplus}",
         '4- No Dia': f"{df_dia}",
         '5- TOTAL': f"{total}",
         '6- Atualizado as': f"{datahora}",
