@@ -29,6 +29,10 @@ def Faturamento_ano(ano, empresa):
         faturamento_mes = df_mes['faturado'].sum()
         faturamento_mes = "{:,.2f}".format(faturamento_mes)
         faturamento_mes = 'R$ ' + str(faturamento_mes)
+        faturamento_mes = faturamento_mes.replace('.', ";")
+        faturamento_mes = faturamento_mes.replace(',',".")
+        faturamento_mes = faturamento_mes.replace(';', ",")
+
 
         faturamento_por_mes.append(faturamento_mes)
 
