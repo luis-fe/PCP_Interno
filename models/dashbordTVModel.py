@@ -32,6 +32,8 @@ def Faturamento_ano(ano, empresa):
              '07-Julho', '08-Agosto', '09-Setembro', '10-Outubro', '11-Novembro', '12-Dezembro']
 
     faturamento_por_mes = []
+    acumulado = 0.00
+    faturamento_acumulado = []
 
     for mes in meses:
         # Filtrar os dados do mês atual
@@ -40,26 +42,22 @@ def Faturamento_ano(ano, empresa):
 
         # Calcular o faturamento do mês
         faturamento_mes = df_mes['faturado'].sum()
-        faturamento_mes = "{:,.2f}".format(faturamento_mes)
-        faturamento_mes = 'R$ ' + str(faturamento_mes)
-        faturamento_mes = faturamento_mes.replace('.', ";")
-        faturamento_mes = faturamento_mes.replace(',',".")
-        faturamento_mes = faturamento_mes.replace(';', ",")
-        faturamento_mes = faturamento_mes.replace('R$ 0,00', "")
 
+        # Acumular o faturamento
+        acumulado += faturamento_mes
+
+        # Formatar o faturamento do mês
+        faturamento_mes = "{:,.2f}".format(faturamento_mes)
+        faturamento_mes = 'R$ ' + faturamento_mes.replace(',', ';').replace('.', ',').replace(';', '.')
+        if faturamento_mes == 'R$ 0,00':
+            faturamento_mes = ''
+
+        # Formatar o acumulado
+        acumulado_str = "{:,.2f}".format(acumulado)
+        acumulado_str = 'R$ ' + acumulado_str.replace(',', ';').replace('.', ',').replace(';', ',')
 
         faturamento_por_mes.append(faturamento_mes)
-    acumulado = 0.00
-    faturamento_acumulado = []
-
-    for mes in meses:
-
-        procura = f"-{mes.split('-')[0]}-"
-        df_ACUM = dataframe[dataframe['dataEmissao'].str.contains(procura)]
-        df_ACUM = df_ACUM['faturado'].sum()
-        acumulado += df_ACUM
-        acumulado = "{:,.2f}".format(acumulado)
-        faturamento_acumulado.append(acumulado)
+        faturamento_acumulado.append(acumulado_str)
 
 
     # Criar um DataFrame com os resultados
