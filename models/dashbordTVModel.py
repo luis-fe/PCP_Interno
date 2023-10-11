@@ -12,8 +12,20 @@ def obterHoraAtual():
     dia = agora.strftime('%Y-%m-%d')
     return hora_str, dia
 
+def ObterTipoNota(empresa):
+    try:
+        conn = ConexaoPostgreMPL.conexao()
+        query = pd.read_sql('select tiponota, desc_tipo_nota from "Reposicao".conftiponotacsw '
+                            ' where empresa = %s ',conn, params=(empresa,))
+
+        conn.close()
+        return query
+    except:
+        return pd.DataFrame([{'Total Faturado':f'Conexao CSW perdida'}])
+
 def Faturamento_ano(ano, empresa):
     datahora, dia = obterHoraAtual()
+    tipoNota = ObterTipoNota(empresa)
 
 
     conn = ConexaoCSW.Conexao()
@@ -25,6 +37,32 @@ def Faturamento_ano(ano, empresa):
             'where n.codEmpresa = ' + empresa + ' and n.codPedido >= 0 ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 '
+
+    retornaCsw = pd.read_sql(
+        "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
+        " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
+        " FROM ped.SugestaoPed e "
+        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido "
+        ' WHERE e.codEmpresa =' + empresa +
+        " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
+        " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
+
+    tipoNota['codigo'] = tipoNota['codigo'].astype(str)
+    retornaCsw = pd.merge(retornaCsw, tipoNota, on='codigo')
+
+    retornaCsw["codPedido"] = retornaCsw["codPedido"] + '-' + retornaCsw["codSequencia"]
+
+    # Retirando as bonificacoes
+    retornaCswSB = retornaCsw[retornaCsw['codigo'] != 39]
+    retornaCswMPLUS = retornaCsw[retornaCsw['codigo'] == 39]
+
+    retornaCswSB = retornaCswSB[retornaCswSB['conf'] == 0]
+    retornaCswMPLUS = retornaCswMPLUS[retornaCswMPLUS['conf'] == 0]
+
+    retorna = retornaCswSB['vlrSugestao'].sum()
+    ValorRetornaMplus = retornaCswMPLUS['vlrSugestao'].sum()
+
+
 
     dataframe = pd.read_sql(query, conn)
 
@@ -78,7 +116,8 @@ def Faturamento_ano(ano, empresa):
     data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
-        '3- No Retorna':"",
+        '3- No Retorna':f"{retorna}",
+        '3.1- Retorna Mplus': f"{''}",
         '4- No Dia': f"{df_dia}",
         '5- TOTAL': f"{total}",
         '6- Atualizado as': f"{datahora}",
