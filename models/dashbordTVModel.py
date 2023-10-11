@@ -12,20 +12,15 @@ def obterHoraAtual():
     dia = agora.strftime('%Y-%m-%d')
     return hora_str, dia
 
-def ObterTipoNota(empresa):
-    try:
-        conn = ConexaoPostgreMPL.conexao()
-        query = pd.read_sql('select tiponota, desc_tipo_nota from "Reposicao".conftiponotacsw '
-                            ' where empresa = %s ',conn, params=(empresa,))
+def obter_notaCsw():
+    conn = ConexaoCSW.Conexao()
+    data = pd.read_sql(" select t.codigo ,t.descricao  from Fat.TipoDeNotaPadrao t ", conn)
+    conn.close()
 
-        conn.close()
-        return query
-    except:
-        return pd.DataFrame([{'Total Faturado':f'Conexao CSW perdida'}])
-
+    return data
 def Faturamento_ano(ano, empresa):
     datahora, dia = obterHoraAtual()
-    tipoNota = ObterTipoNota(empresa)
+    tipoNota = obter_notaCsw()
 
 
     conn = ConexaoCSW.Conexao()
