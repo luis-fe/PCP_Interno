@@ -39,13 +39,16 @@ def Faturamento_ano(ano, empresa):
 
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes})
+    total = df_faturamento['faturado'].sum()
+    total = "{:,.2f}".format(total)
+    total = 'R$ ' + str(total)
 
     data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
         '3- No Retorna':"",
         '4- No Dia': "",
-        '5- TOTAL': "",
+        '5- TOTAL': f"{total}",
         '6- Atualizado as': "",
         '7- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
     }
