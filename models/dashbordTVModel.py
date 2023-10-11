@@ -133,6 +133,8 @@ def Faturamento_ano(ano, empresa):
 
     df_faturamento['meta'] = 'R$ '+df_faturamento['meta'].str.replace(';', '.')
     df_faturamento['meta acum.'] = 'R$ ' + df_faturamento['meta acum.'].str.replace(';', '.')
+    df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
+
     data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
