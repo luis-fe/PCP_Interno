@@ -60,6 +60,9 @@ def Faturamento_ano(ano, empresa):
     total = total.replace(';', ",")
     df_dia = dataframe[dataframe['dataEmissao'].str.contains(dia)]
     df_dia = df_dia['faturado'].sum()
+    df_dia = "{:,.2f}".format(df_dia)
+    df_dia = 'R$ ' + str(df_dia)
+    df_dia = df_dia.replace('.', ";")
 
     data = {
         '1- Ano:': f'{ano}',
