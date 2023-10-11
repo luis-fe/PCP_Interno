@@ -141,6 +141,8 @@ def GetMetas(empresa, ano):
     conn = ConexaoPostgreMPL.conexao()
     consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
                            'where empresa = %s and ano = %s  ' , conn, params=(empresa,ano))
+    consulta['meta acum.'] = consulta['meta'].cumsum()
+
     conn.close()
     return consulta
 
