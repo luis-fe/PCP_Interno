@@ -1,6 +1,15 @@
 import pandas as pd
 import ConexaoCSW
 import ConexaoPostgreMPL
+import datetime
+import pytz
+
+
+def obterHoraAtual():
+    fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
+    agora = datetime.datetime.now(fuso_horario)
+    hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
+    return hora_str
 
 def Faturamento_ano(ano, empresa):
     conn = ConexaoCSW.Conexao()
@@ -45,6 +54,7 @@ def Faturamento_ano(ano, empresa):
     total = total.replace('.', ";")
     total = total.replace(',', ".")
     total = total.replace(';', ",")
+    datahora = obterHoraAtual()
 
     data = {
         '1- Ano:': f'{ano}',
@@ -52,7 +62,7 @@ def Faturamento_ano(ano, empresa):
         '3- No Retorna':"",
         '4- No Dia': "",
         '5- TOTAL': f"{total}",
-        '6- Atualizado as': "",
+        '6- Atualizado as': f"{datahora}",
         '7- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
     }
     return [data]
