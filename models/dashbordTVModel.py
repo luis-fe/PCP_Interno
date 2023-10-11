@@ -121,7 +121,7 @@ def Faturamento_ano(ano, empresa):
     df_faturamento = pd.merge(df_faturamento, metaMes, on="Mês", how='left')
 
 
-    df_faturamento['meta'] = df_faturamento['meta'].round(2)
+
 
     df_faturamento['meta'] = df_faturamento['meta'].astype(str)
     df_faturamento['meta acum.'] = df_faturamento['meta acum.'].astype(str)
