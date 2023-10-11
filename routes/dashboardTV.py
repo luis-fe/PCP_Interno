@@ -22,6 +22,8 @@ def dashboarTV():
     empresa = request.args.get('empresa', '1')
 
     usuarios = dashbordTVModel.Faturamento_ano(ano,empresa)
+    usuarios = pd.DataFrame(usuarios)
+
 
 
 

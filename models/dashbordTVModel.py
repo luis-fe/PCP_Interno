@@ -40,4 +40,11 @@ def Faturamento_ano(ano, empresa):
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes})
 
-    return df_faturamento
+    data = {
+        '1- Ano:': f'{ano}',
+        '2- Empresa:': f'{empresa}',
+        '3- Ranking Repositores': df_faturamento.to_dict(orient='records')
+    }
+    return [data]
+
+
