@@ -55,9 +55,9 @@ def Faturamento_ano(ano, empresa):
     for mes in meses:
 
         procura = f"-{mes.split('-')[0]}-"
-        df_mes = dataframe[dataframe['dataEmissao'].str.contains(procura)]
-        df_mes = df_mes['faturado'].sum()
-        acumulado = acumulado + df_mes
+        df_ACUM = dataframe[dataframe['dataEmissao'].str.contains(procura)]
+        df_ACUM = df_ACUM['faturado'].sum()
+        acumulado = acumulado + df_ACUM
         acumulado = "{:,.2f}".format(acumulado)
         faturamento_acumulado.append(acumulado)
 
