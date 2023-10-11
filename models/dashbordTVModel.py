@@ -121,7 +121,7 @@ def Faturamento_ano(ano, empresa):
         return locale.format('%0.2f', value, grouping=True)
 
     df_faturamento['meta'] = df_faturamento['meta'].apply(format_with_separator)
-    metaTotal = df_faturamento['meta'].sum()
+
     df_faturamento['meta acum.'] = df_faturamento['meta acum.'].apply(format_with_separator)
     df_faturamento['meta'] = df_faturamento['meta'].astype(str)
     df_faturamento['meta acum.'] = df_faturamento['meta acum.'].astype(str)
@@ -136,7 +136,7 @@ def Faturamento_ano(ano, empresa):
     df_faturamento['meta acum.'] = 'R$ ' + df_faturamento['meta acum.'].str.replace(';', '.')
     df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
 
-    df_faturamento = df_faturamento.append({'Mês':'TOTAL','meta':f'{metaTotal}'},ignore_index=True)
+    df_faturamento = df_faturamento.append({'Mês':'TOTAL'},ignore_index=True)
 
     data = {
         '1- Ano:': f'{ano}',
@@ -158,5 +158,8 @@ def GetMetas(empresa, ano):
 
     conn.close()
     consulta.fillna('-',inplace=True)
+    metaTotal = consulta['meta'].sum()
+    consulta = consulta.append({'Mês':'TOTAL','meta':f'{metaTotal}'},ignore_index=True)
+
     return consulta
 
