@@ -121,6 +121,7 @@ def Faturamento_ano(ano, empresa):
         return locale.format('%0.2f', value, grouping=True)
 
     df_faturamento['meta'] = df_faturamento['meta'].apply(format_with_separator)
+    metaTotal = df_faturamento['meta'].sum()
     df_faturamento['meta acum.'] = df_faturamento['meta acum.'].apply(format_with_separator)
     df_faturamento['meta'] = df_faturamento['meta'].astype(str)
     df_faturamento['meta acum.'] = df_faturamento['meta acum.'].astype(str)
@@ -134,7 +135,7 @@ def Faturamento_ano(ano, empresa):
     df_faturamento['meta'] = 'R$ '+df_faturamento['meta'].str.replace(';', '.')
     df_faturamento['meta acum.'] = 'R$ ' + df_faturamento['meta acum.'].str.replace(';', '.')
     df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
-    metaTotal = df_faturamento['meta'].sum()
+
     df_faturamento = df_faturamento.append({'Mês':'TOTAL','meta':f'{metaTotal}'},ignore_index=True)
 
     data = {
