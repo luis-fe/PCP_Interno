@@ -117,7 +117,7 @@ def Faturamento_ano(ano, empresa):
 
     metaMes = GetMetas(empresa, ano)
 
-    df_faturamento = df_faturamento.append({'Mês': 'TOTAL'}, ignore_index=True)
+    df_faturamento = df_faturamento.append({'Mês':'TOTAL'}, ignore_index=True)
     df_faturamento = pd.merge(df_faturamento, metaMes, on="Mês", how='left')
 
     df_faturamento['meta'] = df_faturamento['meta'].astype(float).round(2)
