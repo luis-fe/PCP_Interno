@@ -116,6 +116,7 @@ def Faturamento_ano(ano, empresa):
     df_dia = df_dia.replace(';', ",")
 
     metaMes = GetMetas(empresa, ano)
+    df_faturamento = df_faturamento.append({'Mês': 'TOTAL'}, ignore_index=True)
     df_faturamento = pd.merge(df_faturamento, metaMes, on="Mês", how='left')
     def format_with_separator(value):
         return locale.format('%0.2f', value, grouping=True)
@@ -136,7 +137,7 @@ def Faturamento_ano(ano, empresa):
     df_faturamento['meta acum.'] = 'R$ ' + df_faturamento['meta acum.'].str.replace(';', '.')
     df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
 
-    df_faturamento = df_faturamento.append({'Mês':'TOTAL'},ignore_index=True)
+
 
     data = {
         '1- Ano:': f'{ano}',
