@@ -114,6 +114,9 @@ def Faturamento_ano(ano, empresa):
     df_dia = df_dia.replace('.', ";")
     df_dia = df_dia.replace(';', ",")
 
+    metaMes = GetMetas(empresa, ano)
+    df_faturamento = pd.merge(df_faturamento, metaMes, on="Mês", how='left')
+
     data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
@@ -128,7 +131,7 @@ def Faturamento_ano(ano, empresa):
 
 def GetMetas(empresa, ano):
     conn = ConexaoPostgreMPL.conexao()
-    consulta = pd.read_sql('select * from "PCP"."DashbordTV".metas '
+    consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
                            'where empresa = %s and ano = %s  ' , conn, params=(empresa,ano))
     conn.close()
     return consulta
