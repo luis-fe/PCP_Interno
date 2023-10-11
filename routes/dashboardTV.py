@@ -39,3 +39,26 @@ def dashboarTV():
                 op_dict[column_name] = row[column_name]
             OP_data.append(op_dict)
         return jsonify(OP_data)
+@dashboardTVroute.route('/pcp/api/metas', methods=['GET'])
+@token_required
+def getmetas():
+    ano = request.args.get('ano','2023')
+    empresa = request.args.get('empresa', '1')
+
+    usuarios = dashbordTVModel.GetMetas(empresa,ano)
+
+
+
+
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for index, row in usuarios.iterrows():
+            op_dict = {}
+            for column_name in column_names:
+                op_dict[column_name] = row[column_name]
+            OP_data.append(op_dict)
+        return jsonify(OP_data)
