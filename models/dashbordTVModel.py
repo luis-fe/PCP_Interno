@@ -22,9 +22,7 @@ def Faturamento_ano(ano, empresa):
 
     for mes in meses:
         # Filtrar os dados do mês atual
-        procura = mes + 1
-        procura = str(procura)
-        procura = "-"+procura+"-"
+        procura = f"-{mes.split(' - ')[0]}-"
         filtro = dataframe[dataframe['dataEmissao'].str.contains(procura)]
         df_mes = dataframe[filtro]
 
