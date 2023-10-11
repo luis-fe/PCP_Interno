@@ -49,9 +49,20 @@ def Faturamento_ano(ano, empresa):
 
 
         faturamento_por_mes.append(faturamento_mes)
+    acumulado = 0
+    faturamento_acumulado = []
+
+    for mes in meses:
+
+        procura = f"-{mes.split('-')[0]}-"
+        df_mes = dataframe[dataframe['dataEmissao'].str.contains(procura)]
+        acumulado = df_mes['faturado'].sum() + acumulado
+        acumulado = "{:,.2f}".format(acumulado)
+        faturamento_acumulado.append(acumulado)
+
 
     # Criar um DataFrame com os resultados
-    df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes})
+    df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes, 'Acumulado':faturamento_acumulado})
     total = dataframe['faturado'].sum()
     total = "{:,.2f}".format(total)
     total = 'R$ ' + str(total)
@@ -63,6 +74,7 @@ def Faturamento_ano(ano, empresa):
     df_dia = "{:,.2f}".format(df_dia)
     df_dia = 'R$ ' + str(df_dia)
     df_dia = df_dia.replace('.', ";")
+    df_dia = df_dia.replace(';', ",")
 
     data = {
         '1- Ano:': f'{ano}',
