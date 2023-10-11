@@ -39,7 +39,7 @@ def dashboarTV():
                 op_dict[column_name] = row[column_name]
             OP_data.append(op_dict)
         return jsonify(OP_data)
-@dashboardTVroute.route('/pcp/api/metas', methods=['GET'])
+@dashboardTVroute.route('/pcp/api/metasFaturamento', methods=['GET'])
 @token_required
 def getmetas():
     ano = request.args.get('ano','2023')
