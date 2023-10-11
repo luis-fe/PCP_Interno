@@ -41,7 +41,7 @@ def dashboarTV():
         return jsonify(OP_data)
 @dashboardTVroute.route('/pcp/api/metasFaturamento', methods=['GET'])
 @token_required
-def getmetas():
+def metasFaturamento():
     ano = request.args.get('ano','2023')
     empresa = request.args.get('empresa', '1')
 
