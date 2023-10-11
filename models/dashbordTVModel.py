@@ -45,7 +45,9 @@ def Faturamento_ano(ano, empresa):
         '2- Empresa:': f'{empresa}',
         '3- No Retorna':"",
         '4- No Dia': "",
-        '5- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
+        '5- TOTAL': "",
+        '6- Atualizado as': "",
+        '7- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
     }
     return [data]
 
