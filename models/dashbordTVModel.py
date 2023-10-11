@@ -27,6 +27,9 @@ def Faturamento_ano(ano, empresa):
 
         # Calcular o faturamento do mês
         faturamento_mes = df_mes['faturado'].sum()
+        faturamento_mes = "{:,.2f}".format(faturamento_mes)
+        faturamento_mes = 'R$ ' + str(faturamento_mes)
+
         faturamento_por_mes.append(faturamento_mes)
 
     # Criar um DataFrame com os resultados
