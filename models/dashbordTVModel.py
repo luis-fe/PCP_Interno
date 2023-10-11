@@ -55,9 +55,12 @@ def Faturamento_ano(ano, empresa):
     retornaCswMPLUS = retornaCswMPLUS[retornaCswMPLUS['conf'] == 0]
 
     retorna = retornaCswSB['vlrSugestao'].sum()
+    retorna = "{:,.2f}".format(retorna)
     retorna = str(retorna)
     retorna = 'R$ ' + retorna.replace(',', ';').replace('.', ',').replace(';', '.')
+
     ValorRetornaMplus = retornaCswMPLUS['vlrSugestao'].sum()
+    ValorRetornaMplus = "{:,.2f}".format(ValorRetornaMplus)
     ValorRetornaMplus = str(ValorRetornaMplus)
     ValorRetornaMplus = 'R$ ' + ValorRetornaMplus.replace(',', ';').replace('.', ',').replace(';', '.')
 
