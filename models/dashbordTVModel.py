@@ -11,8 +11,13 @@ def Faturamento_ano(ano, empresa):
                             '  FROM Fat.NotaFiscal n '
                             'where n.codEmpresa = ' + empresa + ' and n.codPedido >= 0 and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' '
                             'and n.dataEmissao <= ' + "'" + dataFim + "'" + 'and situacao = 2 ',conn)
+    # Filtrando os dados de janeiro
     Janeiro = dataframe[dataframe['dataEmissao'].str.contains('-01-')]
-    Janeiro = Janeiro['faturado'].sum
-    Janeiro = pd.DataFrame('Janeiro', f'{Janeiro}')
 
-    return Janeiro
+    # Calculando a soma dos valores faturados em janeiro
+    Janeiro_faturado = Janeiro['faturado'].sum()
+
+    # Criando um DataFrame com o resultado
+    df_janeiro = pd.DataFrame({'Mês': ['Janeiro'], 'Faturado': [Janeiro_faturado]})
+
+    return df_janeiro
