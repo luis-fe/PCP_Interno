@@ -40,8 +40,11 @@ def Faturamento_ano(ano, empresa):
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes})
     total = dataframe['faturado'].sum()
-    #total = "{:,.2f}".format(total)
-    #total = 'R$ ' + str(total)
+    total = "{:,.2f}".format(total)
+    total = 'R$ ' + str(total)
+    total = total.replace('.', ";")
+    total = total.replace(',', ".")
+    total = total.replace(';', ",")
 
     data = {
         '1- Ano:': f'{ano}',
