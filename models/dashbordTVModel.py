@@ -129,7 +129,7 @@ def Faturamento_ano(ano, empresa):
 def GetMetas(empresa, ano):
     conn = ConexaoPostgreMPL.conexao()
     consulta = pd.read_sql('select * from "PCP"."DashbordTV".metas '
-                           'where empresa = %s and ano = %s  ' , conn, params=(ano,empresa))
+                           'where empresa = %s and ano = %s  ' , conn, params=(empresa,ano))
     conn.close()
     return consulta
 
