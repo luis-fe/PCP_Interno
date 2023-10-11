@@ -9,9 +9,13 @@ def obterHoraAtual():
     fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
     agora = datetime.datetime.now(fuso_horario)
     hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
-    return hora_str
+    dia = agora.strftime('%Y-%m-%d')
+    return hora_str, dia
 
 def Faturamento_ano(ano, empresa):
+    datahora, dia = obterHoraAtual()
+
+
     conn = ConexaoCSW.Conexao()
     dataInicio = ano + '-01-01'
     dataFim = ano + '-12-31'
@@ -54,13 +58,14 @@ def Faturamento_ano(ano, empresa):
     total = total.replace('.', ";")
     total = total.replace(',', ".")
     total = total.replace(';', ",")
-    datahora = obterHoraAtual()
+    df_dia = dataframe[dataframe['dataEmissao'].str.contains(dia)]
+    df_dia = df_dia['faturado'].sum()
 
     data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
         '3- No Retorna':"",
-        '4- No Dia': "",
+        '4- No Dia': f"{df_dia}",
         '5- TOTAL': f"{total}",
         '6- Atualizado as': f"{datahora}",
         '7- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
