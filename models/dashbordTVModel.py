@@ -101,7 +101,7 @@ def Faturamento_ano(ano, empresa):
 
 
     # Criar um DataFrame com os resultados
-    df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes, 'Acumulado':faturamento_acumulado})
+    df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes, 'Fat.Acumulado':faturamento_acumulado})
     total = dataframe['faturado'].sum()
     total = "{:,.2f}".format(total)
     total = 'R$ ' + str(total)
