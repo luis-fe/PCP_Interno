@@ -3,6 +3,7 @@ import ConexaoCSW
 import ConexaoPostgreMPL
 import datetime
 import pytz
+import locale
 
 
 def obterHoraAtual():
@@ -116,6 +117,10 @@ def Faturamento_ano(ano, empresa):
 
     metaMes = GetMetas(empresa, ano)
     df_faturamento = pd.merge(df_faturamento, metaMes, on="Mês", how='left')
+    def format_with_separator(value):
+        return locale.format('%0.2f', value, grouping=True)
+
+    df_faturamento['meta'] = df_faturamento['meta'].apply(format_with_separator)
 
     data = {
         '1- Ano:': f'{ano}',
