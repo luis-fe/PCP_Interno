@@ -43,7 +43,9 @@ def Faturamento_ano(ano, empresa):
     data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
-        '3- Ranking Repositores': df_faturamento.to_dict(orient='records')
+        '3- No Retorna':"",
+        '4- No Dia': "",
+        '5- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
     }
     return [data]
 
