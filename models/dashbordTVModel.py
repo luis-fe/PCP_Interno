@@ -4,8 +4,8 @@ import ConexaoPostgreMPL
 
 
 def Faturamento_ano(ano, empresa):
-    dataInicio = ano + '01-01'
-    dataFim = ano + '12-31'
+    dataInicio = ano + '-01-01'
+    dataFim = ano + '-12-31'
     conn = ConexaoCSW.Conexao()
     dataframe = pd.read_sql('select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado'
                             '  FROM Fat.NotaFiscal n '
