@@ -49,7 +49,7 @@ def Faturamento_ano(ano, empresa):
 
 
         faturamento_por_mes.append(faturamento_mes)
-    acumulado = 0
+    acumulado = 0.00
     faturamento_acumulado = []
 
     for mes in meses:
