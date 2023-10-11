@@ -22,7 +22,7 @@ def Faturamento_ano(ano, empresa):
 
     for mes in meses:
         # Filtrar os dados do mês atual
-        procura = f"-{mes.split(' - ')[0]}-"
+        procura = f"-{mes.split('-')[0]}-"
         df_mes = dataframe[dataframe['dataEmissao'].str.contains(procura)]
 
         # Calcular o faturamento do mês
