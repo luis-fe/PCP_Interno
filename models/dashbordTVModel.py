@@ -180,8 +180,13 @@ def Faturamento_ano(ano, empresa):
 
 def GetMetas(empresa, ano):
     conn = ConexaoPostgreMPL.conexao()
-    consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
+    if empresa != 'Toddas':
+        consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
                            'where empresa = %s and ano = %s  ' , conn, params=(empresa,ano))
+    else:
+        consulta = pd.read_sql('select mes as "Mês", sum(meta) as meta from "PCP"."DashbordTV".metas '
+                           'where ano = %s group by "Mês" ' , conn, params=(ano))
+
     consulta['meta acum.'] = consulta['meta'].cumsum()
 
     conn.close()
