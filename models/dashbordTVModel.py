@@ -144,6 +144,8 @@ def Faturamento_ano(ano, empresa):
     df_faturamento = pd.merge(df_faturamento, metaMes, on="meses", how='left')
     df_faturamento.drop('meses', axis=1, inplace=True)
     df_faturamento.drop('Mês_x', axis=1, inplace=True)
+    df_faturamento['Mês']= df_faturamento['Mês_y']
+    df_faturamento.drop('Mês_y', axis=1, inplace=True)
 
 
     def format_with_separator(value):
