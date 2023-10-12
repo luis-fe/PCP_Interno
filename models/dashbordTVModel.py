@@ -119,6 +119,7 @@ def Faturamento_ano(ano, empresa):
     metaTotal = "{:,.2f}".format(metaTotal)
     metaTotal = 'R$ ' + str(metaTotal)
     metaTotal = metaTotal.replace('.', ";")
+    metaTotal = metaTotal.replace(',', ".")
     metaTotal = metaTotal.replace(';', ",")
 
     df_faturamento = pd.merge(df_faturamento, metaMes, on="Mês", how='left')
