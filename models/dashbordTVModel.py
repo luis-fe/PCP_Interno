@@ -139,8 +139,10 @@ def Faturamento_ano(ano, empresa):
     metaTotal = metaTotal.replace(',', ".")
     metaTotal = metaTotal.replace(';', ",")
 
-    df_faturamento = pd.merge(df_faturamento, metaMes, on="Mês", how='left')
+    df_faturamento['Mês']= df_faturamento['meses']
 
+    df_faturamento = pd.merge(df_faturamento, metaMes, on="meses", how='left')
+    df_faturamento.drop('meses',inplace=True)
     def format_with_separator(value):
         return locale.format('%0.2f', value, grouping=True)
 
@@ -197,6 +199,7 @@ def GetMetas(empresa, ano):
     conn.close()
     consulta.fillna('-',inplace=True)
     metaTotal = consulta['meta'].sum()
+    consulta['meses'] = consulta['Mês']
 
 
     return consulta, metaTotal
