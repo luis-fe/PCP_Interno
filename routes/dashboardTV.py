@@ -19,7 +19,7 @@ def token_required(f):
 @token_required
 def dashboarTV():
     ano = request.args.get('ano','2023')
-    empresa = request.args.get('empresa', '1')
+    empresa = request.args.get('empresa', 'Todas')
 
     usuarios = dashbordTVModel.Faturamento_ano(ano,empresa)
     usuarios = pd.DataFrame(usuarios)
