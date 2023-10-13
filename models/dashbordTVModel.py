@@ -239,5 +239,7 @@ def ConfTipoNota(empresa):
         consulta = pd.read_sql('select tiponota from "DashbordTV".configuracao c '
                            'where c.empresa = %s',params=(empresa))
 
+    consulta['tiponota'] = consulta['tiponota'].astype(str)
+
     return consulta
 
