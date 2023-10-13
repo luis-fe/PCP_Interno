@@ -129,7 +129,7 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta) {
         celula3.innerHTML = item[CondicaoFat];
     });
 
-    document.getElementById('Retorna').textContent = `Retorna: ${Retorna}`
+    document.getElementById('Retorna').textContent = `Retorna (GERAL): ${Retorna}`
     document.getElementById('FaturadoDia').textContent = `Faturado no Dia: ${FaturadoDia}`
 }
 

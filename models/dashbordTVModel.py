@@ -176,8 +176,19 @@ def Faturamento_ano(ano, empresa):
     df_faturamento = df_faturamento.append({'Mês': '✈TOTAL','meta':metaTotal, 'Faturado':total,'meta acum.':metaTotal,'Fat.Acumulado':total}, ignore_index=True)
     df_faturamento.fillna('-',inplace=True)
 
-
-    data = {
+    if empresa == 'Todas':
+        data = {
+            '1- Ano:': f'{ano}',
+            '2- Empresa:': f'{empresa}',
+            '3- No Retorna Greal': f"{retorna}",
+            '3.1- Retorna Mplus': f"{ValorRetornaMplus}",
+            '4- No Dia': f"{df_dia}",
+            '5- TOTAL': f"{total}",
+            '6- Atualizado as': f"{datahora}",
+            '7- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
+        }
+    else:
+        data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',
         '3- No Retorna':f"{retorna}",
