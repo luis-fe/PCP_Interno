@@ -28,3 +28,15 @@ def TelaCurvaABC():
 @rotasPlataformaWeb.route('/TelaControleFase')
 def TelaControleFase():
     return render_template('TelaControleFase.html')
+
+@rotasPlataformaWeb.route('/TelaFaturamentoGeral.html')
+def TelaFaturamentoGeral():
+    return render_template('TelaFaturamentoGeral.html')
+
+@rotasPlataformaWeb.route('/TelaFaturamentoFilial.html')
+def TelaFaturamentoFilial():
+    return render_template('TelaFaturamentoFilial.html')
+
+@rotasPlataformaWeb.route('/TelaFaturamentoMatriz.html')
+def TelaFaturamentoMatriz():
+    return render_template('TelaFaturamentoMatriz.html')
