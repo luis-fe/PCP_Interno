@@ -111,7 +111,8 @@ def Faturamento_ano(ano, empresa):
 
         # Formatar o acumulado
         acumulado_str = "{:,.2f}".format(acumulado)
-        acumulado_str = 'R$ ' + acumulado_str.replace(',', ';').replace('.', ',').replace(';', ',')
+        acumulado_str = 'R$ ' + acumulado_str.replace('.', ';')
+
 
         faturamento_por_mes.append(faturamento_mes)
         faturamento_acumulado.append(acumulado_str)
