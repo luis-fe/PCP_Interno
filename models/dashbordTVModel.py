@@ -91,6 +91,7 @@ def Faturamento_ano(ano, empresa):
 
 
     dataframe = pd.read_sql(query, conn)
+    dataframe['tiponota'] =dataframe['tiponota'].astype(str)
     dataframe = pd.merge(dataframe, tipoNotaConsiderar, on='tiponota')
 
 
