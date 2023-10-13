@@ -63,6 +63,7 @@ def Faturamento_ano(ano, empresa):
         " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
 
+    query['tiponota'] = query['tiponota'].astype(str)
     query = pd.merge(query, tipoNotaConsiderar, on='tiponota')
 
 
