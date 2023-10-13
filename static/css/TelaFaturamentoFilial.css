@@ -150,6 +150,7 @@
         background-color: var(--cor2);
             color: black;
             font-size: 50px;/* aqui é para tv */
+            font-weight: bold;
         
         }
         
@@ -158,6 +159,7 @@
             background-color: var(--cor2);
                 color: black;
                 font-size: 50px;/* aqui é para tv */
+                font-weight: bold;
             
             }
 }
