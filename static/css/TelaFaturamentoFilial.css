@@ -78,9 +78,9 @@
 
 .grafico{
     width: 70%;
-    margin-top: 50px;
+    margin-top: 150px;
+    height: 1300px;
 }
-
 
 
     .labels{
@@ -137,7 +137,7 @@
     #TabelaFaturamento{
         width: 100%;
         max-width: 100%;
-        font-size: 35px;
+        font-size: 38px;
         text-align: center;
         color: white;
         margin-top: 50px;
