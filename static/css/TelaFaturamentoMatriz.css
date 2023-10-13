@@ -137,7 +137,7 @@
     #TabelaFaturamento{
         width: 100%;
         max-width: 100%;
-        font-size: 33px;
+        font-size: 38px;/* aqui é TESTE */
         text-align: center;
         color: white;
         margin-top: 50px;
@@ -148,14 +148,14 @@
     #Retorna{
         margin-top: 100px;
             color: white;
-            font-size: 35px;
+            font-size: 50px;/* aqui é para tv */
         
         }
         
         #FaturadoDia{
             margin-top: 100px;
                 color: white;
-                font-size: 35px;
+                font-size: 50px;/* aqui é para tv */
             
             }
 }
