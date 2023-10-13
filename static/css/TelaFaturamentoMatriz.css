@@ -148,13 +148,15 @@
 
     #Retorna{
         margin-top: 100px;
+        background-color: var(--cor2);
             color: white;
             font-size: 50px;/* aqui é para tv */
-        
+
         }
-        
+
         #FaturadoDia{
             margin-top: 100px;
+            background-color: var(--cor2);
                 color: white;
                 font-size: 50px;/* aqui é para tv */
             
