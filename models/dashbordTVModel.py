@@ -192,10 +192,10 @@ def GetMetas(empresa, ano):
     conn = ConexaoPostgreMPL.conexao()
     if empresa != 'Todas':
         consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
-                           'where empresa = %s and ano = %s  ' , conn, params=(empresa,ano))
+                           'where empresa = %s and ano = %s  order by id ' , conn, params=(empresa,ano))
     else:
         consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
-                           'where ano = %s ' , conn, params=(ano,))
+                           'where ano = %s order by id' , conn, params=(ano,))
         consulta = consulta.groupby('Mês').agg({
             'Mês': 'first',
             'meta':'sum'
