@@ -180,7 +180,7 @@ def Faturamento_ano(ano, empresa):
         data = {
             '1- Ano:': f'{ano}',
             '2- Empresa:': f'{empresa}',
-            '3- No Retorna': f"{retorna}",
+            '3- No Retorna': f"{retorna}(Matriz e Filial)",
             '3.1- Retorna Mplus': f"{ValorRetornaMplus}",
             '4- No Dia': f"{df_dia}",
             '5- TOTAL': f"{total}",
