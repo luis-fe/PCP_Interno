@@ -79,6 +79,7 @@
 .grafico{
     width: 70%;
     margin-top: 50px;
+    height: 300px;
 }
 
 
@@ -137,7 +138,7 @@
     #TabelaFaturamento{
         width: 100%;
         max-width: 100%;
-        font-size: 38px;/* aqui é TESTE */
+        font-size: 38px;
         text-align: center;
         color: white;
         margin-top: 50px;
