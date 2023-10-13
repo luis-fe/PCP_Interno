@@ -27,7 +27,7 @@
 
 #Retorna{
 background-color: rgb(16, 41, 64);
-font-size: 22px;
+font-size: 27px;
 }
 
 
@@ -125,7 +125,7 @@ font-size: 22px;
     #Retorna{
         margin-top: 100px;
             color: white;
-            font-size: 30px;
+            font-size: 40px; /* aqui e para tv */
         
         }
         
