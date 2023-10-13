@@ -65,7 +65,7 @@ async function createBarChart(CondicaoFat, CondicaoMeta) {
                 type: 'bar',
                 label: 'Meta',
                 data: MetasMilhoes,
-                backgroundColor: 'rgb(255, 0, 0)',
+                backgroundColor: 'rgb(241, 129, 17)',
                 borderColor: 'rgb(255, 255, 255)',
                 borderWidth: 1,
             },
