@@ -25,9 +25,6 @@
     background-color: black;
 }
 
-#Retorna{
-background-color: var(cor2);
-}
 
 
 #Matriz,
@@ -153,7 +150,7 @@ background-color: var(cor2);
 
     #Retorna{
         margin-top: 100px;
-            background-color: var(cor2);
+            background-color: var(--cor2);
             color:white;
             font-size: 50px; /* aqui é para tv */
         
