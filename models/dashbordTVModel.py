@@ -133,6 +133,7 @@ def Faturamento_ano(ano, empresa):
     df_dia = "{:,.2f}".format(df_dia)
     df_dia = 'R$ ' + str(df_dia)
     df_dia = df_dia.replace('.', ";")
+    df_dia = df_dia.replace(',', ".")
     df_dia = df_dia.replace(';', ",")
 
     metaMes, metaTotal = GetMetas(empresa, ano)
