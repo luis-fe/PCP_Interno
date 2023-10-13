@@ -63,8 +63,8 @@ def Faturamento_ano(ano, empresa):
         " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
 
-    query['tiponota'] = query['tiponota'].astype(str)
-    query = pd.merge(query, tipoNotaConsiderar, on='tiponota')
+
+
 
 
     tipoNota['codigo'] = tipoNota['codigo'].astype(str)
@@ -91,6 +91,8 @@ def Faturamento_ano(ano, empresa):
 
 
     dataframe = pd.read_sql(query, conn)
+    dataframe = pd.merge(dataframe, tipoNotaConsiderar, on='tiponota')
+
 
     meses = ['01-Janeiro', '02-Fevereiro', '03-Março', '04-Abril', '05-Maio', '06-Junho',
              '07-Julho', '08-Agosto', '09-Setembro', '10-Outubro', '11-Novembro', '12-Dezembro']
