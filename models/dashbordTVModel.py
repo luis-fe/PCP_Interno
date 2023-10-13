@@ -64,7 +64,7 @@ def Faturamento_ano(ano, empresa):
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
 
     tipoNota['codigo'] = tipoNota['codigo'].astype(str)
-    tipoNota = pd.merge(tipoNota, tipoNotaConsiderar, on='tiponota')
+    tipoNota = pd.merge(tipoNota, tipoNotaConsiderar, on='codigo')
     retornaCsw = pd.merge(retornaCsw, tipoNota, on='codigo')
 
     retornaCsw["codPedido"] = retornaCsw["codPedido"] + '-' + retornaCsw["codSequencia"]
@@ -232,14 +232,14 @@ def ConfTipoNota(empresa):
     conn = ConexaoPostgreMPL.conexao()
 
     if empresa == 'Todas':
-        consulta = pd.read_sql('select distinct tiponota from "DashbordTV".configuracao c  '
+        consulta = pd.read_sql('select distinct tiponota as codigo from "DashbordTV".configuracao c  '
                            "where c.exibi_todas_empresas = 'sim'",conn)
 
     else:
-        consulta = pd.read_sql('select tiponota from "DashbordTV".configuracao c '
+        consulta = pd.read_sql('select tiponota as codigo from "DashbordTV".configuracao c '
                            'where c.empresa = %s',params=(empresa))
 
-    consulta['tiponota'] = consulta['tiponota'].astype(str)
+    consulta['codigo'] = consulta['codigo'].astype(str)
 
     return consulta
 
