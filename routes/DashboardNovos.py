@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import Flask, render_template
-import dash
+import Dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
@@ -10,7 +10,7 @@ dashboard_bp = Blueprint('dashboard_routes', __name__)
 
 # Use o objeto Flask existente (app) para criar a aplicação Dash
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, server=dashboard_bp, url_base_pathname='/dashboard/', external_stylesheets=external_stylesheets)
+app = Dash.Dash(__name__, server=dashboard_bp, url_base_pathname='/dashboard/', external_stylesheets=external_stylesheets)
 
 
 # Assume que você tem um "long-form" data frame
