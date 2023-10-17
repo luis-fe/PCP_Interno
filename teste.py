@@ -1,10 +1,41 @@
+from flask import Flask, render_template
+from dash import Dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.express as px
 import pandas as pd
 
-# Exemplo de DataFrame com a coluna "coluna1"
-data = {'coluna1': ['aa', 'bb', 'cc', 'dd']}
-df = pd.DataFrame(data)
+app = Flask(__name__)
 
-# Transformar os valores da coluna em uma única string
-resultado = '({})'.format(', '.join(["'{}'".format(valor) for valor in df['coluna1']]))
+# Crie um aplicativo Dash
+dash_app = Dash(__name__, server=app, url_base_pathname='/xxxxxx/')
+app_dash = dash_app.server
 
-print(type(resultado))
+# Seu layout Dash
+df = pd.DataFrame({
+    "Fases": ["Corte", "Separacao", "Bordado", "Silk", "Costura Pate", "Montagem"],
+    "Carga": [400, 100, 200, 200, 400, 500]
+})
+
+fig = px.bar(df, x="Fases", y="Carga", barmode="group")
+
+dash_app.layout = html.Div(children=[
+    html.H1(children='Carga de setores'),
+
+    html.Div(children='''
+        Dash: A web application framework for your data.
+    '''),
+
+    dcc.Graph(
+        id='example-graph',
+        figure=fig
+    )
+])
+
+# Rota do Flask que incorpora o aplicativo Dash
+@app.route('/xxxxxx')
+def dashboard():
+    return dash_app.index()
+
+if __name__ == '__main__':
+    app.run(debug=True)
