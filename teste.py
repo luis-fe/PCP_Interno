@@ -33,7 +33,7 @@ dash_app.layout = html.Div(children=[
 ])
 
 # Rota do Flask que incorpora o aplicativo Dash
-@app.route('/xxxxxx')
+@app.route('/home')
 def dashboard():
     return dash_app.index()
 
