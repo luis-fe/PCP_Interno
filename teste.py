@@ -38,4 +38,4 @@ def dashboard():
     return dash_app.index()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)  # Defina a porta como 8000
