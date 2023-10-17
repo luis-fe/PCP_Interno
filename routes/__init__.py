@@ -12,7 +12,7 @@ from .estrutura_routes import estrutura_routes
 from .rotasPlataformaWeb import rotasPlataformaWeb
 from .responsabilidadeFase_routes import ResponsabilidadeFase_routes
 from .dashboardTV import dashboardTVroute
-from .DashboardNovos import dashboard_bp
+from .DashboardNovos import dashboard_routes
 # Importe mais arquivos de rotas conforme necessário
 
 # Registre as rotas nos blueprints
@@ -24,5 +24,5 @@ routes_blueprint.register_blueprint(estrutura_routes)
 routes_blueprint.register_blueprint(rotasPlataformaWeb)
 routes_blueprint.register_blueprint(ResponsabilidadeFase_routes)
 routes_blueprint.register_blueprint(dashboardTVroute)
-routes_blueprint.register_blueprint(dashboard_bp)
+routes_blueprint.register_blueprint(dashboard_routes)
 
