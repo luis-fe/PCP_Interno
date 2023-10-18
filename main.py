@@ -6,6 +6,10 @@ from routes import routes_blueprint
 from functools import wraps
 from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas
 from werkzeug.utils import secure_filename
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly.express as px
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 8000))
@@ -268,6 +272,37 @@ def get_PlanoFeriado(Plano):
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+
+@app.route('/CargaSetor')  # Rota para o aplicativo Dash
+def carga_setor():
+    # Use o objeto Flask existente (app) para criar a aplicação Dash
+    external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+    dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/',
+                         external_stylesheets=external_stylesheets)
+
+    # O restante do código do aplicativo Dash
+    df = pd.DataFrame({
+        "Fases": ["Corte", "Separacao", "Bordado", "Silk", "Cosutra Pate", "Montagem"],
+        "Carga": [400, 100, 200, 200, 400, 500]
+    })
+
+    fig = px.bar(df, x="Fases", y="Carga", barmode="group")
+
+    dash_app.layout = html.Div(children=[
+        html.H1(children='Carga de setores'),
+        html.Div(children='''
+            Dash: A web application framework for your data.
+        '''),
+        dcc.Graph(
+            id='example-graph',
+            figure=fig
+        )
+    ])
+
+    return dash_app.index()
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
