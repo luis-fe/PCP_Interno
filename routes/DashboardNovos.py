@@ -12,7 +12,7 @@ dashboard_routes = Blueprint('dashboard_routes', __name__)
 
 # Use o objeto Flask existente (app) para criar a aplicação Dash
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dashboard', external_stylesheets=external_stylesheets)
+dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/', external_stylesheets=external_stylesheets)
 
 # O restante do código permanece o mesmo
 df = pd.DataFrame({
