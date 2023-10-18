@@ -12,7 +12,7 @@ from .estrutura_routes import estrutura_routes
 from .rotasPlataformaWeb import rotasPlataformaWeb
 from .responsabilidadeFase_routes import ResponsabilidadeFase_routes
 from .dashboardTV import dashboardTVroute
-from .DashboardNovos import dashboard_routes
+#from .DashboardNovos import dashboard_routes
 # Importe mais arquivos de rotas conforme necessário
 
 # Registre as rotas nos blueprints
