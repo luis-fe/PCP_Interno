@@ -6,7 +6,7 @@ import plotly.express as px
 import pandas as pd
 
 # Importe o objeto Flask do seu aplicativo principal
-app = Flask(__name)
+app = Flask(__name__)
 
 dashboard_routes = Blueprint('dashboard_routes', __name__)
 
