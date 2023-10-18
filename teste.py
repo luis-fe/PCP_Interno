@@ -1,7 +1,4 @@
 from flask import Flask, render_template
-import dash_html_components as html
-import dash_core_components as dcc
-import plotly.express as px
 import pandas as pd
 
 app = Flask(__name__)
