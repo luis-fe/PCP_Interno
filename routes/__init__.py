@@ -24,5 +24,5 @@ routes_blueprint.register_blueprint(estrutura_routes)
 routes_blueprint.register_blueprint(rotasPlataformaWeb)
 routes_blueprint.register_blueprint(ResponsabilidadeFase_routes)
 routes_blueprint.register_blueprint(dashboardTVroute)
-routes_blueprint.register_blueprint(dashboard_routes)
+#routes_blueprint.register_blueprint(dashboard_routes)
 

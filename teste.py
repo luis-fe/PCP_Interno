@@ -17,7 +17,9 @@ df = pd.DataFrame({
     "Carga": [400, 100, 200, 200, 400, 500]
 })
 
-fig = px.bar(df, x="Fases", y="Carga", barmode="group")
+#fig = px.bar(df, x="Fases", y="Carga", barmode="group")
+fig = px.bar(df, x="Carga", y="Fases", orientation='h', text="Carga")
+
 
 dash_app.layout = html.Div(children=[
     html.H1(children='Carga de setores'),
