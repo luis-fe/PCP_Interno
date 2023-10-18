@@ -8,7 +8,7 @@ import pandas as pd
 app = Flask(__name__)
 
 # Crie um aplicativo Dash
-dash_app = dash.Dash(__name__, server=app, url_base_pathname='/xxxxxx/')
+dash_app = dash.Dash(__name__, server=app, url_base_pathname='/x')
 app_dash = dash_app.server
 
 # Seu layout Dash
