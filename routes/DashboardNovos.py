@@ -1,10 +1,12 @@
-from flask import Blueprint
-from flask import Flask, render_template
+from flask import Blueprint, Flask
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import pandas as pd
+
+# Importe o objeto Flask do seu aplicativo principal
+app = Flask(__name)
 
 dashboard_routes = Blueprint('dashboard_routes', __name__)
 
@@ -12,8 +14,7 @@ dashboard_routes = Blueprint('dashboard_routes', __name__)
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dashboard/', external_stylesheets=external_stylesheets)
 
-
-# Assume que você tem um "long-form" data frame
+# O restante do código permanece o mesmo
 df = pd.DataFrame({
     "Fases": ["Corte", "Separacao", "Bordado", "Silk", "Cosutra Pate", "Montagem"],
     "Carga": [400, 100, 200, 200, 400, 500]
@@ -21,7 +22,7 @@ df = pd.DataFrame({
 
 fig = px.bar(df, x="Fases", y="Carga", barmode="group")
 
-app.layout = html.Div(children=[
+dash_app.layout = html.Div(children=[
     html.H1(children='Carga de setores'),
 
     html.Div(children='''
