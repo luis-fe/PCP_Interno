@@ -301,7 +301,8 @@ def carga_setor():
             ],
             value='GO',  # Valor inicial
             clearable=False,# Impede a remoção de seleção
-            style={'width': '50px', 'height': '5px'}  # Defina as dimensões desejadas
+            style={'width': '50px', 'height': '5px'},
+            multi=True,  # Permite a seleção múltipla
 
         ),
         html.Br(),  # Adicione uma quebra de linha para criar espaço vertical
