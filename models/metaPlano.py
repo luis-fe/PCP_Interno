@@ -140,7 +140,8 @@ def metasSemanais(plano):
 
         # Criar uma nova linha a ser adicionada
         totalPacodist = data['1- PACO %dist.'].sum()
-        new_data = {'0-semana': 'Total', '1- PACO %dist.': totalPacodist, '1.1- PACO pçs':totalpçs}
+        new_data = {'0-semana': 'Total', '1- PACO %dist.': totalPacodist, '1.1- PACO pçs':totalpçs,
+                    '1.2- PACO R$':'-','2- M.POLLO %dist':'-','2.1- M.POLLO pçs':'-','2.2- M.POLLO R$':'-'}
 
         # Usar o método append para adicionar a nova linha ao DataFrame
         data = data.append(new_data, ignore_index=True)
