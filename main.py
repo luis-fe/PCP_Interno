@@ -289,6 +289,8 @@ def carga_setor():
             'cidade': ['Goiania', 'Sao Paulo', 'Salvador']}
 
     df2 = pd.DataFrame(data)
+    opcoes_estados = [{'label': 'Selecionar Tudo', 'value': 'Selecionar Tudo'}]
+    opcoes_estados += [{'label': estado, 'value': estado} for estado in df2['estado'].unique()]
 
     dash_app.layout = html.Div([
         html.H3("Selecione o Plano"),
@@ -296,9 +298,7 @@ def carga_setor():
         html.Div([
             dcc.Dropdown(
                 id='dropdown-estado',
-                options=[
-                    {'label': estado, 'value': estado} for estado in df2['estado'].unique()
-                ],
+                options=opcoes_estados,
                 value=['GO'],  # Valores iniciais (uma lista permite seleção múltipla)
                 multi=True,  # Permite a seleção múltipla
                 style={'width': '200px', 'height': '40px'}  # Defina as dimensões desejadas
