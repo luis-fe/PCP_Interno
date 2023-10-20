@@ -195,13 +195,13 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
 
     else:
 
-        insert = 'insert into "PCP".pcp."PlanoMetasSemana" (plano, marca, semana, "_dist") values (%s, %s, %s, %s) '
+        insert = 'insert into "PCP".pcp."PlanoMetasSemana" (plano, marca, semana, "_dist", "metaR$", "metaPç") values (%s, %s, %s, %s, %s, %s) '
 
         cursor = conn.cursor()
-        cursor.execute(insert, (plano, marca, semana, Percentual_dist))
+        cursor.execute(insert, (plano, marca, semana, Percentual_dist, metaPecas, metaPecas))
         conn.commit()
         cursor.close()
-        return pd.DataFrame([{'status': Percentual_dist}])
+        return pd.DataFrame([{'status': 'True'}])
 
 
 
