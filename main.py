@@ -281,7 +281,7 @@ def get_PlanoFeriado(Plano):
 def carga_setor():
 
     dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/', external_stylesheets=[dbc.themes.BOOTSTRAP])
-    app.layout = html.Div([
+    dash_app.layout = html.Div([
         html.H1("Seleção de Bandeiras com 'Selecionar Tudo'"),
 
         dcc.Checklist(
