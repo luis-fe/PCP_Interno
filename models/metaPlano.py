@@ -120,14 +120,17 @@ def metasSemanais(plano):
         data['1- PACO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'PACO', row['0-semana']), axis=1)
         data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'M.POLLO', row['0-semana']), axis=1)
         totalreais , totalpçs = pesquisa(plano,'PACO')
-        totalpçsFormatado = FuncoesGlobais.TipagemDeVariavel(totalpçs,'0')
+
         totalreaisFormatado = FuncoesGlobais.TipagemDeVariavel(totalreais,'2','R$')
 
         totalreaisMpollo, totalpçsMpollo = pesquisa(plano, 'M.POLLO')
         totalpçsMpolloFor = FuncoesGlobais.TipagemDeVariavel(totalpçsMpollo,'0')
         totalreaisMpolloFor = FuncoesGlobais.TipagemDeVariavel(totalreaisMpollo,'2','R$')
 
+
         data['1.1- PACO pçs'] = (data['1- PACO %dist.']/100)*totalpçs
+        totalpçsFormatado = data['1.1- PACO pçs'] .sum()
+        totalpçsFormatado = FuncoesGlobais.TipagemDeVariavel(totalpçsFormatado, '0')
         data["1.1- PACO pçs"] = data["1.1- PACO pçs"].apply(lambda x: "{:,.0f}".format(x))
         data['1.1- PACO pçs'] = data['1.1- PACO pçs'].str.replace(',', '.')
 
