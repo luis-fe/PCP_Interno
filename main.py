@@ -10,6 +10,8 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
+
 import plotly.express as px
 
 app = Flask(__name__)
@@ -277,68 +279,31 @@ def get_PlanoFeriado(Plano):
 
 @app.route('/CargaSetor')
 def carga_setor():
-    external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-    dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/', external_stylesheets=external_stylesheets)
 
-    df = pd.DataFrame({
-        "Fases": ["Corte", "Separacao", "Bordado", "Silk", "Cosutra Pate", "Montagem"],
-        "Carga": [400, 100, 200, 200, 400, 500]
-    })
+    dash_app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+    app.layout = html.Div([
+        html.H1("Lista Suspensa com Bandeiras"),
 
-    data = {'estado': ['GO', 'SP', 'BH'],
-            'cidade': ['Goiania', 'Sao Paulo', 'Salvador']}
+        dbc.Select(
+            id='language-dropdown',
+            options=[
+                {'label': 'English 🇺🇸', 'value': 'en'},
+                {'label': 'Français 🇫🇷', 'value': 'fr'},
+                {'label': 'Español 🇪🇸', 'value': 'es'},
+                {'label': 'Português 🇧🇷', 'value': 'pt'},
+            ],
+            value='en',  # Valor inicial
+        ),
 
-    df2 = pd.DataFrame(data)
-    opcoes_estados = [{'label': 'Selecionar Tudo', 'value': 'Selecionar Tudo'}]
-    opcoes_estados += [{'label': estado, 'value': estado} for estado in df2['estado'].unique()]
-
-    dash_app.layout = html.Div([
-        html.H3("Selecione o Plano"),
-
-        html.Div([
-            dcc.Dropdown(
-                id='dropdown-estado',
-                options=opcoes_estados,
-                value=['GO'],  # Valores iniciais (uma lista permite seleção múltipla)
-                multi=True,  # Permite a seleção múltipla
-                style={'width': '200px', 'height': '40px'}  # Defina as dimensões desejadas
-            ),
-
-            dcc.Dropdown(
-                id='dropdown-cidade',
-                multi=True,  # Permite a seleção múltipla
-                style={'width': '200px', 'height': '40px'}  # Defina as dimensões desejadas
-            ),
-        ], style={'display': 'flex'})
+        html.Div(id='selected-language')
     ])
 
-    fig = px.bar(df, x="Carga", y="Fases", orientation='h', text="Carga")
-
-    @dash_app.callback(
-        Output('example-graph', 'figure'),
-        [Input('dropdown-estado', 'value'), Input('dropdown-cidade', 'value')]
+    @app.callback(
+        Output('selected-language', 'children'),
+        Input('language-dropdown', 'value')
     )
-    def update_graph(selected_state, selected_city):
-        # Aqui você pode atualizar o gráfico com base na seleção do usuário
-        return fig
-
-    @dash_app.callback(
-        Output('dropdown-cidade', 'options'),
-        [Input('dropdown-estado', 'value')]
-    )
-    def update_city_options(selected_state):
-        if selected_state is None:
-            return []
-        cities = df2[df2['estado'] == selected_state]['cidade']
-        city_options = [{'label': city, 'value': city} for city in cities]
-        return city_options
-
-    @dash_app.callback(
-        Output('selecao-usuario', 'children'),
-        [Input('dropdown-estado', 'value'), Input('dropdown-cidade', 'value')]
-    )
-    def display_user_selection(selected_state, selected_city):
-        return f"Estado selecionado: {selected_state}, Cidade selecionada: {selected_city}"
+    def display_selected_language(selected_language):
+        return f"Idioma selecionado: {selected_language}"
 
     return dash_app.server
 
