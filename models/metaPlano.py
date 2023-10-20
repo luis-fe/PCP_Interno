@@ -121,6 +121,8 @@ def metasSemanais(plano):
         data['2- M.POLLO %dist.'] = data.apply(lambda row: PesquisarMetaSemana(plano, 'M.POLLO', row['0-semana']), axis=1)
         totalreais , totalpçs = pesquisa(plano,'PACO')
         totalpçsFormatado = FuncoesGlobais.TipagemDeVariavel(totalpçs,'0')
+        totalreaisFormatado = FuncoesGlobais.TipagemDeVariavel(totalreais,'2','R$')
+
         totalreaisMpollo, totalpçsMpollo = pesquisa(plano, 'M.POLLO')
         totalpçsMpolloFor = FuncoesGlobais.TipagemDeVariavel(totalpçsMpollo,'0')
         totalreaisMpolloFor = FuncoesGlobais.TipagemDeVariavel(totalreaisMpollo,'2','R$')
@@ -156,7 +158,7 @@ def metasSemanais(plano):
 
 
         new_data = {'0-semana': 'Total', '1- PACO %dist.': totalPacodist, '1.1- PACO pçs':totalpçsFormatado,
-                    '1.2- PACO R$':'-','2- M.POLLO %dist.':totalMpolloist,'2.1- M.POLLO pçs':totalpçsMpolloFor,'2.2- M.POLLO R$':totalreaisMpolloFor}
+                    '1.2- PACO R$':totalreaisFormatado,'2- M.POLLO %dist.':totalMpolloist,'2.1- M.POLLO pçs':totalpçsMpolloFor,'2.2- M.POLLO R$':totalreaisMpolloFor}
 
         # Usar o método append para adicionar a nova linha ao DataFrame
         data = data.append(new_data, ignore_index=True)

@@ -24,6 +24,8 @@ def TipagemDeVariavel(variavel,casasAposVirgula, prefixo='', posfixo =''):
     arredondamento = '{:,.'+casasAposVirgula+'f}'
     variavel = arredondamento.format(variavel)
     variavel = prefixo + str(variavel) + posfixo
+    variavel = variavel.replace('.', ';')
     variavel = variavel.replace(',', '.')
+    variavel = variavel.replace(';', ',')
 
     return variavel
