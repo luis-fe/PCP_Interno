@@ -201,7 +201,7 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
 #        cursor.execute(insert, (plano, marca, semana, Percentual_dist))
  #       conn.commit()
   #      cursor.close()
-        return pd.DataFrame([{'status': f'{Percentual_dist}'}])
+        return pd.DataFrame([{'status': Percentual_dist}])
 
 
 
