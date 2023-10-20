@@ -275,14 +275,11 @@ def get_PlanoFeriado(Plano):
     return jsonify(OP_data)
 
 
-@app.route('/CargaSetor')  # Rota para o aplicativo Dash
+@app.route('/CargaSetor')
 def carga_setor():
-    # Use o objeto Flask existente (app) para criar a aplicação Dash
     external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-    dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/',
-                         external_stylesheets=external_stylesheets)
+    dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/', external_stylesheets=external_stylesheets)
 
-    # O restante do código do aplicativo Dash
     df = pd.DataFrame({
         "Fases": ["Corte", "Separacao", "Bordado", "Silk", "Cosutra Pate", "Montagem"],
         "Carga": [400, 100, 200, 200, 400, 500]
@@ -293,65 +290,57 @@ def carga_setor():
 
     df2 = pd.DataFrame(data)
 
-    app.layout = html.Div([
+    dash_app.layout = html.Div([
         html.H1("Campo de Segmentação com Dados do Pandas"),
 
-    # Campo de segmentação para estados
-    dcc.Dropdown(
-        id='dropdown-estado',
-        options=[
-            {'label': estado, 'value': estado} for estado in df['estado'].unique()
-        ],
-        value='GO',  # Valor inicial
-        clearable=False  # Impede a remoção de seleção
-    ),
+        # Campo de segmentação para estados
+        dcc.Dropdown(
+            id='dropdown-estado',
+            options=[
+                {'label': estado, 'value': estado} for estado in df2['estado'].unique()
+            ],
+            value='GO',  # Valor inicial
+            clearable=False  # Impede a remoção de seleção
+        ),
 
-    # Campo de segmentação para cidades
-    dcc.Dropdown(
-        id='dropdown-cidade'
-    ),
+        # Campo de segmentação para cidades
+        dcc.Dropdown(
+            id='dropdown-cidade'
+        ),
 
-    # Elementos para exibir a seleção do usuário
-    html.Div(id='selecao-usuario')
-
-])
-
-
+        # Elementos para exibir a seleção do usuário
+        html.Div(id='selecao-usuario')
+    ])
 
     fig = px.bar(df, x="Carga", y="Fases", orientation='h', text="Carga")
 
-    dash_app.layout = html.Div(children=[
-        html.H1(children='Carga de setores'),
-        html.Div(children='''
-            Dash: A web application framework for your data.
-        '''),
-        dcc.Graph(
-            id='example-graph',
-            figure=fig
-        )
-    ])
+    @dash_app.callback(
+        Output('example-graph', 'figure'),
+        [Input('dropdown-estado', 'value'), Input('dropdown-cidade', 'value')]
+    )
+    def update_graph(selected_state, selected_city):
+        # Aqui você pode atualizar o gráfico com base na seleção do usuário
+        return fig
 
-    # Função de retorno para atualizar as opções de cidades com base na seleção de estado
-    @app.callback(
+    @dash_app.callback(
         Output('dropdown-cidade', 'options'),
         [Input('dropdown-estado', 'value')]
     )
     def update_city_options(selected_state):
         if selected_state is None:
             return []
-        cities = df[df['estado'] == selected_state]['cidade']
+        cities = df2[df2['estado'] == selected_state]['cidade']
         city_options = [{'label': city, 'value': city} for city in cities]
         return city_options
 
-    # Função de retorno para exibir a seleção do usuário
-    @app.callback(
+    @dash_app.callback(
         Output('selecao-usuario', 'children'),
         [Input('dropdown-estado', 'value'), Input('dropdown-cidade', 'value')]
     )
     def display_user_selection(selected_state, selected_city):
         return f"Estado selecionado: {selected_state}, Cidade selecionada: {selected_city}"
 
-    return dash_app.index()
+    return dash_app.server
 
 
 
