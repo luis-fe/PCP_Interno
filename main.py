@@ -304,7 +304,6 @@ def carga_setor():
             style={'width': '30px', 'height': '5px'}  # Defina as dimensões desejadas
 
         ),
-
         # Campo de segmentação para cidades
         dcc.Dropdown(
             id='dropdown-cidade',
