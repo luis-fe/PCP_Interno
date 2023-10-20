@@ -301,7 +301,7 @@ def carga_setor():
             ],
             value='GO',  # Valor inicial
             clearable=False,# Impede a remoção de seleção
-            style={'width': '30px', 'height': '5px'}  # Defina as dimensões desejadas
+            style={'width': '50px', 'height': '5px'}  # Defina as dimensões desejadas
 
         ),
         html.Br(),  # Adicione uma quebra de linha para criar espaço vertical
@@ -309,9 +309,9 @@ def carga_setor():
         # Campo de segmentação para cidades
         dcc.Dropdown(
             id='dropdown-cidade',
-            style = {'width': '30px', 'height': '5px'}  # Defina as dimensões desejadas
+            style = {'width': '300px', 'height': '5px'}  # Defina as dimensões desejadas
         ),
-
+        html.Br(),
         # Elementos para exibir a seleção do usuário
         html.Div(id='selecao-usuario')
     ])
