@@ -191,7 +191,7 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
         conn.commit()
         cursor.close()
 
-        retorno = pd.read_sql('select * from pcp."PlanoMetasSemana" '
+        retorno = pd.read_sql('select plano, marca, semana, "_dist" as distribuicao, "metaPç", "metaPç" from pcp."PlanoMetasSemana" '
                                'where plano = %s and marca = %s ', conn, params=(plano, marca))
 
         conn.close()
@@ -206,7 +206,7 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
         conn.commit()
 
 
-        retorno = pd.read_sql('select * from pcp."PlanoMetasSemana" '
+        retorno = pd.read_sql('select plano, marca, semana, "_dist" as distribuicao, "metaPç", "metaPç" from pcp."PlanoMetasSemana" '
                                'where plano = %s and marca = %s ', conn, params=(plano, marca))
         cursor.close()
         return retorno
