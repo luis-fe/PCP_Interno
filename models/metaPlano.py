@@ -199,6 +199,8 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist1 ):
         retorno['distribuicao'] = retorno['distribuicao'].round(2)
         retorno['metaPç'] = retorno['metaPç'].apply(lambda x: "{:,.0f}".format(x))
         retorno['metaPç'] = retorno['metaPç'].str.replace(',','.')
+        retorno['metaR$'] = retorno['metaR$'].apply(lambda x: "{:,.2f}".format(x))
+        retorno['metaR$'] = 'R$'+ retorno['metaR$'].str.replace(',','.')
 
         return retorno
 
@@ -217,6 +219,8 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist1 ):
         retorno['distribuicao'] = retorno['distribuicao'].round(2)
         retorno['metaPç']= retorno['metaPç'].apply(lambda x: "{:,.0f}".format(x))
         retorno['metaPç'] = retorno['metaPç'].str.replace(',','.')
+        retorno['metaR$'] = retorno['metaR$'].apply(lambda x: "{:,.2f}".format(x))
+        retorno['metaR$'] = 'R$'+ retorno['metaR$'].str.replace(',','.')
         cursor.close()
         return retorno
 
