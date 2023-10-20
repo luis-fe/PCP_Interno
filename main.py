@@ -293,28 +293,23 @@ def carga_setor():
     dash_app.layout = html.Div([
         html.H3("Selecione o Plano"),
 
-        # Campo de segmentação para estados
-        dcc.Dropdown(
-            id='dropdown-estado',
-            options=[
-                {'label': estado, 'value': estado} for estado in df2['estado'].unique()
-            ],
-            value='GO',  # Valor inicial
-            clearable=False,# Impede a remoção de seleção
-            style={'width': '50px', 'height': '5px'},
-            multi=True,  # Permite a seleção múltipla
+        html.Div([
+            dcc.Dropdown(
+                id='dropdown-estado',
+                options=[
+                    {'label': estado, 'value': estado} for estado in df2['estado'].unique()
+                ],
+                value=['GO'],  # Valores iniciais (uma lista permite seleção múltipla)
+                multi=True,  # Permite a seleção múltipla
+                style={'width': '200px', 'height': '40px'}  # Defina as dimensões desejadas
+            ),
 
-        ),
-        html.Br(),  # Adicione uma quebra de linha para criar espaço vertical
-
-        # Campo de segmentação para cidades
-        dcc.Dropdown(
-            id='dropdown-cidade',
-            style = {'width': '300px', 'height': '5px'}  # Defina as dimensões desejadas
-        ),
-        html.Br(),
-        # Elementos para exibir a seleção do usuário
-        html.Div(id='selecao-usuario')
+            dcc.Dropdown(
+                id='dropdown-cidade',
+                multi=True,  # Permite a seleção múltipla
+                style={'width': '200px', 'height': '40px'}  # Defina as dimensões desejadas
+            ),
+        ], style={'display': 'flex'})
     ])
 
     fig = px.bar(df, x="Carga", y="Fases", orientation='h', text="Carga")
