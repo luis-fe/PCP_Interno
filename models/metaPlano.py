@@ -93,9 +93,9 @@ def pesquisa(plano, marca):
     return get['MetaR$'][0], get['Metapç'][0]
 
 def metasSemanais(plano):
-        conn = ConexaoPostgreMPL.conexao()
-        get = pd.read_sql('select "inicioVenda", "FimVenda" from pcp."Plano" where codigo = %s',conn,params=(plano,))
-    #try:
+    conn = ConexaoPostgreMPL.conexao()
+    get = pd.read_sql('select "inicioVenda", "FimVenda" from pcp."Plano" where codigo = %s',conn,params=(plano,))
+    try:
         get['inicioVenda'] = pd.to_datetime(get['inicioVenda'], format='%d/%m/%Y')
 
         get['FimVenda'] = pd.to_datetime(get['FimVenda'], format='%d/%m/%Y')
@@ -147,9 +147,9 @@ def metasSemanais(plano):
                 '2- Detalhamento Semanal':data.to_dict(orient='records')}
 
         return [data]
-   # except:
+    except:
 
-    #    return [{'Mensagem':'O Plano nao tem intervalo planejado de inicio e fim'}]
+       return [{'Mensagem':'O Plano nao tem intervalo planejado de inicio e fim'}]
 
 
 
