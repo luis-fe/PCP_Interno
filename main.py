@@ -281,32 +281,42 @@ def get_PlanoFeriado(Plano):
 def carga_setor():
 
     dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/', external_stylesheets=[dbc.themes.BOOTSTRAP])
+    app.layout = html.Div([
+        html.H1("Seleção de Bandeiras com 'Selecionar Tudo'"),
 
-
-    # Defina o layout do aplicativo dentro do objeto dash_app
-    dash_app.layout = html.Div([
-        html.H1("Lista Suspensa com Bandeiras"),
-
-        dbc.Select(
-            id='language-dropdown',
+        dcc.Checklist(
+            id='flag-selection',
             options=[
                 {'label': 'English 🇺🇸', 'value': 'en'},
                 {'label': 'Français 🇫🇷', 'value': 'fr'},
                 {'label': 'Español 🇪🇸', 'value': 'es'},
                 {'label': 'Português 🇧🇷', 'value': 'pt'},
+                {'label': 'Selecionar Tudo', 'value': 'all'}
             ],
-            value='en',  # Valor inicial
+            value=['en'],  # Valores iniciais
         ),
 
-        html.Div(id='selected-language')
+        html.Div(id='selected-flags')
     ])
 
     @dash_app.callback(
-        Output('selected-language', 'children'),
-        Input('language-dropdown', 'value')
+        Output('flag-selection', 'value'),
+        Input('flag-selection', 'options'),
+        Input('flag-selection', 'value')
     )
-    def display_selected_language(selected_language):
-        return f"Idioma selecionado: {selected_language}"
+    def update_flag_selection(options, values):
+        if 'all' in values:
+            selected_flags = [opt['value'] for opt in options if opt['value'] != 'all']
+            selected_flags.append('all')
+            return selected_flags
+        return values
+
+    @dash_app.callback(
+        Output('selected-flags', 'children'),
+        Input('flag-selection', 'value')
+    )
+    def display_selected_flags(selected_flags):
+        return f"Bandas selecionadas: {', '.join(selected_flags)}"
 
     return dash_app.server
 
