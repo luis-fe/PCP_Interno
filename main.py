@@ -298,7 +298,7 @@ def carga_setor():
         html.Div(id='selected-language')
     ])
 
-    @app.callback(
+    @dash_app.callback(
         Output('selected-language', 'children'),
         Input('language-dropdown', 'value')
     )
