@@ -291,7 +291,7 @@ def carga_setor():
     df2 = pd.DataFrame(data)
 
     dash_app.layout = html.Div([
-        html.H1("Selecione o Plano"),
+        html.H2("Selecione o Plano"),
 
         # Campo de segmentação para estados
         dcc.Dropdown(
