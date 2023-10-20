@@ -300,7 +300,9 @@ def carga_setor():
                 {'label': estado, 'value': estado} for estado in df2['estado'].unique()
             ],
             value='GO',  # Valor inicial
-            clearable=False  # Impede a remoção de seleção
+            clearable=False,# Impede a remoção de seleção
+            style={'width': '20px', 'height': '5px'}  # Defina as dimensões desejadas
+
         ),
 
         # Campo de segmentação para cidades
