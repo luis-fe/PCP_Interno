@@ -21,7 +21,7 @@ def TemPaginamento(pagina, itensPag , dataframe , coluna_tamanho):
         return estrutura, totalPaginas
 
 def TipagemDeVariavel(variavel,casasAposVirgula, prefixo='', posfixo =''):
-    arredondamento = '"{:,.'+casasAposVirgula+"f}"
+    arredondamento = '"{:,.'+casasAposVirgula+'"f}"'
     variavel = arredondamento.format(variavel)
     variavel = prefixo + str(variavel) + posfixo
     variavel = variavel.replace(',', '.')
