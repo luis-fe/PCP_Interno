@@ -2,6 +2,8 @@ import ConexaoCSW
 import pandas as pd
 import numpy
 
+import ConexaoPostgreMPL
+from models import Plano
 
 
 def Roteiro(like, empresa, ini, fim):
@@ -12,22 +14,25 @@ def Roteiro(like, empresa, ini, fim):
 
     if ini ==  0:
         conn = ConexaoCSW.Conexao()
+
+        #pesquisando as op do lote e da empresa selecionada
         CapaOP = pd.read_sql('select  op.codLote, op.numeroOP, op.situacao, op.codFaseAtual, op.codSeqRoteiroAtual '
                             ' FROM tco.OrdemProd op '
                             ' WHERE op.codEmpresa = '+empresa+" and op.situacao > 1 and op.codLote like "+ like, conn )
 
-
+        #pesquisando o roteiro padrao da op
         RoteiroOP = pd.read_sql('SELECT  r.numeroOP , r.codSeqRoteiro , r.codFase  from tco.RoteiroOP r '
                              ' WHERE r.codEmpresa = '+empresa+"  and r.codLote like "+ like, conn )
 
+        #abrindo no nuvel de tamanho e cor
         DesdobramentoOP = pd.read_sql('select ot.numeroOP , ot.codItem, ot.codSortimento, ot.qtdePecas1Qualidade, ot.seqTamanho, ot.codProduto '
                              'FROM tco.OrdemProdTamanhos ot '
                              ' WHERE ot.codEmpresa = ' + empresa + "  and ot.codLote like " + like, conn)
-
+        #pesquisando as movimentacoes da op
         MovOP = pd.read_sql('SELECT f.codLote , f.numeroOP , f.codFase , f.seqRoteiro as codSeqRoteiro, f.dataMov, f.codFaccionista as faccionista_baixa  FROM tco.MovimentacaoOPFase f '
                              ' WHERE f.codEmpresa = '+empresa+"  and f.codLote like "+ like, conn )
 
-
+        #encerrando todas as pesquisas
         conn.close()
 
         CapaOP['codSeqRoteiroAtual']  = CapaOP['codSeqRoteiroAtual'] .replace('', numpy.nan).fillna('0')
@@ -91,3 +96,8 @@ def TamnhoDataFrame():
 
 
 
+def Carga_FilaSetores(empresa, plano):
+    ConexaoPostgreMPL.conexao()
+    ObeterLotesPlano = Plano.ObeterLotesPlano(plano)
+
+    return ObeterLotesPlano

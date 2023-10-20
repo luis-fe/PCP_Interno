@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
 import plotly.express as px
 
 app = Flask(__name__)
@@ -287,6 +288,36 @@ def carga_setor():
         "Carga": [400, 100, 200, 200, 400, 500]
     })
 
+    data = {'estado': ['GO', 'SP', 'BH'],
+            'cidade': ['Goiania', 'Sao Paulo', 'Salvador']}
+
+    df2 = pd.DataFrame(data)
+
+    app.layout = html.Div([
+        html.H1("Campo de Segmentação com Dados do Pandas"),
+
+    # Campo de segmentação para estados
+    dcc.Dropdown(
+        id='dropdown-estado',
+        options=[
+            {'label': estado, 'value': estado} for estado in df['estado'].unique()
+        ],
+        value='GO',  # Valor inicial
+        clearable=False  # Impede a remoção de seleção
+    ),
+
+    # Campo de segmentação para cidades
+    dcc.Dropdown(
+        id='dropdown-cidade'
+    ),
+
+    # Elementos para exibir a seleção do usuário
+    html.Div(id='selecao-usuario')
+
+])
+
+
+
     fig = px.bar(df, x="Carga", y="Fases", orientation='h', text="Carga")
 
     dash_app.layout = html.Div(children=[
@@ -299,6 +330,26 @@ def carga_setor():
             figure=fig
         )
     ])
+
+    # Função de retorno para atualizar as opções de cidades com base na seleção de estado
+    @app.callback(
+        Output('dropdown-cidade', 'options'),
+        [Input('dropdown-estado', 'value')]
+    )
+    def update_city_options(selected_state):
+        if selected_state is None:
+            return []
+        cities = df[df['estado'] == selected_state]['cidade']
+        city_options = [{'label': city, 'value': city} for city in cities]
+        return city_options
+
+    # Função de retorno para exibir a seleção do usuário
+    @app.callback(
+        Output('selecao-usuario', 'children'),
+        [Input('dropdown-estado', 'value'), Input('dropdown-cidade', 'value')]
+    )
+    def display_user_selection(selected_state, selected_city):
+        return f"Estado selecionado: {selected_state}, Cidade selecionada: {selected_city}"
 
     return dash_app.index()
 
