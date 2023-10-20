@@ -141,8 +141,8 @@ def metasSemanais(plano):
         # Criar uma nova linha a ser adicionada
         totalPacodist = data['1- PACO %dist.'].sum()
 
-        totalPacodist = "{:,.0f}".format(totalPacodist)
-        totalPacodist = str(totalPacodist)
+        totalPacodist = "{:,.2f}".format(totalPacodist)
+        totalPacodist = str(totalPacodist)+'%'
         totalPacodist = totalPacodist.replace(',','.')
         totalMpolloist = data['2- M.POLLO %dist.'].sum()
 
