@@ -301,13 +301,14 @@ def carga_setor():
             ],
             value='GO',  # Valor inicial
             clearable=False,# Impede a remoção de seleção
-            style={'width': '20px', 'height': '5px'}  # Defina as dimensões desejadas
+            style={'width': '30px', 'height': '5px'}  # Defina as dimensões desejadas
 
         ),
 
         # Campo de segmentação para cidades
         dcc.Dropdown(
-            id='dropdown-cidade'
+            id='dropdown-cidade',
+            style = {'width': '30px', 'height': '5px'}  # Defina as dimensões desejadas
         ),
 
         # Elementos para exibir a seleção do usuário
