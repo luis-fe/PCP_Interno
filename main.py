@@ -279,7 +279,9 @@ def get_PlanoFeriado(Plano):
 
 @app.route('/CargaSetor')
 def carga_setor():
-    dash_app = dash.Dash(__name__, server=app, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+    dash_app = dash.Dash(__name__, server=app, url_base_pathname='/CargaSetor/', external_stylesheets=[dbc.themes.BOOTSTRAP])
+
 
     # Defina o layout do aplicativo dentro do objeto dash_app
     dash_app.layout = html.Div([
