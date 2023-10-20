@@ -138,6 +138,14 @@ def metasSemanais(plano):
         data['2.2- M.POLLO R$'] = 'R$'+data['2.2- M.POLLO R$'].str.replace(',', '.')
         data['2.2- M.POLLO R$'] = data['2.2- M.POLLO R$'].str.replace('/', ',')
 
+        # Criar uma nova linha a ser adicionada
+        totalPacodist = data['1- PACO %dist.'].sum()
+        new_data = {'0-semana': 'Total', '1- PACO %dist.': totalPacodist, '1.1- PACO pçs':totalpçs}
+
+        # Usar o método append para adicionar a nova linha ao DataFrame
+        data = data.append(new_data, ignore_index=True)
+
+
 
 
 
