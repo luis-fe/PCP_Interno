@@ -183,7 +183,7 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
 
 
         update = 'update pcp."PlanoMetasSemana"  ' \
-                 'set "%dist" = %s, "metaR$" = %s, "metaPç"= %s ' \
+                 'set "_dist" = %s, "metaR$" = %s, "metaPç"= %s ' \
                  'where plano = %s and marca = %s and semana = %s'
 
         cursor = conn.cursor()
