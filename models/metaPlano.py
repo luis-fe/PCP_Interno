@@ -164,7 +164,7 @@ def PesquisarMetaSemana(plano, marca, semana):
 
         return (get['%dist'][0]*100)
 
-def InserindoPercentual(plano, marca, semana, Percentual_dist ):
+def InserindoPercentual(plano, marca, semana, Percentual_dist1 ):
     conn = ConexaoPostgreMPL.conexao()
 
     # Verificando se existe
@@ -173,7 +173,7 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
 
     metaTotalReais, metaTotalPecas = pesquisa(plano, marca)
 
-    Percentual_dist = Percentual_dist/100
+    Percentual_dist = Percentual_dist1/100
 
     metaReais = Percentual_dist * metaTotalReais
     metaPecas = Percentual_dist * metaTotalPecas
@@ -195,6 +195,8 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
                                'where plano = %s and marca = %s ', conn, params=(plano, marca))
 
         conn.close()
+        retorno['_dist'] = retorno['_dist'] * 100
+        retorno['metaPç'] = retorno['metaPç'].apply(lambda x: "{:,.0f}".format(x))
         return retorno
 
     else:
@@ -208,6 +210,9 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
 
         retorno = pd.read_sql('select plano, marca, semana, "_dist" as distribuicao, "metaPç", "metaR$" from pcp."PlanoMetasSemana" '
                                'where plano = %s and marca = %s ', conn, params=(plano, marca))
+        retorno['_dist'] = retorno['_dist']*100
+        retorno['metaPç']= retorno['metaPç'].apply(lambda x: "{:,.0f}".format(x))
+
         cursor.close()
         return retorno
 
