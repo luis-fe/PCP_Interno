@@ -61,10 +61,10 @@ def InserirMeta(plano, marca, metaReais, metaPecas ):
 def EditarMeta(plano, marcaNova, metaReaisNova = '0', metaPecasNova = '0'):
     conn = ConexaoPostgreMPL.conexao()
     plano = str(plano)
-    if metaReaisNova == 0:
+    if metaReaisNova == '0':
         metaReaisNova, x = pesquisa(plano,marcaNova)
 
-    elif metaPecasNova == 0:
+    elif metaPecasNova == '0':
         x, metaPecasNova = pesquisa(plano,marcaNova)
 
     else:
@@ -190,22 +190,22 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist ):
         cursor.execute(update, (Percentual_dist, metaReais, metaPecas, plano, marca,semana))
         conn.commit()
         cursor.close()
+        conn.close()
+        return pd.DataFrame([{'status': 'True'}])
 
     else:
 
-        #insert = 'insert into pcp."PlanoMetasSemana" (plano, marca, semana, "%dist","metaR$","metaPç" ) values (%s, %s, %s, %s, %s, %s) '
-        insert = 'insert into pcp."PlanoMetasSemana" (plano, marca, semana, "%dist") values (%s, %s, %s, %s) '
+        #insert = 'insert into pcp."PlanoMetasSemana" (plano, marca, semana, "%dist") values (%s, %s, %s, %s) '
 
-        cursor = conn.cursor()
-       # cursor.execute(insert, (plano, marca, semana, Percentual_dist, metaReais,metaPecas))
-        cursor.execute(insert, (plano, marca, semana,Percentual_dist))
-        conn.commit()
-        cursor.close()
-
+       # cursor = conn.cursor()
+#        cursor.execute(insert, (plano, marca, semana, Percentual_dist))
+ #       conn.commit()
+  #      cursor.close()
+        return pd.DataFrame([{'status': f'{Percentual_dist}'}])
 
 
 
-    conn.close()
-    return pd.DataFrame([{'status':'True'}])
+
+
 
 
