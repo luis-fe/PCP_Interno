@@ -2,6 +2,9 @@ import pandas as pd
 import ConexaoPostgreMPL
 import numpy as np
 
+from models import FuncoesGlobais
+
+
 def Get_Consultar(plano):
     conn = ConexaoPostgreMPL.conexao()
     get = pd.read_sql('select plano, marca, "MetaR$", "Metapç" from pcp."planoMetas" '
@@ -144,7 +147,9 @@ def metasSemanais(plano):
         totalPacodist = "{:,.2f}".format(totalPacodist)
         totalPacodist = str(totalPacodist)+'%'
         totalPacodist = totalPacodist.replace(',','.')
+
         totalMpolloist = data['2- M.POLLO %dist.'].sum()
+        totalMpolloist = FuncoesGlobais.TipagemDeVariavel(totalMpolloist,'2','','%')
 
 
         new_data = {'0-semana': 'Total', '1- PACO %dist.': totalPacodist, '1.1- PACO pçs':totalpçs,
