@@ -279,9 +279,10 @@ def get_PlanoFeriado(Plano):
 
 @app.route('/CargaSetor')
 def carga_setor():
-
     dash_app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-    app.layout = html.Div([
+
+    # Defina o layout do aplicativo dentro do objeto dash_app
+    dash_app.layout = html.Div([
         html.H1("Lista Suspensa com Bandeiras"),
 
         dbc.Select(
