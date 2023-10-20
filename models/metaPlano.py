@@ -195,7 +195,7 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist1 ):
                                'where plano = %s and marca = %s ', conn, params=(plano, marca))
 
         conn.close()
-        retorno['_dist'] = retorno['_dist'] * 100
+        retorno['distribuicao'] = retorno['distribuicao'] * 100
         retorno['metaPç'] = retorno['metaPç'].apply(lambda x: "{:,.0f}".format(x))
         return retorno
 
@@ -210,7 +210,7 @@ def InserindoPercentual(plano, marca, semana, Percentual_dist1 ):
 
         retorno = pd.read_sql('select plano, marca, semana, "_dist" as distribuicao, "metaPç", "metaR$" from pcp."PlanoMetasSemana" '
                                'where plano = %s and marca = %s ', conn, params=(plano, marca))
-        retorno['_dist'] = retorno['_dist']*100
+        retorno['distribuicao'] = retorno['distribuicao']*100
         retorno['metaPç']= retorno['metaPç'].apply(lambda x: "{:,.0f}".format(x))
 
         cursor.close()
