@@ -162,7 +162,7 @@ def PesquisarMetaSemana(plano, marca, semana):
         return 0
     else:
 
-        return (get['%dist'][0]*100)
+        return (get['_dist'][0]*100)
 
 def InserindoPercentual(plano, marca, semana, Percentual_dist1 ):
     conn = ConexaoPostgreMPL.conexao()
