@@ -430,7 +430,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     Pedido['semana'] = Pedido.apply(
         lambda row: ObtendoSemana(dataInicio, row['dataEmissao']), axis=1)
 
-    pedidos = "(" + ",".join(tipoNotasPlano['codPedido']) + ")"
+    pedidos = "(" + ",".join(Pedido['codPedido']) + ")"
 
     PedidoSku = pd.read_sql('select top 100 * FROM ped.PedidoItemGrade pg '
                             'WHERE pg.codEmpresa = 1 and pg.codPedido in '+pedidos+
