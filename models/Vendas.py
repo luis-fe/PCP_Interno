@@ -1,5 +1,6 @@
 import numpy
 import time
+from datetime import datetime
 
 import pandas as pd
 
@@ -430,6 +431,9 @@ def VendasPlano(plano, empresa, somenteAprovados):
     else:
         Pedido = Pedido
 
+    Pedido['semana'] = Pedido.apply(
+        lambda row: ObtendoSemana(dataInicio, row['dataEmissao']), axis=1)
+
     return Pedido
 
 
@@ -437,3 +441,13 @@ def ArrumarDadas(data):
 
     data = data[6:10]+'-'+data[3:5] +'-'+ data[0:2]
     return data
+
+def ObtendoSemana(datainicio, dataEmissao):
+    # Converta as strings em objetos de data usando datetime
+    datainicio = datetime.strptime(datainicio, "%Y-%m-%d")
+    dataEmissao = datetime.strptime(dataEmissao, "%Y-%m-%d")
+
+    # Calcule o intervalo entre as datas
+    intervalo = dataEmissao - datainicio
+
+    return intervalo
