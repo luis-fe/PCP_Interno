@@ -415,7 +415,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     Pedido = pd.read_sql(
         "SELECT now() as atualizacao, dataEmissao, codPedido, "
         "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
-        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido, qtdPecasFaturadas "
+        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido, qtdPecasFaturadas, qtdPecasPedido "
         " FROM Ped.Pedido p"
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
         " order by codPedido desc ",conn)
@@ -436,7 +436,8 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
     Pedido = Pedido.groupby('semana').agg({
         'semana': 'first',
-        'vlrPedido': 'sum'
+        'vlrPedido': 'sum',
+        'qtdPecasPedido': 'sum'
     })
 
     def format_with_separator(value):
@@ -448,6 +449,12 @@ def VendasPlano(plano, empresa, somenteAprovados):
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
     Pedido['vlrPedido'] = 'R$'+Pedido['vlrPedido'].str.replace(';', ',')
+
+    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator)
+    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace('.', ';')
+    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
+    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
+
     Pedido['semana'] = Pedido['semana'].astype(str)
 
     return Pedido
