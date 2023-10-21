@@ -459,5 +459,6 @@ def ObtendoSemana(datainicio, dataEmissao):
 
     # Obtenha o número de semanas como um valor inteiro
     numero_de_semanas = intervalo.days // 7
+    numero_de_semanas = numero_de_semanas + 1
 
     return numero_de_semanas
