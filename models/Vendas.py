@@ -417,11 +417,17 @@ def VendasPlano(plano, empresa, somenteAprovados):
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim +"'"
         " order by codPedido desc ",conn)
 
+
     conn.close()
 
-    # Filtrando os pedidos no csw
+
 
     # retirando os nao aprovados
+    if somenteAprovados == True:
+        Pedido = PedidosBloqueado(Pedido)
+    else:
+        Pedido = Pedido
+
     return Pedido
 
 
