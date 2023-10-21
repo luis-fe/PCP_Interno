@@ -451,8 +451,9 @@ def VendasPlano(plano, empresa, somenteAprovados):
     Pedido = pd.merge(Pedido, PedidoSku, on='codPedido',how='left')
 
 
-    Pedido = Pedido.groupby('semana').agg({
+    Pedido = Pedido.groupby(['semana','Marca']).agg({
         'semana': 'first',
+        'Marca': 'frist',
         'vlrPedido': 'sum',
         'qtdPecasPedido': 'sum',
         'qtdePedida':'sum'
