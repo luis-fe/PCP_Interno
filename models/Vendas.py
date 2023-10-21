@@ -438,8 +438,12 @@ def VendasPlano(plano, empresa, somenteAprovados):
                             'WHERE pg.codEmpresa = 1 and pg.codPedido in '+pedidos+
                             '',conn)
 
+    PedidoSku['Marca'] = PedidoSku.apply(
+        lambda row: ObtendoMarca(row['itempai']), axis=1)
+
     PedidoSku = PedidoSku.groupby('pedido').agg({
         'codPedido': 'first',
+        'Marca': 'first',
         'qtdePedida': 'sum'
     })
 
@@ -496,3 +500,9 @@ def ObtendoSemana(datainicio, dataEmissao):
     numero_de_semanas = numero_de_semanas + 1
 
     return numero_de_semanas
+
+def ObtendoMarca(coditempai):
+    if coditempai[0:3] == '0102':
+        return 'M.POLLO'
+    else:
+        return '-'
