@@ -415,7 +415,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     Pedido = pd.read_sql(
         "SELECT now() as atualizacao, dataEmissao, codPedido, "
         "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
-        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
+        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido, qtdPecasFaturadas "
         " FROM Ped.Pedido p"
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
         " order by codPedido desc ",conn)
@@ -433,6 +433,11 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
     Pedido['semana'] = Pedido.apply(
         lambda row: ObtendoSemana(dataInicio, row['dataEmissao']), axis=1)
+
+    Pedido = Pedido.groupby('semana').agg({
+        'semana': 'first',
+        'vlrPedido': 'sum'
+    })
 
     return Pedido
 
