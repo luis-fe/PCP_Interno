@@ -401,14 +401,25 @@ def abrircsv(ini, fim):
 
 
 def VendasPlano(plano, empresa, somenteAprovados):
-    codigo, descricao, inicioVenda, finalVenda, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
+    codigo, descricao, dataInicio, dataFim, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
     tipoNotasPlano = Plano.ObeterNotasPlano(plano)
 
+    #Obtendo os pedidos
+    conn = ConexaoCSW.Conexao()
+    Pedido = pd.read_sql(
+        "SELECT now() as atualizacao, dataEmissao, codPedido, "
+        "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
+        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
+        " FROM Ped.Pedido p"
+        " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim +
+        " order by codPedido desc ",conn)
+
+    conn.close()
 
     # Filtrando os pedidos no csw
 
     # retirando os nao aprovados
-    return tipoNotasPlano
+    return Pedido
 
 
 
