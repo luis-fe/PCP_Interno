@@ -403,7 +403,7 @@ def abrircsv(ini, fim):
 def VendasPlano(plano, empresa, somenteAprovados):
     codigo, descricao, inicioVenda, finalVenda, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
     tipoNotasPlano = Plano.ObeterNotasPlano(plano)
-    tipoNotasPlano = tipoNotasPlano["02- tipo nota]
+    tipoNotasPlano = tipoNotasPlano["02- tipo nota"]
 
     # Filtrando os pedidos no csw
 
