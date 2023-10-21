@@ -402,6 +402,9 @@ def abrircsv(ini, fim):
 
 def VendasPlano(plano, empresa, somenteAprovados):
     codigo, descricao, dataInicio, dataFim, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
+    dataInicio = ArrumarDadas(dataInicio)
+    dataFim = ArrumarDadas(dataFim)
+
     tipoNotasPlano = Plano.ObeterNotasPlano(plano)
 
     #Obtendo os pedidos
@@ -422,4 +425,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     return Pedido
 
 
+def ArrumarDadas(data):
 
+    data = data[6:4]+'-'+data[4:2] + data[0:2]
+    return data
