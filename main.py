@@ -102,7 +102,7 @@ def get_Colecoes():
 @token_required
 def get_PesquisaTipoNotass():
     # Obtém o código do usuário e a senha dos parâmetros da URL
-    itensPag = request.args.get('itensPag',100)
+    itensPag = request.args.get('itensPag',10000)
     pagina = request.args.get('pagina',1)
     client_ip = request.remote_addr
 

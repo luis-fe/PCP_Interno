@@ -401,7 +401,7 @@ def abrircsv(ini, fim):
 
 
 
-def VendasPlano(plano, empresa, somenteAprovados):
+def VendasPlano(plano, empresa, somenteAprovados, Marca):
     codigo, descricao, dataInicio, dataFim, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
     dataInicio = ArrumarDadas(dataInicio)
     dataFim = ArrumarDadas(dataFim)
