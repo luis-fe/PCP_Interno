@@ -1,7 +1,7 @@
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
-from models import dashbordTVModel
+from models import dashbordTVModel, Vendas
 import pandas as pd
 
 dashboardTVroute = Blueprint('dashboardTVroute', __name__)
@@ -46,6 +46,24 @@ def metasFaturamento():
     empresa = request.args.get('empresa', '1')
 
     plano = dashbordTVModel.GetMetas(empresa,ano)
+    column_names = plano.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in plano.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
+
+@dashboardTVroute.route('/pcp/api/AcompVendas', methods=['GET'])
+@token_required
+def AcompVendas():
+    plano = request.args.get('plano')
+    empresa = request.args.get('empresa', '1')
+    somenteAprovados = request.args.get('somenteAprovados', True)
+
+    plano = Vendas.VendasPlano(plano,empresa,bool(somenteAprovados))
     column_names = plano.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     OP_data = []

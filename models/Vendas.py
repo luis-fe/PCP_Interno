@@ -3,7 +3,7 @@ import time
 
 import pandas as pd
 
-from models import FuncoesGlobais
+from models import FuncoesGlobais, Plano
 import ConexaoPostgreMPL
 import ConexaoCSW
 
@@ -225,9 +225,6 @@ def PedidosBloqueado(df_Pedidos):
 def ExplosaoPedidoSku(datainicio, datafinal):
     conn = ConexaoCSW.Conexao()
     # 8 - Consultando o banco de dados do ERP no nivel de Pedios SKU
-    #df_ItensPedidos = pd.read_sql(
-     #   "select top 350000 item.codPedido, item.CodItem as seqCodItem, item.codProduto, item.precoUnitario, item.tipoDesconto, item.descontoItem, case when tipoDesconto = 1 then ( (item.qtdePedida * item.precoUnitario) - item.descontoItem)/item.qtdePedida when item.tipoDesconto = 0 then (item.precoUnitario * (1-(item.descontoItem/100))) else item.precoUnitario end  PrecoLiquido from ped.PedidoItem as item WHERE item.codEmpresa = 1 order by item.codPedido desc",
-     #   conn)
     df_SkuPedidos = pd.read_sql(
         "select top 2000000 now() as atualizacao, codPedido, codItem as seqCodItem, codProduto as reduzido, "
         " (select i.coditempai as engenharia from cgi.item2 i where p.codProduto = i.coditem and i.empresa = 1) as engenharia , "
@@ -402,6 +399,16 @@ def abrircsv(ini, fim):
 
 
 
+
+def VendasPlano(plano, empresa, somenteAprovados):
+    codigo, descricao, inicioVenda, finalVenda, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
+    tipoNotasPlano = Plano.ObeterNotasPlano(plano)
+    tipoNotasPlano = tipoNotasPlano["tipo nota"]
+
+    # Filtrando os pedidos no csw
+
+    # retirando os nao aprovados
+    return tipoNotasPlano
 
 
 
