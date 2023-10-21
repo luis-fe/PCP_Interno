@@ -432,7 +432,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
     pedidos = "(" + ",".join(Pedido['codPedido']) + ")"
 
-    PedidoSku = pd.read_sql('select top 100 * FROM ped.PedidoItemGrade pg '
+    PedidoSku = pd.read_sql('select pg.codPedido, pg.codItem FROM ped.PedidoItemGrade pg '
                             'WHERE pg.codEmpresa = 1 and pg.codPedido in '+pedidos+
                             '',conn)
 
