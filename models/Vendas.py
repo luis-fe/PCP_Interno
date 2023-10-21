@@ -406,6 +406,8 @@ def VendasPlano(plano, empresa, somenteAprovados):
     dataFim = ArrumarDadas(dataFim)
 
     tipoNotasPlano = Plano.ObeterNotasPlano(plano)
+    # Transforme os valores da coluna em uma única string
+    tiponota = "(" + ",".join(tipoNotasPlano['02- tipo nota']) + ")"
 
     #Obtendo os pedidos
     conn = ConexaoCSW.Conexao()
@@ -414,7 +416,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
         "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
         " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "
         " FROM Ped.Pedido p"
-        " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim +"'"
+        " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
         " order by codPedido desc ",conn)
 
 
