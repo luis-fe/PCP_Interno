@@ -503,7 +503,7 @@ def ObtendoSemana(datainicio, dataEmissao):
     return numero_de_semanas
 
 def ObtendoMarca(coditempai):
-    if coditempai[0:3] == '0102':
+    if coditempai[0:4] == '0102':
         return 'M.POLLO'
     else:
         return '-'
