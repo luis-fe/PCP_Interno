@@ -432,17 +432,17 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
     pedidos = "(" + ",".join(Pedido['codPedido']) + ")"
 
-    PedidoSku = pd.read_sql('select pg.codPedido, pg.codItem, pg.qtdePedida  FROM ped.PedidoItemGrade pg '
+    PedidoSku = pd.read_sql('select pg.codPedido as pedido, pg.codPedido, pg.codItem, pg.qtdePedida  FROM ped.PedidoItemGrade pg '
                             'WHERE pg.codEmpresa = 1 and pg.codPedido in '+pedidos+
                             '',conn)
 
-    PedidoSku = PedidoSku.groupby('codPedido').agg({
+    PedidoSku = PedidoSku.groupby('pedido').agg({
         'codPedido': 'first',
         'qtdePedida': 'sum'
     })
 
     conn.close()
-    Pedido = pd.merge(Pedido, PedidoSku, on='codPedido')
+    Pedido = pd.merge(Pedido, PedidoSku, on='codPedido',how='left')
 
 
     Pedido = Pedido.groupby('semana').agg({
