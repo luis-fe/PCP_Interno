@@ -448,7 +448,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
     Pedido['vlrPedido'] = 'R$'+Pedido['vlrPedido'].str.replace(';', ',')
-
+    Pedido['semana'] = Pedido['semana'].astype(str)
 
     return Pedido
 
