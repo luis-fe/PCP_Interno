@@ -43,7 +43,8 @@ def InserirMeta(plano, marca, metaReais, metaPecas ):
 
     pesquisa = pd.read_sql('select marca  from pcp."planoMetas" where plano = %s and marca = %s',conn,params=(plano,marca,))
     if not pesquisa.empty :
-            return pd.DataFrame([{'mensagem':'Ja existe cadastro para essa marca no plano','status':False}])
+            x = EditarMeta(plano,marca,metaReais,metaPecas)
+            return x
     else:
         query = 'insert into pcp."planoMetas" (plano, marca, "MetaR$", "Metapç") values (%s, %s, %s ,%s )'
 
