@@ -455,8 +455,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
         'semana': 'first',
         'Marca': 'first',
         'vlrPedido': 'sum',
-        'qtdPecasPedido': 'sum',
-        'qtdePedida':'sum'
+        'qtdPecasPedido': 'sum'
     })
 
 
