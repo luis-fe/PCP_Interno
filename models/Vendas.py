@@ -442,7 +442,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     })
 
     conn.close()
-    Pedido = pd.merge(Pedido, PedidoSku, on='codPedido',how='left')
+    Pedido = pd.merge(Pedido, PedidoSku, on='codPedido')
 
 
     Pedido = Pedido.groupby('semana').agg({
