@@ -420,6 +420,8 @@ def VendasPlano(plano, empresa, somenteAprovados):
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
         " order by codPedido desc ",conn)
 
+    PedidoSku = pd.read_sql()
+
 
     conn.close()
 
