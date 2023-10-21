@@ -1,7 +1,7 @@
 import numpy
 import time
 from datetime import datetime
-
+import locale
 import pandas as pd
 
 from models import FuncoesGlobais, Plano
@@ -438,6 +438,13 @@ def VendasPlano(plano, empresa, somenteAprovados):
         'semana': 'first',
         'vlrPedido': 'sum'
     })
+
+    def format_with_separator(value):
+        return locale.format('%0.2f', value, grouping=True)
+
+
+
+    Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
 
     return Pedido
 
