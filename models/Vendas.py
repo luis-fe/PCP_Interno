@@ -408,8 +408,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     # Filtrando os pedidos no csw
 
     # retirando os nao aprovados
-    return tipoNotasPlano["02- tipo nota"]
-
+    return tipoNotasPlano
 
 
 
