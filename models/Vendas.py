@@ -445,6 +445,10 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
 
     Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
+    Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
+    Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
+    Pedido['vlrPedido'] = 'R$'+Pedido['vlrPedido'].str.replace(';', ',')
+
 
     return Pedido
 
