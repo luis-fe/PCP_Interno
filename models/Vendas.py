@@ -427,5 +427,5 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
 def ArrumarDadas(data):
 
-    data = data[7:10]+'-'+data[4:6] +'-'+ data[0:2]
+    data = data[6:9]+'-'+data[4:6] +'-'+ data[0:2]
     return data
