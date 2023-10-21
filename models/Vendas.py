@@ -420,12 +420,6 @@ def VendasPlano(plano, empresa, somenteAprovados):
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
         " order by codPedido desc ",conn)
 
-    PedidoSku = pd.read_sql()
-
-
-    conn.close()
-
-
 
     # retirando os nao aprovados
     if somenteAprovados == True:
@@ -435,6 +429,14 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
     Pedido['semana'] = Pedido.apply(
         lambda row: ObtendoSemana(dataInicio, row['dataEmissao']), axis=1)
+
+    pedidos = "(" + ",".join(tipoNotasPlano['codPedido']) + ")"
+
+    PedidoSku = pd.read_sql('select top 100 * FROM ped.PedidoItemGrade pg '
+                            'WHERE pg.codEmpresa = 1 and pg.codPedido in '+pedidos+
+                            '',conn)
+
+    conn.close()
 
     Pedido = Pedido.groupby('semana').agg({
         'semana': 'first',
