@@ -450,4 +450,6 @@ def ObtendoSemana(datainicio, dataEmissao):
     # Calcule o intervalo entre as datas
     intervalo = dataEmissao - datainicio
 
-    return intervalo
+    numero_de_dias = intervalo.days
+
+    return numero_de_dias
