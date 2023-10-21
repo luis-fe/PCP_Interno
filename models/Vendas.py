@@ -453,7 +453,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
     Pedido = Pedido.groupby(['semana','Marca']).agg({
         'semana': 'first',
-        'Marca': 'frist',
+        'Marca': 'first',
         'vlrPedido': 'sum',
         'qtdPecasPedido': 'sum',
         'qtdePedida':'sum'
