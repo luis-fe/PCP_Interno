@@ -488,10 +488,9 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
     Pedido['semana'] = Pedido['semana'].astype(str)
 
-    meta = metaPlano.metasSemanais(plano)
-    meta = pd.DataFrame(meta)
 
-    return meta['2- Detalhamento Semanal']
+
+    return Pedido
 
 
 def ArrumarDadas(data):
@@ -530,3 +529,9 @@ def ObtendoMarca(coditempai):
         return 'PACO'
     else:
         return '-'
+
+def Metas(plano):
+    conn = ConexaoPostgreMPL.conexao()
+    get = pd.read_sql('select * from pcp."PlanoMetasSemana ',conn,params=(plano,))
+    return get
+
