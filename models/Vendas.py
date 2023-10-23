@@ -471,6 +471,8 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
         Pedido = pd.merge(Pedido, meta, on=('Marcas', 'semanas'), how='left')
 
+        Pedido.drop('Marcas', inplace=True)
+
 
     else:
         Pedido = Pedido.groupby(['semana']).agg({
