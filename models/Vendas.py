@@ -515,7 +515,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
     Pedido['metaPç'] = Pedido['metaPç'].apply(format_with_separator_0)
     Pedido['metaPç'] = Pedido['metaPç'].str.replace('.', ';')
-    Pedido['qtdPecasPedido'] = Pedido['metaPç'].str.replace(',', '.')
+    Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
     return Pedido
