@@ -530,16 +530,16 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
-    Pedido['metaR$Acumulada'] = Pedido['metaR$'].cumsum()
+    Pedido['metaR$Acumulada'] = Pedido['MetaReais'].cumsum()
     Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].apply(format_with_separator_0)
     Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace('.', ';')
     Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace(',', '.')
     Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace(';', ',')
 
-    Pedido['metaR$'] = Pedido['metaR$'].apply(format_with_separator_0)
-    Pedido['metaR$'] = Pedido['metaR$'].str.replace('.', ';')
-    Pedido['metaR$'] = Pedido['metaR$'].str.replace(',', '.')
-    Pedido['metaR$'] = Pedido['metaR$'].str.replace(';', ',')
+    Pedido['MetaReais'] = Pedido['MetaReais'].apply(format_with_separator_0)
+    Pedido['MetaReais'] = Pedido['MetaReais'].str.replace('.', ';')
+    Pedido['MetaReais'] = Pedido['MetaReais'].str.replace(',', '.')
+    Pedido['MetaReais'] = Pedido['MetaReais'].str.replace(';', ',')
 
     return Pedido
 
@@ -584,9 +584,9 @@ def ObtendoMarca(coditempai):
 def Metas(plano, Marca = ''):
     conn = ConexaoPostgreMPL.conexao()
     if Marca == '':
-        get = pd.read_sql('select marca as "Marcas", semana as semanas, "metaPç", "metaR$" from pcp."PlanoMetasSemana" ',conn,params=(plano,))
+        get = pd.read_sql('select marca as "Marcas", semana as semanas, "metaPç", "metaR$" as "MetaReais" from pcp."PlanoMetasSemana" ',conn,params=(plano,))
     else:
-        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç", sum("metaR$") as metaR$ from pcp."PlanoMetasSemana" '
+        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç", sum("metaR$") as MetaReais from pcp."PlanoMetasSemana" '
                           ' group by "semanas" ',conn,params=(plano,))
 
 
