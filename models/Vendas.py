@@ -401,7 +401,7 @@ def abrircsv(ini, fim):
 
 
 
-def VendasPlano(plano, empresa, somenteAprovados):
+def VendasPlano(plano, empresa, somenteAprovados, Marca):
     codigo, descricao, dataInicio, dataFim, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
     dataInicio = ArrumarDadas(dataInicio)
     dataFim = ArrumarDadas(dataFim)
@@ -453,13 +453,21 @@ def VendasPlano(plano, empresa, somenteAprovados):
     conn.close()
     Pedido = pd.merge(Pedido, PedidoSku, on='codPedido',how='left')
 
+    if Marca != 'Geral':
+        Pedido = Pedido.groupby(['semana','Marca']).agg({
+            'semana': 'first',
+            'Marca': 'first',
+            'vlrPedido': 'sum',
+            'qtdPecasPedido': 'sum'
+        })
+        Pedido = Pedido[Pedido['Marca'==Marca]]
+    else:
+        Pedido = Pedido.groupby(['semana']).agg({
+            'semana': 'first',
+            'vlrPedido': 'sum',
+            'qtdPecasPedido': 'sum'
+        })
 
-    Pedido = Pedido.groupby(['semana','Marca']).agg({
-        'semana': 'first',
-        'Marca': 'first',
-        'vlrPedido': 'sum',
-        'qtdPecasPedido': 'sum'
-    })
 
 
 

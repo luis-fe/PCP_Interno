@@ -62,8 +62,9 @@ def AcompVendas():
     plano = request.args.get('plano')
     empresa = request.args.get('empresa', '1')
     somenteAprovados = request.args.get('somenteAprovados', True)
+    Marca = request.args.get('Marca', 'Geral')
 
-    plano = Vendas.VendasPlano(plano,empresa,bool(somenteAprovados))
+    plano = Vendas.VendasPlano(plano,empresa,bool(somenteAprovados),Marca)
     column_names = plano.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     OP_data = []
