@@ -4,7 +4,7 @@ from datetime import datetime
 import locale
 import pandas as pd
 
-from models import FuncoesGlobais, Plano
+from models import FuncoesGlobais, Plano, metaPlano
 import ConexaoPostgreMPL
 import ConexaoCSW
 
@@ -488,7 +488,10 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
     Pedido['semana'] = Pedido['semana'].astype(str)
 
-    return Pedido
+    meta = metaPlano.metasSemanais(plano)
+    meta = pd.DataFrame(meta)
+
+    return meta
 
 
 def ArrumarDadas(data):
