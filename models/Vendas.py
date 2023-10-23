@@ -500,11 +500,17 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
             return locale.format('%0.0f', value, grouping=True)
 
-
+    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedido'].cumsum()
     Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
     Pedido['vlrPedido'] = 'R$'+Pedido['vlrPedido'].str.replace(';', ',')
+
+    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].apply(format_with_separator)
+    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace('.', ';')
+    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(',', '.')
+    Pedido['vlrPedidoAcumulada'] = 'R$'+Pedido['vlrPedidoAcumulada'].str.replace(';', ',')
+
 
     Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedido'].cumsum()
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator_0)
@@ -524,10 +530,16 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace('.', ';')
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(',', '.')
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(';', ',')
+    Pedido['metaR$Acumulada'] = Pedido['metaR$'].cumsum()
+    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].apply(format_with_separator_0)
+    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace('.', ';')
+    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace(',', '.')
+    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace(';', ',')
+
+    Pedido['metaR$'] = Pedido['metaR$'].apply(format_with_separator_0)
+    Pedido['metaR$'] = Pedido['metaR$'].str.replace('.', ';')
+    Pedido['metaR$'] = Pedido['metaR$'].str.replace(',', '.')
+    Pedido['metaR$'] = Pedido['metaR$'].str.replace(';', ',')
 
     return Pedido
 
@@ -572,9 +584,9 @@ def ObtendoMarca(coditempai):
 def Metas(plano, Marca = ''):
     conn = ConexaoPostgreMPL.conexao()
     if Marca == '':
-        get = pd.read_sql('select marca as "Marcas", semana as semanas, "metaPç" from pcp."PlanoMetasSemana" ',conn,params=(plano,))
+        get = pd.read_sql('select marca as "Marcas", semana as semanas, "metaPç", "metaR$" from pcp."PlanoMetasSemana" ',conn,params=(plano,))
     else:
-        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç" from pcp."PlanoMetasSemana" '
+        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç", sum("metaR$") as metaR$ from pcp."PlanoMetasSemana" '
                           ' group by "semanas" ',conn,params=(plano,))
 
 
