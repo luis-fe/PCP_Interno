@@ -441,7 +441,8 @@ def VendasPlano(plano, empresa, somenteAprovados):
     PedidoSku['Marca'] = PedidoSku.apply(
         lambda row: ObtendoMarca(row['itempai']), axis=1)
 
-    Pedido.to_csv('conferencia.csv')
+    nome = 'VendasPlano'+plano+'.csv'
+    Pedido.to_csv(nome)
 
     PedidoSku = PedidoSku.groupby('pedido').agg({
         'codPedido': 'first',
