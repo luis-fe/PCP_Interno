@@ -530,6 +530,12 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
+    Pedido['metaReaisAcumulada'] = Pedido['metaReais'].cumsum()
+    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
+    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace('.', ';')
+    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(',', '.')
+    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(';', ',')
+
 
 
     return Pedido
@@ -577,7 +583,7 @@ def Metas(plano, Marca = ''):
     if Marca == '':
         get = pd.read_sql('select marca as "Marcas", semana as semanas, "metaPç", "metaR$" as "MetaReais" from pcp."PlanoMetasSemana" ',conn,params=(plano,))
     else:
-        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç", sum("metaR$") as MetaReais from pcp."PlanoMetasSemana" '
+        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç", sum("metaR$") as "MetaReais" from pcp."PlanoMetasSemana" '
                           ' group by "semanas" ',conn,params=(plano,))
 
 
