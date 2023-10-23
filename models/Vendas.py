@@ -460,7 +460,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
             'vlrPedido': 'sum',
             'qtdPecasPedido': 'sum'
         })
-        Pedido = Pedido[Pedido['Marca'==Marca]]
+        Pedido = Pedido[Pedido['Marca']==Marca]
     else:
         Pedido = Pedido.groupby(['semana']).agg({
             'semana': 'first',
