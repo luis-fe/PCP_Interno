@@ -495,7 +495,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
 
     def format_with_separator(value, numeroCasas):
-        numeroCasas = '%0.'+str(numeroCasas)+'f'
+        numeroCasas = "'"+'%0.'+str(numeroCasas)+'f'+"'"
         return locale.format(numeroCasas, value, grouping=True)
 
 
