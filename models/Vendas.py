@@ -496,6 +496,9 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     def format_with_separator(value):
 
             return locale.format('%0.2f', value, grouping=True)
+    def format_with_separator_0(value):
+
+            return locale.format('%0.0f', value, grouping=True)
 
 
     Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
@@ -503,11 +506,17 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
     Pedido['vlrPedido'] = 'R$'+Pedido['vlrPedido'].str.replace(';', ',')
 
-    Pedido['qtdPecasPedido'].Pedido['qtdPecasPedido'].astype(int)
-    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator)
+
+    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator_0)
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace('.', ';')
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
+
+
+    Pedido['metaPç'] = Pedido['metaPç'].apply(format_with_separator_0)
+    Pedido['metaPç'] = Pedido['metaPç'].str.replace('.', ';')
+    Pedido['qtdPecasPedido'] = Pedido['metaPç'].str.replace(',', '.')
+    Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
     return Pedido
 
