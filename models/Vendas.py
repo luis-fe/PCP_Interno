@@ -201,7 +201,7 @@ def ABC_Plano(plano):
 
 
 
-def PedidosBloqueado(df_Pedidos):
+def PedidosBloqueado(df_Pedidos, padrao = ''):
     conn = ConexaoCSW.Conexao()
 
     # 4 - Conulta de Bloqueio Comerial do Pedidos
@@ -217,7 +217,11 @@ def PedidosBloqueado(df_Pedidos):
     # 4.2.1 Unindo o Pedido com a situação do Bloqueio Credito, preservando a Consulta Pedidos
     df_Pedidos = pd.merge(df_Pedidos, df_BloqueioCredito, on='codPedido', how='left')
     # 4.3 Filtro para puxar somente os pedidos APROVADOS
-    df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] != "1") & (df_Pedidos['situacaoBloq'] != "1")]
+    if padrao == '':
+        df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] != "1") & (df_Pedidos['situacaoBloq'] != "1")]
+    else:
+        df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] == "1") & (df_Pedidos['situacaoBloq'] == "1")]
+
 
     conn.close()
     return  df_Pedidos
