@@ -462,6 +462,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
         })
         Pedido = Pedido[Pedido['Marca']==Marca]
         meta = Metas(plano)
+        meta['semanas'] = meta['semanas'].astype(str)
 
         Pedido['Marcas'] = Pedido['Marca']
         Pedido['semanas'] = Pedido['semana']
