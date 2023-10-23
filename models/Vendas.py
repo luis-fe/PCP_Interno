@@ -493,19 +493,18 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
 
 
-    def format_with_separator(value, formato):
-        if formato == 'float':
+    def format_with_separator(value):
+
             return locale.format('%0.2f', value, grouping=True)
-        else:
-            return locale.format('%0.0f', value, grouping=True)
 
 
-    Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator,'float')
+    Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
     Pedido['vlrPedido'] = 'R$'+Pedido['vlrPedido'].str.replace(';', ',')
 
-    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator,'int')
+    Pedido['qtdPecasPedido'].Pedido['qtdPecasPedido'].astype(int)
+    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator)
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace('.', ';')
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
