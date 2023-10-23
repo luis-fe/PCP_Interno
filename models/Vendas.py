@@ -488,6 +488,9 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
     Pedido['semana'] = Pedido['semana'].astype(str)
 
+    meta = Metas(plano)
+
+    Pedido = pd.merge(Pedido, meta, on=('Marca','semana'),how='left')
 
 
     return Pedido
@@ -532,6 +535,7 @@ def ObtendoMarca(coditempai):
 
 def Metas(plano):
     conn = ConexaoPostgreMPL.conexao()
-    get = pd.read_sql('select * from pcp."PlanoMetasSemana ',conn,params=(plano,))
+    get = pd.read_sql('select marca as "Marca", semana, "metaPç"  from pcp."PlanoMetasSemana ',conn,params=(plano,))
+
     return get
 
