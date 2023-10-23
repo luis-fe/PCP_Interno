@@ -491,7 +491,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     meta = metaPlano.metasSemanais(plano)
     meta = pd.DataFrame(meta)
 
-    return meta
+    return meta['2- Detalhamento Semanal']
 
 
 def ArrumarDadas(data):
