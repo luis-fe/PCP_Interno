@@ -493,7 +493,6 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
 
 
-
     def format_with_separator(value, formato):
         if formato == 'float':
             return locale.format('%0.2f', value, grouping=True)
