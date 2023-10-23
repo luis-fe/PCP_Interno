@@ -509,12 +509,6 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
 
-    Pedido['semana'] = Pedido['semana'].astype(str)
-
-
-
-
-
     return Pedido
 
 
