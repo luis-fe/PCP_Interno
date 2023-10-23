@@ -415,7 +415,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
     Pedido = pd.read_sql(
         "SELECT now() as atualizacao, dataEmissao, codPedido, "
         "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
-        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido, qtdPecasFaturadas, qtdPecasPedido "
+        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrTotalPedido as vlrPedido, qtdPecasFaturadas, qtdPecasPedido "
         " FROM Ped.Pedido p"
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
         "  ",conn)
