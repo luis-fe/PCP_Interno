@@ -513,6 +513,12 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
 
 
+    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].apply(format_with_separator_0)
+    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace('.', ';')
+    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(',', '.')
+    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(';', ',')
+
+
     Pedido['metaPç'] = Pedido['metaPç'].apply(format_with_separator_0)
     Pedido['metaPç'] = Pedido['metaPç'].str.replace('.', ';')
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
