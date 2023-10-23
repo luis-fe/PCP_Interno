@@ -418,7 +418,7 @@ def VendasPlano(plano, empresa, somenteAprovados):
         " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido, qtdPecasFaturadas, qtdPecasPedido "
         " FROM Ped.Pedido p"
         " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
-        " order by codPedido desc ",conn)
+        "  ",conn)
 
 
     # retirando os nao aprovados
@@ -440,6 +440,8 @@ def VendasPlano(plano, empresa, somenteAprovados):
 
     PedidoSku['Marca'] = PedidoSku.apply(
         lambda row: ObtendoMarca(row['itempai']), axis=1)
+
+    Pedido.to_csv('conferencia.csv')
 
     PedidoSku = PedidoSku.groupby('pedido').agg({
         'codPedido': 'first',
