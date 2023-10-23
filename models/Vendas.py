@@ -530,16 +530,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
-    Pedido['metaR$Acumulada'] = Pedido['MetaReais'].cumsum()
-    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].apply(format_with_separator_0)
-    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace('.', ';')
-    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace(',', '.')
-    Pedido['metaR$Acumulada'] = Pedido['metaR$Acumulada'].str.replace(';', ',')
 
-    Pedido['MetaReais'] = Pedido['MetaReais'].apply(format_with_separator_0)
-    Pedido['MetaReais'] = Pedido['MetaReais'].str.replace('.', ';')
-    Pedido['MetaReais'] = Pedido['MetaReais'].str.replace(',', '.')
-    Pedido['MetaReais'] = Pedido['MetaReais'].str.replace(';', ',')
 
     return Pedido
 
