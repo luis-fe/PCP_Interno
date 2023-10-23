@@ -481,7 +481,6 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
             'qtdPecasPedido': 'sum'
         })
 
-        Pedido = Pedido[Pedido['Marca'] == Marca]
         meta = Metas(plano, 'Geral')
         meta['semanas'] = meta['semanas'].astype(str)
         Pedido['semana'] = Pedido['semana'].astype(str)
