@@ -581,9 +581,9 @@ def ObtendoMarca(coditempai):
 def Metas(plano, Marca = ''):
     conn = ConexaoPostgreMPL.conexao()
     if Marca == '':
-        get = pd.read_sql('select marca as "Marcas", semana as semanas, "metaPç", "metaR$" as "MetaReais" from pcp."PlanoMetasSemana" ',conn,params=(plano,))
+        get = pd.read_sql('select marca as "Marcas", semana as semanas, "metaPç", "metaR$" as "metareais" from pcp."PlanoMetasSemana" ',conn,params=(plano,))
     else:
-        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç", sum("metaR$") as "MetaReais" from pcp."PlanoMetasSemana" '
+        get = pd.read_sql('select semana as semanas, sum("metaPç") as  "metaPç", sum("metaR$") as "metareais" from pcp."PlanoMetasSemana" '
                           ' group by "semanas" ',conn,params=(plano,))
 
 
