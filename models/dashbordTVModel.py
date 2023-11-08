@@ -55,13 +55,13 @@ def Faturamento_ano(ano, empresa):
     else:
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codPedido >= 0 ' \
+            'where n.codPedido >= 0 '   \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
                                                             ' union ' \
                                                             'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota = 30 ' \
+            'where n.codTipoDeNota in (30, 172) and codPedido is null ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
 
