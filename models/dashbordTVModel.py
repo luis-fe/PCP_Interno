@@ -100,7 +100,6 @@ def Faturamento_ano(ano, empresa):
     ValorRetornaMplus = str(ValorRetornaMplus)
     ValorRetornaMplus = 'R$ ' + ValorRetornaMplus.replace(',', ';').replace('.', ',').replace(';', '.')
 
-
     dataframe = pd.read_sql(query, conn)
     dataframe.to_csv('teste.csv')
     dataframe['tiponota'] =dataframe['tiponota'].astype(str)
