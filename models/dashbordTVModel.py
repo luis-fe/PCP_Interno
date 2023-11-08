@@ -40,7 +40,7 @@ def Faturamento_ano(ano, empresa):
                                                             ' union ' \
                                                             'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota = 30 ' \
+            'where n.codTipoDeNota in (30) and codPedido is null ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 ' \
 
@@ -102,6 +102,7 @@ def Faturamento_ano(ano, empresa):
 
 
     dataframe = pd.read_sql(query, conn)
+    dataframe.to_csv('teste.csv')
     dataframe['tiponota'] =dataframe['tiponota'].astype(str)
     dataframe = pd.merge(dataframe, tipoNotaConsiderar, on='tiponota')
 
@@ -139,7 +140,6 @@ def Faturamento_ano(ano, empresa):
 
         faturamento_por_mes.append(faturamento_mes)
         faturamento_acumulado.append(acumulado_str)
-
 
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes, 'Fat.Acumulado':faturamento_acumulado})
