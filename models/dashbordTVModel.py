@@ -61,7 +61,7 @@ def Faturamento_ano(ano, empresa):
                                                             ' union ' \
                                                             'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota in (30, 172) and codPedido is null ' \
+            'where n.codTipoDeNota in (30) and codPedido is null ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
 
