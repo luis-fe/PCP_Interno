@@ -52,7 +52,6 @@ def Faturamento_ano(ano, empresa):
         ' WHERE'
         " e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
-
     else:
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
