@@ -59,7 +59,7 @@ def Faturamento_ano(ano, empresa):
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
                                                             ' union ' \
-                                                            "select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, '0' "+"'"+empresa+"'" \
+                                                            "select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, '0' ,"+"'"+empresa+"'" \
             ' FROM Fat.NotaFiscal n ' \
             'where n.codTipoDeNota in (30, 180, 156, 51, 175, 81, 47, 12) and codPedido is null ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
