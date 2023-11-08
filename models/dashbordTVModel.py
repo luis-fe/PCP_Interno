@@ -57,13 +57,13 @@ def Faturamento_ano(ano, empresa):
             'FROM Fat.NotaFiscal n ' \
             'where n.codPedido >= 0 ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
-            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 ' \
+            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
                                                             ' union ' \
                                                             'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
             'where n.codTipoDeNota = 30 ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
-            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 ' \
+            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
 
         retornaCsw = pd.read_sql(
         "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
