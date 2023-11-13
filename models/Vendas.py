@@ -535,11 +535,9 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
     Pedido['metaReaisAcumulada'] = Pedido['metareais'].cumsum()
-    Pedido['Max_meta_Acumulada'] = Pedido['metaPçAcumulada'].max()
+    Pedido_Max = Pedido['metaPçAcumulada'].max() + 500
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
 
-    Pedido['Max_meta_Acumulada'] = Pedido['Max_meta_Acumulada'] + 500
-    Pedido['Max_meta_Acumulada'] = Pedido['Max_meta_Acumulada'].apply(format_with_separator_0)
 
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace('.', ';')
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(',', '.')
@@ -557,8 +555,12 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(',', '.')
     Pedido['metaReaisAcumulada'] = 'R$'+Pedido['metaReaisAcumulada'].str.replace(';', ',')
 
+    data = {
+        '1 - ValorMaxAcumulado': Pedido_Max,
+        '2- Detalhamento mensal ': Pedido.to_dict(orient='records')
+    }
+    return [data]
 
-    return Pedido
 
 
 def ArrumarDadas(data):
