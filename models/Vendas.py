@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 import locale
 import pandas as pd
-
+import math
 from models import FuncoesGlobais, Plano, metaPlano
 import ConexaoPostgreMPL
 import ConexaoCSW
@@ -541,8 +541,10 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
 
     if Pedido_Max2 >= Pedido_Max :
         Pedido_Max = Pedido_Max2
+        # Arredonda para cima
+        Pedido_Max = math.ceil(Pedido_Max)
     else:
-        Pedido_Max = Pedido_Max
+        Pedido_Max = math.ceil(Pedido_Max)
 
 
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
