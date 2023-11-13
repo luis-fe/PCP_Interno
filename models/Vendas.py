@@ -539,6 +539,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
 
     Pedido['Max_meta_Acumulada'] = Pedido['Max_meta_Acumulada'] + 500
+    Pedido['Max_meta_Acumulada'] = Pedido['Max_meta_Acumulada'].apply(format_with_separator_0)
 
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace('.', ';')
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(',', '.')
