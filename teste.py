@@ -1,43 +1,15 @@
-from flask import Flask, render_template
-import dash_html_components as html
-import dash_core_components as dcc
-import dash
-import plotly.express as px
 import pandas as pd
 
-app = Flask(__name__)
+# Seu DataFrame
+data = {'coluna1': ['a', 'b'], 'coluna2': ['10, 20, 30', '5']}
+df = pd.DataFrame(data)
 
-# Crie um aplicativo Dash
-dash_app = dash.Dash(__name__, server=app, url_base_pathname='/x')
-app_dash = dash_app.server
+# Obtendo o valor do índice 0 da coluna1
+valor_coluna1 = df.loc[0, 'coluna1']
 
-# Seu layout Dash
-df = pd.DataFrame({
-    "Fases": ["Corte", "Separacao", "Bordado", "Silk", "Costura Pate", "Montagem"],
-    "Carga": [400, 100, 200, 200, 400, 500]
-})
+# Obtendo o primeiro valor da lista na coluna2
+valor_coluna2 = df.loc[1, 'coluna2'].split(', ')[0]
 
-#fig = px.bar(df, x="Fases", y="Carga", barmode="group")
-fig = px.bar(df, x="Carga", y="Fases", orientation='h', text="Carga")
-
-
-dash_app.layout = html.Div(children=[
-    html.H1(children='Carga de setores'),
-
-    html.Div(children='''
-        Dash: A web application framework for your data.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
-])
-
-# Rota do Flask que incorpora o aplicativo Dash
-@app.route('/home')
-def dashboard():
-    return dash_app.index()
-
-if __name__ == '__main__':
-    app.run(debug=True, port=8000)  # Defina a porta como 8000
+# Imprimindo os resultados
+print(f"valor do índice 0 da coluna1 = \"{valor_coluna1}\"")
+print(f"valor do índice 0 da coluna2 e primeira ocorrência = \"{valor_coluna2}\"")

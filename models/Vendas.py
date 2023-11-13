@@ -546,6 +546,9 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metareais'] = 'R$'+Pedido['metareais'].str.replace(';', ',')
 
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].apply(format_with_separator)
+    Pedido['Max_meta_Acumulada'] = Pedido['metaPçAcumulada'].max()
+    Pedido['Max_meta_Acumulada'] = Pedido['Max_meta_Acumulada'] + 500
+
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace('.', ';')
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(',', '.')
     Pedido['metaReaisAcumulada'] = 'R$'+Pedido['metaReaisAcumulada'].str.replace(';', ',')
