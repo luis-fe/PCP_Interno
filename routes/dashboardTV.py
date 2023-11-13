@@ -65,6 +65,7 @@ def AcompVendas():
     Marca = request.args.get('Marca', 'Geral')
 
     plano = Vendas.VendasPlano(plano,empresa,bool(somenteAprovados),Marca)
+    plano = pd.DataFrame(plano)
     column_names = plano.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     OP_data = []
