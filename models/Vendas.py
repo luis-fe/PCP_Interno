@@ -522,7 +522,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
     Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
 
-
+    Pedido_Max = Pedido['qtdPecasPedidoAcumulada'].max() + 500
     Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].apply(format_with_separator_0)
     Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace('.', ';')
     Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(',', '.')
@@ -535,7 +535,16 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
 
     Pedido['metaReaisAcumulada'] = Pedido['metareais'].cumsum()
-    Pedido_Max = Pedido['metaPçAcumulada'].max() + 500
+
+
+    Pedido_Max2 = Pedido['metaPçAcumulada'].max() + 500
+
+    if Pedido_Max2 >= Pedido_Max :
+        Pedido_Max = Pedido_Max2
+    else:
+        Pedido_Max = Pedido_Max
+
+
     Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
 
 
