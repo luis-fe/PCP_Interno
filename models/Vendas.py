@@ -486,11 +486,13 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
         })
 
         meta = Metas(plano, 'Geral')
-        meta = meta.sort_values(by='semanas')
-        meta['semanas'] = meta['semana'].astype(str)
-        Pedido = Pedido.sort_values(by='semana')
 
+        meta = meta.sort_values(by='semana')
+        meta['semanas'] = meta['semana'].astype(str)
+
+        Pedido = Pedido.sort_values(by='semana')
         Pedido['semanas'] = Pedido['semana'].astype(str)
+
 
         Pedido = pd.merge(Pedido, meta, on='semanas', how='right')
 
