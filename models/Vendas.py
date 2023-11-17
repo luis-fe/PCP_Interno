@@ -622,7 +622,7 @@ def Metas(plano, Marca = ''):
     conn = ConexaoPostgreMPL.conexao()
     if Marca == '':
         get = pd.read_sql('select marca as "Marcas", semana, "metaPç", "metaR$" as "metareais" from pcp."PlanoMetasSemana" '
-                          'where plano = %s ',conn,params=(plano,))
+                          'where plano = %s order by semana desc ',conn,params=(plano,))
     else:
         get = pd.read_sql('select semana, sum("metaPç") as  "metaPç", sum("metaR$") as "metareais" from pcp."PlanoMetasSemana" '
                           ' where plano = %s group by "semana"  ',conn,params=(plano,))
