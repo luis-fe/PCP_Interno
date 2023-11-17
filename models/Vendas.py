@@ -616,7 +616,7 @@ def Metas(plano, Marca = ''):
                           'where plano = %s ',conn,params=(plano,))
     else:
         get = pd.read_sql('select semana, sum("metaPç") as  "metaPç", sum("metaR$") as "metareais" from pcp."PlanoMetasSemana" '
-                          ' where plano = %s group by "semanas"  ',conn,params=(plano,))
+                          ' where plano = %s group by "semana"  ',conn,params=(plano,))
 
 
     return get
