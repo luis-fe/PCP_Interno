@@ -492,6 +492,10 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
         Pedido = pd.merge(Pedido, meta, on='semanas', how='right')
 
         Pedido.drop(['semana_x','semana_y'], axis=1, inplace=True)
+        Pedido.rename(
+            columns={'semanas': 'semana'},
+            inplace=True)
+        Pedido = Pedido.sort_values(by='semana')
 
 
 
