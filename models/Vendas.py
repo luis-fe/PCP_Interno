@@ -486,7 +486,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
         })
 
         meta = Metas(plano, 'Geral')
-        meta['semanas'] = meta['semanas'].astype(str)
+        meta['semana'] = meta['semanas'].astype(str)
         Pedido['semana'] = Pedido['semana'].astype(str)
         Pedido['semanas'] = Pedido['semana']
 
