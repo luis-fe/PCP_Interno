@@ -568,7 +568,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace('.', ';')
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(',', '.')
     Pedido['metaReaisAcumulada'] = 'R$'+Pedido['metaReaisAcumulada'].str.replace(';', ',')
-    Pedido.replace('nan', '', inplace=True)
+    Pedido.replace('nan', '0', inplace=True)
 
     data = {
         '1 - ValorMaxAcumulado': Pedido_Max,
