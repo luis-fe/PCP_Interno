@@ -499,7 +499,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
         Pedido.rename(
             columns={'semanas': 'semana'},
             inplace=True)
-        Pedido.fillna('-', inplace=True)
+        #Pedido.fillna('-', inplace=True)
 
     def format_with_separator(value):
 
