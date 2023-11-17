@@ -490,7 +490,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
         Pedido['semana'] = Pedido['semana'].astype(str)
         Pedido['semanas'] = Pedido['semana']
 
-        Pedido = pd.merge(Pedido, meta, on='semanas', how='right')
+        Pedido = pd.merge(Pedido, meta, on='semana', how='right')
 
         Pedido.drop('semanas', axis=1, inplace=True)
 
