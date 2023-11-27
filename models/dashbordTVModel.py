@@ -127,13 +127,13 @@ def Faturamento_ano(ano, empresa):
 
         # Formatar o faturamento do mês
         faturamento_mes = "{:,.2f}".format(faturamento_mes)
-        faturamento_mes = 'R$ ' + faturamento_mes.replace(',', ';').replace('.', ',').replace(';', '.')
+        faturamento_mes = faturamento_mes.replace(',', ';').replace('.', ',').replace(';', '.')
         if faturamento_mes == 'R$ 0,00':
             faturamento_mes = ''
 
         # Formatar o acumulado
         acumulado_str = "{:,.2f}".format(acumulado)
-        acumulado_str = 'R$ ' + acumulado_str.replace('.', ';')
+        acumulado_str = acumulado_str.replace('.', ';')
 
         acumulado_str = acumulado_str.replace(',', '.')
         acumulado_str = acumulado_str.replace(';', ',')
@@ -159,7 +159,7 @@ def Faturamento_ano(ano, empresa):
 
     metaMes, metaTotal = GetMetas(empresa, ano)
     metaTotal = "{:,.2f}".format(metaTotal)
-    metaTotal = 'R$ ' + str(metaTotal)
+    metaTotal = str(metaTotal)
     metaTotal = metaTotal.replace('.', ";")
     metaTotal = metaTotal.replace(',', ".")
     metaTotal = metaTotal.replace(';', ",")
