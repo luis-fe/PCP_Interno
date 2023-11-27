@@ -405,176 +405,304 @@ def abrircsv(ini, fim):
 
 
 
-def VendasPlano(plano, empresa, somenteAprovados, Marca):
+def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
     codigo, descricao, dataInicio, dataFim, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
-    dataInicio = ArrumarDadas(dataInicio)
-    dataFim = ArrumarDadas(dataFim)
+    nome = 'VendasPlano' + plano + '.csv'
 
-    tipoNotasPlano = Plano.ObeterNotasPlano(plano)
-    # Transforme os valores da coluna em uma única string
-    tiponota = "(" + ",".join(tipoNotasPlano['02- tipo nota']) + ")"
+    if congelado == False:
+        dataInicio = ArrumarDadas(dataInicio)
+        dataFim = ArrumarDadas(dataFim)
 
-    #Obtendo os pedidos
-    conn = ConexaoCSW.Conexao()
-    Pedido = pd.read_sql(
-        "SELECT now() as atualizacao, dataEmissao, codPedido, "
-        "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
-        " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrTotalPedido as vlrPedido, qtdPecasFaturadas, qtdPecasPedido "
-        " FROM Ped.Pedido p"
-        " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
-        "  ",conn)
+        tipoNotasPlano = Plano.ObeterNotasPlano(plano)
+        # Transforme os valores da coluna em uma única string
+        tiponota = "(" + ",".join(tipoNotasPlano['02- tipo nota']) + ")"
+
+        #Obtendo os pedidos
+        conn = ConexaoCSW.Conexao()
+        Pedido = pd.read_sql(
+            "SELECT now() as atualizacao, dataEmissao, codPedido, "
+            "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
+            " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrTotalPedido as vlrPedido, qtdPecasFaturadas, qtdPecasPedido "
+            " FROM Ped.Pedido p"
+            " where codEmpresa = "+ empresa +" and  dataEmissao >= '" + dataInicio + "' and dataEmissao <= '" + dataFim + "' and codTipoNota in " + tiponota +
+            "  ",conn)
 
 
-    # retirando os nao aprovados
-    if somenteAprovados == True:
-        Pedido = PedidosBloqueado(Pedido)
-    else:
-        Pedido = Pedido
+        # retirando os nao aprovados
+        if somenteAprovados == True:
+            Pedido = PedidosBloqueado(Pedido)
+        else:
+            Pedido = Pedido
 
-    Pedido['semana'] = Pedido.apply(
-        lambda row: ObtendoSemana(dataInicio, row['dataEmissao']), axis=1)
+        Pedido['semana'] = Pedido.apply(
+            lambda row: ObtendoSemana(dataInicio, row['dataEmissao']), axis=1)
 
-    pedidos = "(" + ",".join(Pedido['codPedido']) + ")"
+        pedidos = "(" + ",".join(Pedido['codPedido']) + ")"
 
-    PedidoSku = pd.read_sql('select pg.codPedido as pedido, pg.codPedido, pg.codProduto, pg.qtdePedida,  '
-                            '(select c.coditempai from cgi.Item2 c WHERE c.empresa = 1 and c.coditem = pg.codProduto ) as itempai '
-                            'FROM ped.PedidoItemGrade pg '
-                            'WHERE pg.codEmpresa = 1 and pg.codPedido in '+pedidos+
-                            '',conn)
+        PedidoSku = pd.read_sql('select pg.codPedido as pedido, pg.codPedido, pg.codProduto, pg.qtdePedida,  '
+                                '(select c.coditempai from cgi.Item2 c WHERE c.empresa = 1 and c.coditem = pg.codProduto ) as itempai '
+                                'FROM ped.PedidoItemGrade pg '
+                                'WHERE pg.codEmpresa = 1 and pg.codPedido in '+pedidos+
+                                '',conn)
 
-    PedidoSku['Marca'] = PedidoSku.apply(
-        lambda row: ObtendoMarca(row['itempai']), axis=1)
+        PedidoSku['Marca'] = PedidoSku.apply(
+            lambda row: ObtendoMarca(row['itempai']), axis=1)
 
-    nome = 'VendasPlano'+plano+'.csv'
-    Pedido.to_csv(nome)
 
-    PedidoSku = PedidoSku.groupby('pedido').agg({
-        'codPedido': 'first',
-        'Marca': 'first',
-        'qtdePedida': 'sum'
-    })
 
-    conn.close()
-    Pedido = pd.merge(Pedido, PedidoSku, on='codPedido',how='left')
 
-    if Marca != 'Geral':
-        Pedido = Pedido.groupby(['semana','Marca']).agg({
-            'semana': 'first',
+        PedidoSku = PedidoSku.groupby('pedido').agg({
+            'codPedido': 'first',
             'Marca': 'first',
-            'vlrPedido': 'sum',
-            'qtdPecasPedido': 'sum'
-        })
-        Pedido = Pedido[Pedido['Marca']==Marca]
-        meta = Metas(plano)
-        meta['semanas'] = meta['semanas'].astype(str)
-
-        Pedido['Marcas'] = Pedido['Marca']
-        Pedido['semana'] = Pedido['semana'].astype(str)
-
-        Pedido['semanas'] = Pedido['semana']
-
-        Pedido = pd.merge(Pedido, meta, on=('Marcas', 'semanas'), how='right')
-
-        Pedido.drop(['Marcas','semanas'], axis=1, inplace=True)
-
-
-    else:
-        Pedido = Pedido.groupby(['semana']).agg({
-            'semana': 'first',
-            'vlrPedido': 'sum',
-            'qtdPecasPedido': 'sum'
+            'qtdePedida': 'sum'
         })
 
-        meta = Metas(plano, 'Geral')
-        meta['semana'] = meta['semana'].astype(int)
-        meta = meta.sort_values(by='semana')
-        meta['semanas'] = meta['semana'].astype(str)
+        conn.close()
+        Pedido = pd.merge(Pedido, PedidoSku, on='codPedido',how='left')
+        Pedido.to_csv(nome)
 
-        Pedido['semanas'] = Pedido['semana'].astype(str)
+        if Marca != 'Geral':
+            Pedido = Pedido.groupby(['semana','Marca']).agg({
+                'semana': 'first',
+                'Marca': 'first',
+                'vlrPedido': 'sum',
+                'qtdPecasPedido': 'sum'
+            })
+            Pedido = Pedido[Pedido['Marca']==Marca]
+            meta = Metas(plano)
+            meta['semanas'] = meta['semanas'].astype(str)
 
+            Pedido['Marcas'] = Pedido['Marca']
+            Pedido['semana'] = Pedido['semana'].astype(str)
 
-        Pedido = pd.merge(Pedido, meta, on='semanas', how='right')
+            Pedido['semanas'] = Pedido['semana']
 
-        Pedido.drop(['semana_x','semana_y'], axis=1, inplace=True)
-        Pedido.rename(
-            columns={'semanas': 'semana'},
-            inplace=True)
+            Pedido = pd.merge(Pedido, meta, on=('Marcas', 'semanas'), how='right')
 
-    def format_with_separator(value):
-
-            return locale.format('%0.2f', value, grouping=True)
-    def format_with_separator_0(value):
-
-            return locale.format('%0.0f', value, grouping=True)
-
-    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedido'].cumsum()
-    Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
-    Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
-    Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
-    Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(';', ',')
-
-    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].apply(format_with_separator)
-    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace('.', ';')
-    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(',', '.')
-    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(';', ',')
+            Pedido.drop(['Marcas','semanas'], axis=1, inplace=True)
 
 
-    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedido'].cumsum()
-    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator_0)
-    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace('.', ';')
-    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
-    Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
+        else:
+            Pedido = Pedido.groupby(['semana']).agg({
+                'semana': 'first',
+                'vlrPedido': 'sum',
+                'qtdPecasPedido': 'sum'
+            })
 
-    Pedido_Max = Pedido['qtdPecasPedidoAcumulada'].max() + 500
-    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].apply(format_with_separator_0)
-    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace('.', ';')
-    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(',', '.')
-    Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(';', ',')
+            meta = Metas(plano, 'Geral')
+            meta['semana'] = meta['semana'].astype(int)
+            meta = meta.sort_values(by='semana')
+            meta['semanas'] = meta['semana'].astype(str)
 
-    Pedido['metaPçAcumulada'] = Pedido['metaPç'].cumsum()
-    Pedido['metaPç'] = Pedido['metaPç'].apply(format_with_separator_0)
-    Pedido['metaPç'] = Pedido['metaPç'].str.replace('.', ';')
-    Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
-    Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
-
-    Pedido['metaReaisAcumulada'] = Pedido['metareais'].cumsum()
+            Pedido['semanas'] = Pedido['semana'].astype(str)
 
 
-    Pedido_Max2 = Pedido['metaPçAcumulada'].max() + 500
+            Pedido = pd.merge(Pedido, meta, on='semanas', how='right')
 
-    if Pedido_Max2 >= Pedido_Max :
-        Pedido_Max = Pedido_Max2
-        # Arredonda para cima
-        Pedido_Max = math.ceil(Pedido_Max)
+            Pedido.drop(['semana_x','semana_y'], axis=1, inplace=True)
+            Pedido.rename(
+                columns={'semanas': 'semana'},
+                inplace=True)
+
+        def format_with_separator(value):
+
+                return locale.format('%0.2f', value, grouping=True)
+        def format_with_separator_0(value):
+
+                return locale.format('%0.0f', value, grouping=True)
+
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedido'].cumsum()
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(';', ',')
+
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].apply(format_with_separator)
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace('.', ';')
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(',', '.')
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(';', ',')
+
+
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedido'].cumsum()
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator_0)
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace('.', ';')
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
+
+        Pedido_Max = Pedido['qtdPecasPedidoAcumulada'].max() + 500
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].apply(format_with_separator_0)
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace('.', ';')
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(',', '.')
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(';', ',')
+
+        Pedido['metaPçAcumulada'] = Pedido['metaPç'].cumsum()
+        Pedido['metaPç'] = Pedido['metaPç'].apply(format_with_separator_0)
+        Pedido['metaPç'] = Pedido['metaPç'].str.replace('.', ';')
+        Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
+        Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
+
+        Pedido['metaReaisAcumulada'] = Pedido['metareais'].cumsum()
+
+
+        Pedido_Max2 = Pedido['metaPçAcumulada'].max() + 500
+
+        if Pedido_Max2 >= Pedido_Max :
+            Pedido_Max = Pedido_Max2
+            # Arredonda para cima
+            Pedido_Max = math.ceil(Pedido_Max)
+        else:
+            Pedido_Max = math.ceil(Pedido_Max)
+
+
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
+
+
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace('.', ';')
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(',', '.')
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(';', ',')
+
+        Pedido['metareais'] = Pedido['metareais'].apply(format_with_separator)
+        Pedido['metareais'] = Pedido['metareais'].str.replace('.', ';')
+        Pedido['metareais'] = Pedido['metareais'].str.replace(',', '.')
+        Pedido['metareais'] = Pedido['metareais'].str.replace(';', ',')
+
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].apply(format_with_separator)
+
+
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace('.', ';')
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(',', '.')
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(';', ',')
+        Pedido.replace('nan', '0', inplace=True)
+
+        data = {
+            '1 - ValorMaxAcumulado': Pedido_Max,
+            '2- Detalhamento mensal ': Pedido.to_dict(orient='records')
+        }
+        return [data]
     else:
-        Pedido_Max = math.ceil(Pedido_Max)
+
+        Pedido = pd.read_csv(nome)
+        if Marca != 'Geral':
+            Pedido = Pedido.groupby(['semana','Marca']).agg({
+                'semana': 'first',
+                'Marca': 'first',
+                'vlrPedido': 'sum',
+                'qtdPecasPedido': 'sum'
+            })
+            Pedido = Pedido[Pedido['Marca']==Marca]
+            meta = Metas(plano)
+            meta['semanas'] = meta['semanas'].astype(str)
+
+            Pedido['Marcas'] = Pedido['Marca']
+            Pedido['semana'] = Pedido['semana'].astype(str)
+
+            Pedido['semanas'] = Pedido['semana']
+
+            Pedido = pd.merge(Pedido, meta, on=('Marcas', 'semanas'), how='right')
+
+            Pedido.drop(['Marcas','semanas'], axis=1, inplace=True)
 
 
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
+        else:
+            Pedido = Pedido.groupby(['semana']).agg({
+                'semana': 'first',
+                'vlrPedido': 'sum',
+                'qtdPecasPedido': 'sum'
+            })
+
+            meta = Metas(plano, 'Geral')
+            meta['semana'] = meta['semana'].astype(int)
+            meta = meta.sort_values(by='semana')
+            meta['semanas'] = meta['semana'].astype(str)
+
+            Pedido['semanas'] = Pedido['semana'].astype(str)
 
 
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace('.', ';')
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(',', '.')
-    Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(';', ',')
+            Pedido = pd.merge(Pedido, meta, on='semanas', how='right')
 
-    Pedido['metareais'] = Pedido['metareais'].apply(format_with_separator)
-    Pedido['metareais'] = Pedido['metareais'].str.replace('.', ';')
-    Pedido['metareais'] = Pedido['metareais'].str.replace(',', '.')
-    Pedido['metareais'] = Pedido['metareais'].str.replace(';', ',')
+            Pedido.drop(['semana_x','semana_y'], axis=1, inplace=True)
+            Pedido.rename(
+                columns={'semanas': 'semana'},
+                inplace=True)
 
-    Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].apply(format_with_separator)
+        def format_with_separator(value):
+
+                return locale.format('%0.2f', value, grouping=True)
+        def format_with_separator_0(value):
+
+                return locale.format('%0.0f', value, grouping=True)
+
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedido'].cumsum()
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
+        Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(';', ',')
+
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].apply(format_with_separator)
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace('.', ';')
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(',', '.')
+        Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(';', ',')
 
 
-    Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace('.', ';')
-    Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(',', '.')
-    Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(';', ',')
-    Pedido.replace('nan', '0', inplace=True)
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedido'].cumsum()
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].apply(format_with_separator_0)
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace('.', ';')
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(',', '.')
+        Pedido['qtdPecasPedido'] = Pedido['qtdPecasPedido'].str.replace(';', ',')
 
-    data = {
-        '1 - ValorMaxAcumulado': Pedido_Max,
-        '2- Detalhamento mensal ': Pedido.to_dict(orient='records')
-    }
-    return [data]
+        Pedido_Max = Pedido['qtdPecasPedidoAcumulada'].max() + 500
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].apply(format_with_separator_0)
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace('.', ';')
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(',', '.')
+        Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedidoAcumulada'].str.replace(';', ',')
+
+        Pedido['metaPçAcumulada'] = Pedido['metaPç'].cumsum()
+        Pedido['metaPç'] = Pedido['metaPç'].apply(format_with_separator_0)
+        Pedido['metaPç'] = Pedido['metaPç'].str.replace('.', ';')
+        Pedido['metaPç'] = Pedido['metaPç'].str.replace(',', '.')
+        Pedido['metaPç'] = Pedido['metaPç'].str.replace(';', ',')
+
+        Pedido['metaReaisAcumulada'] = Pedido['metareais'].cumsum()
+
+
+        Pedido_Max2 = Pedido['metaPçAcumulada'].max() + 500
+
+        if Pedido_Max2 >= Pedido_Max :
+            Pedido_Max = Pedido_Max2
+            # Arredonda para cima
+            Pedido_Max = math.ceil(Pedido_Max)
+        else:
+            Pedido_Max = math.ceil(Pedido_Max)
+
+
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].apply(format_with_separator_0)
+
+
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace('.', ';')
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(',', '.')
+        Pedido['metaPçAcumulada'] = Pedido['metaPçAcumulada'].str.replace(';', ',')
+
+        Pedido['metareais'] = Pedido['metareais'].apply(format_with_separator)
+        Pedido['metareais'] = Pedido['metareais'].str.replace('.', ';')
+        Pedido['metareais'] = Pedido['metareais'].str.replace(',', '.')
+        Pedido['metareais'] = Pedido['metareais'].str.replace(';', ',')
+
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].apply(format_with_separator)
+
+
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace('.', ';')
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(',', '.')
+        Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(';', ',')
+        Pedido.replace('nan', '0', inplace=True)
+
+        data = {
+            '1 - ValorMaxAcumulado': Pedido_Max,
+            '2- Detalhamento mensal ': Pedido.to_dict(orient='records')
+        }
+        return [data]
+
+
+
 
 
 
