@@ -201,7 +201,7 @@ def ABC_Plano(plano):
 
 
 
-def PedidosBloqueado(df_Pedidos, padrao = ''):
+def PedidosBloqueado(df_Pedidos, padrao = 'True'):
     conn = ConexaoCSW.Conexao()
 
     # 4 - Conulta de Bloqueio Comerial do Pedidos
@@ -217,8 +217,10 @@ def PedidosBloqueado(df_Pedidos, padrao = ''):
     # 4.2.1 Unindo o Pedido com a situação do Bloqueio Credito, preservando a Consulta Pedidos
     df_Pedidos = pd.merge(df_Pedidos, df_BloqueioCredito, on='codPedido', how='left')
     # 4.3 Filtro para puxar somente os pedidos APROVADOS
-    if padrao == '':
+    if padrao == 'True':
         df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] != "1") & (df_Pedidos['situacaoBloq'] != "1")]
+    elif padrao == "":
+        df_Pedidos = df_Pedidos
     else:
         df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] == "1") & (df_Pedidos['situacaoBloq'] == "1")]
 
@@ -299,6 +301,8 @@ def PedidosAbertos(empresa, dataInicio, dataFim, aprovado = True):
 
     if aprovado == True:
         Pedido = PedidosBloqueado(Pedido)
+    elif aprovado == False:
+        Pedido = PedidosBloqueado(Pedido, False)
     else:
         Pedido = Pedido
 
@@ -428,11 +432,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
             "  ",conn)
 
 
-        # retirando os nao aprovados
-        if somenteAprovados == True:
-            Pedido = PedidosBloqueado(Pedido)
-        else:
-            Pedido = Pedido
+
 
         Pedido['semana'] = Pedido.apply(
             lambda row: ObtendoSemana(dataInicio, row['dataEmissao']), axis=1)
@@ -459,7 +459,11 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
 
         conn.close()
         Pedido = pd.merge(Pedido, PedidoSku, on='codPedido',how='left')
+
+        Pedido = PedidosBloqueado(Pedido,"")
         Pedido.to_csv(nome)
+
+
 
         if Marca != 'Geral':
             Pedido = Pedido.groupby(['semana','Marca']).agg({
@@ -574,6 +578,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
         Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(';', ',')
         Pedido.replace('nan', '0', inplace=True)
 
+
         data = {
             '1 - ValorMaxAcumulado': Pedido_Max,
             '2- Detalhamento mensal ': Pedido.to_dict(orient='records')
@@ -582,6 +587,16 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
     else:
 
         Pedido = pd.read_csv(nome)
+
+        if somenteAprovados == 'True':
+            Pedido = PedidosBloqueado(Pedido,'True')
+        elif somenteAprovados == '':
+            Pedido = PedidosBloqueado(Pedido, '')
+        else:
+            Pedido = PedidosBloqueado(Pedido, 'False')
+
+
+
         if Marca != 'Geral':
             Pedido = Pedido.groupby(['semana','Marca']).agg({
                 'semana': 'first',
