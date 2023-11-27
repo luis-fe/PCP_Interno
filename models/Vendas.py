@@ -455,8 +455,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
         PedidoSku = PedidoSku.groupby('pedido').agg({
             'codPedido': 'first',
             'Marca': 'first',
-            'qtdePedida': 'sum',
-            'situacao': 'first'
+            'qtdePedida': 'sum'
         })
 
         conn.close()
