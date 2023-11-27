@@ -208,6 +208,7 @@ def PedidosBloqueado(df_Pedidos, padrao = 'True'):
     df_BloqueioComercial = pd.read_sql(
         "SELECT codPedido, situacaoBloq from ped.PedidoBloqComl WHERE codEmpresa = 1 ",
         conn)
+    df_Pedidos['codPedido'] = df_Pedidos['codPedido'].astype(str)
     # 4.1 Unindo o Pedido com a situação do Bloqueio Comercial, preservando a Consulta Pedidos
     df_Pedidos = pd.merge(df_Pedidos, df_BloqueioComercial, on='codPedido', how='left')
     # 4.2 - Conulta de Bloqueio Credito do Pedidos
