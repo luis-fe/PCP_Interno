@@ -511,7 +511,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['vlrPedido'] = Pedido['vlrPedido'].apply(format_with_separator)
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace('.', ';')
     Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(',', '.')
-    Pedido['vlrPedido'] = 'R$'+Pedido['vlrPedido'].str.replace(';', ',')
+    Pedido['vlrPedido'] = Pedido['vlrPedido'].str.replace(';', ',')
 
     Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].apply(format_with_separator)
     Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace('.', ';')
