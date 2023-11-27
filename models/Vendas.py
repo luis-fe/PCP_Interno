@@ -516,7 +516,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].apply(format_with_separator)
     Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace('.', ';')
     Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(',', '.')
-    Pedido['vlrPedidoAcumulada'] = 'R$'+Pedido['vlrPedidoAcumulada'].str.replace(';', ',')
+    Pedido['vlrPedidoAcumulada'] = Pedido['vlrPedidoAcumulada'].str.replace(';', ',')
 
 
     Pedido['qtdPecasPedidoAcumulada'] = Pedido['qtdPecasPedido'].cumsum()
@@ -560,14 +560,14 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca):
     Pedido['metareais'] = Pedido['metareais'].apply(format_with_separator)
     Pedido['metareais'] = Pedido['metareais'].str.replace('.', ';')
     Pedido['metareais'] = Pedido['metareais'].str.replace(',', '.')
-    Pedido['metareais'] = 'R$'+Pedido['metareais'].str.replace(';', ',')
+    Pedido['metareais'] = Pedido['metareais'].str.replace(';', ',')
 
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].apply(format_with_separator)
 
 
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace('.', ';')
     Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(',', '.')
-    Pedido['metaReaisAcumulada'] = 'R$'+Pedido['metaReaisAcumulada'].str.replace(';', ',')
+    Pedido['metaReaisAcumulada'] = Pedido['metaReaisAcumulada'].str.replace(';', ',')
     Pedido.replace('nan', '0', inplace=True)
 
     data = {
