@@ -70,7 +70,7 @@ def Faturamento_ano(ano, empresa):
         "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
         " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
         " FROM ped.SugestaoPed e "
-        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido and  i.codSequencia= e.codSequencia  "
+        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido "
         ' WHERE e.codEmpresa =' + empresa +
         " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
@@ -127,13 +127,13 @@ def Faturamento_ano(ano, empresa):
 
         # Formatar o faturamento do mês
         faturamento_mes = "{:,.2f}".format(faturamento_mes)
-        faturamento_mes = faturamento_mes.replace(',', ';').replace('.', ',').replace(';', '.')
+        faturamento_mes = 'R$ ' + faturamento_mes.replace(',', ';').replace('.', ',').replace(';', '.')
         if faturamento_mes == 'R$ 0,00':
             faturamento_mes = ''
 
         # Formatar o acumulado
         acumulado_str = "{:,.2f}".format(acumulado)
-        acumulado_str = acumulado_str.replace('.', ';')
+        acumulado_str = 'R$ ' + acumulado_str.replace('.', ';')
 
         acumulado_str = acumulado_str.replace(',', '.')
         acumulado_str = acumulado_str.replace(';', ',')
@@ -159,7 +159,7 @@ def Faturamento_ano(ano, empresa):
 
     metaMes, metaTotal = GetMetas(empresa, ano)
     metaTotal = "{:,.2f}".format(metaTotal)
-    metaTotal = str(metaTotal)
+    metaTotal = 'R$ ' + str(metaTotal)
     metaTotal = metaTotal.replace('.', ";")
     metaTotal = metaTotal.replace(',', ".")
     metaTotal = metaTotal.replace(';', ",")
@@ -191,8 +191,8 @@ def Faturamento_ano(ano, empresa):
     df_faturamento['meta'] = df_faturamento['meta'].str.replace('.', ',')
     df_faturamento['meta acum.'] = df_faturamento['meta acum.'].str.replace('.', ',')
 
-    df_faturamento['meta'] = df_faturamento['meta'].str.replace(';', '.')
-    df_faturamento['meta acum.'] = df_faturamento['meta acum.'].str.replace(';', '.')
+    df_faturamento['meta'] = 'R$ '+df_faturamento['meta'].str.replace(';', '.')
+    df_faturamento['meta acum.'] = 'R$ ' + df_faturamento['meta acum.'].str.replace(';', '.')
     df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
     df_faturamento = df_faturamento.append({'Mês': '✈TOTAL','meta':metaTotal, 'Faturado':total,'meta acum.':metaTotal,'Fat.Acumulado':total}, ignore_index=True)
     df_faturamento.fillna('-',inplace=True)
