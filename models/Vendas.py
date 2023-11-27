@@ -455,6 +455,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
         PedidoSku = PedidoSku.groupby('pedido').agg({
             'codPedido': 'first',
             'Marca': 'first',
+            'situacao':'first',
             'qtdePedida': 'sum'
         })
 
@@ -471,7 +472,8 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
                 'semana': 'first',
                 'Marca': 'first',
                 'vlrPedido': 'sum',
-                'qtdPecasPedido': 'sum'
+                'qtdPecasPedido': 'sum',
+            'situacao':'first'
             })
             Pedido = Pedido[Pedido['Marca']==Marca]
             meta = Metas(plano)
@@ -491,7 +493,8 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
             Pedido = Pedido.groupby(['semana']).agg({
                 'semana': 'first',
                 'vlrPedido': 'sum',
-                'qtdPecasPedido': 'sum'
+                'qtdPecasPedido': 'sum',
+            'situacao':'first'
             })
 
             meta = Metas(plano, 'Geral')
@@ -603,6 +606,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
                 'semana': 'first',
                 'Marca': 'first',
                 'vlrPedido': 'sum',
+            'situacao':'first',
                 'qtdPecasPedido': 'sum'
             })
             Pedido = Pedido[Pedido['Marca']==Marca]
@@ -623,6 +627,8 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
             Pedido = Pedido.groupby(['semana']).agg({
                 'semana': 'first',
                 'vlrPedido': 'sum',
+            'situacao':'first',
+
                 'qtdPecasPedido': 'sum'
             })
 
