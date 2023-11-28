@@ -203,7 +203,7 @@ def ABC_Plano(plano):
 
 def PedidosBloqueado(df_Pedidos, padrao = 'True'):
     conn = ConexaoCSW.Conexao()
-    df_Pedidos.drop('situacao', axis=1, inplace=True)
+    df_Pedidos.drop(['situacao','situacaoBloq','bloqMotEspPed'], axis=1, inplace=True)
 
     # 4 - Conulta de Bloqueio Comerial do Pedidos
     df_BloqueioComercial = pd.read_sql(
@@ -214,7 +214,7 @@ def PedidosBloqueado(df_Pedidos, padrao = 'True'):
     df_Pedidos = pd.merge(df_Pedidos, df_BloqueioComercial, on='codPedido', how='left')
     # 4.2 - Conulta de Bloqueio Credito do Pedidos
     df_BloqueioCredito = pd.read_sql(
-        "SELECT situacao, codPedido, Empresa, bloqMotEspPed FROM Cre.PedidoCreditoBloq WHERE Empresa  = 1 ",
+        "SELECT situacao, codPedido,  bloqMotEspPed FROM Cre.PedidoCreditoBloq WHERE Empresa  = 1 ",
         conn)
     # 4.2.1 Unindo o Pedido com a situação do Bloqueio Credito, preservando a Consulta Pedidos
     df_Pedidos = pd.merge(df_Pedidos, df_BloqueioCredito, on='codPedido', how='left')
