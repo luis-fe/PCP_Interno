@@ -639,6 +639,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
             Pedido.drop(['semana','Marca'], axis=1, inplace=True)
             Pedido['Marca'] = Pedido['Marca_Resumo']
             Pedido['semana'] = Pedido['semana_Resumo'].astype(str)
+            Pedido.drop(['semana_Resumo','Marca_Resumo'], axis=1, inplace=True)
 
 
 
