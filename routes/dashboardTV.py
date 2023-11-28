@@ -64,6 +64,7 @@ def AcompVendas():
     somenteAprovados = request.args.get('somenteAprovados', '')
     Marca = request.args.get('Marca', 'Geral')
     congelado = request.args.get('congelado', False)
+    congelado = bool(congelado)
     print(congelado)
     print(type(congelado))
     plano = Vendas.VendasPlano(plano,empresa,somenteAprovados,Marca,bool(congelado))
