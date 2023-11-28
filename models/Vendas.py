@@ -499,7 +499,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
             Pedido = pd.merge(Pedido, meta, on=('Marcas', 'semanas'), how='right')
 
             Pedido.drop(['Marcas','semanas'], axis=1, inplace=True)
-            Pedido = Pedido.sort_values(by='semana')
+
 
 
         else:
@@ -634,6 +634,8 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
             meta = Metas(plano,'')
             Pedido = pd.merge(Pedido, meta, on=('Marca_Resumo', 'semana_Resumo'), how='right')
             Pedido = Pedido[Pedido['Marca_Resumo'] == Marca]
+            Pedido['semana_Resumo'] = Pedido['semana_Resumo'].astype(int)
+            Pedido = Pedido.sort_values(by='semana_Resumo')
 
 
 
