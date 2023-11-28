@@ -62,7 +62,7 @@ def AcompVendas():
     plano = request.args.get('plano')
     empresa = request.args.get('empresa', '1')
     somenteAprovados = request.args.get('somenteAprovados', '')
-    Marca = request.args.get('Marca', 'Geral')
+    marca = request.args.get('marca', 'Geral')
     congelado = request.args.get('congelado', False)
 
     if congelado == 'False' or congelado == 'false':
@@ -70,7 +70,9 @@ def AcompVendas():
     else:
         congelado = True
 
-    plano = Vendas.VendasPlano(plano,empresa,somenteAprovados,Marca,bool(congelado))
+
+
+    plano = Vendas.VendasPlano(plano,empresa,somenteAprovados,marca,bool(congelado))
     plano = pd.DataFrame(plano)
     column_names = plano.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
