@@ -65,7 +65,7 @@ def AcompVendas():
     Marca = request.args.get('Marca', 'Geral')
     congelado = request.args.get('congelado', False)
     print(congelado)
-    print(congelado.type)
+    print(type(congelado))
     plano = Vendas.VendasPlano(plano,empresa,somenteAprovados,Marca,bool(congelado))
     plano = pd.DataFrame(plano)
     column_names = plano.columns
