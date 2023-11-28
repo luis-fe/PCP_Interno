@@ -415,7 +415,7 @@ def abrircsv(ini, fim):
 
 
 
-def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
+def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
     codigo, descricao, dataInicio, dataFim, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
     nome = 'VendasPlano' + plano + '.csv'
 
