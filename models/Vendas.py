@@ -636,7 +636,9 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
             Pedido = Pedido[Pedido['Marca_Resumo'] == Marca]
             Pedido['semana_Resumo'] = Pedido['semana_Resumo'].astype(int)
             Pedido = Pedido.sort_values(by='semana_Resumo')
-
+            Pedido.drop(['semana','Marca'], axis=1, inplace=True)
+            Pedido['Marca'] = Pedido['Marca_Resumo']
+            Pedido['semana'] = Pedido['semana_Resumo'].astype(str)
 
 
 
