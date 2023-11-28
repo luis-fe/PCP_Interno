@@ -64,10 +64,12 @@ def AcompVendas():
     somenteAprovados = request.args.get('somenteAprovados', '')
     Marca = request.args.get('Marca', 'Geral')
     congelado = request.args.get('congelado', False)
-    print(congelado)
-    congelado = bool(congelado)
-    print(congelado)
-    print(type(congelado))
+
+    if congelado == 'False' or congelado == 'false':
+        congelado = False
+    else:
+        congelado = True
+
     plano = Vendas.VendasPlano(plano,empresa,somenteAprovados,Marca,bool(congelado))
     plano = pd.DataFrame(plano)
     column_names = plano.columns
