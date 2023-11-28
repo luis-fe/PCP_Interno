@@ -64,6 +64,7 @@ def AcompVendas():
     somenteAprovados = request.args.get('somenteAprovados', '')
     Marca = request.args.get('Marca', 'Geral')
     congelado = request.args.get('congelado', False)
+    print(congelado)
     congelado = bool(congelado)
     print(congelado)
     print(type(congelado))
