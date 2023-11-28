@@ -430,7 +430,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado = False):
         #Obtendo os pedidos
         conn = ConexaoCSW.Conexao()
         Pedido = pd.read_sql(
-            "SELECT now() as atualizacao, dataEmissao, codPedido, "
+            "SELECT now() as atualizacao, codEmpresa, dataEmissao, codPedido, "
             "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "
             " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrTotalPedido as vlrPedido, qtdPecasFaturadas, qtdPecasPedido "
             " FROM Ped.Pedido p"
