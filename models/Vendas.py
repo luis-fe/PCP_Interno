@@ -627,8 +627,11 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
                 'qtdPecasPedido': 'sum'
             })
             Pedido = Pedido[Pedido['Marca']==Marca]
+            Pedido['semana_Resumo'] = Pedido['semana'].astype(str)
+            Pedido['Marca_Resumo'] = Pedido['Marca']
+
             meta = Metas(plano,'')
-            Pedido = pd.merge(Pedido, meta, on=('Marca', 'semana'), how='right')
+            Pedido = pd.merge(Pedido, meta, on=('Marca_Resumo', 'semana_Resumo'), how='right')
 
 
 
@@ -776,7 +779,7 @@ def ObtendoMarca(coditempai):
 def Metas(plano, Marca = ''):
     conn = ConexaoPostgreMPL.conexao()
     if Marca == '':
-        get = pd.read_sql('select marca as "Marca", semana, "metaPç", "metaR$" as "metareais" from pcp."PlanoMetasSemana" '
+        get = pd.read_sql('select marca as "Marca_Resumo", semana as "semana_Resumo", "metaPç", "metaR$" as "metareais" from pcp."PlanoMetasSemana" '
                           'where plano = %s order by semana asc ',conn,params=(plano,))
     else:
         get = pd.read_sql('select semana, sum("metaPç") as  "metaPç", sum("metaR$") as "metareais" from pcp."PlanoMetasSemana" '
