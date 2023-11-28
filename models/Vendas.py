@@ -203,7 +203,11 @@ def ABC_Plano(plano):
 
 def PedidosBloqueado(df_Pedidos, padrao = 'True'):
     conn = ConexaoCSW.Conexao()
-    df_Pedidos.drop(['situacao','situacaoBloq','bloqMotEspPed'], axis=1, inplace=True)
+
+    try:
+        df_Pedidos.drop(['situacao','situacaoBloq','bloqMotEspPed'], axis=1, inplace=True)
+    except:
+        df_Pedidos = df_Pedidos
 
     # 4 - Conulta de Bloqueio Comerial do Pedidos
     df_BloqueioComercial = pd.read_sql(
