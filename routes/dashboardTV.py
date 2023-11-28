@@ -70,6 +70,13 @@ def AcompVendas():
     else:
         congelado = True
 
+    if somenteAprovados == 'False' or somenteAprovados == 'false':
+        somenteAprovados = 'False'
+    elif somenteAprovados == 'True' or somenteAprovados == 'true':
+        somenteAprovados = 'True'
+    else:
+        somenteAprovados = ''
+
 
 
     plano = Vendas.VendasPlano(plano,empresa,somenteAprovados,marca,bool(congelado))
