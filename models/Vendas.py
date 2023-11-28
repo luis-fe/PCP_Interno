@@ -632,7 +632,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
 
             meta = Metas(plano,'')
             Pedido = pd.merge(Pedido, meta, on=('Marca_Resumo', 'semana_Resumo'), how='right')
-            Pedido = Pedido[Pedido['Marca'] == Marca]
+            Pedido = Pedido[Pedido['Marca_Resumo'] == Marca]
 
 
 
