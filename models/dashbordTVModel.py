@@ -28,7 +28,8 @@ def Faturamento_ano(ano, empresa):
 
 
     conn = ConexaoCSW.Conexao()
-    dataInicio = ano + '-01-01'
+    mesFinal, mesAtual = EncontrandoMesAtual()
+    dataInicio = ano + '-'+mesAtual+'-01'
     dataFim = ano + '-12-31'
 
     if empresa == 'Todas':
@@ -271,14 +272,14 @@ def EncontrandoMesAtual():
     mes = dia[5:7]
 
     if mes == '01':
-        return '01'
+        return '01' ,'01'
 
     else:
-        mes = int(mes)
-        mesFinal = mes - 1
+        mesAtual = int(mes)
+        mesFinal = mesAtual - 1
         mesFinal = str(mesFinal)
 
-        return mesFinal
+        return mesFinal , mes
 
 def Backup(ano, empresa):
     datahora, dia = obterHoraAtual()
