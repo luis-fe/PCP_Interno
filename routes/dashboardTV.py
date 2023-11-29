@@ -92,7 +92,7 @@ def AcompVendas():
     else:
         congelado = True
 
-    if somenteAprovados == 'False' or somenteAprovados == 'false' or somenteAprovados == '':
+    if somenteAprovados == 'False' or somenteAprovados == 'false' :
         somenteAprovados = 'False'
     elif somenteAprovados == 'True' or somenteAprovados == 'true':
         somenteAprovados = 'True'
