@@ -472,7 +472,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
 
 
 
-        if Marca != 'Geral':
+        if Marca != 'Geral' or Marca == '':
             if somenteAprovados == 'True':
                 Pedido = PedidosBloqueado(Pedido, 'True')
             elif somenteAprovados == '':
@@ -621,7 +621,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
 
 
 
-        if Marca != 'Geral':
+        if Marca != 'Geral' or Marca == '':
             Pedido = Pedido.groupby(['semana','Marca']).agg({
                 'semana': 'first',
                 'Marca': 'first',
