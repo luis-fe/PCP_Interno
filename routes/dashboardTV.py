@@ -87,7 +87,7 @@ def AcompVendas():
     marca = request.args.get('marca', 'Geral')
     congelado = request.args.get('congelado', False)
 
-    if congelado == 'False' or congelado == 'false':
+    if congelado == 'False' or congelado == 'false' or congelado == '':
         congelado = False
     else:
         congelado = True
