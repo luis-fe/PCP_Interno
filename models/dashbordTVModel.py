@@ -261,3 +261,73 @@ def ConfTipoNota(empresa):
 
     return consulta
 
+def EncontrandoMesAtual():
+    datahora, dia = obterHoraAtual()
+    mes = dia[5:7]
+
+    if mes == '01':
+        return '01'
+
+    else:
+        mes = int(mes)
+        mesFinal = mes - 1
+        mesFinal = str(mesFinal)
+
+        return mesFinal
+
+def Backup(ano, empresa):
+    datahora, dia = obterHoraAtual()
+
+    mesFinal = EncontrandoMesAtual()
+
+
+
+    conn = ConexaoCSW.Conexao()
+    dataInicio = ano + '-01-01'
+    dataFim = ano + '-'+mesFinal+'-31'
+
+
+    if empresa == 'Todas':
+
+
+        query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
+            'FROM Fat.NotaFiscal n ' \
+            'where n.codPedido >= 0 ' \
+            'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 ' \
+                                                            ' union ' \
+                                                            'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
+            'FROM Fat.NotaFiscal n ' \
+            'where n.codTipoDeNota in (30, 180, 156, 51, 175, 81, 12, 47) and codPedido is null ' \
+            'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 ' \
+
+        dataframe = pd.read_sql(query, conn)
+
+        nome = ano + 'VendasTotal.csv'
+        dataframe.to_csv(nome)
+
+
+
+
+
+
+    else:
+        query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido, codNumNota, codEmpresa  ' \
+            'FROM Fat.NotaFiscal n ' \
+            'where n.codPedido >= 0 '   \
+            'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
+                                                            ' union ' \
+                                                            "select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, '0' ,codNumNota, "+"'"+empresa+"'" \
+            ' FROM Fat.NotaFiscal n ' \
+            'where n.codTipoDeNota in (30, 180, 156, 51, 175, 81, 47, 12) and codPedido is null ' \
+            'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
+
+        dataframe = pd.read_sql(query, conn)
+        nome = ano + 'Vendas'+empresa+'.csv'
+        dataframe.to_csv(nome)
+
+
+

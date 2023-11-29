@@ -226,6 +226,7 @@ def PedidosBloqueado(df_Pedidos, padrao = 'True'):
     if padrao == 'True':
         df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] != "1") & (df_Pedidos['situacaoBloq'] != "1")]
     elif padrao == "":
+
         df_Pedidos = df_Pedidos
     else:
         df_Pedidos = df_Pedidos.loc[(df_Pedidos['situacao'] == "1") & (df_Pedidos['situacaoBloq'] == "1")]
