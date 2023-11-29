@@ -92,12 +92,17 @@ def AcompVendas():
     else:
         congelado = True
 
-    if somenteAprovados == 'False' or somenteAprovados == 'false':
+    if somenteAprovados == 'False' or somenteAprovados == 'false' or somenteAprovados == '':
         somenteAprovados = 'False'
     elif somenteAprovados == 'True' or somenteAprovados == 'true':
         somenteAprovados = 'True'
     else:
         somenteAprovados = ''
+
+    if marca == '':
+        marca = 'Geral'
+    else:
+        marca = marca
 
 
 
