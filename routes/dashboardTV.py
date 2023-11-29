@@ -20,7 +20,7 @@ def dashboarTVBACKUP():
     ano = request.args.get('ano','2023')
     empresa = request.args.get('empresa', 'Todas')
 
-    usuarios = dashbordTVModel.Faturamento_ano(ano,empresa)
+    usuarios = dashbordTVModel.Backup(ano,empresa)
     usuarios = pd.DataFrame([{'mensagem':f'Backup salvo com sucesso - empresa {empresa}'}])
 
 
