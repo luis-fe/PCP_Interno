@@ -40,3 +40,7 @@ def TelaFaturamentoFilial():
 @rotasPlataformaWeb.route('/TelaFaturamentoMatriz.html')
 def TelaFaturamentoMatriz():
     return render_template('TelaFaturamentoMatriz.html')
+
+@rotasPlataformaWeb.route('/TelaCurvaVendas')
+def TelaCurvaVendas():
+    return render_template('TelaCurvaVendas.html')
