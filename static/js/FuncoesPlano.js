@@ -88,6 +88,15 @@ fecharModalPlanos.addEventListener('click', function () {
     modalPlano.style.display = 'none';
 });
 
+document.getElementById('fecharModalConfigVendas').addEventListener('click', function () {
+    document.getElementById('modalConfigVendas').style.display = 'none';
+});
+
+document.getElementById('fecharModalMetasSemanais').addEventListener('click', function () {
+    document.getElementById('modalMetasSemanais').style.display = 'none';
+});
+
+
 //------------------------------------------------Consultando e Adicionando Plano Existente--------------------------------------------//
 function formatDate(dateStr) {
     const parts = dateStr.split('/');
@@ -119,6 +128,7 @@ const AbrirColecoes = document.getElementsByClassName("CampoTabelas")[0];
 const ButtonCriar = document.getElementById('ButtonCriarPlano');
 const ButtonEditar = document.getElementById('ButtonEditarPlano');
 const ButtonEditarAbc = document.getElementById('ButtonEditarCurvaAbc');
+const ButtonCurvaVenda = document.getElementById('ButtonEditarCurvaDeVendas');
 
 function carregarDadosFromCodigo() {
     const valorInput = InputCodigo.value.trim();
@@ -134,7 +144,8 @@ function carregarDadosFromCodigo() {
         AbrirColecoes.style.display = "none";
         ButtonCriar.style.display = "none";
         ButtonEditar.style.display = "none";
-        ButtonEditarAbc.style.display = "none"
+        ButtonEditarAbc.style.display = "none";
+        ButtonCurvaVenda.style.display = "none"
 
     } else {
         console.log(valorInput)
@@ -162,6 +173,8 @@ function carregarDadosFromCodigo() {
                 document.getElementById('InputDatainicioFaturamento').value = "";
                 document.getElementById('InputDataFimFaturamento').value = "";
                 ButtonEditar.style.display = "none";
+                ButtonEditarAbc.style.display = "none";
+                ButtonCurvaVenda.style.display = "none";
                 ButtonCriar.style.display = "flex";
                 AbrirColecoes.style.display = "none";
             } else {
@@ -173,7 +186,10 @@ function carregarDadosFromCodigo() {
                 ButtonEditar.style.display = 'flex';
                 ButtonCriar.style.display = "none";
                 ButtonEditarAbc.style.display = "flex";
-                ButtonEditarAbc.style.marginLeft = "10px"
+                ButtonEditarAbc.style.marginLeft = "10px";
+                ButtonCurvaVenda.style.display = "flex";
+                ButtonCurvaVenda.style.marginLeft = "10px";
+                ButtonCurvaVenda.style.width = "90px";
                 AbrirColecoes.style.display = "flex";
                 ConsultaColecoesVinculadas();
                 ConsultaTiposDeNotasVinculadas();
@@ -193,7 +209,7 @@ InputCodigo.addEventListener('keydown', function (event) {
     }
 });
 
-//------------------------------------------------ CRIANDO NOVO PLANO------------------------------------------------------------------//
+//---------------------------------------------------------------------- CRIANDO NOVO PLANO-------------------------------------------------------------------------------//
 const BotaoCriarPlano = document.getElementById("ButtonCriarPlano")
 
 BotaoCriarPlano.addEventListener('click', function () {
@@ -274,6 +290,11 @@ BotaoCriarPlano.addEventListener('click', function () {
             AbrirColecoes.style.display = "flex";
             ButtonEditarAbc.style.display = "flex";
             ButtonEditarAbc.style.marginLeft = "10px";
+            ButtonCurvaVenda.style.display = "flex";
+            ButtonCurvaVenda.style.marginLeft = "10px";
+            ButtonCurvaVenda.style.width = "90px";
+            ButtonCurvaVenda.style.marginLeft = "10px";
+            ButtonCurvaVenda.style.width = "70px";
             ButtonEditar.style.display = "flex";
             ButtonCriar.style.display = "none"
             ConsultaColecoesVinculadas();
