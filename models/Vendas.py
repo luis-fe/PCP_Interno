@@ -801,10 +801,12 @@ def EmitirRelatorio(plano):
     relatorio = pd.read_csv(nome)
     relatorio.fillna('-', inplace=True)
     relatorio.rename(
-        columns={'bloqMotEspPed': 'Bloqueio Credito'},
+        columns={'bloqMotEspPed': 'Bloqueio Credito','situacaoBloq':'Bloqueio Comercial'},
         inplace=True)
     relatorio['Bloqueio Credito'] = relatorio.apply(lambda row: 'sim' if row['Bloqueio Credito']==1 else 'Nao', axis=1)
+    relatorio['Bloqueio Comercial'] = relatorio.apply(lambda row: 'sim' if row['Bloqueio Comercial'] == 1 else 'Nao',
+                                                    axis=1)
 
-   # relatorio.drop(['Unnamed'], axis=1, inplace=True)
+    relatorio.drop(['situacaoBloq'], axis=1, inplace=True)
 
     return relatorio
