@@ -119,6 +119,7 @@ def AcompVendas():
     return jsonify(OP_data)
 
 
+
 @dashboardTVroute.route('/pcp/api/RelatorioVendas', methods=['GET'])
 @token_required
 def RelatorioVendas():
