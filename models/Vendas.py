@@ -808,6 +808,6 @@ def EmitirRelatorio(plano):
                                                     axis=1)
 
 
-    relatorio.drop(['situacaoBloq'], axis=1, inplace=True)
+    #relatorio.drop(['situacaoBloq'], axis=1, inplace=True)
 
     return relatorio
