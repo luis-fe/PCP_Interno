@@ -83,6 +83,7 @@ body{
 .Menu ul li:hover ul {
     display: block;
     background-color: var(--cor2);
+    z-index: 9999;
     
 }
 
