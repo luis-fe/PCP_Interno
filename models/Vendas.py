@@ -806,7 +806,9 @@ def EmitirRelatorio(plano):
     relatorio['Bloqueio Credito'] = relatorio.apply(lambda row: 'sim' if row['Bloqueio Credito']==1 else 'Nao', axis=1)
     relatorio['Bloqueio Comercial'] = relatorio.apply(lambda row: 'sim' if row['Bloqueio Comercial'] == 1 else 'Nao',
                                                     axis=1)
-
+    relatorio['Considera Bloqueado'] =relatorio.apply(lambda row: 'sim' if row['Bloqueio Comercial'] == 'sim' or
+    row['Bloqueio Credito'] == 'sim' else 'Nao',
+                                                    axis=1)
 
     #relatorio.drop(['situacaoBloq'], axis=1, inplace=True)
 
