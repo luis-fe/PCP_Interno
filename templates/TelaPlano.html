@@ -49,7 +49,7 @@
             </ul>
             
         </nav>
-    </div>   
+  </div>  
     <div class="TituloPrograma">
         <h2>Planos de Produção</h2></div>
 
@@ -79,6 +79,7 @@
                 <button id="ButtonCriarPlano"> Criar Plano </button>
                 <button id="ButtonEditarPlano">Editar Plano</button>
                 <button id="ButtonEditarCurvaAbc">Editar %Curva</button>
+                <button id="ButtonEditarCurvaDeVendas">Editar Curva de Vendas</button>
             </div>
             <div class="Linha"></div>
         </div>
@@ -207,6 +208,64 @@
             </div>
         </div>
     </div>
+
+    <div id="modalConfigVendas" class="modalConfigVendas">
+        <div class="modalConfigVendas-content">
+          <span id="fecharModalConfigVendas" class="fechar1">&times;</span>
+          <h3>Configurações Metas</h3>
+          <div class="PlanosCurvaVenda">
+          <label for="InputPlano">Código Plano:</label>
+          <input type="number" id="InputPlanoMetas" class="InputPlano" maxlength="4">
+        </div>
+        <div class="tabelaMetas">
+          <table class="MetasTable">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Meta Peças</th>
+                <th>Meta R$</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PACO</td>
+                <td><input type="text" id="PecasPaco" onkeyup="mudarFoco(event, 'RSpaco')" oninput="Numerar('PecasPaco');"></td>
+                <td><input type="text" id="RSpaco" onkeyup="mudarFoco(event, 'PecasMpollo')" oninput="formatarValorInput(this);" ></td>
+              </tr>
+              <tr>
+                <td>M.POLLO</td>
+                <td><input type="text" id="PecasMpollo" onkeyup="mudarFoco(event, 'RSmpollo')" oninput="Numerar('PecasMpollo');"></td>
+                <td><input type="text" id="RSmpollo" oninput="formatarValorInput(this);" onkeyup="if (event.key === 'Enter') SomaTotais();"></td>
+              </tr>
+              <tr>
+                <td>TOTAL</td>
+                <td><input type="text" id="PecasTotal"></td>
+                <td><input type="text" id="RStotal"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <div class="BotaoMetas">
+            <button id="BotaoSalvarMetas" >Salvar</button>
+            <button id="MetasSemanais">Metas Semanais</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalMetasSemanais" class="modalMetasSemanais">
+        <div class="modalMetasSemanais-content">
+            <span id="fecharModalMetasSemanais" class="fechar1">&times;</span>
+            <h3>Configurações Metas</h3>
+            <div class="PlanosCurvaVenda">
+            <label for="InputPlano">Código Plano:</label>
+            <input type="text" id="InputPlanoMetasSemanais" class="InputPlano" maxlength="4">
+          </div>
+        <div class="TabelaSemanal">
+            <table class="TabelaMetasSemanais" id="TabelaMetasSemanais"></table>
+        </div>
+      </div>
+      
+
         
 
         <footer class="Rodape">
@@ -222,8 +281,8 @@
 
 
 </body>
-<script src="/static/js/FuncoesUsuarios.js"></script>
-<script src="/static/js/FuncoesEstrutura.js"></script>
-<script src="/static/js/FuncoesPlano.js"></script>
+
+<script src="assets/js/FuncoesPlano.js"></script>
+<script src="assets/js/FuncoesCurvaVenda.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </html>
