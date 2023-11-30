@@ -796,3 +796,7 @@ def Metas(plano, Marca = ''):
 
     return get
 
+def EmitirRelatorio(plano):
+    nome = 'VendasPlano' + plano + '.csv'
+    relatorio = pd.read_sql(nome)
+    return relatorio
