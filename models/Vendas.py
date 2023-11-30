@@ -612,12 +612,26 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
 
         Pedido = pd.read_csv(nome)
 
+        #aqui vou copiar
+        Pedido.fillna('-', inplace=True)
+        Pedido.rename(
+            columns={'bloqMotEspPed': 'Bloqueio Credito', 'situacaoBloq': 'Bloqueio Comercial'},
+            inplace=True)
+        Pedido['Bloqueio Credito'] = Pedido.apply(lambda row: 'sim' if row['Bloqueio Credito'] == 1 else 'Nao',
+                                                        axis=1)
+        Pedido['Bloqueio Comercial'] = Pedido.apply(
+            lambda row: 'sim' if row['Bloqueio Comercial'] == 1 else 'Nao',
+            axis=1)
+        Pedido['Considera Bloqueado'] = Pedido.apply(lambda row: 'sim' if row['Bloqueio Comercial'] == 'sim' or
+                                                                                row[
+                                                                                    'Bloqueio Credito'] == 'sim' else 'Nao',
+                                                           axis=1)
         if somenteAprovados == 'True':
-            Pedido = PedidosBloqueado(Pedido,'True')
+            Pedido = Pedido[Pedido['Considera Bloqueado']=='sim']
         elif somenteAprovados == '':
-            Pedido = PedidosBloqueado(Pedido, '')
+            Pedido = Pedido
         else:
-            Pedido = PedidosBloqueado(Pedido, 'False')
+            Pedido = Pedido[Pedido['Considera Bloqueado']!='sim']
 
 
 
