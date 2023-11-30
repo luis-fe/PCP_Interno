@@ -627,11 +627,11 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
                                                                                     'Bloqueio Credito'] == 'sim' else 'Nao',
                                                            axis=1)
         if somenteAprovados == 'True':
-            Pedido = Pedido[Pedido['Considera Bloqueado']=='sim']
+            Pedido = Pedido[Pedido['Considera Bloqueado']!='sim']
         elif somenteAprovados == '':
             Pedido = Pedido
         else:
-            Pedido = Pedido[Pedido['Considera Bloqueado']!='sim']
+            Pedido = Pedido[Pedido['Considera Bloqueado']=='sim']
 
 
 
