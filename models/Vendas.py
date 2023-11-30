@@ -800,6 +800,6 @@ def EmitirRelatorio(plano):
     nome = 'VendasPlano' + plano + '.csv'
     relatorio = pd.read_csv(nome)
     relatorio.fillna('-', inplace=True)
-    relatorio.drop(['Unnamed'], axis=1, inplace=True)
+   # relatorio.drop(['Unnamed'], axis=1, inplace=True)
 
     return relatorio
