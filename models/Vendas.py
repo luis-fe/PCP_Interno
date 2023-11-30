@@ -803,6 +803,8 @@ def EmitirRelatorio(plano):
     relatorio.rename(
         columns={'bloqMotEspPed': 'Bloqueio Credito'},
         inplace=True)
+    relatorio['Bloqueio Credito'] = relatorio.apply(lambda row: 'sim' if row['Bloqueio Credito']==1 else 'Nao', axis=1)
+
    # relatorio.drop(['Unnamed'], axis=1, inplace=True)
 
     return relatorio
