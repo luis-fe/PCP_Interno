@@ -1,3 +1,4 @@
+
 let IndiceExibicao = 0;
 let TotalPagina;
 let PaginaAtual = 1;
@@ -505,10 +506,12 @@ const ApiEstrutura = 'http://192.168.0.183:8000/pcp/api/Estrutura';
 
 
 function exportarParaExcel() {
-  TextoLabel = LabelProdutos.textContent
-  TextoLabelTamanhos = LabelTamanhos.textContent
-  TextoLabelMP = TextoLabelMP.textContent
-  TextoNomeMp = TextoNomeMp.textContent
+  TextoLabel = LabelProdutos.textContent;
+  TextoLabelTamanhos = LabelTamanhos.textContent;
+  TextoLabelMP = TextoLabelMP.textContent;
+  TextoNomeMp = LabelNomeMp.textContent;
+  TextoFornecedor = LabelFornecedor.textContent;
+  TextoDescProduto = LabelDescProduto.textContent;
 
 
   const dadosParaExportar = {
