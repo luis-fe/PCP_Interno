@@ -295,7 +295,6 @@ def Backup(ano, empresa):
     else:
         dataFim = ano + '-'+mesFinal+'-31'
 
-
     if empresa == 'Todas':
 
 
