@@ -291,7 +291,7 @@ def Backup(ano, empresa):
     conn = ConexaoCSW.Conexao()
     dataInicio = ano + '-01-01'
     if mesFinal in ['11']:
-        dataFim = ano + '-'+mesFinal+'-31'
+        dataFim = ano + '-'+mesFinal+'-30'
     else:
         dataFim = ano + '-'+mesFinal+'-31'
 
