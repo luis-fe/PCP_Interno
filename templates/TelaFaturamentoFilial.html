@@ -44,6 +44,7 @@ const statusText = document.getElementById("status");
 onOffSwitch.addEventListener("change", () => {
     if (onOffSwitch.checked) {
         statusText.innerText = "MENSAL";
+        statusLabel.style.fontSize = "16px";
         criarTabelaEmbalagens(DadosFaturamento, 'Faturado', 'meta');
         createBarChart('Faturado', 'meta');
         localStorage.setItem("dashboardStatus", "MENSAL");
