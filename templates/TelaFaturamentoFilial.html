@@ -44,14 +44,14 @@ const statusText = document.getElementById("status");
 onOffSwitch.addEventListener("change", () => {
     if (onOffSwitch.checked) {
         statusText.innerText = "MENSAL";
-        statusText.style.fontSize = "16px"; // Tamanho de fonte desejado para "MENSAL"
+        statusText.style.fontSize = "18px"; // Tamanho de fonte desejado para "MENSAL"
         criarTabelaEmbalagens(DadosFaturamento, 'Faturado', 'meta');
         createBarChart('Faturado', 'meta');
         localStorage.setItem("dashboardStatus", "MENSAL");
         
     } else {
         statusText.innerText = "ACUMULADO";
-        statusText.style.fontSize = "16px"; // Tamanho de fonte desejado para "MENSAL"
+        statusText.style.fontSize = "18px"; // Tamanho de fonte desejado para "MENSAL"
         criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
         createBarChart('Fat.Acumulado', 'meta acum.');
         localStorage.setItem("dashboardStatus", "ACUMULADO");
@@ -64,6 +64,7 @@ if (localStorageStatus === "ACUMULADO") {
     // Se o valor estiver definido como "ACUMULADO", configure o botão para "ACUMULADO"
     onOffSwitch.checked = false;
     statusText.innerText = "ACUMULADO";
+    statusText.style.fontSize = "18px"; // Tamanho de fonte desejado para "MENSAL"
     window.addEventListener('load', async () => {
     await Faturamento();
     criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
@@ -78,6 +79,7 @@ if (localStorageStatus === "ACUMULADO") {
     // Caso contrário, configure o botão para "MENSAL"
     onOffSwitch.checked = true;
     statusText.innerText = "MENSAL";
+    statusText.style.fontSize = "18px"; // Tamanho de fonte desejado para "MENSAL"
     window.addEventListener('load', async () => {
     await Faturamento();
     criarTabelaEmbalagens(DadosFaturamento, 'Faturado', 'meta');
