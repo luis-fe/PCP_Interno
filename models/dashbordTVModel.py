@@ -273,7 +273,7 @@ def ConfTipoNota(empresa):
 
     if empresa == 'Todas':
         consulta = pd.read_sql('select distinct tiponota from "DashbordTV".configuracao c  '
-                           "where c.exibi_todas_empresas = 'sim'",conn)
+                           "where c.exibi_todas_empresas = 'sim' and  c.empresa <> 'Varejo' ",conn)
 
     elif empresa == 'Varejo':
         consulta = pd.read_sql('select distinct tiponota from "DashbordTV".configuracao c  '
@@ -281,7 +281,7 @@ def ConfTipoNota(empresa):
 
     else:
         consulta = pd.read_sql('select tiponota from "DashbordTV".configuracao c '
-                           'where c.empresa = %s',conn, params=(empresa))
+                           "where c.empresa = %s and c.empresa <> 'Varejo' ",conn, params=(empresa))
 
     consulta['tiponota']= consulta['tiponota'].astype(str)
 
