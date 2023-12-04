@@ -44,12 +44,14 @@ const statusText = document.getElementById("status");
 onOffSwitch.addEventListener("change", () => {
     if (onOffSwitch.checked) {
         statusText.innerText = "MENSAL";
+        statusText.style.fontSize = "16px"; // Tamanho de fonte desejado para "MENSAL"
         criarTabelaEmbalagens(DadosFaturamento, 'Faturado', 'meta');
         createBarChart('Faturado', 'meta');
         localStorage.setItem("dashboardStatus", "MENSAL");
         
     } else {
         statusText.innerText = "ACUMULADO";
+        statusText.style.fontSize = "16px"; // Tamanho de fonte desejado para "MENSAL"
         criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
         createBarChart('Fat.Acumulado', 'meta acum.');
         localStorage.setItem("dashboardStatus", "ACUMULADO");
