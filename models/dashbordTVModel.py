@@ -60,6 +60,16 @@ def Faturamento_ano(ano, empresa):
                 'where n.codPedido >= 0 ' \
                 'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                    'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codempresa in (100, 101)'
+        retornaCsw = pd.read_sql(
+        "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
+        " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
+        " FROM ped.SugestaoPed e "
+        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido "
+        ' WHERE e.codEmpresa in (100, 101)'
+        " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
+        " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
+
+
 
     else:
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido, codNumNota, codEmpresa  ' \
