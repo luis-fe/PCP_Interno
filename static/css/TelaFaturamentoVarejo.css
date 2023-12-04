@@ -2,7 +2,7 @@
     --cor1: rgb(211, 211, 211);
     --cor2: rgb(17, 45, 126);
     --cor3: rgb(93, 140, 233);
-    --cor4: #fff
+    --cor4: #fff;
     --cor5: rgb(250, 172, 204);
 }
 
@@ -14,7 +14,7 @@
 }
 
 .Titulo{
-    background-color: var(--cor3);
+    background-color: var(--cor5);
     color: white;
     font-size: 40px;
     text-align: center;
