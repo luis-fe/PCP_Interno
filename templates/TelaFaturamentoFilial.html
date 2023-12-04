@@ -43,12 +43,14 @@ const statusText = document.getElementById("status");
 
 onOffSwitch.addEventListener("change", () => {
     if (onOffSwitch.checked) {
+    statusLabel.style.fontSize = "16px";
         statusText.innerText = "MENSAL";
         criarTabelaEmbalagens(DadosFaturamento, 'Faturado', 'meta');
         createBarChart('Faturado', 'meta');
         localStorage.setItem("dashboardStatus", "MENSAL");
         
     } else {
+    statusLabel.style.fontSize = "16px";
         statusText.innerText = "ACUMULADO";
         criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
         createBarChart('Fat.Acumulado', 'meta acum.');
@@ -61,6 +63,7 @@ const localStorageStatus = localStorage.getItem("dashboardStatus");
 if (localStorageStatus === "ACUMULADO") {
     // Se o valor estiver definido como "ACUMULADO", configure o botão para "ACUMULADO"
     onOffSwitch.checked = false;
+    statusLabel.style.fontSize = "16px";
     statusText.innerText = "ACUMULADO";
     window.addEventListener('load', async () => {
     await Faturamento();
@@ -75,6 +78,7 @@ if (localStorageStatus === "ACUMULADO") {
 } else {
     // Caso contrário, configure o botão para "MENSAL"
     onOffSwitch.checked = true;
+    statusLabel.style.fontSize = "16px";
     statusText.innerText = "MENSAL";
     window.addEventListener('load', async () => {
     await Faturamento();
