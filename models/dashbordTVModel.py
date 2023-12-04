@@ -329,7 +329,7 @@ def Backup(ano, empresa):
                                                             ' union ' \
                                                             "select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, '0' ,codNumNota, "+"'"+empresa+"'" \
             ' FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota in (30, 180, 156, 51, 175, 81, 12, 47, 67, 149, 159, 1030, 2015, 1, 27, 102, 2, 9998) and codPedido is null ' \
+            'where n.codTipoDeNota not in (9) and codPedido is null ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
 
