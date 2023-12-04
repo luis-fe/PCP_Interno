@@ -145,5 +145,8 @@ document.getElementById('Geral').addEventListener('click', () => {
 document.getElementById('Filial').addEventListener('click', () => {
     window.location.href = "TelaFaturamentoFilial.html";
 })
+document.getElementById('Varejo').addEventListener('click', () => {
+    window.location.href = "TelaFaturamentoVarejo.html";
+})
 
 
