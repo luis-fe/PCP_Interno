@@ -248,7 +248,7 @@ def GetMetas(empresa, ano):
     conn = ConexaoPostgreMPL.conexao()
     if empresa != 'Todas':
         consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
-                           'where empresa = %s and ano = %s  order by mes ' , conn, params=(empresa,ano))
+                           "where empresa = %s and ano = %s and  c.empresa <> 'Varejo'  order by mes " , conn, params=(empresa,ano))
     else:
         consulta = pd.read_sql('select mes as "Mês", meta from "PCP"."DashbordTV".metas '
                            'where ano = %s order by mes' , conn, params=(ano,))
@@ -273,7 +273,7 @@ def ConfTipoNota(empresa):
 
     if empresa == 'Todas':
         consulta = pd.read_sql('select distinct tiponota from "DashbordTV".configuracao c  '
-                           "where c.exibi_todas_empresas = 'sim' and  c.empresa <> 'Varejo' ",conn)
+                           "where c.exibi_todas_empresas = 'sim'  ",conn)
 
     elif empresa == 'Varejo':
         consulta = pd.read_sql('select distinct tiponota from "DashbordTV".configuracao c  '
@@ -281,7 +281,7 @@ def ConfTipoNota(empresa):
 
     else:
         consulta = pd.read_sql('select tiponota from "DashbordTV".configuracao c '
-                           "where c.empresa = %s and c.empresa <> 'Varejo' ",conn, params=(empresa))
+                           "where c.empresa = %s  ",conn, params=(empresa))
 
     consulta['tiponota']= consulta['tiponota'].astype(str)
 
