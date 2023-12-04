@@ -298,13 +298,13 @@ def Backup(ano, empresa):
     if empresa == 'Todas':
 
 
-        query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
+        query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
             'FROM Fat.NotaFiscal n ' \
             'where n.codPedido >= 0 ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
             'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 ' \
                                                             ' union ' \
-                                                            'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
+                                                            'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
             'FROM Fat.NotaFiscal n ' \
             'where n.codTipoDeNota not in (9) and codPedido is null ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
