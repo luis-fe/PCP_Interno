@@ -481,7 +481,7 @@ def OutrosFat(ano, empresa):
 
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'VD Mostruario': faturamento_por_mes, 'VD Mostruario Acumulado':faturamento_acumulado,
-                                   'VD Revenda MP':faturamento_mes_REV, 'VD Revenda MP Acumulado':faturamento_acumulado_RV})
+                                   'VD Revenda MP':faturamento_mes_REV, 'VD Rv Acumulado':faturamento_acumulado_RV})
     total = dataframe['faturado'].sum()
     total = "{:,.2f}".format(total)
     total = 'R$ ' + str(total)
