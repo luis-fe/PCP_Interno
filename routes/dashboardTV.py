@@ -3,6 +3,8 @@ from functools import wraps
 from flask_cors import CORS
 from models import dashbordTVModel, Vendas
 import pandas as pd
+from flask_script import Manager
+
 
 dashboardTVroute = Blueprint('dashboardTVroute', __name__)
 def token_required(f):
@@ -37,35 +39,35 @@ def dashboarTVBACKUP():
             OP_data.append(op_dict)
         return jsonify(OP_data)
 
-@dashboardTVroute.route('/pcp/api/dashboarTV', methods=['GET'])
-@token_required
+
+@app.route('/pcp/api/dashboarTV', methods=['GET'])
 def dashboarTV():
-    ano = request.args.get('ano','2023')
-    empresa = request.args.get('empresa', 'Todas')
+    try:
+        ano = request.args.get('ano', '2023')
+        empresa = request.args.get('empresa', 'Todas')
 
-    if empresa == 'Outras':
-        usuarios = dashbordTVModel.OutrosFat(ano, empresa)
-        usuarios = pd.DataFrame(usuarios)
-    else:
+        if empresa == 'Outras':
+            usuarios = dashbordTVModel.OutrosFat(ano, empresa)
+            usuarios = pd.DataFrame(usuarios)
+        else:
+            usuarios = dashbordTVModel.Faturamento_ano(ano, empresa)
+            usuarios = pd.DataFrame(usuarios)
 
-        usuarios = dashbordTVModel.Faturamento_ano(ano,empresa)
-        usuarios = pd.DataFrame(usuarios)
-
-
-
-
-    # Obtém os nomes das colunas
-    column_names = usuarios.columns
-    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
-    OP_data = []
-    for index, row in usuarios.iterrows():
-        op_dict = {}
+        # Obtém os nomes das colunas
+        column_names = usuarios.columns
+        # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+        OP_data = []
         for index, row in usuarios.iterrows():
             op_dict = {}
             for column_name in column_names:
                 op_dict[column_name] = row[column_name]
             OP_data.append(op_dict)
+
         return jsonify(OP_data)
+    except Exception as e:
+        print(f"Erro detectado: {str(e)}")
+        print("Reiniciando o aplicativo...")
+        manager.handle(sys.argv + ['run'])
 @dashboardTVroute.route('/pcp/api/metasFaturamento', methods=['GET'])
 @token_required
 def metasFaturamento():
