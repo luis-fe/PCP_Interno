@@ -426,12 +426,15 @@ def OutrosFat(ano, empresa):
     faturamento_acumulado_RV = []
     faturamento_acumulado_DEV = []
     dataframe48 = dataframe[dataframe['tiponota'] == 48]
+    dataframeREV = dataframe[
+        (dataframe['tiponota'] == 167) | (dataframe['tiponota'] == 30) | (dataframe['tiponota'] == 118)]
+    dataframeDEV = dataframe[(dataframe['tiponota'] == 102)]
     for mes in meses:
         # Filtrar os dados do mês atual
         procura = f"-{mes.split('-')[0]}-"
 
         df_mes = dataframe48[dataframe48['dataEmissao'].str.contains(procura)]
-        dataframeREV = dataframe[(dataframe['tiponota'] == 167) | (dataframe['tiponota'] == 30) | (dataframe['tiponota'] == 118)]
+
         df_mesREV = dataframeREV[dataframeREV['dataEmissao'].str.contains(procura)]
 
         dataframeDEV = dataframe[(dataframe['tiponota'] == 102)]
@@ -563,7 +566,7 @@ def OutrosFat(ano, empresa):
     df_dia = df_dia.replace(',', ".")
     df_dia = df_dia.replace(';', ",")
     df_faturamento = df_faturamento.append(
-        {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario},
+        {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario, 'VD Mostruario Acumulado':totalVDMostruario},
         ignore_index=True)
 
     df_faturamento.fillna('-', inplace=True)
