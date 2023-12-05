@@ -428,7 +428,7 @@ def OutrosFat(ano, empresa):
         procura = f"-{mes.split('-')[0]}-"
         dataframe48 = dataframe[dataframe['tiponota'] == 48]
         df_mes = dataframe48[dataframe48['dataEmissao'].str.contains(procura)]
-        dataframeREV = dataframe[dataframe['tiponota'] == 167 | dataframe['tiponota'] == 30  ]
+        dataframeREV = dataframe[dataframe['tiponota'] == 167 or dataframe['tiponota'] == 30  ]
         df_mesREV = dataframeREV[dataframeREV['dataEmissao'].str.contains(procura)]
 
         # Calcular o faturamento do mês
