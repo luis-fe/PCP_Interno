@@ -39,7 +39,9 @@ def dashboarTVBACKUP():
                 op_dict[column_name] = row[column_name]
             OP_data.append(op_dict)
         return jsonify(OP_data)
-
+def restart_server():
+    print("Reiniciando o aplicativo...")
+    subprocess.call(["python", "main.py"])
 
 @dashboardTVroute.route('/pcp/api/dashboarTV', methods=['GET'])
 def dashboarTV():
