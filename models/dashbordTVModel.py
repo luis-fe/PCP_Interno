@@ -356,7 +356,7 @@ def Backup(ano, empresa):
     elif empresa == 'Outras':
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
                 'FROM Fat.NotaFiscal n ' \
-                'where n.codTipoDeNota in (48, 167) ' \
+                'where n.codTipoDeNota in (48, 167, 30) ' \
                 'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                    'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa in(1, 4) '
         dataframe = pd.read_sql(query, conn)
@@ -395,7 +395,7 @@ def OutrosFat(ano, empresa):
     dataFim = ano + '-12-31'
     query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota in (48, 167) ' \
+            'where n.codTipoDeNota in (48, 167, 30) ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codempresa in (100, 101)'
     retornaCsw = pd.read_sql(
@@ -428,7 +428,7 @@ def OutrosFat(ano, empresa):
         procura = f"-{mes.split('-')[0]}-"
         dataframe48 = dataframe[dataframe['tiponota'] == 48]
         df_mes = dataframe48[dataframe48['dataEmissao'].str.contains(procura)]
-        dataframeREV = dataframe[dataframe['tiponota'] == 167]
+        dataframeREV = dataframe[dataframe['tiponota'] == 167 | dataframe['tiponota'] == 30  ]
         df_mesREV = dataframeREV[dataframeREV['dataEmissao'].str.contains(procura)]
 
         # Calcular o faturamento do mês
