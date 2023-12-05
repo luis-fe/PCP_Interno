@@ -423,7 +423,7 @@ def OutrosFat(ano, empresa):
     for mes in meses:
         # Filtrar os dados do mês atual
         procura = f"-{mes.split('-')[0]}-"
-        dataframe48 = dataframe[dataframe['tiponota'] == '48']
+        dataframe48 = dataframe[dataframe['tiponota'] == 48]
         df_mes = dataframe48[dataframe48['dataEmissao'].str.contains(procura)]
 
         # Calcular o faturamento do mês
