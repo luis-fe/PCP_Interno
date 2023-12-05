@@ -512,8 +512,7 @@ def OutrosFat(ano, empresa):
     df_faturamento['total'] = df_faturamento['VD Mostruario'].str.replace('R\$ ', '').str.replace(',', ';').str.replace(
         '.', ',').str.replace(';', '.')
 
-    df_faturamento['total'] = df_faturamento['VD Mostruario'].str.extract('(\d+,\d+.\d+)').str.replace(',', '').astype(
-        float)
+    df_faturamento['total'] = df_faturamento['VD Mostruario'].str.extract('(\d+,\d+.\d+)').str.replace(',', '')
 
     total = dataframe['faturado'].sum()
     total = "{:,.2f}".format(total)
