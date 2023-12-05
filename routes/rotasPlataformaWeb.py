@@ -46,7 +46,7 @@ def TelaFaturamentoVarejo():
     return render_template('TelaFaturamentoVarejo.html')
 
 @rotasPlataformaWeb.route('/TelaFaturamentoOutraSaida.html')
-def TelaFaturamentoVarejo():
+def TelaFaturamentoOutraSaida():
     return render_template('TelaFaturamentoOutraSaida.html')
 
 @rotasPlataformaWeb.route('/TelaCurvaVendas')
