@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Faturamento</title>
-    <link rel="stylesheet" href="/static/css/TelaFaturamentoVarejo.css">
+    <link rel="stylesheet" href="/static/css/TelaFaturamentoOutraSaida.css">
 </head>
 <body>
     <div class="Titulo">
@@ -29,7 +29,7 @@
                 <label for="text" id="FaturadoDia"></label>
             </div>
             <label for="text" id="Retorna"></label>
-        </div>
+
         <div class="grafico">
             <canvas id="meuGraficoDeBarras"></canvas>
         </div>
@@ -37,7 +37,7 @@
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/static/js/TelaFaturamentoVarejo.js"></script>
+<script src="/static/js/TelaFaturamentoOutraSaida.js"></script>
 <script>
     const onOffSwitch = document.getElementById("on-off");
 const statusText = document.getElementById("status");
@@ -84,7 +84,7 @@ if (localStorageStatus === "ACUMULADO") {
     createBarChart('Faturado', 'meta');
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {
-        window.location.href = "TelaFaturamentoFilial.html";
+        window.location.href = "TelaFaturamentoGeral.html";
     }, 20000);
     
 });}
