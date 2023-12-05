@@ -117,7 +117,9 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta) {
     const cabecalhoCelula3 = cabecalhoLinha.insertCell(2);
     cabecalhoCelula3.innerHTML = 'Devolucao';
     const cabecalhoCelula4 = cabecalhoLinha.insertCell(3);
-    cabecalhoCelula4.innerHTML = 'Fat Mostruario';
+    cabecalhoCelula4.innerHTML = 'Venda Mostruario';
+    const cabecalhoCelula5 = cabecalhoLinha.insertCell(4);
+    cabecalhoCelula5.innerHTML = 'Total';
 
     const corpoTabela = TabelaFaturamento.createTBody();
 

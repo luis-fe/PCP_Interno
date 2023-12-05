@@ -348,11 +348,16 @@ def Backup(ano, empresa):
 
         nome = ano + 'Vendas'+empresa+'.csv'
         dataframe.to_csv(nome)
+    elif empresa == 'Outras':
+        query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
+                'FROM Fat.NotaFiscal n ' \
+                'where n.codTipoDeNota in (48) ' \
+                'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+                                                                   'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa in(1, 4) '
+        dataframe = pd.read_sql(query, conn)
 
-
-
-
-
+        nome = ano + 'Vendas' + empresa + '.csv'
+        dataframe.to_csv(nome)
 
     else:
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido, codNumNota, codEmpresa , codpedido ' \
