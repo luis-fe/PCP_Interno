@@ -403,7 +403,7 @@ def OutrosFat(ano, empresa):
         " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
         " FROM ped.SugestaoPed e "
         " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido "
-        ' WHERE e.codTipoNota in (48)'
+        ' WHERE e.codempresa in (100, 101)'
         " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
 
