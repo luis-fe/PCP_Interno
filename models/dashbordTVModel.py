@@ -509,8 +509,6 @@ def OutrosFat(ano, empresa):
                                    'VD Revenda MP':faturamento_mes_REV, 'VD Rv Acumulado':faturamento_acumulado_RV,
                                    'DEV MP':faturamento_mes_DEV, 'DEV MP Acumulado':faturamento_acumulado_DEV})
 
-    df_faturamento['total'] = df_faturamento['VD Mostruario'].str.replace('R\$ ', '').str.replace(',', ';').str.replace(
-        '.', ',').str.replace(';', '.')
 
     df_faturamento['total'] = df_faturamento['VD Mostruario'].str.extract('(\d+,\d+.\d+)').str.replace(',', '')
 
