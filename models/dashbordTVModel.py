@@ -523,7 +523,7 @@ def OutrosFat(ano, empresa):
 
     df_faturamento['total'] = df_faturamento['total1'].astype(float) + df_faturamento['total']+df_faturamento['total2'].astype(float)
 
-
+    df_faturamento.drop(['total2'],axis=1)
 
 
 
