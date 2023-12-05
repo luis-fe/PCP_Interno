@@ -551,7 +551,12 @@ def OutrosFat(ano, empresa):
     df_dia = df_dia.replace('.', ";")
     df_dia = df_dia.replace(',', ".")
     df_dia = df_dia.replace(';', ",")
+    df_faturamento = df_faturamento.append(
+        {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total},
+        ignore_index=True)
+
     df_faturamento.fillna('-', inplace=True)
+
     data = {
         '1- Ano:': f'{ano}',
         '2- Empresa:': f'{empresa}',

@@ -6,7 +6,7 @@ let Atualizacao = ''
 
 async function Faturamento() {
     try {
-        const response = await fetch(`http://192.168.0.183:8000/pcp/api/dashboarTV?ano=${2023}&empresa=${'Varejo'}`, {
+        const response = await fetch(`http://192.168.0.183:8000/pcp/api/dashboarTV?ano=${2023}&empresa=${'Outras'}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ async function createBarChart(CondicaoFat, CondicaoMeta) {
     const dadosFiltrados = DadosFaturamento.filter(item => item.Mês !== '✈TOTAL');
     const valoresFaturadosMilhoes = dadosFiltrados.map((item) => {
         const faturado = item[CondicaoFat].replace('R$', '').replace(/\./g, '').replace(',', '.');
-        return parseFloat(faturado) ;
+        return parseFloat(VD Mostruario) ;
     });
     const MetasMilhoes = dadosFiltrados.map((item) => {
         const meta = item[CondicaoMeta].replace('R$', '').replace(/\./g, '').replace(',', '.');
