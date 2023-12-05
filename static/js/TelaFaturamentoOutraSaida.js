@@ -47,7 +47,7 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condica
     const cabecalhoCelula4 = cabecalhoLinha.insertCell(3);
     cabecalhoCelula4.innerHTML = 'Devolucao MP';
     const cabecalhoCelula5 = cabecalhoLinha.insertCell(4);
-    cabecalhoCelula5.innerHTML = 'Total';
+    cabecalhoCelula5.innerHTML = "_____Total____";
 
     const corpoTabela = TabelaFaturamento.createTBody();
 
@@ -63,6 +63,20 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condica
         celula4.innerHTML = item[condicao2];
         const celula5 = linha.insertCell(4);
         celula5.innerHTML = item[condicao3];
+
+        celula5.classList.add('cor-da-coluna');
+        // Define as propriedades de estilo para a classe
+const style = document.createElement('style');
+style.innerHTML = `
+  .cor-da-coluna {
+    background-color: rgb(122, 90, 0);  // Substitua 'yellow' pela cor desejada
+    // Adicione outras propriedades de estilo, se necessário
+  }
+`;
+// Adiciona o elemento style ao cabeçalho do documento (pode ser o head ou outro local apropriado)
+document.head.appendChild(style);
+
+
     });
 
     document.getElementById('Retorna').textContent = `Retorna: ${Retorna}`

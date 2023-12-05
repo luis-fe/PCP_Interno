@@ -51,7 +51,7 @@ onOffSwitch.addEventListener("change", () => {
 
     } else {
         statusText.innerText = "ACUMULADO";
-        criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
+        criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Rv Acumulado','DEV MP Acumulado','totalAcumulado');
         localStorage.setItem("dashboardStatus", "ACUMULADO");
     }
 });
@@ -65,7 +65,7 @@ if (localStorageStatus === "ACUMULADO") {
     statusText.innerText = "ACUMULADO";
     window.addEventListener('load', async () => {
     await Faturamento();
-    criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
+    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Rv Acumulado','DEV MP Acumulado','totalAcumulado');
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {
         window.location.href = "TelaFaturamentoFilial.html";
@@ -78,7 +78,7 @@ if (localStorageStatus === "ACUMULADO") {
     statusText.innerText = "MENSAL";
     window.addEventListener('load', async () => {
     await Faturamento();
-    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total');
+    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Revenda MP','DEV MP','total');
 
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {
