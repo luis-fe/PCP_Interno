@@ -11,7 +11,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-
+import time
 import plotly.express as px
 
 app = Flask(__name__)
@@ -323,4 +323,15 @@ def carga_setor():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port)
+    while True:
+        try:
+    # Coloque aqui o código principal do seu aplicativo Flask
+    # por exemplo, app.run(debug=True)
+    # Certifique-se de que esta parte do código está dentro do bloco try
+
+            app.run(host='0.0.0.0', port=port)
+
+        except Exception as e:
+            print(f"Erro detectado: {str(e)}")
+            print("Reiniciando o aplicativo em 5 segundos...")
+            time.sleep(5)  # Espere 5 segundos antes de reiniciar
