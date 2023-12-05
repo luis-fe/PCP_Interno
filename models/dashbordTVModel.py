@@ -356,7 +356,7 @@ def Backup(ano, empresa):
     elif empresa == 'Outras':
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
                 'FROM Fat.NotaFiscal n ' \
-                'where n.codTipoDeNota in (48, 167, 30, 118) ' \
+                'where n.codTipoDeNota in (48, 167, 30, 118, 102) ' \
                 'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                    'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa in(1, 4) '
         dataframe = pd.read_sql(query, conn)
@@ -395,7 +395,7 @@ def OutrosFat(ano, empresa):
     dataFim = ano + '-12-31'
     query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota in (48, 167, 30, 118) ' \
+            'where n.codTipoDeNota in (48, 167, 30, 118, 102) ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codempresa in (100, 101)'
     retornaCsw = pd.read_sql(
@@ -418,10 +418,13 @@ def OutrosFat(ano, empresa):
 
     faturamento_por_mes = []
     faturamento_mes_REV = []
+    faturamento_mes_DEV = []
     acumulado = 0.00
     acumuladoREV = 0.00
+    acumuladoDEV = 0.00
     faturamento_acumulado = []
     faturamento_acumulado_RV = []
+    faturamento_acumulado_DEV = []
 
     for mes in meses:
         # Filtrar os dados do mês atual
@@ -431,14 +434,19 @@ def OutrosFat(ano, empresa):
         dataframeREV = dataframe[(dataframe['tiponota'] == 167) | (dataframe['tiponota'] == 30) | (dataframe['tiponota'] == 118)]
         df_mesREV = dataframeREV[dataframeREV['dataEmissao'].str.contains(procura)]
 
+        dataframeDEV = dataframe[(dataframe['tiponota'] == 102)]
+        df_mesDEV = dataframeDEV[dataframeDEV['dataEmissao'].str.contains(procura)]
+
         # Calcular o faturamento do mês
         faturamento_mes = df_mes['faturado'].sum()
         faturamento_mesREV = df_mesREV['faturado'].sum()
+        faturamento_mesDev = df_mesDEV['faturado'].sum()
 
         # Acumular o faturamento
         acumulado += faturamento_mes
         # Acumular o faturamento
         acumuladoREV += faturamento_mesREV
+        acumuladoDEV += faturamento_mesDev
 
         # Formatar o faturamento do mês
         faturamento_mes = "{:,.2f}".format(faturamento_mes)
@@ -448,12 +456,19 @@ def OutrosFat(ano, empresa):
         faturamento_mesREV = "{:,.2f}".format(faturamento_mesREV)
         faturamento_mesREV = 'R$ ' + faturamento_mesREV.replace(',', ';').replace('.', ',').replace(';', '.')
 
+        # Formatar o faturamento do mês REV
+        faturamento_mesDev = "{:,.2f}".format(faturamento_mesDev)
+        faturamento_mesDev = 'R$ ' + faturamento_mesDev.replace(',', ';').replace('.', ',').replace(';', '.')
+
 
         if faturamento_mes == 'R$ 0,00':
             faturamento_mes = ''
 
         if faturamento_mesREV == 'R$ 0,00':
             faturamento_mesREV = ''
+
+        if faturamento_mesDev == 'R$ 0,00':
+            faturamento_mesDev = ''
 
         # Formatar o acumulado
         acumulado_str = "{:,.2f}".format(acumulado)
@@ -476,11 +491,23 @@ def OutrosFat(ano, empresa):
         faturamento_mes_REV.append(faturamento_mesREV)
         faturamento_acumulado_RV.append(acumulado_strRV)
 
+        # Formatar o acumulado
+        acumulado_strDV = "{:,.2f}".format(acumuladoDEV)
+        acumulado_strDV = 'R$ ' + acumulado_strDV.replace('.', ';')
+
+        acumulado_strDV = acumulado_strDV.replace(',', '.')
+        acumulado_strDV = acumulado_strDV.replace(';', ',')
+
+
+        faturamento_mes_DEV.append(faturamento_mesDev)
+        faturamento_acumulado_DEV.append(acumulado_strDV)
+
 
 
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'VD Mostruario': faturamento_por_mes, 'VD Mostruario Acumulado':faturamento_acumulado,
-                                   'VD Revenda MP':faturamento_mes_REV, 'VD Rv Acumulado':faturamento_acumulado_RV})
+                                   'VD Revenda MP':faturamento_mes_REV, 'VD Rv Acumulado':faturamento_acumulado_RV,
+                                   'DEV MP':faturamento_mes_DEV, 'DEV MP Acumulado':faturamento_acumulado_DEV})
     total = dataframe['faturado'].sum()
     total = "{:,.2f}".format(total)
     total = 'R$ ' + str(total)
