@@ -425,11 +425,11 @@ def OutrosFat(ano, empresa):
     faturamento_acumulado = []
     faturamento_acumulado_RV = []
     faturamento_acumulado_DEV = []
-
+    dataframe48 = dataframe[dataframe['tiponota'] == 48]
     for mes in meses:
         # Filtrar os dados do mês atual
         procura = f"-{mes.split('-')[0]}-"
-        dataframe48 = dataframe[dataframe['tiponota'] == 48]
+
         df_mes = dataframe48[dataframe48['dataEmissao'].str.contains(procura)]
         dataframeREV = dataframe[(dataframe['tiponota'] == 167) | (dataframe['tiponota'] == 30) | (dataframe['tiponota'] == 118)]
         df_mesREV = dataframeREV[dataframeREV['dataEmissao'].str.contains(procura)]
@@ -544,6 +544,17 @@ def OutrosFat(ano, empresa):
     total = total.replace('.', ";")
     total = total.replace(',', ".")
     total = total.replace(';', ",")
+
+
+    totalVDMostruario = dataframe48['faturado'].sum()
+    totalVDMostruario = "{:,.2f}".format(totalVDMostruario)
+    totalVDMostruario = 'R$ ' + str(totalVDMostruario)
+    totalVDMostruario = totalVDMostruario.replace('.', ";")
+    totalVDMostruario = totalVDMostruario.replace(',', ".")
+    totalVDMostruario = totalVDMostruario.replace(';', ",")
+
+
+
     df_dia = dataframe[dataframe['dataEmissao'].str.contains(dia)]
     df_dia = df_dia['faturado'].sum()
     df_dia = "{:,.2f}".format(df_dia)
@@ -552,7 +563,7 @@ def OutrosFat(ano, empresa):
     df_dia = df_dia.replace(',', ".")
     df_dia = df_dia.replace(';', ",")
     df_faturamento = df_faturamento.append(
-        {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total},
+        {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario},
         ignore_index=True)
 
     df_faturamento.fillna('-', inplace=True)

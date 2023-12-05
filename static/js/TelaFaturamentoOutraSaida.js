@@ -37,7 +37,7 @@ async function createBarChart(CondicaoFat, CondicaoMeta) {
     const dadosFiltrados = DadosFaturamento.filter(item => item.Mês !== '✈TOTAL');
     const valoresFaturadosMilhoes = dadosFiltrados.map((item) => {
         const faturado = item[CondicaoFat].replace('R$', '').replace(/\./g, '').replace(',', '.');
-        return parseFloat(VD Mostruario) ;
+        return parseFloat(faturado) ;
     });
     const MetasMilhoes = dadosFiltrados.map((item) => {
         const meta = item[CondicaoMeta].replace('R$', '').replace(/\./g, '').replace(',', '.');
