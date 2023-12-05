@@ -3,7 +3,8 @@ from functools import wraps
 from flask_cors import CORS
 from models import dashbordTVModel, Vendas
 import pandas as pd
-from flask_script import Manager
+import subprocess
+
 
 
 dashboardTVroute = Blueprint('dashboardTVroute', __name__)
@@ -40,7 +41,7 @@ def dashboarTVBACKUP():
         return jsonify(OP_data)
 
 
-@app.route('/pcp/api/dashboarTV', methods=['GET'])
+@dashboardTVroute.route('/pcp/api/dashboarTV', methods=['GET'])
 def dashboarTV():
     try:
         ano = request.args.get('ano', '2023')
@@ -66,8 +67,10 @@ def dashboarTV():
         return jsonify(OP_data)
     except Exception as e:
         print(f"Erro detectado: {str(e)}")
-        print("Reiniciando o aplicativo...")
-        manager.handle(sys.argv + ['run'])
+        restart_server()
+        return jsonify({"error": "O servidor foi reiniciado devido a um erro."})
+
+
 @dashboardTVroute.route('/pcp/api/metasFaturamento', methods=['GET'])
 @token_required
 def metasFaturamento():
