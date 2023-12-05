@@ -510,7 +510,7 @@ def OutrosFat(ano, empresa):
                                    'DEV MP':faturamento_mes_DEV, 'DEV MP Acumulado':faturamento_acumulado_DEV})
 
     df_faturamento['total'] = df_faturamento['VD Mostruario'].str.replace('R\$ ', '').str.replace('.', '').str.replace(',', '.')#.astype(float)
-    df_faturamento['total'] = df_faturamento.apply(lambda row: '0' if row['VD Mostruario'] == '' else row['VD Mostruario'], axis=1 )
+    df_faturamento['total'] = df_faturamento.apply(lambda row: '0' if row['total'] == '' else row['total'], axis=1 )
     df_faturamento['total'] = df_faturamento['total'].astype(float)
     total = dataframe['faturado'].sum()
     total = "{:,.2f}".format(total)
