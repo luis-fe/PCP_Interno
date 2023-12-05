@@ -514,8 +514,14 @@ def OutrosFat(ano, empresa):
     df_faturamento['total'] = df_faturamento['total'].astype(float)
 
     df_faturamento['total1'] = df_faturamento['VD Revenda MP'].str.replace('R\$ ', '').str.replace('.', '').str.replace(',', '.')#.astype(float)
-    df_faturamento['total1'] = df_faturamento.apply(lambda row: '0' if row['total1'] == '' else row['total'], axis=1 )
-    df_faturamento['total'] = df_faturamento['total1'].astype(float) + df_faturamento['total']
+    df_faturamento['total1'] = df_faturamento.apply(lambda row: '0' if row['total1'] == '' else row['total1'], axis=1 )
+
+    df_faturamento['total2'] = df_faturamento['DEV MP'].str.replace('R\$ ', '').str.replace('.', '').str.replace(
+        ',', '.')  # .astype(float)
+    df_faturamento['total2'] = df_faturamento.apply(lambda row: '0' if row['total2'] == '' else row['total2'], axis=1)
+
+
+    df_faturamento['total'] = df_faturamento['total1'].astype(float) + df_faturamento['total']+df_faturamento['total2'].astype(float)
 
 
 
