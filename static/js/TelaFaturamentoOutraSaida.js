@@ -30,7 +30,7 @@ async function Faturamento() {
     }
 }
 
-function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta) {
+function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condicao2, condicao3) {
     const TabelaFaturamento = document.getElementById('TabelaFaturamento');
     TabelaFaturamento.innerHTML = ''; // Limpa o conteúdo da tabela antes de preenchê-la novamente
 
@@ -43,9 +43,9 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta) {
     const cabecalhoCelula2 = cabecalhoLinha.insertCell(1);
     cabecalhoCelula2.innerHTML = 'VD Mostruario';
     const cabecalhoCelula3 = cabecalhoLinha.insertCell(2);
-    cabecalhoCelula3.innerHTML = 'Devolucao';
+    cabecalhoCelula3.innerHTML = 'Revenda MP.';
     const cabecalhoCelula4 = cabecalhoLinha.insertCell(3);
-    cabecalhoCelula4.innerHTML = 'Venda Mostruario';
+    cabecalhoCelula4.innerHTML = 'Devolucao MP';
     const cabecalhoCelula5 = cabecalhoLinha.insertCell(4);
     cabecalhoCelula5.innerHTML = 'Total';
 
@@ -56,9 +56,13 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta) {
         const celula1 = linha.insertCell(0);
         celula1.innerHTML = item.Mês;
         const celula2 = linha.insertCell(1);
-        celula2.innerHTML = item[CondicaoMeta];
+        celula2.innerHTML = item[CondicaoFat];
         const celula3 = linha.insertCell(2);
-        celula3.innerHTML = item[CondicaoFat];
+        celula3.innerHTML = item[CondicaoMeta];
+        const celula4 = linha.insertCell(3);
+        celula4.innerHTML = item[condicao2];
+        const celula5 = linha.insertCell(4);
+        celula5.innerHTML = item[condicao3];
     });
 
     document.getElementById('Retorna').textContent = `Retorna: ${Retorna}`

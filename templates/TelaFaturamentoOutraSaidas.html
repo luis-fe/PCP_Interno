@@ -45,14 +45,13 @@ const statusText = document.getElementById("status");
 onOffSwitch.addEventListener("change", () => {
     if (onOffSwitch.checked) {
         statusText.innerText = "MENSAL";
-        criarTabelaEmbalagens(DadosFaturamento, 'Faturado', 'meta');
-        createBarChart('Faturado', 'meta');
+        criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total');
+
         localStorage.setItem("dashboardStatus", "MENSAL");
-        
+
     } else {
         statusText.innerText = "ACUMULADO";
         criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
-        createBarChart('Fat.Acumulado', 'meta acum.');
         localStorage.setItem("dashboardStatus", "ACUMULADO");
     }
 });
@@ -67,10 +66,9 @@ if (localStorageStatus === "ACUMULADO") {
     window.addEventListener('load', async () => {
     await Faturamento();
     criarTabelaEmbalagens(DadosFaturamento, 'Fat.Acumulado', 'meta acum.');
-    createBarChart('Fat.Acumulado', 'meta acum.'); 
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {
-        window.location.href = "TelaFaturamentoGeral.html";
+        window.location.href = "TelaFaturamentoFilial.html";
     }, 20000);
 });
 
@@ -80,13 +78,15 @@ if (localStorageStatus === "ACUMULADO") {
     statusText.innerText = "MENSAL";
     window.addEventListener('load', async () => {
     await Faturamento();
-    criarTabelaEmbalagens(DadosFaturamento, 'Faturado', 'meta');
-    createBarChart('Faturado', 'meta');
+    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total');
+
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {
-        window.location.href = "TelaFaturamentoGeral.html";
+        window.location.href = "TelaFaturamentoFilial.html";
     }, 20000);
-    
+
 });}
+
+
 </script>
 </html>

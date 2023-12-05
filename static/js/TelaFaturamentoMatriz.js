@@ -43,7 +43,7 @@ async function createBarChart(CondicaoFat, CondicaoMeta) {
         const meta = item[CondicaoMeta].replace('R$', '').replace(/\./g, '').replace(',', '.');
         return parseFloat(meta) ;
     });
-       
+
     console.log(valoresFaturadosMilhoes)
     console.log(MetasMilhoes)
 
