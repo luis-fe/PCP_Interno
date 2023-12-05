@@ -421,7 +421,7 @@ def OutrosFat(ano, empresa):
     acumulado = 0.00
     acumuladoREV = 0.00
     faturamento_acumulado = []
-    faturamento_acumuladoRV = []
+    faturamento_acumulado_RV = []
 
     for mes in meses:
         # Filtrar os dados do mês atual
@@ -474,14 +474,14 @@ def OutrosFat(ano, empresa):
 
 
         faturamento_mes_REV.append(faturamento_mesREV)
-        faturamento_acumuladoRV.append(acumulado_strRV)
+        faturamento_acumulado_RV.append(acumulado_strRV)
 
         faturamento_por_mes.append(faturamento_mes)
         faturamento_acumulado.append(acumulado_str)
 
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'VD Mostruario': faturamento_por_mes, 'VD Mostruario Acumulado':faturamento_acumulado,
-                                   'VD Revenda MP':faturamento_mes_REV, 'VD Revenda MP Acumulado':faturamento_acumuladoRV})
+                                   'VD Revenda MP':faturamento_mes_REV, 'VD Revenda MP Acumulado':faturamento_acumulado_RV})
     total = dataframe['faturado'].sum()
     total = "{:,.2f}".format(total)
     total = 'R$ ' + str(total)
