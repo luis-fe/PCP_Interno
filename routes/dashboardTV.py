@@ -43,8 +43,13 @@ def dashboarTV():
     ano = request.args.get('ano','2023')
     empresa = request.args.get('empresa', 'Todas')
 
-    usuarios = dashbordTVModel.Faturamento_ano(ano,empresa)
-    usuarios = pd.DataFrame(usuarios)
+    if empresa == 'Outras':
+        usuarios = dashbordTVModel.OutrosFat(ano, empresa)
+        usuarios = pd.DataFrame(usuarios)
+    else:
+
+        usuarios = dashbordTVModel.Faturamento_ano(ano,empresa)
+        usuarios = pd.DataFrame(usuarios)
 
 
 

@@ -378,3 +378,94 @@ def Backup(ano, empresa):
 
 
 
+def OutrosFat(ano, empresa):
+    datahora, dia = obterHoraAtual()
+    tipoNota = obter_notaCsw()
+
+    tipoNotaConsiderar = ConfTipoNota(empresa)
+
+    conn = ConexaoCSW.Conexao()
+    mesFinal, mesAtual = EncontrandoMesAtual()
+    dataInicio = ano + '-' + mesAtual + '-01'
+    dataFim = ano + '-12-31'
+    query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
+            'FROM Fat.NotaFiscal n ' \
+            'where n.codTipoDeNota in (48) ' \
+            'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+                                                               'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codempresa in (100, 101)'
+    retornaCsw = pd.read_sql(
+        "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
+        " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
+        " FROM ped.SugestaoPed e "
+        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido "
+        ' WHERE e.codTipoNota in (48)'
+        " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
+        " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
+
+    dataframe = pd.read_sql(query, conn)
+    nome = ano + 'Vendas' + empresa + '.csv'
+    dataframe2 = pd.read_csv(nome)
+
+    dataframe = pd.concat([dataframe, dataframe2], ignore_index=True)
+
+    meses = ['01-Janeiro', '02-Fevereiro', '03-Março', '04-Abril', '05-Maio', '06-Junho',
+             '07-Julho', '08-Agosto', '09-Setembro', '10-Outubro', '11-Novembro', '12-Dezembro']
+
+    faturamento_por_mes = []
+    acumulado = 0.00
+    faturamento_acumulado = []
+
+    for mes in meses:
+        # Filtrar os dados do mês atual
+        procura = f"-{mes.split('-')[0]}-"
+        df_mes = dataframe[dataframe['dataEmissao'].str.contains(procura)]
+
+        # Calcular o faturamento do mês
+        faturamento_mes = df_mes['faturado'].sum()
+
+        # Acumular o faturamento
+        acumulado += faturamento_mes
+
+        # Formatar o faturamento do mês
+        faturamento_mes = "{:,.2f}".format(faturamento_mes)
+        faturamento_mes = 'R$ ' + faturamento_mes.replace(',', ';').replace('.', ',').replace(';', '.')
+        if faturamento_mes == 'R$ 0,00':
+            faturamento_mes = ''
+
+        # Formatar o acumulado
+        acumulado_str = "{:,.2f}".format(acumulado)
+        acumulado_str = 'R$ ' + acumulado_str.replace('.', ';')
+
+        acumulado_str = acumulado_str.replace(',', '.')
+        acumulado_str = acumulado_str.replace(';', ',')
+
+        faturamento_por_mes.append(faturamento_mes)
+        faturamento_acumulado.append(acumulado_str)
+
+    # Criar um DataFrame com os resultados
+    df_faturamento = pd.DataFrame({'Mês': meses, 'Faturado': faturamento_por_mes, 'Fat.Acumulado':faturamento_acumulado})
+    total = dataframe['faturado'].sum()
+    total = "{:,.2f}".format(total)
+    total = 'R$ ' + str(total)
+    total = total.replace('.', ";")
+    total = total.replace(',', ".")
+    total = total.replace(';', ",")
+    df_dia = dataframe[dataframe['dataEmissao'].str.contains(dia)]
+    df_dia = df_dia['faturado'].sum()
+    df_dia = "{:,.2f}".format(df_dia)
+    df_dia = 'R$ ' + str(df_dia)
+    df_dia = df_dia.replace('.', ";")
+    df_dia = df_dia.replace(',', ".")
+    df_dia = df_dia.replace(';', ",")
+    df_faturamento.fillna('-', inplace=True)
+    data = {
+        '1- Ano:': f'{ano}',
+        '2- Empresa:': f'{empresa}',
+        '3- No Retorna': f"{0}",
+        '3.1- Retorna Mplus': f"{0}",
+        '4- No Dia': f"{df_dia}",
+        '5- TOTAL': f"{total}",
+        '6- Atualizado as': f"{datahora}",
+        '7- Detalhamento por Mes': df_faturamento.to_dict(orient='records')
+    }
+    return [data]
