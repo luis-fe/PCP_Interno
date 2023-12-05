@@ -437,7 +437,6 @@ def OutrosFat(ano, empresa):
 
         df_mesREV = dataframeREV[dataframeREV['dataEmissao'].str.contains(procura)]
 
-        dataframeDEV = dataframe[(dataframe['tiponota'] == 102)]
         df_mesDEV = dataframeDEV[dataframeDEV['dataEmissao'].str.contains(procura)]
 
         # Calcular o faturamento do mês
