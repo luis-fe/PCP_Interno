@@ -30,78 +30,6 @@ async function Faturamento() {
     }
 }
 
-
-let meuGrafico;
-async function createBarChart(CondicaoFat, CondicaoMeta) {
-    const meses = DadosFaturamento.map(item => item['Mês']);
-    const dadosFiltrados = DadosFaturamento.filter(item => item.Mês !== '✈TOTAL');
-    const valoresFaturadosMilhoes = dadosFiltrados.map((item) => {
-        const faturado = item[CondicaoFat].replace('R$', '').replace(/\./g, '').replace(',', '.');
-        return parseFloat(faturado) ;
-    });
-    const MetasMilhoes = dadosFiltrados.map((item) => {
-        const meta = item[CondicaoMeta].replace('R$', '').replace(/\./g, '').replace(',', '.');
-        return parseFloat(meta) ;
-    });
-       
-    console.log(valoresFaturadosMilhoes)
-    console.log(MetasMilhoes)
-
-    const ctx = document.getElementById('meuGraficoDeBarras').getContext('2d');
-
-    if (meuGrafico) {
-        meuGrafico.destroy();
-    }
-    meuGrafico = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: meses,
-            datasets: [{
-                label: 'Faturamento por Mês',
-                data: valoresFaturadosMilhoes,
-                backgroundColor: 'rgb(93, 140, 233)',
-                borderColor: 'rgb(211, 211, 211)',
-                borderWidth: 1,
-            },
-            {
-                type: 'bar',
-                label: 'Revenda MP.',
-                data: MetasMilhoes,
-                backgroundColor: 'rgb(241, 129, 17)',
-                borderColor: 'rgb(211, 211, 211)',
-                borderWidth: 1,
-            },
-        ],
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function (value) {
-                            return 'R$ ' + value.toLocaleString('pt-BR');
-                        },
-                    },
-                },
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const value = context.parsed.y;
-                            return 'R$ ' + value.toLocaleString('pt-BR');
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
-
 function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta) {
     const TabelaFaturamento = document.getElementById('TabelaFaturamento');
     TabelaFaturamento.innerHTML = ''; // Limpa o conteúdo da tabela antes de preenchê-la novamente
@@ -113,7 +41,7 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta) {
     const cabecalhoCelula1 = cabecalhoLinha.insertCell(0);
     cabecalhoCelula1.innerHTML = 'Mês';
     const cabecalhoCelula2 = cabecalhoLinha.insertCell(1);
-    cabecalhoCelula2.innerHTML = 'Revenda MP.';
+    cabecalhoCelula2.innerHTML = 'VD Mostruario';
     const cabecalhoCelula3 = cabecalhoLinha.insertCell(2);
     cabecalhoCelula3.innerHTML = 'Devolucao';
     const cabecalhoCelula4 = cabecalhoLinha.insertCell(3);

@@ -568,6 +568,7 @@ def OutrosFat(ano, empresa):
     df_faturamento = df_faturamento.append(
         {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario, 'VD Mostruario Acumulado':totalVDMostruario},
         ignore_index=True)
+    df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
 
     df_faturamento.fillna('-', inplace=True)
 
