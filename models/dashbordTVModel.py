@@ -523,7 +523,16 @@ def OutrosFat(ano, empresa):
 
     df_faturamento['total'] = df_faturamento['total1'].astype(float) + df_faturamento['total']+df_faturamento['total2'].astype(float)
     df_faturamento['totalAcumulado'] = df_faturamento['total'].cumsum() + 1
-    df_faturamento['totalAcumulado'] = 'R$ ' + df_faturamento['totalAcumulado'].round(2).astype(str).str.replace('.', ';')
+    def format_with_separator(value):
+        return locale.format('%0.2f', value, grouping=True)
+
+
+
+    df_faturamento['totalAcumulado'] = df_faturamento['totalAcumulado'].apply(format_with_separator)
+
+
+
+   # df_faturamento['totalAcumulado'] = 'R$ ' + df_faturamento['totalAcumulado'].round(2).astype(str).str.replace('.', ';')
 
     df_faturamento.drop(['total2', 'total1'], axis=1, inplace=True)
 
