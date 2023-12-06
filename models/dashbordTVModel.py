@@ -405,7 +405,7 @@ def OutrosFat(ano, empresa):
     dataFim = ano + '-12-31'
     query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota in (48, 167, 30, 118, 102) ' \
+            'where n.codTipoDeNota in (48, 167, 30, 118, 102, 149, 168, 170) ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codempresa in (100, 101)'
     retornaCsw = pd.read_sql(
@@ -438,7 +438,7 @@ def OutrosFat(ano, empresa):
     dataframe48 = dataframe[dataframe['tiponota'] == 48]
     dataframeREV = dataframe[
         (dataframe['tiponota'] == 167) | (dataframe['tiponota'] == 30) | (dataframe['tiponota'] == 118)]
-    dataframeDEV = dataframe[(dataframe['tiponota'] == 102)]
+    dataframeDEV = dataframe[(dataframe['tiponota'] == 102) |(dataframe['tiponota'] == 168)|(dataframe['tiponota'] == 170)|(dataframe['tiponota'] == 149)]
     for mes in meses:
         # Filtrar os dados do mês atual
         procura = f"-{mes.split('-')[0]}-"
