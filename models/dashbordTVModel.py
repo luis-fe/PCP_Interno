@@ -545,7 +545,7 @@ def OutrosFat(ano, empresa):
 
 
     df_faturamento['totalAcumulado'] ='R$ ' +df_faturamento['totalAcumulado'].str.replace('.', ';').str.replace(',', '.').str.replace(';', ',')
-    df_faturamento['total'] = 'R$ '+df_faturamento['totalAcumulado'].str.replace('.', ';').str.replace(',',
+    df_faturamento['total'] = 'R$ '+df_faturamento['total'].str.replace('.', ';').str.replace(',',
                                                                                                                   '.').str.replace(
         ';', ',')
     df_faturamento.drop(['total2', 'total1'], axis=1, inplace=True)
