@@ -572,7 +572,7 @@ def OutrosFat(ano, empresa):
     totalRevenda = totalRevenda.replace(',', ".")
     totalRevenda = totalRevenda.replace(';', ",")
 
-    totalDV= dataframeREV['faturado'].sum()
+    totalDV= dataframeDEV['faturado'].sum()
     totalDV = "{:,.2f}".format(totalDV)
     totalDV = 'R$ ' + str(totalDV)
     totalDV = totalDV.replace('.', ";")
