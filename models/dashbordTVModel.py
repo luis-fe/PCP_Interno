@@ -544,7 +544,7 @@ def OutrosFat(ano, empresa):
     # Criar um DataFrame com os resultados
     df_faturamento = pd.DataFrame({'Mês': meses, 'VD Mostruario': faturamento_por_mes, 'VD Mostruario Acumulado':faturamento_acumulado,
                                    'VD Revenda MP':faturamento_mes_REV, 'VD Rv Acumulado':faturamento_acumulado_RV,
-                                   'DEV MP':faturamento_mes_DEV, 'DEV MP Acumulado':faturamento_acumulado_DEV,'VD Imobilizado':faturamento_mes_IMB},'VD Acum Imobilizadp',faturamento_acumulado_IMB)
+                                   'DEV MP':faturamento_mes_DEV, 'DEV MP Acumulado':faturamento_acumulado_DEV,'VD Imobilizado':faturamento_mes_IMB,'VD Acum Imobilizado':faturamento_acumulado_IMB})
 
     df_faturamento['total'] = df_faturamento['VD Mostruario'].str.replace('R\$ ', '').str.replace('.', '').str.replace(',', '.')#.astype(float)
     df_faturamento['total'] = df_faturamento.apply(lambda row: '0' if row['total'] == '' else row['total'], axis=1 )
