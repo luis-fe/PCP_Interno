@@ -78,7 +78,7 @@ if (localStorageStatus === "ACUMULADO") {
     statusText.innerText = "MENSAL";
     window.addEventListener('load', async () => {
     await Faturamento();
-    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Revenda MP','DEV MP','total');
+    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total');
 
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {
