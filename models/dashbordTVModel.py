@@ -366,7 +366,7 @@ def Backup(ano, empresa):
     elif empresa == 'Outras':
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
                 'FROM Fat.NotaFiscal n ' \
-                'where n.codTipoDeNota in (48, 167, 30, 118, 102, 149, 168, 170) ' \
+                'where n.codTipoDeNota in (48, 167, 30, 118, 102, 149, 168, 170, 159) ' \
                 'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                    'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa in(1, 4) '
         dataframe = pd.read_sql(query, conn)
@@ -405,7 +405,7 @@ def OutrosFat(ano, empresa):
     dataFim = ano + '-12-31'
     query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
             'FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota in (48, 167, 30, 118, 102, 149, 168, 170) ' \
+            'where n.codTipoDeNota in (48, 167, 30, 118, 102, 149, 168, 170, 159) ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codempresa in (100, 101)'
     retornaCsw = pd.read_sql(
