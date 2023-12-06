@@ -544,8 +544,8 @@ def OutrosFat(ano, empresa):
     df_faturamento['total'] = df_faturamento['total'].apply(format_with_separator)
 
 
-    df_faturamento['totalAcumulado'] = 'R$ ' + df_faturamento['totalAcumulado'].str.replace('.', ';').str.replace(',', '.').str.replace(';', ',')
-    df_faturamento['total'] = 'R$ ' + df_faturamento['totalAcumulado'].str.replace('.', ';').str.replace(',',
+    df_faturamento['totalAcumulado'] = df_faturamento['totalAcumulado'].str.replace('.', ';').str.replace(',', '.').str.replace(';', ',')
+    df_faturamento['total'] = df_faturamento['totalAcumulado'].str.replace('.', ';').str.replace(',',
                                                                                                                   '.').str.replace(
         ';', ',')
     df_faturamento.drop(['total2', 'total1'], axis=1, inplace=True)
@@ -565,6 +565,13 @@ def OutrosFat(ano, empresa):
     totalVDMostruario = totalVDMostruario.replace(',', ".")
     totalVDMostruario = totalVDMostruario.replace(';', ",")
 
+    totalRevenda= dataframeREV['faturado'].sum()
+    totalRevenda = "{:,.2f}".format(totalRevenda)
+    totalRevenda = 'R$ ' + str(totalRevenda)
+    totalRevenda = totalRevenda.replace('.', ";")
+    totalRevenda = totalRevenda.replace(',', ".")
+    totalRevenda = totalRevenda.replace(';', ",")
+
 
 
     df_dia = dataframe[dataframe['dataEmissao'].str.contains(dia)]
@@ -576,7 +583,8 @@ def OutrosFat(ano, empresa):
     df_dia = df_dia.replace(';', ",")
     df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
     df_faturamento = df_faturamento.append(
-        {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario, 'VD Mostruario Acumulado':totalVDMostruario},
+        {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario, 'VD Mostruario Acumulado':totalVDMostruario, 'VD Revenda MP':totalRevenda,
+         'VD Rv Acumulado':totalRevenda},
         ignore_index=True)
 
 
