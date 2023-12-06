@@ -355,7 +355,7 @@ def Backup(ano, empresa):
                 'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                    'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa in(100, 101) ' \
                                                                                         'union ' \
-                                                                                        ' select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
+                                                                                        ' select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
                                                                                         ' FROM Fat.NotaFiscal n ' \
                                                                                         'where n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
                                                                                         ' and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codTipoDeNota in (145)'
