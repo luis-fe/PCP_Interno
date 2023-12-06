@@ -438,7 +438,8 @@ def OutrosFat(ano, empresa):
     dataframe48 = dataframe[dataframe['tiponota'] == 48]
     dataframeREV = dataframe[
         (dataframe['tiponota'] == 167) | (dataframe['tiponota'] == 30) | (dataframe['tiponota'] == 118)]
-    dataframeDEV = dataframe[(dataframe['tiponota'] == 102) |(dataframe['tiponota'] == 168)|(dataframe['tiponota'] == 170)|(dataframe['tiponota'] == 149)]
+    dataframeDEV = dataframe[(dataframe['tiponota'] == 102) |(dataframe['tiponota'] == 168)|(dataframe['tiponota'] == 170)|
+                             (dataframe['tiponota'] == 149)|(dataframe['tiponota'] == 159)]
     for mes in meses:
         # Filtrar os dados do mês atual
         procura = f"-{mes.split('-')[0]}-"
