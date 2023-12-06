@@ -572,6 +572,13 @@ def OutrosFat(ano, empresa):
     totalRevenda = totalRevenda.replace(',', ".")
     totalRevenda = totalRevenda.replace(';', ",")
 
+    totalDV= dataframeREV['faturado'].sum()
+    totalDV = "{:,.2f}".format(totalDV)
+    totalDV = 'R$ ' + str(totalDV)
+    totalDV = totalDV.replace('.', ";")
+    totalDV = totalDV.replace(',', ".")
+    totalDV = totalDV.replace(';', ",")
+
 
 
     df_dia = dataframe[dataframe['dataEmissao'].str.contains(dia)]
@@ -584,7 +591,7 @@ def OutrosFat(ano, empresa):
     df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
     df_faturamento = df_faturamento.append(
         {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario, 'VD Mostruario Acumulado':totalVDMostruario, 'VD Revenda MP':totalRevenda,
-         'VD Rv Acumulado':totalRevenda},
+         'VD Rv Acumulado':totalRevenda,'DEV MP':totalDV,'DEV MP Acumulado':totalDV},
         ignore_index=True)
 
 
