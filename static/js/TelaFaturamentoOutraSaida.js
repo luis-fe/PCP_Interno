@@ -69,7 +69,7 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condica
 const style = document.createElement('style');
 style.innerHTML = `
   .cor-da-coluna {
-    background-color: rgb(122, 90, 0);  // Substitua 'yellow' pela cor desejada
+    background-color: rgb(60, 160, 100);  // Substitua 'yellow' pela cor desejada
     // Adicione outras propriedades de estilo, se necessário
   }
 `;
