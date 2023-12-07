@@ -45,13 +45,13 @@ const statusText = document.getElementById("status");
 onOffSwitch.addEventListener("change", () => {
     if (onOffSwitch.checked) {
         statusText.innerText = "MENSAL";
-        criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total');
+        criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total','VD Imobilizado');
 
         localStorage.setItem("dashboardStatus", "MENSAL");
 
     } else {
         statusText.innerText = "ACUMULADO";
-        criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Rv Acumulado','DEV MP Acumulado','totalAcumulado');
+        criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Rv Acumulado','DEV MP Acumulado','totalAcumulado','VD Acum Imobilizado"');
         localStorage.setItem("dashboardStatus", "ACUMULADO");
     }
 });
@@ -65,7 +65,7 @@ if (localStorageStatus === "ACUMULADO") {
     statusText.innerText = "ACUMULADO";
     window.addEventListener('load', async () => {
     await Faturamento();
-    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Rv Acumulado','DEV MP Acumulado','totalAcumulado');
+    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario Acumulado', 'VD Rv Acumulado','DEV MP Acumulado','totalAcumulado','VD Acum Imobilizado');
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {
         window.location.href = "TelaFaturamentoGeral.html";
@@ -78,7 +78,7 @@ if (localStorageStatus === "ACUMULADO") {
     statusText.innerText = "MENSAL";
     window.addEventListener('load', async () => {
     await Faturamento();
-    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total');
+    criarTabelaEmbalagens(DadosFaturamento, 'VD Mostruario', 'VD Revenda MP','DEV MP','total','VD Imobilizado');
 
     // Use uma função anônima para realizar o redirecionamento após 30 segundos.
     setTimeout(() => {

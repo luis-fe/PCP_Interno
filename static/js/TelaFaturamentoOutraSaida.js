@@ -30,7 +30,7 @@ async function Faturamento() {
     }
 }
 
-function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condicao2, condicao3) {
+function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condicao2, condicao3, vdimob) {
     const TabelaFaturamento = document.getElementById('TabelaFaturamento');
     TabelaFaturamento.innerHTML = ''; // Limpa o conteúdo da tabela antes de preenchê-la novamente
 
@@ -46,7 +46,9 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condica
     cabecalhoCelula3.innerHTML = 'Revenda MP.';
     const cabecalhoCelula4 = cabecalhoLinha.insertCell(3);
     cabecalhoCelula4.innerHTML = 'Devolucao MP';
-    const cabecalhoCelula5 = cabecalhoLinha.insertCell(4);
+        const cabecalhoCelula5 = cabecalhoLinha.insertCell(4);
+    cabecalhoCelula5.innerHTML = "VD Imobilizado";
+    const cabecalhoCelula5 = cabecalhoLinha.insertCell(5);
     cabecalhoCelula5.innerHTML = "_____Total____";
 
     const corpoTabela = TabelaFaturamento.createTBody();
@@ -62,6 +64,8 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condica
         const celula4 = linha.insertCell(3);
         celula4.innerHTML = item[condicao2];
         const celula5 = linha.insertCell(4);
+        celula5.innerHTML = item[vdimob];
+        const celula5 = linha.insertCell(5);
         celula5.innerHTML = item[condicao3];
 
         celula5.classList.add('cor-da-coluna');
