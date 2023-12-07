@@ -48,8 +48,8 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condica
     cabecalhoCelula4.innerHTML = 'Devolucao MP';
         const cabecalhoCelula5 = cabecalhoLinha.insertCell(4);
     cabecalhoCelula5.innerHTML = "VD Imobilizado";
-    const cabecalhoCelula5 = cabecalhoLinha.insertCell(5);
-    cabecalhoCelula5.innerHTML = "_____Total____";
+    const cabecalhoCelula6 = cabecalhoLinha.insertCell(5);
+    cabecalhoCelula6.innerHTML = "_____Total____";
 
     const corpoTabela = TabelaFaturamento.createTBody();
 
@@ -65,10 +65,10 @@ function criarTabelaEmbalagens(listaChamados, CondicaoFat, CondicaoMeta, condica
         celula4.innerHTML = item[condicao2];
         const celula5 = linha.insertCell(4);
         celula5.innerHTML = item[vdimob];
-        const celula5 = linha.insertCell(5);
-        celula5.innerHTML = item[condicao3];
+        const celula6 = linha.insertCell(5);
+        celula6.innerHTML = item[condicao3];
 
-        celula5.classList.add('cor-da-coluna');
+        celula6.classList.add('cor-da-coluna');
         // Define as propriedades de estilo para a classe
 const style = document.createElement('style');
 style.innerHTML = `
