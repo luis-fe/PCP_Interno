@@ -407,7 +407,7 @@ def OutrosFat(ano, empresa):
             'FROM Fat.NotaFiscal n ' \
             'where n.codTipoDeNota in (48, 167, 30, 118, 102, 149, 168, 170, 159, 156, 12) ' \
             'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
-                                                               'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2  and codempresa in (1, 4, 100, 101)'
+                                                               'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 '
     retornaCsw = pd.read_sql(
         "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
         " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
