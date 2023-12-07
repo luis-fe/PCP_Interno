@@ -604,6 +604,13 @@ def OutrosFat(ano, empresa):
     totalDV = totalDV.replace(',', ".")
     totalDV = totalDV.replace(';', ",")
 
+    totalIMB= dataframeIMOB['faturado'].sum()
+    totalIMB = "{:,.2f}".format(totalIMB)
+    totalIMB = 'R$ ' + str(totalIMB)
+    totalIMB = totalIMB.replace('.', ";")
+    totalIMB = totalIMB.replace(',', ".")
+    totalIMB = totalIMB.replace(';', ",")
+
 
 
     df_dia = dataframe[dataframe['dataEmissao'].str.contains(dia)]
@@ -616,7 +623,7 @@ def OutrosFat(ano, empresa):
     df_faturamento['Mês'] = df_faturamento['Mês'].str.split('-', 1).str[1]
     df_faturamento = df_faturamento.append(
         {'Mês': '✈TOTAL', 'total': total, 'totalAcumulado': total, 'VD Mostruario':totalVDMostruario, 'VD Mostruario Acumulado':totalVDMostruario, 'VD Revenda MP':totalRevenda,
-         'VD Rv Acumulado':totalRevenda,'DEV MP':totalDV,'DEV MP Acumulado':totalDV},
+         'VD Rv Acumulado':totalRevenda,'DEV MP':totalDV,'DEV MP Acumulado':totalDV,'VD Imobilizado':totalIMB,'VD Acum Imobilizado':totalIMB},
         ignore_index=True)
 
 
