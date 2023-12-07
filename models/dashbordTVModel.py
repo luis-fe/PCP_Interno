@@ -557,8 +557,12 @@ def OutrosFat(ano, empresa):
         ',', '.')  # .astype(float)
     df_faturamento['total2'] = df_faturamento.apply(lambda row: '0' if row['total2'] == '' else row['total2'], axis=1)
 
+    df_faturamento['total3'] = df_faturamento['VD Imobilizado'].str.replace('R\$ ', '').str.replace('.', '').str.replace(
+        ',', '.')  # .astype(float)
+    df_faturamento['total3'] = df_faturamento.apply(lambda row: '0' if row['total3'] == '' else row['total3'], axis=1)
 
-    df_faturamento['total'] = df_faturamento['total1'].astype(float) + df_faturamento['total']+df_faturamento['total2'].astype(float)
+
+    df_faturamento['total'] = df_faturamento['total1'].astype(float) + df_faturamento['total']+df_faturamento['total2'].astype(float)+df_faturamento['total3'].astype(float)
     df_faturamento['totalAcumulado'] = df_faturamento['total'].cumsum() + 1
     def format_with_separator(value):
         return locale.format('%0.2f', value, grouping=True)
