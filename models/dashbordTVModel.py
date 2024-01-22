@@ -131,10 +131,12 @@ def Faturamento_ano(ano, empresa):
 
     dataframe = pd.read_sql(query, conn)
     nome = ano + 'Vendas'+empresa+'.csv'
-    dataframe2 = pd.read_csv(nome)
 
-    dataframe = pd.concat([dataframe,dataframe2],ignore_index=True)
-
+    if mesAtual != '01':
+        dataframe2 = pd.read_csv(nome)
+        dataframe = pd.concat([dataframe,dataframe2],ignore_index=True)
+    else:
+        dataframe = dataframe
     #dataframe.to_csv('teste.csv')
     dataframe['tiponota'] =dataframe['tiponota'].astype(str)
     dataframe = pd.merge(dataframe, tipoNotaConsiderar, on='tiponota')
