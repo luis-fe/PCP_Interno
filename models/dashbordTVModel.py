@@ -329,12 +329,16 @@ def Backup(ano, empresa):
         mesFinal = '12'
         dataInicio = ano + '-01-01'
         dataFim = ano + '-' + mesFinal + '-31'
+        ano = int(ano) +1
+        ano = str(ano)
+
     elif mesFinal in ['02']:
         dataFim = ano + '-' + mesFinal + '-28'
     else:
         dataFim = ano + '-'+mesFinal+'-31'
 
     if empresa == 'Todas':
+
         print(ano)
 
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
