@@ -302,8 +302,8 @@ def EncontrandoMesAtual():
     datahora, dia = obterHoraAtual()
     mes = dia[5:7]
 
-    if mes == '13':
-        return '01' ,'01'
+    if mes == '01':
+        return '01','01'
 
     else:
         mesAtual = int(mes)
@@ -323,6 +323,12 @@ def Backup(ano, empresa):
     dataInicio = ano + '-01-01'
     if mesFinal in ['11','04','06','09']:
         dataFim = ano + '-'+mesFinal+'-30'
+    if mesFinal in ['01']:
+        ano = int(ano) -1
+        ano = str(ano)
+        mesFinal = '12'
+        dataInicio = ano + '-01-01'
+        dataFim = ano + '-' + mesFinal + '-31'
     elif mesFinal in ['02']:
         dataFim = ano + '-' + mesFinal + '-28'
     else:
