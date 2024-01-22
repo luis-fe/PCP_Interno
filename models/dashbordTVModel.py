@@ -302,7 +302,7 @@ def EncontrandoMesAtual():
     datahora, dia = obterHoraAtual()
     mes = dia[5:7]
 
-    if mes == '01':
+    if mes == '13':
         return '01' ,'01'
 
     else:
