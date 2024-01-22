@@ -30,7 +30,7 @@ def Faturamento_ano(ano, empresa):
     conn = ConexaoCSW.Conexao()
     mesFinal, mesAtual = EncontrandoMesAtual()
     if mesAtual == '01':
-        dataInicio = ano + '-'+'01'+'-01'
+        dataInicio = ano + '-01-01'
         dataFim = ano + '-12-31'
 
     else:
