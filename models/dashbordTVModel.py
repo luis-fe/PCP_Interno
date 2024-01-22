@@ -339,7 +339,8 @@ def Backup(ano, empresa):
 
     if empresa == 'Todas':
 
-        print(ano)
+        print(dataInicio)
+        print(dataFim)
 
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido ' \
             'FROM Fat.NotaFiscal n ' \
