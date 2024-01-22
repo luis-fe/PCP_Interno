@@ -321,17 +321,12 @@ def Backup(ano, empresa):
 
     conn = ConexaoCSW.Conexao()
     dataInicio = ano + '-01-01'
+    backupAno = True
     if mesFinal in ['11','04','06','09']:
         dataFim = ano + '-'+mesFinal+'-30'
-    if mesFinal in ['01']:
-        ano = int(ano) -1
-        ano = str(ano)
-        mesFinal = '12'
-        dataInicio = ano + '-01-01'
-        dataFim = ano + '-' + mesFinal + '-31'
-        ano = int(ano) +1
-        ano = str(ano)
-
+    elif mesFinal in ['01']:
+        backupAno = False
+        dataFim = ano + '-'+mesFinal+'-31'
     elif mesFinal in ['02']:
         dataFim = ano + '-' + mesFinal + '-28'
     else:
@@ -386,19 +381,23 @@ def Backup(ano, empresa):
         dataframe.to_csv(nome)
 
     else:
-        query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido, codNumNota, codEmpresa , codpedido ' \
-            'FROM Fat.NotaFiscal n ' \
-            'where n.codPedido >= 0 '   \
-            'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
-            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
-                                                            ' union ' \
-                                                            "select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, '0' ,codNumNota, "+"'"+empresa+"', codpedido" \
-            ' FROM Fat.NotaFiscal n ' \
-            'where n.codTipoDeNota not in (9) and codPedido is null ' \
-            'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
-            'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
+        if backupAno == True:
+            query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, codPedido, codNumNota, codEmpresa , codpedido ' \
+                'FROM Fat.NotaFiscal n ' \
+                'where n.codPedido >= 0 '   \
+                'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+                'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
+                                                                ' union ' \
+                                                                "select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado, '0' ,codNumNota, "+"'"+empresa+"', codpedido" \
+                ' FROM Fat.NotaFiscal n ' \
+                'where n.codTipoDeNota not in (9) and codPedido is null ' \
+                'and n.dataEmissao >= ' + "'" + dataInicio + "'" + ' ' \
+                'and n.dataEmissao <= ' + "'" + dataFim + "'" + ' and situacao = 2 and codempresa ='+ "'" + empresa + "'" \
 
-        dataframe = pd.read_sql(query, conn)
+            dataframe = pd.read_sql(query, conn)
+        else:
+            dataframe = pd.DataFrame([{'Mensagem':'Sem meses para guardar backup'}])
+
         nome = ano + 'Vendas'+empresa+'.csv'
         dataframe.to_csv(nome)
 
