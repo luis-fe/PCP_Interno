@@ -29,8 +29,13 @@ def Faturamento_ano(ano, empresa):
 
     conn = ConexaoCSW.Conexao()
     mesFinal, mesAtual = EncontrandoMesAtual()
-    dataInicio = ano + '-'+mesAtual+'-01'
-    dataFim = ano + '-12-31'
+    if mesAtual == '01':
+        dataInicio = ano + '-'+'01'+'-01'
+        dataFim = ano + '-12-31'
+
+    else:
+        dataInicio = ano + '-'+mesAtual+'-01'
+        dataFim = ano + '-12-31'
 
     if empresa == 'Todas':
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
