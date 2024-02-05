@@ -104,6 +104,7 @@ def Faturamento_ano(ano, empresa):
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
 
 
+    dataframe = pd.read_sql(query, conn)
 
 
     conn.close() # Fechando a conexao com o Csw
@@ -129,7 +130,6 @@ def Faturamento_ano(ano, empresa):
     ValorRetornaMplus = str(ValorRetornaMplus)
     ValorRetornaMplus = 'R$ ' + ValorRetornaMplus.replace(',', ';').replace('.', ',').replace(';', '.')
 
-    dataframe = pd.read_sql(query, conn)
     nome = ano + 'Vendas'+empresa+'.csv'
 
     if mesAtual != '01':
