@@ -27,7 +27,7 @@ def Faturamento_ano(ano, empresa):
 
 
 
-    conn = ConexaoCSW.Conexao()
+    conn = ConexaoCSW.Conexao() # Abrindo Conexao com o CSW
     mesFinal, mesAtual = EncontrandoMesAtual()
     if mesAtual == '01':
         dataInicio = ano + '-01-01'
@@ -106,7 +106,7 @@ def Faturamento_ano(ano, empresa):
 
 
 
-
+    conn.close() # Fechando a conexao com o Csw
     tipoNota['codigo'] = tipoNota['codigo'].astype(str)
     retornaCsw = pd.merge(retornaCsw, tipoNota, on='codigo')
 
