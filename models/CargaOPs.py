@@ -1,6 +1,7 @@
 import pandas as pd
 import ConexaoCSW
 import ConexaoPostgreMPL
+from datetime import datetime
 
 
 ### Nesse documento é realizado o processo de buscar as OPs em aberto para exibir em dashboard
@@ -32,5 +33,12 @@ def OPemProcesso(empresa):
 
 
     consulta = pd.merge(consulta,faseAtual,on=['numeroOP','codFase'],how='left')
+
+    consulta['dias'] = pd.to_datetime(consulta['data_entrada'])
+    # Obtendo a data de hoje
+    data_de_hoje = datetime.today().date()
+    consulta['data_string'] = pd.to_datetime(consulta['data_entrada'])
+    consulta['dias'] = data_de_hoje - consulta['data_string']
+
 
     return consulta
