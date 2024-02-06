@@ -34,7 +34,8 @@ def OPemProcesso(empresa):
 
     consulta = pd.merge(consulta, faseAtual, on=['numeroOP', 'codFase'], how='left')
     consulta.fillna('-', inplace=True)
-    consulta['data_entrada'] =consulta[['data_entrada'] != '-']
+    consulta['data_entrada'] =consulta[consulta['data_entrada'] != '-']
+
     consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'])
     # Obtendo a data de hoje
     data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
