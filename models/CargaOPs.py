@@ -7,7 +7,7 @@ import ConexaoPostgreMPL
 
 
 #Passo 1: Buscando as OP's em aberto no csw:
-def OP_emProcesso(empresa):
+def OPemProcesso(empresa):
     conn = ConexaoCSW.Conexao() # Conexao aberta do csw
 
     consulta = pd.read_sql(" SELECT op.codFaseAtual as codFase , op.numeroOP, op.codProduto  FROM tco.OrdemProd op  "

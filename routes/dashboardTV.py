@@ -20,10 +20,10 @@ def token_required(f):
 
 @dashboardTVroute.route('/pcp/api/CargaOPs', methods=['GET'])
 @token_required
-def CargaOPs():
+def CargadasOPs():
     empresa = request.args.get('empresa', '1')
 
-    usuarios = CargaOPs.OP_emProcesso(empresa)
+    usuarios = CargaOPs.OPemProcesso(empresa)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
