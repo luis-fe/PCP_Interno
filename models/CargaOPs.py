@@ -33,6 +33,7 @@ def OPemProcesso(empresa):
     faseAtual = faseAtual[faseAtual['data_entrada'] != '-']
 
     consulta = pd.merge(consulta, faseAtual, on=['numeroOP', 'codFase'], how='left')
+    consulta.fillna('-', inplace=True)
 
     #consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'])
     # Obtendo a data de hoje
