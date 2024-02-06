@@ -13,6 +13,8 @@ def OPemProcesso(empresa):
     consulta = pd.read_sql(" SELECT op.codFaseAtual as codFase , op.numeroOP, op.codProduto  FROM tco.OrdemProd op  "
                            "where op.situacao = 3 and op.codempresa = "+"'"+empresa+"'",conn)
 
+    consulta['codFase'] = consulta['codFase'].astype(str)
+
     faseAtual = pd.read_sql("SELECT numeroOP , codFase , case when SUBSTRING(observacao10,1,1) = 'I' then SUBSTRING(observacao10,17,11) else SUBSTRING(observacao10,14,11)"
                             'end  data_entrada '
                             'FROM tco.RoteiroOP r '
@@ -22,7 +24,10 @@ def OPemProcesso(empresa):
     conn.close() ## Conexao finalizada
 
     faseAtual.fillna('-',inplace=True)
+    faseAtual['codFase'] = faseAtual['codFase'].astype(str)
+
     faseAtual = faseAtual[faseAtual['data_entrada'] != '-']
+
 
     consulta = pd.merge(consulta,faseAtual,on=['numeroOP','codFase'],how='left')
 
