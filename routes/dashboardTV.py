@@ -29,6 +29,7 @@ def CargaOPs():
     column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     OP_data = []
+
     for index, row in usuarios.iterrows():
         op_dict = {}
         for index, row in usuarios.iterrows():
