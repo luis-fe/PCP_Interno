@@ -37,7 +37,7 @@ def CargadasOPs():
             for column_name in column_names:
                 op_dict[column_name] = row[column_name]
             OP_data.append(op_dict)
-        return jsonify(OP_data)
+        return jsonify(OP_data) , 200
 
 
 def restart_server():
