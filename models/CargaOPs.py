@@ -35,11 +35,13 @@ def OPemProcesso(empresa):
     consulta = pd.merge(consulta, faseAtual, on=['numeroOP', 'codFase'], how='left')
     consulta.fillna('-', inplace=True)
 
-    #consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'])
+    consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'])
     # Obtendo a data de hoje
-   # data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
+    data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
 
     # Verificando e lidando com valores nulos
-    #consulta['diferenca_de_dias'] = (data_de_hoje - consulta['data_entrada']).dt.days.fillna('')
+    consulta['diferenca_de_dias'] = (data_de_hoje - consulta['data_entrada']).dt.days.fillna('')
+    consulta.drop('data_entrada', axis=1, inplace=True)
+    consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
 
     return consulta
