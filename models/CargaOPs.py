@@ -36,9 +36,9 @@ def OPemProcesso(empresa):
 
     consulta['dias'] = pd.to_datetime(consulta['data_entrada'])
     # Obtendo a data de hoje
-    data_de_hoje = datetime.today().date()
-    consulta['data_string'] = pd.to_datetime(consulta['data_entrada'])
-    consulta['diferenca_de_dias'] = data_de_hoje - consulta['data_string']
 
+    consulta['data_string'] = pd.to_datetime(consulta['data_entrada'])
+    data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
+    consulta['diferenca_de_dias'] = data_de_hoje - consulta['data']
 
     return consulta
