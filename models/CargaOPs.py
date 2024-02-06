@@ -3,6 +3,7 @@ from datetime import datetime
 import ConexaoCSW
 import ConexaoPostgreMPL
 
+
 ### Nesse documento é realizado o processo de buscar as OPs em aberto para exibir em dashboard
 
 # Passo 1: Buscando as OP's em aberto no CSW
@@ -36,6 +37,8 @@ def OPemProcesso(empresa):
     consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'])
     # Obtendo a data de hoje
     data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
-    consulta['diferenca_de_dias'] = (data_de_hoje - consulta['data_entrada']).dt.days
+
+    # Verificando e lidando com valores nulos
+    consulta['diferenca_de_dias'] = (data_de_hoje - consulta['data_entrada']).dt.days.fillna('')
 
     return consulta
