@@ -42,6 +42,6 @@ def OPemProcesso(empresa):
     consulta['diferenca_de_dias'] = data_de_hoje - consulta['data_string']
 
     consulta.drop('data_string', axis=1, inplace=True)
-
+    consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
 
     return consulta
