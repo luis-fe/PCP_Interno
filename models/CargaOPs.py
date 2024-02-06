@@ -10,12 +10,14 @@ import ConexaoPostgreMPL
 def OPemProcesso(empresa):
     conn = ConexaoCSW.Conexao() # Conexao aberta do csw
 
-    consulta = pd.read_sql(" SELECT op.codFaseAtual as codFase , op.numeroOP, op.codProduto  FROM tco.OrdemProd op  "
+    consulta = pd.read_sql(" SELECT op.codFaseAtual as codFase , op.numeroOP, op.codProduto,  "
+                           "(select e.descricao from tcp.Engenharia e WHERE e.codempresa = op.codEmpresa and e.codengenharia = op.codProduto) as descricao "
+                           "FROM tco.OrdemProd op  "
                            "where op.situacao = 3 and op.codempresa = "+"'"+empresa+"'",conn)
 
     consulta['codFase'] = consulta['codFase'].astype(str)
 
-    faseAtual = pd.read_sql("SELECT numeroOP , codFase , case when SUBSTRING(observacao10,1,1) = 'I' then SUBSTRING(observacao10,17,11) else SUBSTRING(observacao10,14,11)"
+    faseAtual = pd.read_sql("SELECT numeroOP , codFase , r.nomeFase , case when SUBSTRING(observacao10,1,1) = 'I' then SUBSTRING(observacao10,17,11) else SUBSTRING(observacao10,14,11)"
                             'end  data_entrada '
                             'FROM tco.RoteiroOP r '
                             'Where codEmpresa =1 and numeroOP in ( '
