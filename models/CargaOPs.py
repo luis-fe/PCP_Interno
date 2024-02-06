@@ -41,4 +41,7 @@ def OPemProcesso(empresa):
     data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
     consulta['diferenca_de_dias'] = data_de_hoje - consulta['data']
 
+    consulta.drop('data_string', axis=1, inplace=True)
+
+
     return consulta
