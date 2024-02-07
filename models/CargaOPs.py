@@ -1,9 +1,12 @@
 import pandas as pd
-from datetime import datetime
 import ConexaoCSW
 import datetime
 import pytz
-import ConexaoPostgreMPL
+import numpy
+import time
+from datetime import datetime
+import locale
+import math
 
 
 ### Nesse documento é realizado o processo de buscar as OPs em aberto para exibir em dashboard
