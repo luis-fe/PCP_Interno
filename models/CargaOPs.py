@@ -25,11 +25,12 @@ def OPemProcesso(empresa):
     consulta.fillna('-', inplace=True)
 
     consulta['data_entrada'] = consulta['data_entrada']
-    consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'],   format='%d-%m-%Y', errors='coerce')
+    consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], errors='coerce')
     # Obtendo a data de hoje
     data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
 
     # Verificando e lidando com valores nulos
+    print(data_de_hoje)
     consulta['dias na Fase'] = (data_de_hoje - consulta['data_entrada']).dt.days.fillna('')
     consulta['data_entrada'] = consulta['data_entrada'].astype(str)
     #consulta.drop('data_entrada', axis=1, inplace=True)
