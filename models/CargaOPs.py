@@ -121,12 +121,22 @@ def OPemProcesso(empresa, filtro = '-'):
 
         try:
             filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
-            print('passou')
+            filtrosNovo.drop('filtro', axis=1, inplace=True)
 
-            return filtrosNovo
+            if not filtrosNovo.empty:
+                print('passou')
+
+                return filtrosNovo
+            else:
+                filtrosNovo = filtros.drop(index=filtros.index)
+                return filtrosNovo
+
+
 
         except:
             filtrosNovo =filtros.drop(index=filtros.index)
+            filtrosNovo.drop('filtro', axis=1, inplace=True)
+
             return filtrosNovo
 
 
