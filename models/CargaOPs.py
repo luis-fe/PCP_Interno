@@ -41,15 +41,22 @@ def OPemProcesso(empresa):
     justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
                                 'WHERE empresa = 1 and textolinha is not null',conn)
 
+
+    leadTime = pd.read_sql('SELECT f.codFase , f.leadTime as meta  FROM tcp.FasesProducao f WHERE f.codEmpresa = 1', conn)
+
     consulta['codFase'] = consulta['codFase'].astype(str)
+    leadTime['codFase'] = leadTime['codFase'].astype(str)
+
     justificativa['codFase'] = justificativa['codFase'].astype(str)
 
     conn.close()  ## Conexao finalizada
+
 
     consulta = pd.merge(consulta,justificativa,on=['numeroOP','codFase'], how='left')
 
     responsabilidade = ResponsabilidadeFases()
     consulta = pd.merge(consulta,responsabilidade,on='codFase', how='left')
+    consulta = pd.merge(consulta,leadTime,on='codFase', how='left')
 
 
     consulta = consulta[consulta['data_entrada'] != '-']
