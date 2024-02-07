@@ -29,9 +29,15 @@ def OPemProcesso(empresa):
                            "inner join tco.RoteiroOP r on r.codempresa = op.codEmpresa and r.numeroop = op.numeroOP and op.codFaseAtual = r.codfase "
                            "WHERE op.situacao = 3 and op.codempresa = '" + empresa + "'", conn)
 
+    justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
+                                'WHERE empresa = 1 and textolinha is not null',conn)
+
     consulta['codFase'] = consulta['codFase'].astype(str)
+    justificativa['codFase'] = justificativa['codFase'].astype(str)
 
     conn.close()  ## Conexao finalizada
+
+    consulta = pd.merge(consulta,justificativa,on=['numeroOP','codFase'], how='left')
 
     consulta = consulta[consulta['data_entrada'] != '-']
 
