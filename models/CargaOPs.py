@@ -37,7 +37,7 @@ def OPemProcesso(empresa):
 
     consulta.fillna('-', inplace=True)
 
-    consulta['data_entrada'] = consulta['data_entrada']
+    consulta['data_entrada'] = consulta['data_entrada'].str.slice(6, 4) + '-'+consulta['data_entrada'].str.slice(3, 2)+'-'+consulta['data_entrada'].str.slice(0, 2)
     consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], errors='coerce')
     # Obtendo a data de hoje
     #data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
