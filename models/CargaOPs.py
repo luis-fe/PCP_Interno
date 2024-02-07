@@ -120,14 +120,14 @@ def OPemProcesso(empresa, filtro = '-'):
         print(array)
 
         try:
-            filtros = filtros[filtros['filtro'].str.contains(filtro)]
+            filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
             print('passou')
 
-            return filtros
+            return filtrosNovo
 
         except:
-            filtros =filtros.drop(index=filtros.index)
-            return filtros
+            filtrosNovo =filtros.drop(index=filtros.index)
+            return filtrosNovo
 
 
 
