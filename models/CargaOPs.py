@@ -44,7 +44,6 @@ def OPemProcesso(empresa):
     consulta.fillna('-', inplace=True)
 
     consulta['data_entrada'] = consulta['data_entrada'].str.slice(6, 10) + '-'+consulta['data_entrada'].str.slice(3, 5)+'-'+consulta['data_entrada'].str.slice(0, 2)
-    print(consulta['data_entrada'])
     consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], errors='coerce')
     # Obtendo a data de hoje
     #data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
@@ -58,5 +57,8 @@ def OPemProcesso(empresa):
     consulta['data_entrada'] = consulta['data_entrada'].astype(str)
     consulta.drop('hora_str', axis=1, inplace=True)
     #consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
+
+    consulta = consulta.sort_values(by='dias na Fase', ascending=False)  # escolher como deseja classificar
+
 
     return consulta
