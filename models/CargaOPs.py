@@ -4,7 +4,6 @@ import datetime
 import pytz
 import numpy
 import time
-from datetime import datetime
 import locale
 import math
 
