@@ -104,8 +104,8 @@ def OPemProcesso(empresa, filtro):
 
 
 
-        consulta['filtro'] = consulta['codFase']+consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['nomeFase']+consulta['numeroOP']\
-                            +consulta['responsavel']+consulta['status']
+        consulta['filtro'] = consulta['codFase']+consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
+
 
         consulta.to_csv('cargaOP.csv',index=True)
 
@@ -115,6 +115,9 @@ def OPemProcesso(empresa, filtro):
         return consulta
     else:
         filtros = pd.read_csv('cargaOP.csv')
+        array = filtro.split("/")
+
+        print(array)
 
         filtros = filtros[filtros['filtro'].str.contains(filtro)]
 
