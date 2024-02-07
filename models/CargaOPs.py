@@ -8,7 +8,16 @@ import numpy
 import time
 import locale
 import math
+import ConexaoPostgreMPL
 
+
+def ResponsabilidadeFases():
+    conn = ConexaoPostgreMPL.conexao()
+
+    retorno = pd.read_sql('SELECT x.* FROM pcp."responsabilidadeFase" x ',conn)
+    conn.close()
+
+    return retorno
 
 ### Nesse documento é realizado o processo de buscar as OPs em aberto para exibir em dashboard
 def obterHoraAtual():
@@ -38,6 +47,10 @@ def OPemProcesso(empresa):
     conn.close()  ## Conexao finalizada
 
     consulta = pd.merge(consulta,justificativa,on=['numeroOP','codFase'], how='left')
+
+    responsabilidade = ResponsabilidadeFases()
+    consulta = pd.merge(responsabilidade,justificativa,on='codFase', how='left')
+
 
     consulta = consulta[consulta['data_entrada'] != '-']
 
