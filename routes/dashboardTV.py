@@ -24,8 +24,10 @@ def token_required(f):
 @token_required
 def CargadasOPs():
     empresa = request.args.get('empresa', '1')
+    filtro = request.args.get('filtro', '-')
 
-    usuarios = CargaOPs.OPemProcesso(empresa)
+    usuarios = CargaOPs.OPemProcesso(empresa,filtro)
+
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
