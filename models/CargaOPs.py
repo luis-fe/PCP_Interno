@@ -49,7 +49,7 @@ def OPemProcesso(empresa):
     consulta = pd.merge(consulta,justificativa,on=['numeroOP','codFase'], how='left')
 
     responsabilidade = ResponsabilidadeFases()
-    consulta = pd.merge(responsabilidade,justificativa,on='codFase', how='left')
+    consulta = pd.merge(consulta,responsabilidade,on='codFase', how='left')
 
 
     consulta = consulta[consulta['data_entrada'] != '-']
