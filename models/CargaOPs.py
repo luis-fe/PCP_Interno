@@ -121,6 +121,8 @@ def OPemProcesso(empresa, filtro = '-'):
 
         try:
             filtros = filtros[filtros['filtro'].str.contains(filtro)]
+            print('passou')
+
             return filtros
 
         except:
