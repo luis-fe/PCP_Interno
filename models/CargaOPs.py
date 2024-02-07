@@ -45,9 +45,11 @@ def OPemProcesso(empresa):
     # Verificando e lidando com valores nulos
     hora_str = obterHoraAtual()
     consulta['hora_str'] = hora_str
+    consulta['hora_str'] = pd.to_datetime(consulta['hora_str'], errors='coerce')
+
     consulta['dias na Fase'] = (consulta['hora_str'] - consulta['data_entrada']).dt.days.fillna('')
     consulta['data_entrada'] = consulta['data_entrada'].astype(str)
-    #consulta.drop('data_entrada', axis=1, inplace=True)
+    consulta.drop('hora_str', axis=1, inplace=True)
     #consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
 
     return consulta
