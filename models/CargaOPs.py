@@ -1,10 +1,19 @@
 import pandas as pd
 from datetime import datetime
 import ConexaoCSW
+import datetime
+import pytz
 import ConexaoPostgreMPL
 
 
 ### Nesse documento é realizado o processo de buscar as OPs em aberto para exibir em dashboard
+def obterHoraAtual():
+    fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
+    agora = datetime.datetime.now(fuso_horario)
+    hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
+    return hora_str
+
+
 
 # Passo 1: Buscando as OP's em aberto no CSW
 def OPemProcesso(empresa):
@@ -27,11 +36,11 @@ def OPemProcesso(empresa):
     consulta['data_entrada'] = consulta['data_entrada']
     consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], errors='coerce')
     # Obtendo a data de hoje
-    data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
+    #data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
 
     # Verificando e lidando com valores nulos
-    print(data_de_hoje)
-    consulta['dias na Fase'] = (data_de_hoje - consulta['data_entrada']).dt.days.fillna('')
+    hora_str = obterHoraAtual()
+    consulta['dias na Fase'] = (hora_str - consulta['data_entrada']).dt.days.fillna('')
     consulta['data_entrada'] = consulta['data_entrada'].astype(str)
     #consulta.drop('data_entrada', axis=1, inplace=True)
     #consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
