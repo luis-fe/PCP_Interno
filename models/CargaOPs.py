@@ -87,6 +87,9 @@ def OPemProcesso(empresa):
     consulta['dias na Fase'] = (consulta['hora_str'] - consulta['data_entrada']).dt.days.fillna('')
     consulta['data_entrada'] = consulta['data_entrada'].astype(str)
 
+
+
+
     consulta.drop('hora_str', axis=1, inplace=True)
     #consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
     consulta = consulta[consulta['dias na Fase'] != '']
@@ -98,4 +101,15 @@ def OPemProcesso(empresa):
     consulta = consulta.sort_values(by='status', ascending=False)  # escolher como deseja classificar
 
 
+
+    consulta['filtro'] = consulta['codFase']+consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['nomeFase']+consulta['numeroOP']\
+                        +consulta['responsavel']+consulta['status']
+
+    consulta.to_csv('cargaOP',index=True)
+
+    consulta.drop('filtro', axis=1, inplace=True)
+
+
     return consulta
+
+
