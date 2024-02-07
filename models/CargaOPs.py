@@ -55,8 +55,10 @@ def OPemProcesso(empresa):
 
     consulta['dias na Fase'] = (consulta['hora_str'] - consulta['data_entrada']).dt.days.fillna('')
     consulta['data_entrada'] = consulta['data_entrada'].astype(str)
+
     consulta.drop('hora_str', axis=1, inplace=True)
     #consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
+    consulta['dias na Fase'] = consulta['dias na Fase'].astype(str)
 
     consulta = consulta.sort_values(by='dias na Fase', ascending=False)  # escolher como deseja classificar
 
