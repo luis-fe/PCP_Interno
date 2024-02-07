@@ -28,7 +28,7 @@ def CargadasOPs():
 
     data = request.get_json()
     empresa = data.get('empresa','1')
-    filtro = data.get('filtro', False)
+    filtro = data.get('filtro', '-')
 
     usuarios = CargaOPs.OPemProcesso(empresa,filtro)
 
