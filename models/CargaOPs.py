@@ -44,12 +44,23 @@ def OPemProcesso(empresa):
 
     leadTime = pd.read_sql('SELECT f.codFase , f.leadTime as meta  FROM tcp.FasesProducao f WHERE f.codEmpresa = 1', conn)
 
+    pcs = pd.read_sql("SELECT t.numeroop, (sum(t.qtdePecas1Qualidade))as Qtd1 ,(sum(t.qtdePecas2Qualidade))as Qtd2  ,(sum(t.qtdePecasProgramadas))as prog "
+                      "FROM tco.OrdemProdTamanhos t WHERE t.codempresa = "+empresa+" and t.numeroop in ( "
+                      "SELECT numeroOP from tco.OrdemProd op WHERE op.codempresa = "+ empresa+" and op.numeroop = t.numeroOP and op.situacao = 3) group by numeroOP ", conn)
+
+
     consulta['codFase'] = consulta['codFase'].astype(str)
     leadTime['codFase'] = leadTime['codFase'].astype(str)
 
     justificativa['codFase'] = justificativa['codFase'].astype(str)
 
     conn.close()  ## Conexao finalizada
+
+    pcs.fillna(0, inplace=True)
+
+    pcs['Qtd Pcs'] = pcs.apply(lambda row : row['prog'] if row['Qtd1'] == 0 else row['Qtd1'] + row['Qtd2'], axis=1 )
+    pcs.drop(['Qtd1','Qtd2','prog'], axis=1, inplace=True)
+    consulta = pd.merge(consulta,pcs,on='numeroOP', how='left')
 
 
     consulta = pd.merge(consulta,justificativa,on=['numeroOP','codFase'], how='left')
