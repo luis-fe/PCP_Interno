@@ -37,7 +37,7 @@ def OPemProcesso(empresa):
 
     consulta.fillna('-', inplace=True)
 
-    consulta['data_entrada'] = consulta['data_entrada'].str.slice(3, 5) + '-'+consulta['data_entrada'].str.slice(1, 2)+'-'+consulta['data_entrada'].str.slice(0, 2)
+    consulta['data_entrada'] = consulta['data_entrada'].str.slice(6, 9) + '-'+consulta['data_entrada'].str.slice(3, 5)+'-'+consulta['data_entrada'].str.slice(0, 2)
     print(consulta['data_entrada'])
     consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], errors='coerce')
     # Obtendo a data de hoje
