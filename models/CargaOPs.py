@@ -81,8 +81,9 @@ def OPemProcesso(empresa):
     consulta = consulta[consulta['dias na Fase'] != '']
 
 
-    consulta = consulta.sort_values(by='dias na Fase', ascending=False)  # escolher como deseja classificar
 
     consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['dias na Fase'] > row['meta'] else 'normal',axis=1 )
+    consulta = consulta.sort_values(by='status', ascending=False)  # escolher como deseja classificar
+    consulta = consulta.sort_values(by='dias na Fase', ascending=False)  # escolher como deseja classificar
 
     return consulta
