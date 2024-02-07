@@ -15,7 +15,7 @@ def obterHoraAtual():
     fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
     agora = datetime.datetime.now(fuso_horario)
     hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
-    return hora_str
+    return fuso_horario
 
 
 
@@ -44,7 +44,6 @@ def OPemProcesso(empresa):
 
     # Verificando e lidando com valores nulos
     hora_str = obterHoraAtual()
-    hora_str = datetime.strptime(hora_str, "%Y-%m-%d")
 
     consulta['dias na Fase'] = (hora_str - consulta['data_entrada']).dt.days.fillna('')
     consulta['data_entrada'] = consulta['data_entrada'].astype(str)
