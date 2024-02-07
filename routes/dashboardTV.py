@@ -20,11 +20,15 @@ def token_required(f):
 
     return decorated_function
 
-@dashboardTVroute.route('/pcp/api/CargaOPs', methods=['GET'])
+@dashboardTVroute.route('/pcp/api/CargaOPs', methods=['POST'])
 @token_required
 def CargadasOPs():
-    empresa = request.args.get('empresa', '1')
-    filtro = request.args.get('filtro', '-')
+
+
+
+    data = request.get_json()
+    empresa = data.get('empresa','1')
+    filtro = data.get('filtro', False)
 
     usuarios = CargaOPs.OPemProcesso(empresa,filtro)
 
