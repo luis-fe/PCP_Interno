@@ -10,33 +10,22 @@ import ConexaoPostgreMPL
 def OPemProcesso(empresa):
     conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
-    consulta = pd.read_sql("SELECT op.codFaseAtual as codFase, op.numeroOP, op.codProduto, "
-                           "(SELECT e.descricao FROM tcp.Engenharia e WHERE e.codempresa = op.codEmpresa and e.codengenharia = op.codProduto) as descricao "
-                           "FROM tco.OrdemProd op "
+    consulta = pd.read_sql("SELECT op.codFaseAtual , op.numeroOP, op.codProduto, CASE WHEN SUBSTRING(observacao10, 1, 1) = 'I' THEN SUBSTRING(observacao10, 17, 11)  "
+                           "ELSE SUBSTRING(observacao10, 14, 11) END data_entrada , r.nomeFase , "
+                           "(select e.descricao from tcp.Engenharia e WHERE e.codempresa = op.codEmpresa and e.codengenharia = op.codProduto) as descricao FROM tco.OrdemProd op "
+                           "inner join tco.RoteiroOP r on r.codempresa = op.codEmpresa and r.numeroop = op.numeroOP and op.codFaseAtual = r.codfase "
                            "WHERE op.situacao = 3 and op.codempresa = '" + empresa + "'", conn)
 
     consulta['codFase'] = consulta['codFase'].astype(str)
 
-    faseAtual = pd.read_sql("SELECT numeroOP, codFase, r.nomeFase, "
-                            "CASE WHEN SUBSTRING(observacao10, 1, 1) = 'I' THEN SUBSTRING(observacao10, 17, 11) "
-                            "ELSE SUBSTRING(observacao10, 14, 11) END data_entrada "
-                            "FROM tco.RoteiroOP r "
-                            "WHERE codEmpresa = 1 AND numeroOP IN ("
-                            "SELECT op.numeroOP FROM tco.OrdemProd op "
-                            "WHERE op.codEmpresa = '" + empresa + "' AND op.situacao = 3)", conn)
-
     conn.close()  ## Conexao finalizada
 
-    faseAtual.fillna('-', inplace=True)
-    faseAtual['codFase'] = faseAtual['codFase'].astype(str)
+    consulta = consulta[consulta['data_entrada'] != '-']
 
-    faseAtual = faseAtual[faseAtual['data_entrada'] != '-']
-
-    consulta = pd.merge(consulta, faseAtual, on=['numeroOP', 'codFase'], how='left')
     consulta.fillna('-', inplace=True)
-    consulta['data_entrada'] =consulta[consulta['data_entrada'] != '-']
 
-    consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], format='%d/%m/%Y', errors='coerce')
+    consulta['data_entrada'] = consulta['data_entrada']
+    consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'],  errors='coerce')
     # Obtendo a data de hoje
     data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
 
