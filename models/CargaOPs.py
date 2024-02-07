@@ -115,11 +115,15 @@ def OPemProcesso(empresa, filtro):
         return consulta
     else:
         filtros = pd.read_csv('cargaOP.csv')
-        array = filtro.split("/")
+        array = filtro.split(",")
 
         print(array)
 
-        filtros = filtros[filtros['filtro'].str.contains(filtro)]
+        try:
+            filtros = filtros[filtros['filtro'].str.contains(filtro)]
+        except:
+            filtros =filtros.drop(index=filtros.index)
+
 
 
         filtros.drop('filtro', axis=1, inplace=True)
