@@ -117,8 +117,8 @@ def OPemProcesso(empresa, filtro = '-'):
 
 
         dados = {
-        '1-Total OP':'',
-        '2- OPs Atrasadas':'',
+        '1-Total OP':f'{totalOP} Ops',
+        '2- OPs Atrasadas':f'{totalAtraso} Ops',
         '3 -Detalhamento':consulta.to_dict(orient='records')
 
         }
@@ -142,9 +142,14 @@ def OPemProcesso(empresa, filtro = '-'):
 
             return pd.DataFrame([dados])
         else:
+
+            totalOP = filtrosNovo['numeroOP'].count()
+            Atrazado = filtrosNovo[filtrosNovo['status'] == '⚠️atrasado']
+            totalAtraso = Atrazado['numeroOP'].count()
+
             dados = {
-                '1-Total OP': '',
-                '2- OPs Atrasadas': '',
+                '1-Total OP': f'{totalOP} Ops',
+                '2- OPs Atrasadas': f'{totalAtraso} Ops',
                 '3 -Detalhamento': filtrosNovo.to_dict(orient='records')
 
             }
