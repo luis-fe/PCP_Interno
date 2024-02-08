@@ -99,8 +99,7 @@ def OPemProcesso(empresa, filtro = '-'):
 
 
         consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['dias na Fase'] > row['meta'] else 'normal',axis=1 )
-        consulta = consulta.sort_values(by='dias na Fase', ascending=False)  # escolher como deseja classificar
-        consulta = consulta.sort_values(by='status', ascending=False)  # escolher como deseja classificar
+        consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
 
 
@@ -111,12 +110,14 @@ def OPemProcesso(empresa, filtro = '-'):
 
         consulta.drop('filtro', axis=1, inplace=True)
 
+        QtdPcs = consulta['Qtd Pcs'].sum()
         totalOP = consulta['numeroOP'].count()
         Atrazado = consulta[consulta['status'] == '⚠️atrasado']
         totalAtraso =Atrazado['numeroOP'].count()
 
 
         dados = {
+        '0-Total DE pçs':f'{QtdPcs} Ops',
         '1-Total OP':f'{totalOP} Ops',
         '2- OPs Atrasadas':f'{totalAtraso} Ops',
         '3 -Detalhamento':consulta.to_dict(orient='records')
@@ -134,6 +135,7 @@ def OPemProcesso(empresa, filtro = '-'):
             print(filtrosNovo)
 
             dados = {
+                '0-Total DE pçs': '',
                 '1-Total OP': '',
                 '2- OPs Atrasadas': '',
                 '3 -Detalhamento': ''
@@ -143,11 +145,13 @@ def OPemProcesso(empresa, filtro = '-'):
             return pd.DataFrame([dados])
         else:
 
+            QtdPcs = filtrosNovo['Qtd Pcs'].sum()
             totalOP = filtrosNovo['numeroOP'].count()
             Atrazado = filtrosNovo[filtrosNovo['status'] == '⚠️atrasado']
             totalAtraso = Atrazado['numeroOP'].count()
 
             dados = {
+                '0-Total DE pçs': f'{QtdPcs} Ops',
                 '1-Total OP': f'{totalOP} Ops',
                 '2- OPs Atrasadas': f'{totalAtraso} Ops',
                 '3 -Detalhamento': filtrosNovo.to_dict(orient='records')
