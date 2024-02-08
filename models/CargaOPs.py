@@ -29,7 +29,7 @@ def obterHoraAtual():
 
 
 # Passo 1: Buscando as OP's em aberto no CSW
-def OPemProcesso(empresa, filtro = '-'):
+def OPemProcesso(empresa, AREA, filtro = '-'):
 
     if filtro == '-' or filtro == ''  :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
@@ -109,6 +109,8 @@ def OPemProcesso(empresa, filtro = '-'):
 
         consulta.to_csv('cargaOP.csv',index=True)
 
+        consulta = consulta[consulta['Area']== AREA]
+
         consulta.drop('filtro', axis=1, inplace=True)
 
         QtdPcs = consulta['Qtd Pcs'].sum()
@@ -138,6 +140,8 @@ def OPemProcesso(empresa, filtro = '-'):
         return pd.DataFrame([dados])
     else:
         filtros = pd.read_csv('cargaOP.csv')
+        filtros = filtros[filtros['Area']== AREA]
+
         array = filtro.split(",")
 
         filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
