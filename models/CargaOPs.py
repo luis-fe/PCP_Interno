@@ -111,8 +111,20 @@ def OPemProcesso(empresa, filtro = '-'):
 
         consulta.drop('filtro', axis=1, inplace=True)
 
+        totalOP = consulta['numeroOP'].count()
+        Atrazado = consulta[consulta['status'] == '⚠️atrasado']
+        totalAtraso =Atrazado['numeroOP'].count()
 
-        return consulta
+
+        dados = {
+        '1-Total OP':'',
+        '2- OPs Atrasadas':'',
+        '3 -Detalhamento':consulta.to_dict(orient='records')
+
+        }
+
+
+        return pd.DataFrame([dados])
     else:
         filtros = pd.read_csv('cargaOP.csv')
         array = filtro.split(",")
@@ -120,12 +132,24 @@ def OPemProcesso(empresa, filtro = '-'):
         filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
         if filtrosNovo.empty:
             print(filtrosNovo)
-            filtrosNovo = filtro[0:1]
 
-            return filtrosNovo
+            dados = {
+                '1-Total OP': '',
+                '2- OPs Atrasadas': '',
+                '3 -Detalhamento': ''
+
+            }
+
+            return pd.DataFrame([dados])
         else:
+            dados = {
+                '1-Total OP': '',
+                '2- OPs Atrasadas': '',
+                '3 -Detalhamento': filtrosNovo.to_dict(orient='records')
 
-            return filtrosNovo
+            }
+
+            return pd.DataFrame([dados])
 
 
 
