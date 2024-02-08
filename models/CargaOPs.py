@@ -31,7 +31,7 @@ def obterHoraAtual():
 # Passo 1: Buscando as OP's em aberto no CSW
 def OPemProcesso(empresa, filtro = '-'):
 
-    if filtro == '-':
+    if filtro == '-' or filtro == ''  :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
         consulta = pd.read_sql("SELECT op.codFaseAtual as codFase , op.numeroOP, op.codProduto, CASE WHEN SUBSTRING(observacao10, 1, 1) = 'I' THEN SUBSTRING(observacao10, 17, 11)  "
