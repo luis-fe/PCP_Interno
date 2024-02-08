@@ -111,13 +111,15 @@ def OPemProcesso(empresa, filtro = '-'):
         consulta.drop('filtro', axis=1, inplace=True)
 
         QtdPcs = consulta['Qtd Pcs'].sum()
+        QtdPcs = "{:,.0f}".format(QtdPcs)
+
         totalOP = consulta['numeroOP'].count()
         Atrazado = consulta[consulta['status'] == '⚠️atrasado']
         totalAtraso =Atrazado['numeroOP'].count()
 
 
         dados = {
-        '0-Total DE pçs':f'{QtdPcs} Ops',
+        '0-Total DE pçs':f'{QtdPcs} Pçs',
         '1-Total OP':f'{totalOP} Ops',
         '2- OPs Atrasadas':f'{totalAtraso} Ops',
         '3 -Detalhamento':consulta.to_dict(orient='records')
