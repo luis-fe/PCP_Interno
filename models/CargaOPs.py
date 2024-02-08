@@ -125,7 +125,7 @@ def OPemProcesso(empresa, filtro = '-'):
             return filtrosNovo
         else:
 
-        return filtrosNovo
+            return filtrosNovo
 
 
 
