@@ -119,7 +119,7 @@ def OPemProcesso(empresa, filtro = '-'):
 
         try:
             filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
-            return filtrosNovo
+            return filtros
         except KeyError:
             # Tratar o caso em que a coluna 'filtro' não existe no DataFrame
             print("A coluna 'filtro' não foi encontrada no DataFrame.")
