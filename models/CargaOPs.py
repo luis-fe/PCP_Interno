@@ -117,17 +117,10 @@ def OPemProcesso(empresa, filtro = '-'):
         filtros = pd.read_csv('cargaOP.csv')
         array = filtro.split(",")
 
-        try:
-            filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
-            return filtros
-        except KeyError:
-            # Tratar o caso em que a coluna 'filtro' não existe no DataFrame
-            print("A coluna 'filtro' não foi encontrada no DataFrame.")
-            return filtros
-        except Exception as e:
-            # Outras exceções podem ocorrer, como por exemplo, se o valor de filtro for None
-            print("Ocorreu um erro ao filtrar os dados:", e)
-            return filtros
+        filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
+        print(filtrosNovo)
+
+        return filtros
 
 
 
