@@ -120,10 +120,12 @@ def OPemProcesso(empresa, filtro = '-'):
         filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
         if filtrosNovo.empty:
             print(filtrosNovo)
-        else:
-            print('ok')
+            filtrosNovo = filtro[0:1]
 
-        return filtros
+            return filtrosNovo
+        else:
+
+        return filtrosNovo
 
 
 
