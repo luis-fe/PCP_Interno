@@ -112,13 +112,18 @@ def OPemProcesso(empresa, filtro = '-'):
 
         QtdPcs = consulta['Qtd Pcs'].sum()
         QtdPcs = "{:,.0f}".format(QtdPcs)
+        QtdPcs = QtdPcs.replace(',','.')
 
         totalOP = consulta['numeroOP'].count()
         totalOP = "{:,.0f}".format(totalOP)
+        totalOP = totalOP.replace(',','.')
+
 
         Atrazado = consulta[consulta['status'] == '⚠️atrasado']
         totalAtraso =Atrazado['numeroOP'].count()
         totalAtraso = "{:,.0f}".format(totalAtraso)
+        totalAtraso = totalAtraso.replace(',','.')
+
 
         dados = {
         '0-Total DE pçs':f'{QtdPcs} Pçs',
@@ -150,13 +155,18 @@ def OPemProcesso(empresa, filtro = '-'):
 
             QtdPcs = filtrosNovo['Qtd Pcs'].sum()
             QtdPcs = "{:,.0f}".format(QtdPcs)
+            QtdPcs = QtdPcs.replace(',', '.')
 
             totalOP = filtrosNovo['numeroOP'].count()
             totalOP = "{:,.0f}".format(totalOP)
+            totalOP = totalOP.replace(',', '.')
 
             Atrazado = filtrosNovo[filtrosNovo['status'] == '⚠️atrasado']
             totalAtraso = Atrazado['numeroOP'].count()
             totalAtraso = "{:,.0f}".format(totalAtraso)
+            totalAtraso = totalAtraso.replace(',', '.')
+
+
             filtrosNovo.drop(['filtro','Unnamed: 0'], axis=1, inplace=True)
 
             dados = {
