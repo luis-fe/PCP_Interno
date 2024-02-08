@@ -783,6 +783,7 @@ def ObtendoSemana(datainicio, dataEmissao):
     return numero_de_semanas
 
 def ObtendoMarca(coditempai):
+    coditempai = str(coditempai)
     if coditempai[0:3] == '102':
         return 'M.POLLO'
     elif coditempai[0:3] == '202':
