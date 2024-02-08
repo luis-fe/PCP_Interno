@@ -148,6 +148,8 @@ def OPemProcesso(empresa, filtro = '-'):
         else:
 
             QtdPcs = filtrosNovo['Qtd Pcs'].sum()
+            QtdPcs = "{:,.0f}".format(QtdPcs)
+
             totalOP = filtrosNovo['numeroOP'].count()
             Atrazado = filtrosNovo[filtrosNovo['status'] == '⚠️atrasado']
             totalAtraso = Atrazado['numeroOP'].count()
