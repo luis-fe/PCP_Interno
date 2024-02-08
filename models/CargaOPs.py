@@ -114,9 +114,11 @@ def OPemProcesso(empresa, filtro = '-'):
         QtdPcs = "{:,.0f}".format(QtdPcs)
 
         totalOP = consulta['numeroOP'].count()
+        totalOP = "{:,.0f}".format(totalOP)
+
         Atrazado = consulta[consulta['status'] == '⚠️atrasado']
         totalAtraso =Atrazado['numeroOP'].count()
-
+        totalAtraso = "{:,.0f}".format(totalAtraso)
 
         dados = {
         '0-Total DE pçs':f'{QtdPcs} Pçs',
@@ -151,11 +153,14 @@ def OPemProcesso(empresa, filtro = '-'):
             QtdPcs = "{:,.0f}".format(QtdPcs)
 
             totalOP = filtrosNovo['numeroOP'].count()
+            totalOP = "{:,.0f}".format(totalOP)
+
             Atrazado = filtrosNovo[filtrosNovo['status'] == '⚠️atrasado']
             totalAtraso = Atrazado['numeroOP'].count()
+            totalAtraso = "{:,.0f}".format(totalAtraso)
 
             dados = {
-                '0-Total DE pçs': f'{QtdPcs} Ops',
+                '0-Total DE pçs': f'{QtdPcs} Pçs',
                 '1-Total OP': f'{totalOP} Ops',
                 '2- OPs Atrasadas': f'{totalAtraso} Ops',
                 '3 -Detalhamento': filtrosNovo.to_dict(orient='records')
