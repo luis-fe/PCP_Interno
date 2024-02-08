@@ -34,7 +34,7 @@ def OPemProcesso(empresa, filtro = '-'):
     if filtro == '-' or filtro == ''  :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
-        consulta = pd.read_sql("SELECT op.codFaseAtual as codFase , op.numeroOP, op.codProduto, CASE WHEN SUBSTRING(observacao10, 1, 1) = 'I' THEN SUBSTRING(observacao10, 17, 11)  "
+        consulta = pd.read_sql("SELECT op.codTipoOP, op.codFaseAtual as codFase , op.numeroOP, op.codProduto, CASE WHEN SUBSTRING(observacao10, 1, 1) = 'I' THEN SUBSTRING(observacao10, 17, 11)  "
                                "ELSE SUBSTRING(observacao10, 14, 11) END data_entrada , r.nomeFase , "
                                "(select e.descricao from tcp.Engenharia e WHERE e.codempresa = op.codEmpresa and e.codengenharia = op.codProduto) as descricao FROM tco.OrdemProd op "
                                "inner join tco.RoteiroOP r on r.codempresa = op.codEmpresa and r.numeroop = op.numeroOP and op.codFaseAtual = r.codfase "
@@ -97,6 +97,7 @@ def OPemProcesso(empresa, filtro = '-'):
         consulta = consulta[consulta['dias na Fase'] != '']
 
 
+        consulta['Area'] = consulta.apply(lambda row: 'PILOTO' if row['codTipoOP'] == 13 else 'PRODUCAO',axis=1 )
 
         consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['dias na Fase'] > row['meta'] else 'normal',axis=1 )
         consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
