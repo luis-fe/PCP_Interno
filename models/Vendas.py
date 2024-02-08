@@ -420,7 +420,7 @@ def VendasPlano(plano, empresa, somenteAprovados, Marca, congelado):
     codigo, descricao, dataInicio, dataFim, inicioFat, FinalFat = Plano.ConsultarPlano(plano)
     nome = 'VendasPlano' + plano + '.csv'
 
-    if congelado == False:
+    if congelado == False or congelado == '':
         dataInicio = ArrumarDadas(dataInicio)
         dataFim = ArrumarDadas(dataFim)
 
