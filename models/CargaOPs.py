@@ -118,7 +118,10 @@ def OPemProcesso(empresa, filtro = '-'):
         array = filtro.split(",")
 
         filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
-        print(filtrosNovo)
+        if filtrosNovo.empty:
+            print(filtrosNovo)
+        else:
+            print('ok')
 
         return filtros
 
