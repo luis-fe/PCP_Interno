@@ -157,7 +157,7 @@ def OPemProcesso(empresa, filtro = '-'):
             Atrazado = filtrosNovo[filtrosNovo['status'] == '⚠️atrasado']
             totalAtraso = Atrazado['numeroOP'].count()
             totalAtraso = "{:,.0f}".format(totalAtraso)
-            filtrosNovo.drop('filtro', axis=1, inplace=True)
+            filtrosNovo.drop(['filtro','Unnamed: 0'], axis=1, inplace=True)
 
             dados = {
                 '0-Total DE pçs': f'{QtdPcs} Pçs',
