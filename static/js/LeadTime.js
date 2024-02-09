@@ -100,9 +100,10 @@ async function ExportarExcel(Api, Empresa, Filtro) {
 
         if (response.ok) {
             const data = await response.json();
+            const DetalhamentoApi = data[0]['3 -Detalhamento'];
             const nomeArquivo = 'Dados Ops.xlsx';
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet(data);
+            const ws = XLSX.utils.json_to_sheet(DetalhamentoApi);
 
       // Adicionar a planilha ao workbook
       XLSX.utils.book_append_sheet(wb, ws, "Dados Op's");
