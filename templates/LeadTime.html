@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>Gestão de Op's</title>
+
+</head>
+
+<body>
+    <div class="Corpo">
+        <div class="Titulo">
+            <h3>Gestão de Op's</h3>
+        </div>
+        <div class="Filtros">
+            <div class="Botoes" style="width: 10%;">
+            <i class="bi bi-funnel-fill" id="BotaoFiltros" title="Filtros"></i>
+            <i class="bi bi-file-earmark-arrow-down-fill" id="BotaoExcel" title="Exportar Excel"></i>
+        </div>
+            <div class="DivCorpoIndicadores" >
+                <div class="LabelOps" style="background-color: #3498db;">
+                    <label for="text" id="LabelOps" ></label>
+                </div>
+                <div class="LabelOps" style="background-color: rgb(47, 237, 110);">
+                    <label for="text" id="LabelOpsNormais" ></label>
+                </div>
+                <div class="LabelOps" style="background-color: rgb(246, 103, 103);">
+                    <label for="text" id="LabelOpsAtrasadas"></label>
+                </div>
+            </div>
+        </div>
+        <!------------------------------------------------------------------- MODAL--------------------------------------------------------------------->
+        <div class="ModalFiltros" id="ModalFiltros">
+            <span class="close" id="Fechar">&times;</span>
+            <div class="LinhaModalFiltros" style="display: flex; margin-bottom: 10px; margin-top: 25px;" title="Contém">
+                <label for="text"> =</label>
+                <input type="text" id="InputContem">
+            </div>
+            <div class="LinhaModalFiltros" style="display: flex;" title="Não Contém">
+                <label for="text">≠</label>
+                <input type="text" id="InputNaoContem">
+            </div>
+            <div class="LinhaModalFiltros" style="display: flex;" title="Não Contém">
+                <button id="ConfirmarFiltro">Filtrar</button>
+            </div>
+        </div>
+
+        <div class="botaoContainer" id="botaoContainer"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.core.min.js"></script>
+    <script src="static/js/index.js"></script>
+
+</body>
+
+</html>
