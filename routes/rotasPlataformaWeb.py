@@ -52,3 +52,7 @@ def TelaFaturamentoOutraSaida():
 @rotasPlataformaWeb.route('/TelaCurvaVendas')
 def TelaCurvaVendas():
     return render_template('TelaCurvaVendas.html')
+
+@rotasPlataformaWeb.route('/LeadTimeProducao')
+def LeadTimeProducao():
+    return render_template('LeadTime.html')
