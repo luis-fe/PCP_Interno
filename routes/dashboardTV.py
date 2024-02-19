@@ -183,9 +183,12 @@ def RelatorioVendas():
 @dashboardTVroute.route('/pcp/api/CadastrarJustificativa', methods=['PUT'])
 @token_required
 def CadastrarJustificativa():
-    ordemProd = request.args.get('ordemProd', '-')
-    fase = request.args.get('fase', '-')
-    justificativa = request.args.get('justificativa', '-')
+
+    data = request.get_json()
+
+    ordemProd = data.get('ordemProd', '-')
+    fase = data.get('fase', '-')
+    justificativa = data.get('justificativa', '-')
 
     plano = justificativaOPFase.CadastrarJustificativa(ordemProd, fase, justificativa)
     column_names = plano.columns
