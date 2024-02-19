@@ -1,7 +1,7 @@
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
-from models import dashbordTVModel, Vendas, CargaOPs
+from models import dashbordTVModel, Vendas, CargaOPs, justificativaOPFase
 import pandas as pd
 import subprocess
 
@@ -170,6 +170,24 @@ def RelatorioVendas():
     plano = request.args.get('plano', '1')
 
     plano = Vendas.EmitirRelatorio(plano)
+    column_names = plano.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in plano.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
+
+@dashboardTVroute.route('/pcp/api/CadastrarJustificativa', methods=['PUT'])
+@token_required
+def CadastrarJustificativa():
+    ordemProd = request.args.get('ordemProd', '-')
+    fase = request.args.get('fase', '-')
+    justificativa = request.args.get('justificativa', '-')
+
+    plano = justificativaOPFase.CadastrarJustificativa(ordemProd, fase, justificativa)
     column_names = plano.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     OP_data = []
