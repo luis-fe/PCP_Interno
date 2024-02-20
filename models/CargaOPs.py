@@ -46,7 +46,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         conn2 = ConexaoPostgreMPL.conexao()
-        justificativa2 = pd.read_sql('select ordemprod as numeroOP, fase as codFase, justificativa from "PCP".pcp.justificativa ',conn2)
+        justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa from "PCP".pcp.justificativa ',conn2)
         conn2.close()
 
         # Concatenar os DataFrames
