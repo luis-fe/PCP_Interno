@@ -59,7 +59,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         pcs = pd.read_sql("SELECT t.numeroop, (sum(t.qtdePecas1Qualidade))as Qtd1 ,(sum(t.qtdePecas2Qualidade))as Qtd2  ,(sum(t.qtdePecasProgramadas))as prog "
                           "FROM tco.OrdemProdTamanhos t where t.codempresa = "+empresa+" and t.numeroop in ( "
-                          "SELECT numeroOP from tco.OrdemProd op WHERE op.codempresa = "+ empresa+" and op.numeroop = t.numeroOP and op.situacao = 3) group by numeroOP ", conn)
+                          "SELECT numeroOP from tco.OrdemProd op having op.codempresa = "+ empresa+" and op.numeroop = t.numeroOP and op.situacao = 3) group by numeroOP ", conn)
 
 
         consulta['codFase'] = consulta['codFase'].astype(str)
