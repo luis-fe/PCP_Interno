@@ -130,6 +130,8 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
+        consulta.fillna('-', inplace=True)
+
 
         consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] != '-' else row['meta2'])
         consulta.drop('meta2', axis=1, inplace=True)
