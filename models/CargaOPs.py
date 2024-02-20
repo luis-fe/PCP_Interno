@@ -116,6 +116,15 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['filtro'] = consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
+        consulta['categoria'] = consulta.apply(
+            lambda row: Categoria('CAMISA', row['descricao'], 'CAMISA', row['categoria']), axis=1)
+        consulta['categoria'] = consulta.apply(
+            lambda row: Categoria('POLO', row['descricao'], 'POLO', row['categoria']), axis=1)
+        consulta['categoria'] = consulta.apply(
+            lambda row: Categoria('BATA', row['descricao'], 'CAMISA', row['categoria']), axis=1)
+        consulta['categoria'] = consulta.apply(
+            lambda row: Categoria('TRICOT', row['descricao'], 'TRICOT', row['categoria']), axis=1)
+
         consulta.to_csv('cargaOP.csv',index=True)
 
         consulta = consulta[consulta['Area']== AREA]
@@ -205,6 +214,12 @@ def getCategoriaFases():
     conn.close()
 
     return sql
+
+def Categoria(contem, valorReferencia, valorNovo, categoria):
+    if contem in valorReferencia:
+        return valorNovo
+    else:
+        return categoria
 
 
 
