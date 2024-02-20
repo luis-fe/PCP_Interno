@@ -24,7 +24,7 @@ def ConsultarJustificativa(ordemProd, fase):
     conn = ConexaoPostgreMPL.conexao()
     conn2 = ConexaoCSW.Conexao()
 
-    consulta1 = 'SELECT * FROM "PCP".pcp.justificativa ' \
+    consulta1 = 'SELECT ordemprod as "numeroOP", fase as "codFase", justificativa FROM "PCP".pcp.justificativa ' \
                 'WHERE ordemprod = %s and fase = %s '
 
     consulta1 = pd.read_sql(consulta1,conn,params=(ordemProd, fase,))
