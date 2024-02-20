@@ -43,6 +43,13 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
                                     'WHERE empresa = 1 and textolinha is not null',conn)
 
+        conn2 = ConexaoPostgreMPL.conexao()
+        justificativa2 = pd.read_sql('select ordemprod as numeroOP, fase as codFase, justificativa from "PCP".pcp.justificativa ',conn2)
+        conn2.close()
+
+        justificativa = pd.concat({justificativa,justificativa2})
+
+
 
         leadTime = pd.read_sql('SELECT f.codFase , f.leadTime as meta  FROM tcp.FasesProducao f WHERE f.codEmpresa = 1', conn)
 
