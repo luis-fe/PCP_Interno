@@ -196,7 +196,15 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
 
+def getCategoriaFases():
 
+    conn = ConexaoPostgreMPL.conexao()
+
+    sql = pd.read_sql('select * from "PCP".pcp.leadtime_categorias ',conn)
+
+    conn.close()
+
+    return sql
 
 
 
