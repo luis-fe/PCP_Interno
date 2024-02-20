@@ -116,6 +116,8 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['filtro'] = consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
+        consulta['categoria'] = '-'
+
         consulta['categoria'] = consulta.apply(
             lambda row: Categoria('CAMISA', row['descricao'], 'CAMISA', row['categoria']), axis=1)
         consulta['categoria'] = consulta.apply(
