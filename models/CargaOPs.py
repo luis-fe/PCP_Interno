@@ -133,7 +133,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta.fillna('-', inplace=True)
 
 
-        consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] != '-' else row['meta2'], axis=1)
+        consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] == '-' else row['meta2'], axis=1)
         consulta.drop('meta2', axis=1, inplace=True)
 
 
