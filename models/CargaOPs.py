@@ -50,7 +50,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         leadTime2 = pd.read_sql('select categoria, codfase as "codFase", leadtime as meta2, limite_atencao from "PCP".pcp.leadtime_categorias ',conn2)
         conn2.close()
 
-        conn3 = ConexaoPostgreMPL.conexao()
+        conn3 = ConexaoPostgreMPL.conexao2()
 
         pcs = pd.read_sql(
             'select numeroop as "numeroOP", sum(total_pcs) as "Qtd Pcs" from "Reposicao".off.ordemprod group by numeroop ',
