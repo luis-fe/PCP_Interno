@@ -224,7 +224,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         else:
 
             QtdPcs = filtrosNovo['Qtd Pcs'].sum()
-            QtdPcs = "{:,.0f}".format(QtdPcs)
             QtdPcs = QtdPcs.replace(',', '')
 
             totalOP = filtrosNovo['numeroOP'].count()
