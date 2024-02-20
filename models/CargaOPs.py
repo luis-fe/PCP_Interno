@@ -42,6 +42,8 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
                                     'WHERE empresa = 1 and textolinha is not null',conn)
+        justificativa['codFase'] = justificativa['codFase'].astype(str)
+
 
         conn2 = ConexaoPostgreMPL.conexao()
         justificativa2 = pd.read_sql('select ordemprod as numeroOP, fase as codFase, justificativa from "PCP".pcp.justificativa ',conn2)
@@ -62,7 +64,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['codFase'] = consulta['codFase'].astype(str)
         leadTime['codFase'] = leadTime['codFase'].astype(str)
 
-        justificativa['codFase'] = justificativa['codFase'].astype(str)
 
         conn.close()  ## Conexao finalizada
 
