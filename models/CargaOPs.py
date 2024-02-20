@@ -47,7 +47,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         conn2 = ConexaoPostgreMPL.conexao()
         justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa from "PCP".pcp.justificativa ',conn2)
-        leadTime2 = pd.read_sql('select categoria, codfase as "codFase", leadtime as meta2 from "PCP".pcp.leadtime_categorias ',conn2)
+        leadTime2 = pd.read_sql('select categoria, codfase as "codFase", leadtime as meta2, limite_atencao from "PCP".pcp.leadtime_categorias ',conn2)
         conn2.close()
 
         # Concatenar os DataFrames
@@ -110,6 +110,9 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['Area'] = consulta.apply(lambda row: 'PILOTO' if row['codTipoOP'] == 13 else 'PRODUCAO',axis=1 )
 
         consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['dias na Fase'] > row['meta'] else 'normal',axis=1 )
+
+
+
         consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
 
