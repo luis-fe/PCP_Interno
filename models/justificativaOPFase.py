@@ -32,7 +32,7 @@ def ConsultarJustificativa(ordemProd, fase):
     fase = "'%"+fase+"%'"
 
     consulta2 = 'SELECT CONVERT(varchar(12), codop) as ordemprod, codfase as fase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t ' \
-                ' having codop like '+ordemProd+ ' and '+fase
+                ' where codop like '+ordemProd+ ' and '+fase
     consulta2 = pd.read_sql(consulta2,conn2)
 
     if consulta2.empty and not consulta2.empty:
