@@ -58,9 +58,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         pcs['Qtd Pcs'].fillna(0, inplace=True)
         pcs['Qtd Pcs'] =pcs['Qtd Pcs'] .astype(int)
-
-
-
         pcs= pcs.groupby(['numeroOP']).agg({
             'Qtd Pcs':'sum'
         }).reset_index()
@@ -180,6 +177,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta.drop('filtro', axis=1, inplace=True)
 
+        consulta['Qtd Pcs'] =consulta['Qtd Pcs'].astype(int)
         QtdPcs = consulta['Qtd Pcs'].sum()
         QtdPcs = "{:,.0f}".format(QtdPcs)
         QtdPcs = QtdPcs.replace(',','')
