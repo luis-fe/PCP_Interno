@@ -7,7 +7,7 @@ import ConexaoCSW
 def CadastrarJustificativa(ordemProd, fase , justificativa):
     consultar = ConsultarJustificativa(ordemProd, fase)
 
-    if consultar.empty:
+    if consultar['justificativa'] == 'sem justificativa':
         conn = ConexaoPostgreMPL.conexao()
 
         insert = 'INSERT INTO "PCP".pcp.justificativa (ordemprod, fase, justificativa) values ' \
@@ -49,7 +49,7 @@ def ConsultarJustificativa(ordemProd, fase):
         consulta = consulta1
 
     elif consulta2.empty and consulta1.empty:
-        consulta = pd.DataFrame([{'justificativa': '-'}])
+        consulta = pd.DataFrame([{'justificativa': 'sem justificativa'}])
 
     else:
         consulta = pd.concat([consulta1 , consulta2])
