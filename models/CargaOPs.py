@@ -47,6 +47,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         conn2 = ConexaoPostgreMPL.conexao()
         justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa from "PCP".pcp.justificativa ',conn2)
+        leadTime2 = pd.read_sql('select categoria, codfase as "codFase", leadtime as meta2 from "PCP".pcp.leadtime_categorias ',conn2)
         conn2.close()
 
         # Concatenar os DataFrames
@@ -126,6 +127,13 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
             lambda row: Categoria('BATA', row['descricao'], 'CAMISA', row['categoria']), axis=1)
         consulta['categoria'] = consulta.apply(
             lambda row: Categoria('TRICOT', row['descricao'], 'TRICOT', row['categoria']), axis=1)
+
+
+        consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
+
+        consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] != '-' else row['meta2'])
+        consulta.drop('meta2', axis=1, inplace=True)
+
 
         consulta.to_csv('cargaOP.csv',index=True)
 
