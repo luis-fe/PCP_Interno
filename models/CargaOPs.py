@@ -109,7 +109,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta['Area'] = consulta.apply(lambda row: 'PILOTO' if row['codTipoOP'] == 13 else 'PRODUCAO',axis=1 )
 
-        consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['dias na Fase'] > row['meta'] else 'normal',axis=1 )
 
 
 
@@ -134,11 +133,18 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
         consulta['meta2'].fillna(0, inplace=True)
+        consulta['limite_atencao'].fillna(0, inplace=True)
+
         consulta['meta2'] = consulta['meta2'].astype(int)
+        consulta['limite_atencao'] = consulta['limite_atencao'].astype(int)
 
 
         consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] == 0 else row['meta2'], axis=1)
         consulta.drop('meta2', axis=1, inplace=True)
+
+        consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['dias na Fase'] > row['meta'] else 'normal',axis=1 )
+        consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['status'] == '⚠️atrasado' and row['dias na Fase'] < row['limite_atencao']  else 'Atencao',axis=1 )
+
 
 
         consulta.to_csv('cargaOP.csv',index=True)
