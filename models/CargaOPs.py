@@ -56,7 +56,10 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
             'select numeroop as "numeroOP", total_pcs as "Qtd Pcs" from "Reposicao".off.ordemprod ',
             conn3)
 
+        pcs['Qtd Pcs'].fillna(0, inplace=True)
         pcs['Qtd Pcs'] =pcs['Qtd Pcs'] .astype(int)
+
+
 
         pcs= pcs.groupby(['numeroOP']).agg({
             'Qtd Pcs':'sum'
