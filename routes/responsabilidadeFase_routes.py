@@ -37,12 +37,12 @@ def get_ResponsabilidadeFase_routes():
 
 @ResponsabilidadeFase_routes.route('/pcp/api/ResponsabilidadeFase', methods=['PUT'])
 @token_required
-def get_UsuarioSenha():
+def get_ResponsabilidadeFase():
     # Obtém os dados do corpo da requisição (JSON)
     novo_usuario = request.get_json()
     codFase = novo_usuario.get('codFase')
     nome = novo_usuario.get('nome')
-    usuarios = ResponsabilidadeFase.AlterarResponsalvel(codFase, nome)
+    usuarios = ResponsabilidadeFase.Inserir(codFase, nome)
     # Obtém os nomes das colunas
     # Obtém os nomes das colunas
     column_names = usuarios.columns
