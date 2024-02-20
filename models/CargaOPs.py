@@ -120,7 +120,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta = consulta[consulta['Area']== AREA]
 
-        consulta.drop('filtro', axis=1, inplace=True)
+       # consulta.drop('filtro', axis=1, inplace=True)
 
         QtdPcs = consulta['Qtd Pcs'].sum()
         QtdPcs = "{:,.0f}".format(QtdPcs)
