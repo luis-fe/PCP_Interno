@@ -30,7 +30,7 @@ def ConsultarJustificativa(ordemProd, fase):
 
 
     consulta2 =pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
-                                    'WHERE empresa = 1 and textolinha is not null',conn)
+                                    'WHERE empresa = 1 and textolinha is not null',conn2)
     consulta2['codFase'] = consulta2['codFase'].astype(str)
 
     consulta2 = consulta2[consulta2['numeroOP'] == ordemProd and consulta2['codFase'] == fase ]
