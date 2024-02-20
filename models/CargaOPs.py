@@ -53,10 +53,16 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         conn3 = ConexaoPostgreMPL.conexao2()
 
         pcs = pd.read_sql(
-            'select numeroop as "numeroOP", sum(total_pcs) as "Qtd Pcs" from "Reposicao".off.ordemprod group by numeroop ',
+            'select numeroop as "numeroOP", total_pcs as "Qtd Pcs" from "Reposicao".off.ordemprod ',
             conn3)
 
+        pcs= pcs.groupby(['numeroOP']).agg({
+            'total_pcs':'sum'
+        }).reset_index()
         conn3.close()
+
+
+
 
 
 
