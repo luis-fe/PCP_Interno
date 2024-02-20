@@ -38,10 +38,10 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
                                "ELSE SUBSTRING(observacao10, 14, 11) END data_entrada , r.nomeFase , "
                                "(select e.descricao from tcp.Engenharia e WHERE e.codempresa = op.codEmpresa and e.codengenharia = op.codProduto) as descricao FROM tco.OrdemProd op "
                                "inner join tco.RoteiroOP r on r.codempresa = op.codEmpresa and r.numeroop = op.numeroOP and op.codFaseAtual = r.codfase "
-                               "WHERE op.situacao = 3 and op.codempresa = '" + empresa + "'", conn)
+                               "having op.situacao = 3 and op.codempresa = '" + empresa + "'", conn)
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
-                                    'WHERE empresa = 1 and textolinha is not null',conn)
+                                    'having empresa = 1 and textolinha is not null',conn)
         justificativa['codFase'] = justificativa['codFase'].astype(str)
 
 
