@@ -58,7 +58,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         leadTime = pd.read_sql('SELECT f.codFase , f.leadTime as meta  FROM tcp.FasesProducao f WHERE f.codEmpresa = 1', conn)
 
         pcs = pd.read_sql("SELECT t.numeroop, (sum(t.qtdePecas1Qualidade))as Qtd1 ,(sum(t.qtdePecas2Qualidade))as Qtd2  ,(sum(t.qtdePecasProgramadas))as prog "
-                          "FROM tco.OrdemProdTamanhos t WHERE t.codempresa = "+empresa+" and t.numeroop in ( "
+                          "FROM tco.OrdemProdTamanhos t having t.codempresa = "+empresa+" and t.numeroop in ( "
                           "SELECT numeroOP from tco.OrdemProd op WHERE op.codempresa = "+ empresa+" and op.numeroop = t.numeroOP and op.situacao = 3) group by numeroOP ", conn)
 
 
