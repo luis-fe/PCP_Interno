@@ -113,14 +113,14 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
 
-        consulta['filtro'] = consulta['codFase']+consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
+        consulta['filtro'] = consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
         consulta.to_csv('cargaOP.csv',index=True)
 
         consulta = consulta[consulta['Area']== AREA]
 
-       # consulta.drop('filtro', axis=1, inplace=True)
+        consulta.drop('filtro', axis=1, inplace=True)
 
         QtdPcs = consulta['Qtd Pcs'].sum()
         QtdPcs = "{:,.0f}".format(QtdPcs)
