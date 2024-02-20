@@ -114,7 +114,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         consulta['filtro'] = consulta['codFase']+consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
-
+        consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
         consulta.to_csv('cargaOP.csv',index=True)
 
