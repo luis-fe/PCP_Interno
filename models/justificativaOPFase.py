@@ -38,10 +38,10 @@ def ConsultarJustificativa(ordemProd, fase):
     consulta2 = consulta2[consulta2['codFase'] == str(fase)]
 
 
-    if consulta2.empty and not consulta2.empty:
+    if consulta2.empty and not consulta1.empty:
         consulta = consulta1
 
-    elif consulta2.empty and consulta2.empty:
+    elif consulta2.empty and consulta1.empty:
         consulta = pd.DataFrame([{'justificativa': '-'}])
 
     else:
