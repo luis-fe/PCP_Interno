@@ -45,7 +45,7 @@ def ConsultarJustificativa(ordemProd, fase):
         consulta = pd.DataFrame([{'justificativa': '-'}])
 
     else:
-        consulta = pd.concat({consulta1 , consulta2})
+        consulta = pd.concat([consulta1 , consulta2])
 
     conn.close()
     conn2.close()
