@@ -50,7 +50,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         conn2.close()
 
         # Concatenar os DataFrames
-        justificativa = pd.concat({justificativa, justificativa2}, ignore_index=True)
+        justificativa = pd.concat([justificativa, justificativa2], ignore_index=True)
 
 
 
