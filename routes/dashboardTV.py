@@ -200,3 +200,21 @@ def CadastrarJustificativa():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+@dashboardTVroute.route('/pcp/api/ConsultarJustificativa', methods=['GET'])
+@token_required
+def ConsultarJustificativa():
+
+    ordemProd = request.args.get('ordemProd')
+    fase = request.args.get('fase', '-')
+
+    plano = justificativaOPFase.ConsultarJustificativa(ordemProd, fase)
+    column_names = plano.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in plano.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
