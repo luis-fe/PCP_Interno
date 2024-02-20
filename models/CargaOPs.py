@@ -57,7 +57,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
             conn3)
 
         pcs= pcs.groupby(['numeroOP']).agg({
-            'total_pcs':'sum'
+            'Qtd Pcs':'sum'
         }).reset_index()
         conn3.close()
 
