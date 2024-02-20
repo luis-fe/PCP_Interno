@@ -37,7 +37,6 @@ def ConsultarJustificativa(ordemProd, fase):
     consulta2 = consulta2[consulta2['numeroOP'] == ordemProd]
     consulta2 = consulta2[consulta2['codFase'] == str(fase)]
 
-    consulta2 = pd.read_sql(consulta2,conn2)
 
     if consulta2.empty and not consulta2.empty:
         consulta = consulta1
