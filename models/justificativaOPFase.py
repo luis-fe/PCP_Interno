@@ -23,7 +23,7 @@ def CadastrarJustificativa(ordemProd, fase , justificativa):
 
     else:
 
-        return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !'}])
+        return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !!'}])
 
 
 
