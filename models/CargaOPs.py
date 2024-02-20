@@ -47,7 +47,9 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         justificativa2 = pd.read_sql('select ordemprod as numeroOP, fase as codFase, justificativa from "PCP".pcp.justificativa ',conn2)
         conn2.close()
 
-        justificativa = pd.concat({justificativa,justificativa2})
+        # Concatenar os DataFrames
+        frames = [justificativa, justificativa2]
+        justificativa = pd.concat(frames, ignore_index=True)
 
 
 
