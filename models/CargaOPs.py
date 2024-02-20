@@ -48,8 +48,17 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         conn2 = ConexaoPostgreMPL.conexao()
         justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa from "PCP".pcp.justificativa ',conn2)
         leadTime2 = pd.read_sql('select categoria, codfase as "codFase", leadtime as meta2, limite_atencao from "PCP".pcp.leadtime_categorias ',conn2)
-        pcs = pd.read_sql('select numeroop as "numeroOP", sum(total_pcs) as "Qtd Pcs" from "Reposicao".off.ordemprod group by numeroop ',conn2)
         conn2.close()
+
+        conn3 = ConexaoPostgreMPL.conexao()
+
+        pcs = pd.read_sql(
+            'select numeroop as "numeroOP", sum(total_pcs) as "Qtd Pcs" from "Reposicao".off.ordemprod group by numeroop ',
+            conn3)
+
+        conn3.close()
+
+
 
         # Concatenar os DataFrames
         justificativa = pd.concat([justificativa, justificativa2], ignore_index=True)
