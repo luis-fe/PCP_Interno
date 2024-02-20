@@ -5,18 +5,25 @@ import ConexaoCSW
 ##Arquivo utilizado para cadastrar aS justificativas de LeadTime das OPS que estouraram o LEADTIME.
 
 def CadastrarJustificativa(ordemProd, fase , justificativa):
-    conn = ConexaoPostgreMPL.conexao()
+    consultar = ConsultarJustificativa(ordemProd, fase)
 
-    insert = 'INSERT INTO "PCP".pcp.justificativa (ordemprod, fase, justificativa) values ' \
-             '(%s , %s, %s )'
+    if consultar.empty:
+        conn = ConexaoPostgreMPL.conexao()
 
-    cursor = conn.cursor()
-    cursor.execute (insert,(ordemProd, fase, justificativa))
-    conn.commit()
-    cursor.close()
+        insert = 'INSERT INTO "PCP".pcp.justificativa (ordemprod, fase, justificativa) values ' \
+                 '(%s , %s, %s )'
 
-    conn.close()
-    return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !'}])
+        cursor = conn.cursor()
+        cursor.execute (insert,(ordemProd, fase, justificativa))
+        conn.commit()
+        cursor.close()
+
+        conn.close()
+        return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !'}])
+
+    else:
+
+        return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !'}])
 
 
 
