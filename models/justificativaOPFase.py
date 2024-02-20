@@ -19,6 +19,7 @@ def CadastrarJustificativa(ordemProd, fase , justificativa):
     return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !'}])
 
 
+
 def ConsultarJustificativa(ordemProd, fase):
     conn = ConexaoPostgreMPL.conexao()
     conn2 = ConexaoCSW.Conexao()
@@ -33,7 +34,8 @@ def ConsultarJustificativa(ordemProd, fase):
                                     'WHERE empresa = 1 and textolinha is not null',conn2)
     consulta2['codFase'] = consulta2['codFase'].astype(str)
 
-    consulta2 = consulta2[consulta2['numeroOP'] == ordemProd and consulta2['codFase'] == fase ]
+    consulta2 = consulta2[consulta2['numeroOP'] == ordemProd]
+    consulta2 = consulta2[consulta2['codFase'] == str(fase)]
 
     consulta2 = pd.read_sql(consulta2,conn2)
 
