@@ -28,11 +28,13 @@ def ConsultarJustificativa(ordemProd, fase):
 
     consulta1 = pd.read_sql(consulta1,conn,params=(ordemProd, fase,))
 
-    ordemProd = "'%"+ordemProd[0:5]+"%'"
-    fase = "'%"+fase+"%'"
 
-    consulta2 = 'SELECT CONVERT(varchar(12), codop) as ordemprod, codfase as fase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t ' \
-                ' where codop like '+ordemProd+ ' and '+fase
+    consulta2 =pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
+                                    'WHERE empresa = 1 and textolinha is not null',conn)
+    consulta2['codFase'] = consulta2['codFase'].astype(str)
+
+    consulta2 = consulta2[consulta2['numeroOP'] == ordemProd and consulta2['codFase'] == fase ]
+
     consulta2 = pd.read_sql(consulta2,conn2)
 
     if consulta2.empty and not consulta2.empty:
