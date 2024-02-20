@@ -115,8 +115,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
 
-        consulta['filtro'] = consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
-        consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
+
 
         consulta['categoria'] = '-'
 
@@ -145,6 +144,9 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['status'] == '⚠️atrasado' and row['dias na Fase'] < row['limite_atencao']  else 'Atencao',axis=1 )
 
         consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        consulta['filtro'] = consulta['codProduto']+consulta['data_entrada']+consulta['descricao']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
+        consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
 
         consulta.to_csv('cargaOP.csv',index=True)
