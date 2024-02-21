@@ -42,13 +42,13 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta = pd.merge(OP_emAberto,DataMov,on=['numeroOP','seqAtual'], how='left')
 
-        justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
+        justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
                                     'having empresa = 1 and textolinha is not null',conn)
         justificativa['codFase'] = justificativa['codFase'].astype(str)
 
 
         conn2 = ConexaoPostgreMPL.conexao()
-        justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa from "PCP".pcp.justificativa ',conn2)
+        justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa2 from "PCP".pcp.justificativa ',conn2)
         leadTime2 = pd.read_sql('select categoria, codfase as "codFase", leadtime as meta2, limite_atencao from "PCP".pcp.leadtime_categorias ',conn2)
         conn2.close()
 
@@ -71,7 +71,13 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         # Concatenar os DataFrames
-        justificativa = pd.concat([justificativa, justificativa2], ignore_index=True)
+        consulta = pd.merge(consulta, justificativa2, on=['numeroOP','codFase'], how='left')
+        consulta['justificativa1'].fillna('-',inplace=True)
+
+        consulta = pd.merge(consulta, justificativa, on=['numeroOP','codFase'], how='left')
+        consulta['justificativa2'].fillna('-',inplace=True)
+
+        consulta['justificativa'] = consulta.apply(lambda row: row['justificativa1'] if row['justificativa1'] != '-' else row['justificativa2'], axis=1 )
 
 
 
@@ -91,7 +97,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta = pd.merge(consulta,pcs,on='numeroOP', how='left')
 
 
-        consulta = pd.merge(consulta,justificativa,on=['numeroOP','codFase'], how='left')
 
         responsabilidade = ResponsabilidadeFases()
         consulta = pd.merge(consulta,responsabilidade,on='codFase', how='left')
