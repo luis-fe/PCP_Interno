@@ -67,19 +67,8 @@ def ConsultarJustificativa(ordemProd, fase):
         consulta = pd.DataFrame([{'justificativa': 'sem justificativa'}])
 
     elif not consulta2.empty and consultaPostgre.empty:
-        consulta = consulta2
-        justificativa = consulta2['justificativa'][0]
-        conn = ConexaoPostgreMPL.conexao()
 
-        update = 'update "PCP".pcp.justificativa set justificativa = %s where ' \
-                 ' ordemprod = %s and fase = %s '
-
-        cursor = conn.cursor()
-        cursor.execute (update,( justificativa, ordemProd, fase))
-        conn.commit()
-        cursor.close()
-
-        conn.close()
+        consulta = pd.DataFrame([{'justificativa': 'sem justificativa'}])
 
 
     else:
