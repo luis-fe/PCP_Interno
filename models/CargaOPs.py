@@ -10,7 +10,6 @@ import locale
 import math
 import ConexaoPostgreMPL
 import BuscasAvancadas
-
 def ResponsabilidadeFases():
     conn = ConexaoPostgreMPL.conexao()
 
