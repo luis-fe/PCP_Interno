@@ -7,7 +7,7 @@ import ConexaoCSW
 def CadastrarJustificativa(ordemProd, fase , justificativa):
     consultar = ConsultarJustificativa(ordemProd, fase)
 
-    if consultar['justificativa'] == 'sem justificativa':
+    if consultar['justificativa'][0] == 'sem justificativa':
         conn = ConexaoPostgreMPL.conexao()
 
         insert = 'INSERT INTO "PCP".pcp.justificativa (ordemprod, fase, justificativa) values ' \
