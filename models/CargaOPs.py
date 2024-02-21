@@ -72,10 +72,10 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         # Concatenar os DataFrames
         consulta = pd.merge(consulta, justificativa2, on=['numeroOP','codFase'], how='left')
-        consulta['justificativa1'].fillna('-',inplace=True)
+        consulta['justificativa2'].fillna('-',inplace=True)
 
         consulta = pd.merge(consulta, justificativa, on=['numeroOP','codFase'], how='left')
-        consulta['justificativa2'].fillna('-',inplace=True)
+        consulta['justificativa1'].fillna('-',inplace=True)
 
         consulta['justificativa'] = consulta.apply(lambda row: row['justificativa1'] if row['justificativa1'] != '-' else row['justificativa2'], axis=1 )
 
