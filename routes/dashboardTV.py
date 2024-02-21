@@ -10,6 +10,7 @@ import subprocess
 dashboardTVroute = Blueprint('dashboardTVroute', __name__)
 CORS(dashboardTVroute)
 
+
 def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

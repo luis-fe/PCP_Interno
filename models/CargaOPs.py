@@ -34,8 +34,8 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
     if filtro == '-' or filtro == ''  :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
-        OP_emAberto = pd.read_sql(BuscasAvancadas.OP_emAberto, conn)
-        DataMov = pd.read_sql(BuscasAvancadas.DataMov, conn)
+        OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
+        DataMov = pd.read_sql(BuscasAvancadas.DataMov(), conn)
 
         consulta = pd.merge(OP_emAberto,DataMov,on=['numeroOP','seqAtual'], how='left')
 
