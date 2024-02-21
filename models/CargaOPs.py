@@ -104,13 +104,11 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         consulta = consulta[consulta['data_entrada'] != '-']
-
         consulta.fillna('-', inplace=True)
 
-        consulta['data_entrada'] = consulta['data_entrada'].str.slice(6, 10) + '-'+consulta['data_entrada'].str.slice(3, 5)+'-'+consulta['data_entrada'].str.slice(0, 2)
+        consulta['data_entrada'] = consulta['data_entrada'].str.slice(0, 10)
         consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], errors='coerce')
-        # Obtendo a data de hoje
-        #data_de_hoje = pd.Timestamp.today().normalize()  # Convertendo para um objeto Timestamp do pandas
+
 
         # Verificando e lidando com valores nulos
         hora_str = obterHoraAtual()
