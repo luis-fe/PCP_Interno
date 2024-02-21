@@ -3,11 +3,6 @@ import ConexaoCSW
 from datetime import datetime
 import datetime
 import pytz
-import sys
-import numpy
-import time
-import locale
-import math
 import ConexaoPostgreMPL
 import BuscasAvancadas
 def ResponsabilidadeFases():
@@ -44,7 +39,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         OP_emAberto['codTipoOP'] = OP_emAberto['codTipoOP'] +'-'+ OP_emAberto['nomeTipoOp']
 
 
-        DataMov = pd.read_sql(BuscasAvancadas.DataMov(), conn)
+        DataMov = pd.read_sql(BuscasAvancadas.DataMov(AREA), conn)
         DataMov['seqAtual'] = DataMov['seqAtual'].astype(str)
 
 
