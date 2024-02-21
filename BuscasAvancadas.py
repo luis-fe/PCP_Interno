@@ -20,7 +20,7 @@ def OP_Aberto():
 def DataMov():
         DataMov = 'SELECT numeroOP, dataMov as data_entrada , horaMov , seqRoteiro, (seqRoteiro + 1) as seqAtual FROM tco.MovimentacaoOPFase mf '\
             ' WHERE  numeroOP in (SELECT o.numeroOP from  tco.OrdemProd o' \
-            ' WHERE o.codEmpresa = 1 and o.situacao = 3) and mf.codempresa = 1'
+            ' having o.codEmpresa = 1 and o.situacao = 3) and mf.codempresa = 1 order b codlote desc'
 
         return DataMov
 
