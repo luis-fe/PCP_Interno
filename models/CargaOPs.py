@@ -35,6 +35,14 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
         OP_emAberto['seqAtual'] = OP_emAberto['seqAtual'].astype(str)
+        OP_emAberto['codTipoOP'] = OP_emAberto['codTipoOP'].astype(str)
+
+        tipoOP = pd.read_sql(BuscasAvancadas.TipoOP(), conn)
+        tipoOP['codTipoOP'] = tipoOP['codTipoOP'].astype(str)
+
+        OP_emAberto = pd.merge(OP_emAberto,tipoOP,on='codTipoOP', how='left')
+        OP_emAberto['codTipoOP'] = OP_emAberto['codTipoOP'] +'-'+ OP_emAberto['nomeTipoOp']
+
 
         DataMov = pd.read_sql(BuscasAvancadas.DataMov(), conn)
         DataMov['seqAtual'] = DataMov['seqAtual'].astype(str)

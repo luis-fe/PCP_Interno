@@ -24,3 +24,9 @@ def DataMov():
 
         return DataMov
 
+def TipoOP():
+
+    TipoOP = 'SELECT t.codTipo as codTipoOP, t.nome as nomeTipoOp  FROM tcp.TipoOP t WHERE t.Empresa = 1'
+
+    return TipoOP
+
