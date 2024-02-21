@@ -48,7 +48,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         conn2 = ConexaoPostgreMPL.conexao()
-        justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa2 from "PCP".pcp.justificativa ',conn2)
+        justificativa2 = pd.read_sql('select ordemprod as "numeroOP", fase as "codFase", justificativa as justificativa2 from "PCP".pcp.justificativa ',conn2)
         leadTime2 = pd.read_sql('select categoria, codfase as "codFase", leadtime as meta2, limite_atencao from "PCP".pcp.leadtime_categorias ',conn2)
         conn2.close()
 
