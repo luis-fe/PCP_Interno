@@ -181,7 +181,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta.drop('filtro', axis=1, inplace=True)
 
-        consulta['Qtd Pcs'] =consulta['Qtd Pcs'].replace('-',0)
         QtdPcs = consulta['Qtd Pcs'].sum()
         QtdPcs = "{:,.0f}".format(QtdPcs)
         QtdPcs = QtdPcs.replace(',','')
