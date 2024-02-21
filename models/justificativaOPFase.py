@@ -43,10 +43,10 @@ def ConsultarJustificativa(ordemProd, fase):
     conn = ConexaoPostgreMPL.conexao()
     conn2 = ConexaoCSW.Conexao()
 
-    consulta1 = 'SELECT ordemprod as "numeroOP", fase as "codFase", justificativa FROM "PCP".pcp.justificativa ' \
+    consultaPostgre = 'SELECT ordemprod as "numeroOP", fase as "codFase", justificativa FROM "PCP".pcp.justificativa ' \
                 'WHERE ordemprod = %s and fase = %s '
 
-    consulta1 = pd.read_sql(consulta1,conn,params=(ordemProd, fase,))
+    consultaPostgre = pd.read_sql(consultaPostgre,conn,params=(ordemProd, fase,))
 
 
     consulta2 =pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
@@ -59,18 +59,31 @@ def ConsultarJustificativa(ordemProd, fase):
     conn.close()
     conn2.close()
 
-    if consulta2.empty and not consulta1.empty:
-        consulta = consulta1
+    if consulta2.empty and not consultaPostgre.empty:
+        consulta = consultaPostgre
         print('teste1')
 
-    elif consulta2.empty and consulta1.empty:
+    elif consulta2.empty and consultaPostgre.empty:
         consulta = pd.DataFrame([{'justificativa': 'sem justificativa'}])
 
-    elif not consulta2.empty and consulta1.empty:
+    elif not consulta2.empty and consultaPostgre.empty:
         consulta = consulta2
+        justificativa = consulta2['justificativa'][0]
+        conn = ConexaoPostgreMPL.conexao()
+
+        update = 'update "PCP".pcp.justificativa set justificativa = %s where ' \
+                 ' ordemprod = %s and fase = %s '
+
+        cursor = conn.cursor()
+        cursor.execute (update,( justificativa, ordemProd, fase))
+        conn.commit()
+        cursor.close()
+
+        conn.close()
+
 
     else:
-        consulta = consulta1
+        consulta = consultaPostgre
 
 
     return consulta
