@@ -107,7 +107,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta.fillna('-', inplace=True)
 
         consulta['data_entrada'] = consulta['data_entrada'].str.slice(0, 10)
-        print(consulta['data_entrada'])
         consulta['data_entrada'] = pd.to_datetime(consulta['data_entrada'], errors='coerce')
 
 
