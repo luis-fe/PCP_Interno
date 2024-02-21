@@ -5,6 +5,7 @@ import ConexaoCSW
 ##Arquivo utilizado para cadastrar aS justificativas de LeadTime das OPS que estouraram o LEADTIME.
 
 def CadastrarJustificativa(ordemProd, fase , justificativa):
+    fase = str(fase)
     consultar = ConsultarJustificativa(ordemProd, fase)
 
     if consultar['justificativa'][0] == 'sem justificativa':
