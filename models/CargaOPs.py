@@ -199,16 +199,22 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         totalOP = totalOP.replace(',','')
 
 
-        Atrazado = consulta[consulta['status'] == '⚠️atrasado']
+        Atrazado = consulta[consulta['status'] == '2-Atrasado']
         totalAtraso =Atrazado['numeroOP'].count()
         totalAtraso = "{:,.0f}".format(totalAtraso)
         totalAtraso = totalAtraso.replace(',','')
+
+        Atencao = consulta[consulta['status'] == '1-Atencao']
+        totalAtencao =Atencao['numeroOP'].count()
+        totalAtencao = "{:,.0f}".format(totalAtencao)
+        totalAtencao = totalAtencao.replace(',','')
 
 
         dados = {
         '0-Total DE pçs':f'{QtdPcs} Pçs',
         '1-Total OP':f'{totalOP} Ops',
         '2- OPs Atrasadas':f'{totalAtraso} Ops',
+        '2.1- OPs Atencao': f'{totalAtencao} Ops',
         '3 -Detalhamento':consulta.to_dict(orient='records')
 
         }
@@ -228,6 +234,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
                 '0-Total DE pçs': '',
                 '1-Total OP': '',
                 '2- OPs Atrasadas': '',
+                '2.1- OPs Atencao':'',
                 '3 -Detalhamento': ''
 
             }
@@ -243,10 +250,15 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
             totalOP = "{:,.0f}".format(totalOP)
             totalOP = totalOP.replace(',', '')
 
-            Atrazado = filtrosNovo[filtrosNovo['status'] == '⚠️atrasado']
+            Atrazado = filtrosNovo[filtrosNovo['status'] == '2-Atrasado']
             totalAtraso = Atrazado['numeroOP'].count()
             totalAtraso = "{:,.0f}".format(totalAtraso)
             totalAtraso = totalAtraso.replace(',', '')
+
+            Atencao = filtrosNovo[filtrosNovo['status'] == '1-Atencao']
+            totalAtencao = Atencao['numeroOP'].count()
+            totalAtencao = "{:,.0f}".format(totalAtencao)
+            totalAtencao = totalAtencao.replace(',', '')
 
 
             filtrosNovo.drop(['filtro','Unnamed: 0'], axis=1, inplace=True)
@@ -255,6 +267,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
                 '0-Total DE pçs': f'{QtdPcs} Pçs',
                 '1-Total OP': f'{totalOP} Ops',
                 '2- OPs Atrasadas': f'{totalAtraso} Ops',
+                '2.1- OPs Atencao': f'{totalAtencao} Ops',
                 '3 -Detalhamento': filtrosNovo.to_dict(orient='records')
 
             }
