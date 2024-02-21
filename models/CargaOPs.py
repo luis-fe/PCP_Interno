@@ -182,7 +182,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['filtro'] = consulta['codProduto']+consulta['data_entrada']+consulta['categoria']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
-        consulta.drop(['justificativa2','justificativa1','seqRoteiro','seqAtual'], axis=1, inplace=True)
+        consulta.drop(['justificativa2','justificativa1','seqRoteiro','seqAtual','nomeTipoOp'], axis=1, inplace=True)
         consulta.to_csv('cargaOP.csv',index=True)
 
         consulta = consulta[consulta['Area']== AREA]
