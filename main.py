@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from routes import routes_blueprint
 from functools import wraps
-from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas
+from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas, BuscasAvancadas
 from werkzeug.utils import secure_filename
 import dash
 import dash_core_components as dcc
