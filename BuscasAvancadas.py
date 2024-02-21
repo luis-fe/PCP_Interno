@@ -9,7 +9,7 @@ def OP_Aberto():
                   '(select e.descricao from tcp.Engenharia e WHERE e.codempresa = o.codEmpresa and e.codengenharia = o.codProduto) as descricao' \
                   ' FROM tco.OrdemProd o '\
                    ' WHERE o.codEmpresa = 1 and o.situacao = 3'
-    return OP_Aberto
+    return OP_emAberto
 
 
 
