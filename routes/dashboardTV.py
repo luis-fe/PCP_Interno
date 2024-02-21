@@ -1,7 +1,7 @@
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
-from models import dashbordTVModel, Vendas, CargaOPs, justificativaOPFase
+from models import dashbordTVModel, Vendas, CargaOPs, justificativaOPFase, BuscasAvancadas
 import pandas as pd
 import subprocess
 
