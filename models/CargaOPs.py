@@ -122,7 +122,6 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         consulta.drop('hora_str', axis=1, inplace=True)
-        #consulta['diferenca_de_dias'] = consulta['diferenca_de_dias'].astype(str)
         consulta = consulta[consulta['dias na Fase'] != '']
 
 
