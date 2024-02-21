@@ -66,8 +66,11 @@ def ConsultarJustificativa(ordemProd, fase):
     elif consulta2.empty and consulta1.empty:
         consulta = pd.DataFrame([{'justificativa': 'sem justificativa'}])
 
+    elif not consulta2.empty and consulta1.empty:
+        consulta = consulta2
+
     else:
-        consulta = pd.concat([consulta1 , consulta2])
+        consulta = consulta1
 
 
     return consulta
