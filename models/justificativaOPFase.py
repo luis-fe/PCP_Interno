@@ -46,7 +46,7 @@ def ConsultarJustificativa(ordemProd, fase):
     consulta1 = 'SELECT ordemprod as "numeroOP", fase as "codFase", justificativa FROM "PCP".pcp.justificativa ' \
                 'WHERE ordemprod = %s and fase = %s '
 
-    consulta1 = pd.read_sql(consulta1,conn,params=(ordemProd, fase,))
+    consulta1 = pd.read_sql(consulta1,conn,params=(ordemProd, int(fase),))
 
 
     consulta2 =pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
