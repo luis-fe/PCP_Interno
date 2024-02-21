@@ -166,8 +166,8 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] == 0 else row['meta2'], axis=1)
         consulta.drop('meta2', axis=1, inplace=True)
 
-        consulta['status'] = consulta.apply(lambda row: '⚠️atrasado' if row['dias na Fase'] > row['meta'] else 'normal',axis=1 )
-        consulta['status'] = consulta.apply(lambda row: '📣Atencao' if row['status'] == '⚠️atrasado' and row['dias na Fase'] < row['limite_atencao']  else row['status'],axis=1 )
+        consulta['status'] = consulta.apply(lambda row: '0-Atrasado' if row['dias na Fase'] > row['meta'] else '2-Normal',axis=1 )
+        consulta['status'] = consulta.apply(lambda row: '1-Atencao' if row['status'] == '0-Atrasado' and row['dias na Fase'] < row['limite_atencao']  else row['status'],axis=1 )
 
         consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
