@@ -46,7 +46,7 @@ def ConsultarJustificativa(ordemProd, fase):
     consulta1 = 'SELECT ordemprod as "numeroOP", fase as "codFase", justificativa FROM "PCP".pcp.justificativa ' \
                 'WHERE ordemprod = %s and fase = %s '
 
-    consulta1 = pd.read_sql(consulta1,conn,params=(ordemProd, int(fase),))
+    consulta1 = pd.read_sql(consulta1,conn,params=(ordemProd, fase,))
 
 
     consulta2 =pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa FROM tco.ObservacoesGiroFasesTexto  t '
@@ -56,9 +56,12 @@ def ConsultarJustificativa(ordemProd, fase):
     consulta2 = consulta2[consulta2['numeroOP'] == ordemProd]
     consulta2 = consulta2[consulta2['codFase'] == str(fase)]
 
+    conn.close()
+    conn2.close()
 
     if consulta2.empty and not consulta1.empty:
         consulta = consulta1
+        print('teste1')
 
     elif consulta2.empty and consulta1.empty:
         consulta = pd.DataFrame([{'justificativa': 'sem justificativa'}])
@@ -66,7 +69,5 @@ def ConsultarJustificativa(ordemProd, fase):
     else:
         consulta = pd.concat([consulta1 , consulta2])
 
-    conn.close()
-    conn2.close()
 
     return consulta
