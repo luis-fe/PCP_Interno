@@ -22,6 +22,17 @@ def CadastrarJustificativa(ordemProd, fase , justificativa):
         return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !'}])
 
     else:
+        conn = ConexaoPostgreMPL.conexao()
+
+        update = 'update "PCP".pcp.justificativa set justificativa = %s where ' \
+                 ' ordemprod = %s and fase = %s '
+
+        cursor = conn.cursor()
+        cursor.execute (update,( justificativa, ordemProd, fase))
+        conn.commit()
+        cursor.close()
+
+        conn.close()
 
         return pd.DataFrame([{'mensagem':'Dados Inseridos com sucesso !!'}])
 
