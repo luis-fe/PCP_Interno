@@ -133,14 +133,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta = consulta[consulta['dias na Fase'] != '']
 
 
-        consulta['Area'] = consulta.apply(lambda row: 'PILOTO' if row['codTipoOP'] == 13 else 'PRODUCAO',axis=1 )
-
-
-
-
-
-
-
+        consulta['Area'] = consulta.apply(lambda row: 'PILOTO' if row['codTipoOP'] == '13-PILOTO' else 'PRODUCAO',axis=1 )
 
 
         consulta['categoria'] = '-'
