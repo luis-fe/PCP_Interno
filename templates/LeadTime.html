@@ -11,21 +11,24 @@
 </head>
 
 <body>
-    <div class="Corpo">
+      <div class="Corpo">
         <div class="Titulo">
             <h3>Gestão de Op's</h3>
         </div>
         <div class="Filtros">
             <div class="Botoes" style="width: 10%;">
-            <i class="bi bi-funnel-fill" id="BotaoFiltros" title="Filtros"></i>
-            <i class="bi bi-file-earmark-arrow-down-fill" id="BotaoExcel" title="Exportar Excel"></i>
-        </div>
-            <div class="DivCorpoIndicadores" >
+                <i class="bi bi-funnel-fill" id="BotaoFiltros" title="Filtros"></i>
+                <i class="bi bi-file-earmark-arrow-down-fill" id="BotaoExcel" title="Exportar Excel"></i>
+            </div>
+            <div class="DivCorpoIndicadores">
                 <div class="LabelOps" style="background-color: #3498db;">
-                    <label for="text" id="LabelOps" ></label>
+                    <label for="text" id="LabelOps"></label>
                 </div>
                 <div class="LabelOps" style="background-color: rgb(47, 237, 110);">
-                    <label for="text" id="LabelOpsNormais" ></label>
+                    <label for="text" id="LabelOpsNormais"></label>
+                </div>
+                <div class="LabelOps" style="background-color: yellow;">
+                    <label for="text" id="LabelOpsAtencao"></label>
                 </div>
                 <div class="LabelOps" style="background-color: rgb(246, 103, 103);">
                     <label for="text" id="LabelOpsAtrasadas"></label>
@@ -47,10 +50,30 @@
                 <button id="ConfirmarFiltro">Filtrar</button>
             </div>
         </div>
+        <div class="ModalJustificativa" id="ModalJustificativa">
+            <span class="close" id="FecharJustificativa">&times;</span>
+            <div style="margin-bottom: 20px; margin-right: 30px;">
+                <label for="text" id="NumeroOP" style="font-size: 25px;"></label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <label for="text" style="font-size: 25px;">Justificativa:</label>
+                <textarea name="InputJustificativa" id="InputJustificativa" cols="30" rows="10" style="font-size: 20px;"></textarea>
+            </div>
+            <div style="justify-content: right; text-align: right;">
+                <i class="bi bi-check-circle-fill" id="SalvarObs"
+                    style="text-align: right; justify-content: right; font-size: 25px; color: green; cursor: pointer;" title="SALVAR"></i>
+            </div>
+
+        </div>
+
+        <div id="ModalLoading" class="ModalLoading">
+            <span id="loader"><img src="static/imagens/Load.gif" style="width: 100px; height: 100px;" id="ImagemLoading">
+          </span>
+          </div>
+        </div>
 
         <div class="botaoContainer" id="botaoContainer"></div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.core.min.js"></script>
     <script src="static/js/LeadTime.js"></script>
 
