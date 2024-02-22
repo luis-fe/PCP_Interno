@@ -175,6 +175,8 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
         consulta['meta2'].fillna(0, inplace=True)
+        consulta['meta'].fillna(0, inplace=True)
+
         consulta['limite_atencao'].fillna(0, inplace=True)
 
         consulta['meta2'] = consulta['meta2'].astype(int)
@@ -183,6 +185,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
         consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] == 0 else row['meta2'], axis=1)
         consulta.drop('meta2', axis=1, inplace=True)
+
 
         consulta['status'] = consulta.apply(lambda row: '2-Atrasado' if row['dias na Fase'] > row['meta'] else '0-Normal',axis=1 )
         consulta['status'] = consulta.apply(lambda row: '1-Atencao' if row['status'] == '2-Atrasado' and row['dias na Fase'] < row['limite_atencao']  else row['status'],axis=1 )
