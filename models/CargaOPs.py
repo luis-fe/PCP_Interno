@@ -80,7 +80,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta = pd.merge(consulta, justificativa, on=['numeroOP','codFase'], how='left')
         consulta['justificativa1'].fillna('-',inplace=True)
 
-        consulta['justificativa'] = consulta.apply(lambda row: row['justificativa1'] if row['justificativa1'] != '-' else row['justificativa2'], axis=1 )
+        consulta['justificativa'] = consulta.apply(lambda row: row['justificativa2'] if row['justificativa2'] != '-' else row['justificativa1'], axis=1 )
 
 
 
