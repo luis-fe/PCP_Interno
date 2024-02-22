@@ -181,7 +181,9 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['limite_atencao'].fillna(0, inplace=True)
 
         consulta['meta2'] = consulta['meta2'].astype(int)
+        consulta['meta'] = consulta['meta'].astype(int)
         consulta['limite_atencao'] = consulta['limite_atencao'].astype(int)
+        consulta['dias na Fase'] = consulta['dias na Fase'].astype(int)
 
 
         consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] == 0 else row['meta2'], axis=1)
