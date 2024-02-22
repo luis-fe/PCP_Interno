@@ -177,7 +177,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         consulta['meta2'].fillna(0, inplace=True)
 
         consulta['meta'].fillna(0, inplace=True)
-        consulta['meta'].replace('-',0)
+        consulta['meta'].replace('-','0')
         consulta['meta'] = consulta['meta'].astype(int)
 
 
