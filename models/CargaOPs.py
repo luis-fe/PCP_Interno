@@ -104,7 +104,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         responsabilidade = ResponsabilidadeFases()
         consulta = pd.merge(consulta,responsabilidade,on='codFase', how='left')
         consulta = pd.merge(consulta,leadTime,on='codFase', how='left')
-
+        consulta['data_entrada'].fillna('-',inplace=True)
         consulta['data_entrada'] = consulta.apply(lambda row: row['startOP'] if row['data_entrada'] == '-'  else row['data_entrada'] , axis=1)
         consulta = consulta[consulta['data_entrada'] != '-']
         consulta.fillna('-', inplace=True)
