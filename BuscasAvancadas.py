@@ -1,8 +1,8 @@
+### ARQUIVO UTILIZADO PARA CATALOGAR OS CODIGOS SQL UTILIZADOS NO PROJETO PARA INTEGRACAO CSW X WMS:
 
-# Velocidade de pesquisa
 
 
-## SQL BUSCANDO AS ORDEM DE PRODUCAO EM ABERTO - velocidade media: 0,850 s (otima)
+## SQL BUSCANDO AS ORDEM DE PRODUCAO EM ABERTO - velocidade media da consulta : 0,850 s (otima)
 
 def OP_Aberto():
 
@@ -32,9 +32,44 @@ def DataMov(AREA):
 
     return DataMov
 
+# SQL BUSCAR OS TIPO's DE OP DO CSW
 def TipoOP():
 
     TipoOP = 'SELECT t.codTipo as codTipoOP, t.nome as nomeTipoOp  FROM tcp.TipoOP t WHERE t.Empresa = 1'
 
     return TipoOP
 
+
+# Sql Buscando Pedidos Bloqueados NO CREDITO tempo 0,100 ms (otimo)
+def BloqueiosCredito():
+
+    BloqueiosCredito = "SELECT codPedido, 'BqCredito' as situacao  FROM Cre.PedidoCreditoBloq WHERE Empresa = 1 and situacao = 1 "
+
+    return BloqueiosCredito
+
+# Sql Buscando Pedidos Bloqueados NO COMERCIAL tempo 0,050 ms (otimo)
+def bloqueioComerical():
+    bloqueioComerical = 'SELECT codPedido, situacaoBloq as situacao from ped.PedidoBloqComl c WHERE codEmpresa = 1 and situacaoBloq = 1 '
+
+    return bloqueioComerical
+
+# SQL CAPA DOS PEDIDOS: Velocidade media : 1,5 s (ótimo - para o intervalo de 1 ano de pedidos)
+def CapaPedido (iniVenda, finalVenda, tiponota):
+
+    CapaPedido = "SELECT dataEmissao, codPedido, "\
+    "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "\
+    " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "\
+    " FROM Ped.Pedido p"\
+    " where codEmpresa = 1 and  dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ")"\
+    " order by codPedido desc "
+
+    return CapaPedido
+
+
+#SQL DE PEDIDOS NO NIVEL SKU - Velocidade Media 5 s para dados de 1 ano (regular)
+def pedidosNivelSKU (iniVenda, finalVenda, tiponota):
+    pedidosNivelSKU = 'select codPedido, codProduto as reduzido, qtdeCancelada, qtdeFaturada, qtdePedida '\
+                        'from ped.PedidoItemGrade  p where codEmpresa = 1 and p.codPedido in '\
+                        "(select p.codPedido FROM Ped.Pedido p where codEmpresa = 1 and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
+
+    return pedidosNivelSKU
