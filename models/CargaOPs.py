@@ -169,6 +169,8 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
             lambda row: Categoria('MEIA', row['descricao'], 'MEIA', row['categoria']), axis=1)
         consulta['categoria'] = consulta.apply(
             lambda row: Categoria('SUNGA', row['descricao'], 'SUNGA', row['categoria']), axis=1)
+        consulta['categoria'] = consulta.apply(
+            lambda row: Categoria('SHORT', row['descricao'], 'SHORT', row['categoria']), axis=1)
 
 
         consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
