@@ -174,15 +174,22 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
-        consulta['meta2'].fillna(0, inplace=True)
 
+        ### Corrgindo as colunas para aceitar valores inteiros
+        consulta['meta2'].fillna(0, inplace=True)
+        consulta['meta2'] = consulta['meta2'].astype(int)
+
+        consulta['meta'].fillna(0, inplace=True)
         consulta['meta'] = consulta['meta'].replace('-','0')
         consulta['meta'] = consulta['meta'].astype(int)
 
-        consulta['meta2'] = consulta['meta2'].astype(int)
-
+        consulta['limite_atencao'].fillna(0, inplace=True)
         consulta['limite_atencao'] = consulta['limite_atencao'].astype(int)
+
         consulta['dias na Fase'] = consulta['dias na Fase'].astype(int)
+
+        ## Fim dessa etapa
+
 
 
         consulta['meta'] = consulta.apply(lambda row : row['meta'] if row['meta2'] == 0 else row['meta2'], axis=1)
