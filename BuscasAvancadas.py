@@ -1,6 +1,6 @@
-### ARQUIVO UTILIZADO PARA CATALOGAR OS CODIGOS SQL UTILIZADOS NO PROJETO PARA INTEGRACAO CSW X WMS:
+##################################### ARQUIVO.py UTILIZADO PARA CATALOGAR OS CODIGOS SQL DE BUSCA NO CSW: #########################################################
 
-
+#Elaborado por : Luis Fernando Gonçalves de Lima Machado
 
 ## SQL BUSCANDO AS ORDEM DE PRODUCAO EM ABERTO - velocidade media da consulta : 0,850 s (otima)
 
@@ -73,3 +73,6 @@ def pedidosNivelSKU (iniVenda, finalVenda, tiponota):
                         "(select p.codPedido FROM Ped.Pedido p where codEmpresa = 1 and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
 
     return pedidosNivelSKU
+#SQL DE BUSCA DE TERCEIRIZADOS POR OP E FASE - Velocidade Média
+
+#SQL DE BUSCA DA ESTRUTURA DE ITENS - PRODUTO ACABADO - Velocidade Média
