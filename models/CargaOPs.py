@@ -23,7 +23,7 @@ def obterHoraAtual():
 
 
 # Passo 1: Buscando as OP's em aberto no CSW
-def OPemProcesso(empresa, AREA, filtro = '-'):
+def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = ''):
 
     if filtro == '-' or filtro == ''  :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
@@ -251,6 +251,12 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
         array = filtro.split(",")
 
         filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
+
+        if filtroDiferente == '':
+            filtrosNovo = filtrosNovo
+        else:
+            filtrosNovo = filtros[filtros['filtro'].str.contains(filtroDiferente)]
+
         if filtrosNovo.empty:
 
             dados = {

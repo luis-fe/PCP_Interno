@@ -31,7 +31,9 @@ def CargadasOPs():
     empresa = data.get('empresa','1')
     filtro = data.get('filtro', '-')
     area = data.get('area', 'PRODUCAO')
-    usuarios = CargaOPs.OPemProcesso(empresa,area, filtro)
+    filtroDiferente = data.get('filtroDiferente', '')
+
+    usuarios = CargaOPs.OPemProcesso(empresa,area, filtro,filtroDiferente)
 
 
     # Obtém os nomes das colunas
