@@ -202,7 +202,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = ''):
 
         consulta = consulta.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
-        consulta['filtro'] = consulta['codProduto']+consulta['data_entrada']+consulta['categoria']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
+        consulta['filtro'] = consulta['prioridade']+consulta['codProduto']+consulta['data_entrada']+consulta['categoria']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
         consulta.drop(['justificativa2','justificativa1','seqRoteiro','seqAtual','nomeTipoOp'], axis=1, inplace=True)
