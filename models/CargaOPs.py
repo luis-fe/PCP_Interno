@@ -256,8 +256,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = ''):
 
         else:
 
-            filtros = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
-            filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
+            filtroDif = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
+            filtrosNovo = filtroDif[filtroDif['filtro'].str.contains(filtro)]
 
         if filtrosNovo.empty:
 
