@@ -129,6 +129,7 @@ def OPemProcesso(empresa, AREA, filtro = '-'):
 
 
         consulta['Area'] = consulta.apply(lambda row: 'PILOTO' if row['codTipoOP'] == '13-PILOTO' else 'PRODUCAO',axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '0-URGENTE' if row['prioridade'] == 'URGENTE' else '1-'+ row['prioridade'],axis=1 )
 
 
         consulta['categoria'] = '-'
