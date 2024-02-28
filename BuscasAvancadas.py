@@ -73,6 +73,21 @@ def pedidosNivelSKU (iniVenda, finalVenda, tiponota):
                         "(select p.codPedido FROM Ped.Pedido p where codEmpresa = 1 and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
 
     return pedidosNivelSKU
-#SQL DE BUSCA DE TERCEIRIZADOS POR OP E FASE - Velocidade Média
+#SQL DE BUSCA DE TERCEIRIZADOS POR OP E FASE - Velocidade Média: 0,700 s
+
+def OPporTecerceirizado():
+    OpTercerizados = 'SELECT CONVERT(VARCHAR(10), R.codOP) AS numeroOP, R.codFase as codFase, R.codFac,'\
+  ' (SELECT nome  FROM tcg.Faccionista  f WHERE f.empresa = 1 and f.codfaccionista = r.codfac) as nome'\
+ ' FROM TCT.RemessaOPsDistribuicao R'\
+' INNER JOIN tco.OrdemProd op on'\
+    ' op.codempresa = r.empresa and op.numeroop = CONVERT(VARCHAR(10), R.codOP)'\
+    ' WHERE R.Empresa = 1 and op.situacao = 3 and r.situac = 2'
+
+    return OpTercerizados
+
+
 
 #SQL DE BUSCA DA ESTRUTURA DE ITENS - PRODUTO ACABADO - Velocidade Média
+
+
+

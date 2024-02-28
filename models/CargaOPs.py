@@ -45,6 +45,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = pd.merge(OP_emAberto,DataMov,on=['numeroOP','seqAtual'], how='left')
 
+        terceiros = pd.read_sql(BuscasAvancadas.OPporTecerceirizado(),conn)
+        terceiros['codFase'] = terceiros['codFase'].astype(str)
+
+        consulta = pd.merge(consulta, terceiros, on=['numeroOP','codFase'], how='left')
+
+
+
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
                                     'having empresa = 1 and textolinha is not null',conn)
         justificativa['codFase'] = justificativa['codFase'].astype(str)
