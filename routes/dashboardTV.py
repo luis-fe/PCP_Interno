@@ -35,7 +35,10 @@ def CargadasOPs():
     datainicio = controle.obterHoraAtual()
 
     usuarios = CargaOPs.OPemProcesso(empresa,area, filtro,filtroDiferente)
-    controle.salvar('Portal Consulta OP',client_ip,datainicio)
+    if (filtro == '-' and filtroDiferente == '') or (filtro == '' and filtroDiferente == ''):
+        controle.salvar('Portal Consulta OP',client_ip,datainicio)
+    else:
+        print(client_ip+' '+filtro)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
