@@ -244,12 +244,43 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         return pd.DataFrame([dados])
-    else:
-        if filtro == '':
-            filtro = '-'
-        else:
-            filtro = filtro
+    elif filtro == '-' or filtro == '':
 
+        consulta = pd.read_csv('cargaOP.csv')
+
+        consulta = consulta[consulta['Area'] == AREA]
+
+        consulta.drop('filtro', axis=1, inplace=True)
+
+        consulta['Qtd Pcs'] = consulta['Qtd Pcs'].replace('-', 0)
+        QtdPcs = consulta['Qtd Pcs'].sum()
+        QtdPcs = "{:,.0f}".format(QtdPcs)
+        QtdPcs = QtdPcs.replace(',', '')
+
+        totalOP = consulta['numeroOP'].count()
+        totalOP = "{:,.0f}".format(totalOP)
+        totalOP = totalOP.replace(',', '')
+
+        Atrazado = consulta[consulta['status'] == '2-Atrasado']
+        totalAtraso = Atrazado['numeroOP'].count()
+        totalAtraso = "{:,.0f}".format(totalAtraso)
+        totalAtraso = totalAtraso.replace(',', '')
+
+        Atencao = consulta[consulta['status'] == '1-Atencao']
+        totalAtencao = Atencao['numeroOP'].count()
+        totalAtencao = "{:,.0f}".format(totalAtencao)
+        totalAtencao = totalAtencao.replace(',', '')
+
+        dados = {
+        '0-Total DE pçs':f'{QtdPcs} Pçs',
+        '1-Total OP':f'{totalOP} Ops',
+        '2- OPs Atrasadas':f'{totalAtraso} Ops',
+        '2.1- OPs Atencao': f'{totalAtencao} Ops',
+        '3 -Detalhamento':consulta.to_dict(orient='records')
+
+        }
+        return pd.DataFrame([dados])
+    else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
 
