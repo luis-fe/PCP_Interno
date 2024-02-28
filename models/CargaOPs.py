@@ -247,6 +247,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     elif filtro == '-' or filtro == '':
 
         consulta = pd.read_csv('cargaOP.csv')
+        consulta.fillna('-', inplace=True)
+
 
         consulta = consulta[consulta['Area'] == AREA]
 
