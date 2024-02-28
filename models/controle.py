@@ -101,11 +101,11 @@ def TempoUltimaAtualizacao(dataHoraAtual):
     conn.close()
 
     if not consulta.empty:
-        ultimadata= consulta['ultimaData'][0]
+        utimaAtualizacao = consulta['ultimaData'][0]
 
         # Converte as strings para objetos datetime
         data1_obj = datetime.strptime(dataHoraAtual, "%d/%m/%Y %H:%M:%S")
-        data2_obj = datetime.strptime(ultimadata, "%d/%m/%Y %H:%M:%S")
+        data2_obj = datetime.strptime(utimaAtualizacao, "%d/%m/%Y %H:%M:%S")
 
         # Calcula a diferença entre as datas
         diferenca = data1_obj - data2_obj
