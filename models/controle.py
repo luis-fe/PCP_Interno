@@ -92,3 +92,32 @@ def ExcluirHistorico(diasDesejados) :
     conn.close()
 
 
+def TempoUltimaAtualizacao(dataHoraAtual):
+    conn = ConexaoPostgreMPL.conexao()
+
+    consulta = pd.read_sql('select max(inicio) as ultimaData from "PCP".pcp.controle_requisicao_csw crc '
+                          "where rotina = 'Portal Consulta OP' ", conn )
+
+    conn.close()
+
+    if not consulta.empty:
+        ultimadata= consulta['ultimaData'][0]
+
+        # Converte as strings para objetos datetime
+        data1_obj = datetime.strptime(dataHoraAtual, "%d/%m/%Y %H:%M:%S")
+        data2_obj = datetime.strptime(ultimadata, "%d/%m/%Y %H:%M:%S")
+
+        # Calcula a diferença entre as datas
+        diferenca = data1_obj - data2_obj
+
+        # Obtém a diferença em dias como um número inteiro
+        diferenca_em_dias = diferenca.days
+
+        # Obtém a diferença total em segundos
+        diferenca_total_segundos = diferenca.total_seconds()
+
+        print(diferenca_total_segundos)
+
+
+    else:
+        diferenca_total_segundos = 9999

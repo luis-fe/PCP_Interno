@@ -38,6 +38,7 @@ def CargadasOPs():
     if (filtro == '-' and filtroDiferente == '') or (filtro == '' and filtroDiferente == ''):
         controle.salvar('Portal Consulta OP',client_ip,datainicio)
         controle.ExcluirHistorico(3)
+        controle.TempoUltimaAtualizacao(datainicio)
     else:
         print(client_ip+' '+filtro)
 
