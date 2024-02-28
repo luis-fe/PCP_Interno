@@ -81,7 +81,7 @@ def ExcluirHistorico(diasDesejados) :
     conn = ConexaoPostgreMPL.conexao()
 
     deletar = 'delete from pcp.controle_requisicao_csw crc ' \
-              "WHERE rotina = 'Portal Consulta OP " \
+              "WHERE rotina = 'Portal Consulta OP' " \
               "AND (CAST(SUBSTRING(fim, 1, 2) AS INTEGER) - EXTRACT(day FROM now())) <= - %s ;"
 
     cursor = conn.cursor()
