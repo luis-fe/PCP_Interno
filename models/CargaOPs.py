@@ -245,10 +245,17 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         return pd.DataFrame([dados])
     else:
+        if filtro == '':
+            filtro = '-'
+        else:
+            filtro = filtro
+
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
 
         array = filtro.split(",")
+
+
 
 
         if filtroDiferente == '':
@@ -258,6 +265,9 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
             filtroDif = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
             filtrosNovo = filtroDif[filtroDif['filtro'].str.contains(filtro)]
+
+
+
 
         if filtrosNovo.empty:
 
