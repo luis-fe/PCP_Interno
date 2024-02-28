@@ -23,9 +23,9 @@ def obterHoraAtual():
 
 
 # Passo 1: Buscando as OP's em aberto no CSW
-def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = ''):
+def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60):
 
-    if (filtro == '-' and filtroDiferente == '' ) or (filtro == '' and filtroDiferente == '')   :
+    if (filtro == '-' and filtroDiferente == '' and tempo >= limite  ) or (filtro == '' and filtroDiferente == '' and tempo >= limite)   :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
