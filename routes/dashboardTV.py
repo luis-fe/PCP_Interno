@@ -1,7 +1,7 @@
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
-from models import dashbordTVModel, Vendas, CargaOPs, justificativaOPFase
+from models import dashbordTVModel, Vendas, CargaOPs, justificativaOPFase, controle
 import pandas as pd
 import subprocess
 
@@ -32,9 +32,11 @@ def CargadasOPs():
     filtro = data.get('filtro', '-')
     area = data.get('area', 'PRODUCAO')
     filtroDiferente = data.get('filtroDiferente', '')
+    client_ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
 
     usuarios = CargaOPs.OPemProcesso(empresa,area, filtro,filtroDiferente)
-
+    controle.salvar('Portal Consulta OP',client_ip,datainicio)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
