@@ -36,7 +36,7 @@ def salvar(rotina, ip,datahoraInicio):
 
     conn = ConexaoPostgreMPL.conexao()
 
-    consulta = 'insert into "PCP".pcp.controle_requisicao_csw (rotina, datahora_final, datahora_inicio, ip_origem, "tempo_processamento(s)") ' \
+    consulta = 'insert into "PCP".pcp.controle_requisicao_csw (rotina, fim, inicio, ip_origem, "tempo_processamento(s)") ' \
           'values (%s , %s , %s , %s, %s )'
 
     cursor = conn.cursor()
