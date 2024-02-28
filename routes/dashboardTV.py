@@ -26,7 +26,6 @@ def token_required(f):
 def CargadasOPs():
 
 
-
     data = request.get_json()
     empresa = data.get('empresa','1')
     filtro = data.get('filtro', '-')
