@@ -85,9 +85,17 @@ def OPporTecerceirizado():
 
     return OpTercerizados
 
+#SQL DEPARA DA ENGENHARIA PAI X FILHO: velocidade Média : 0,20 segundos
 
+def DeParaFilhoPaiCategoria():
+
+    dePara = "SELECT e.codEngenharia as engenhariaFilha, '01'||SUBSTRING(codEngenharia, 3,9) as engenhariaPai,"\
+     " (SELECT ep.descricao from tcp.Engenharia ep WHERE ep.codempresa = 1 and ep.codengenharia like '%-0' and '01'||SUBSTRING(e.codEngenharia, 3,9) = ep.codEngenharia) as descricaoPai"\
+" FROM tcp.Engenharia e"\
+" WHERE e.codEmpresa = 1 and e.codEngenharia like '6%' and e.codEngenharia like '%-0' and e.codEngenharia not like '65%'"
+
+    return dePara
 
 #SQL DE BUSCA DA ESTRUTURA DE ITENS - PRODUTO ACABADO - Velocidade Média
-
 
 
