@@ -180,6 +180,10 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['categoria'] = consulta.apply(
             lambda row: Categoria('SHORT', row['descricao'], 'SHORT', row['categoria']), axis=1)
 
+        consulta['nome'] = consulta.apply(
+            lambda row: ApelidoFaccionista(row['nome'], 'Claudiana', 'Claudiana'), axis=1)
+
+
 
         consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
 
@@ -375,5 +379,9 @@ def Categoria(contem, valorReferencia, valorNovo, categoria):
         return categoria
 
 
-
+def ApelidoFaccionista(entrada, referencia, saida):
+    if entrada in referencia:
+        return saida
+    else:
+        return entrada[0:9]
 
