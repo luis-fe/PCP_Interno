@@ -188,7 +188,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         consulta['nome'] = consulta['nome'].replace('(-)','')
-        consulta['nomeFase'] = consulta['nomeFase'] + consulta['nome']
+        consulta['nomeFase'] = consulta['nomeFase'] +' '+ consulta['nome']
 
 
 
