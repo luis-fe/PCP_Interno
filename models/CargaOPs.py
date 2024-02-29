@@ -69,14 +69,14 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         pcs = pd.read_sql(
             'select numeroop as "numeroOP", total_pcs as "Qtd Pcs" from "Reposicao".off.ordemprod ',
             conn3)
-        def format_with_separator(value):
+        #def format_with_separator(value):
 
-                return locale.format('%0.0f', value, grouping=True)
+         #       return locale.format('%0.0f', value, grouping=True)
 
-        pcs['Qtd Pcs'] = pcs['Qtd Pcs'].apply(format_with_separator)
+        #pcs['Qtd Pcs'] = pcs['Qtd Pcs'].apply(format_with_separator)
 
         pcs['Qtd Pcs'].fillna(0, inplace=True)
-        #pcs['Qtd Pcs'] =pcs['Qtd Pcs'] .astype(float)
+        pcs['Qtd Pcs'] =pcs['Qtd Pcs'] .astype(int)
         pcs= pcs.groupby(['numeroOP']).agg({
             'Qtd Pcs':'sum'
         }).reset_index()
