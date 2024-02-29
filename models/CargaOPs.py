@@ -76,7 +76,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         pcs['Qtd Pcs'] = pcs['Qtd Pcs'].apply(format_with_separator)
 
         pcs['Qtd Pcs'].fillna(0, inplace=True)
-        pcs['Qtd Pcs'] =pcs['Qtd Pcs'] .astype(float)
+        #pcs['Qtd Pcs'] =pcs['Qtd Pcs'] .astype(float)
         pcs= pcs.groupby(['numeroOP']).agg({
             'Qtd Pcs':'sum'
         }).reset_index()
