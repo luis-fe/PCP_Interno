@@ -184,6 +184,10 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda row: ApelidoFaccionista(row['nome'], 'Claudiana', 'Claudiana'), axis=1)
 
 
+        consulta['nome'] = consulta['nome'].replace('-','')
+        consulta['nomeFase'] = consulta['nomeFase'] +' '+consulta['nome']
+
+
 
         consulta = pd.merge(consulta,leadTime2,on=['codFase','categoria'], how='left')
 
