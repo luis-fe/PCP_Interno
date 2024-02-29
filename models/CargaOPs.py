@@ -276,7 +276,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta['Qtd Pcs'] = consulta['Qtd Pcs'].replace('-', 0)
         consulta['Qtd Pcs'].fillna(0,inplace= True)
-        consulta['Qtd Pcs'] = consulta['Qtd Pcs'].astype(int)
+        consulta['Qtd Pcs'] = consulta['Qtd Pcs'].astype(float)
         QtdPcs = consulta['Qtd Pcs'].sum()
 
         QtdPcs = "{:,.0f}".format(QtdPcs)
