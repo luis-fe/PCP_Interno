@@ -187,8 +187,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda row: ApelidoFaccionista(row['nome'], 'LPS', '( LPS)'), axis=1)
 
 
-        consulta['nome'] = consulta['nome'].replace('((-))','')
-        consulta['nomeFase'] = consulta['nomeFase'] +' '+consulta['nome']
+        consulta['nome'] = consulta['nome'].replace('(-)','')
+        consulta['nomeFase'] = consulta['nomeFase'] + consulta['nome']
 
 
 
@@ -389,8 +389,8 @@ def Categoria(contem, valorReferencia, valorNovo, categoria):
 
 
 def ApelidoFaccionista(entrada, referencia, saida):
-    if entrada in referencia:
+    if referencia in entrada:
         return saida
     else:
-        return '('+entrada[0:9]+')'
+        return entrada[0:9]
 
