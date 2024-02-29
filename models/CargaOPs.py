@@ -357,6 +357,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             totalAtencao = "{:,.0f}".format(totalAtencao)
             totalAtencao = totalAtencao.replace(',', '')
 
+            filtrosNovo.fillna('-',inplace=True)
+
 
             filtrosNovo.drop(['filtro','Unnamed: 0'], axis=1, inplace=True)
 
