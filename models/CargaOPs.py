@@ -99,6 +99,12 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['codFase'] = consulta['codFase'].astype(str)
         leadTime['codFase'] = leadTime['codFase'].astype(str)
 
+        # Aqui fazemos o de-para para achar a categoria das partes filhas 
+        deparaPartes = pd.read_sql(BuscasAvancadas.DeParaFilhoPaiCategoria(),conn)
+
+        consulta = pd.merge(consulta,deparaPartes,on='codProduto',how='left')
+        consulta['descricaoPai'].fillna('-',inplace=True)
+        consulta['descricao'] = consulta.apply(lambda row: row['descricao'] if row['descricaoPai'] == '-' else row['descricaoPai'], axis=1)
 
         conn.close()  ## Conexao finalizada
 

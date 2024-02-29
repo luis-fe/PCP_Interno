@@ -89,7 +89,7 @@ def OPporTecerceirizado():
 
 def DeParaFilhoPaiCategoria():
 
-    dePara = "SELECT e.codEngenharia as engenhariaFilha, '01'||SUBSTRING(codEngenharia, 3,9) as engenhariaPai,"\
+    dePara = "SELECT e.codEngenharia as codProduto,"\
      " (SELECT ep.descricao from tcp.Engenharia ep WHERE ep.codempresa = 1 and ep.codengenharia like '%-0' and '01'||SUBSTRING(e.codEngenharia, 3,9) = ep.codEngenharia) as descricaoPai"\
 " FROM tcp.Engenharia e"\
 " WHERE e.codEmpresa = 1 and e.codEngenharia like '6%' and e.codEngenharia like '%-0' and e.codEngenharia not like '65%'"
