@@ -334,7 +334,7 @@ def Backup(ano, empresa):
     elif mesFinal in ['01']:
         backupAno = False
         dataFim = ano + '-'+mesFinal+'-31'
-    elif mesFinal in ['02']:
+    elif mesFinal in ['02'] or  mesFinal in ['2']:
         dataFim = ano + '-' + mesFinal + '-28'
     else:
         dataFim = ano + '-'+mesFinal+'-31'
