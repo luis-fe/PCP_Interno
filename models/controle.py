@@ -95,7 +95,7 @@ def ExcluirHistorico(diasDesejados) :
 def TempoUltimaAtualizacao(dataHoraAtual):
     conn = ConexaoPostgreMPL.conexao()
 
-    consulta = pd.read_sql('select max(inicio) as "ultimaData" from "PCP".pcp.controle_requisicao_csw crc '
+    consulta = pd.read_sql('select max(fim) as "ultimaData" from "PCP".pcp.controle_requisicao_csw crc '
                           "where rotina = 'Portal Consulta OP' ", conn )
 
     conn.close()
