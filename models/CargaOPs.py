@@ -240,7 +240,19 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['status'] = consulta.apply(lambda row: '2-Atrasado' if row['dias na Fase'] > row['meta'] else '0-Normal',axis=1 )
         consulta['status'] = consulta.apply(lambda row: '1-Atencao' if row['status'] == '2-Atrasado' and row['dias na Fase'] < row['limite_atencao']  else row['status'],axis=1 )
 
-        consulta = consulta.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        if classificar == 'tempo':
+            consulta = consulta.sort_values(by=['dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'status':
+            consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'prioridade':
+            consulta = consulta.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        else:
+            consulta= consulta
+
 
         consulta['filtro'] = consulta['prioridade']+consulta['codProduto']+consulta['data_entrada']+consulta['categoria']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
