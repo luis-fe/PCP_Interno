@@ -25,7 +25,7 @@ def obterHoraAtual():
 
 
 # Passo 1: Buscando as OP's em aberto no CSW
-def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60):
+def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60, classificar = '-'):
     filtro = filtro.upper()
 
     if (filtro == '-' and filtroDiferente == '' and tempo >= limite  ) or (filtro == '' and filtroDiferente == '' and tempo >= limite)   :
@@ -331,7 +331,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         array = filtro.split(",")
 
+        if classificar == 'tempo':
+            filtros = filtros.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
+        else:
+            filtros= filtros
 
 
         if filtroDiferente == '':

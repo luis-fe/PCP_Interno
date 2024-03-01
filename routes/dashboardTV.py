@@ -31,12 +31,13 @@ def CargadasOPs():
     filtro = data.get('filtro', '-')
     area = data.get('area', 'PRODUCAO')
     filtroDiferente = data.get('filtroDiferente', '')
+    classificar = data.get('classificar', '')
     client_ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
     tempo = controle.TempoUltimaAtualizacao(datainicio)
     limite = 60
 
-    usuarios = CargaOPs.OPemProcesso(empresa,area, filtro,filtroDiferente, tempo, limite) ## Aqui defino que o tempo limite de requisicao no csw é acima de 60 segundos, evitando a simultanedade de requisicao
+    usuarios = CargaOPs.OPemProcesso(empresa,area, filtro,filtroDiferente, tempo, limite, classificar) ## Aqui defino que o tempo limite de requisicao no csw é acima de 60 segundos, evitando a simultanedade de requisicao
     if (filtro == '-' and filtroDiferente == '' and tempo >= limite  ) or (filtro == '' and filtroDiferente == '' and tempo >= limite)  :
 
         controle.salvar('Portal Consulta OP',client_ip,datainicio)
