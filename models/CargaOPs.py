@@ -57,6 +57,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
                                     'having empresa = 1 and textolinha is not null',conn)
+        justificativa = justificativa.groupby(['numeroOP','codFase'])['justificativa'].apply(' '.join).reset_index()
+
         justificativa['codFase'] = justificativa['codFase'].astype(str)
 
 
