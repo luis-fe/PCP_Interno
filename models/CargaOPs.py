@@ -332,7 +332,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         array = filtro.split(",")
 
         if classificar == 'tempo':
+            filtros = filtros.sort_values(by=['dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'status':
             filtros = filtros.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'prioridade':
+            filtros = filtros.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
         else:
             filtros= filtros
