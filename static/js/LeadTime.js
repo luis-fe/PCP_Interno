@@ -264,7 +264,7 @@ ConfirmarFiltro.addEventListener('click', () => {
 });
 
 window.addEventListener('load', () => {
-    ConsultaOp(ApiConsulta, '1', '', '');
+    ConsultaOp(ApiConsulta, '1', '', 'prioridade');
 });
 
 var valorSelecionado = document.getElementById("btnLeadTime").getAttribute("data-valor");
