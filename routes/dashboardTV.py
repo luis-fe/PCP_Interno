@@ -31,7 +31,9 @@ def CargadasOPs():
     filtro = data.get('filtro', '-')
     area = data.get('area', 'PRODUCAO')
     filtroDiferente = data.get('filtroDiferente', '')
+
     classificar = data.get('classificar', 'status')
+
     print(f'foi classficado por {classificar}')
     client_ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
