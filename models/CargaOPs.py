@@ -305,6 +305,20 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = consulta[consulta['Area'] == AREA]
 
+
+        if classificar == 'tempo':
+            consulta = consulta.sort_values(by=['dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'status':
+            consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'prioridade':
+            print('deu certo: buscou do que ta salvo')
+            consulta = consulta.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        else:
+            consulta= consulta
+
         consulta.drop('filtro', axis=1, inplace=True)
 
         consulta['Qtd Pcs'] = consulta['Qtd Pcs'].replace('-', 0)
