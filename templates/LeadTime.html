@@ -46,6 +46,11 @@
                 <label for="text">≠</label>
                 <input type="text" id="InputNaoContem">
             </div>
+             <div class="LinhaModalFiltros1" style="display: flex; margin-top: 30px;" title="Ordenacao">
+                <i class="bi bi-arrow-down-up"></i>
+                <button id="btnUrgente" data-valor="prioridade" onclick="selecionarBotao(this)">Urgente</button>
+                <button id="btnLeadTime" data-valor="tempo" onclick="selecionarBotao(this)">Lead Time</button>
+            </div>
             <div class="LinhaModalFiltros" style="display: flex;" title="Não Contém">
                 <button id="ConfirmarFiltro">Filtrar</button>
             </div>
