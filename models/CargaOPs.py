@@ -248,6 +248,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             consulta = consulta.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
         elif classificar == 'prioridade':
+            print('deu certo: gerado ')
             consulta = consulta.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
         else:
@@ -337,6 +338,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         }
         return pd.DataFrame([dados])
+    #essa etapa busca do que ta salvo
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
@@ -350,7 +352,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             filtros = filtros.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
         elif classificar == 'prioridade':
-            print('deu certo')
+            print('deu certo: buscou do que ta salvo')
             filtros = filtros.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
 
         else:
