@@ -95,13 +95,15 @@ def ExcluirHistorico(diasDesejados) :
 def TempoUltimaAtualizacao(dataHoraAtual):
     conn = ConexaoPostgreMPL.conexao()
 
-    consulta = pd.read_sql('select max(fim) as "ultimaData" from "PCP".pcp.controle_requisicao_csw crc '
+    consulta = pd.read_sql('select fim as "ultimaData" from "PCP".pcp.controle_requisicao_csw crc '
                           "where rotina = 'Portal Consulta OP' ", conn )
+
+    consulta['ultimaData'] = consulta.apply(lambda row: conversaoData(row['ultimaData']),axis=1)
 
     conn.close()
 
     if not consulta.empty:
-        utimaAtualizacao = consulta['ultimaData'][0]
+        utimaAtualizacao = consulta['ultimaData'].max()
 
         # Converte as strings para objetos datetime
         data1_obj = datetime.strptime(dataHoraAtual, "%d/%m/%Y %H:%M:%S")
@@ -123,3 +125,9 @@ def TempoUltimaAtualizacao(dataHoraAtual):
     else:
         diferenca_total_segundos = 9999
         return diferenca_total_segundos
+
+
+def conversaoData(data):
+    data1_obj = datetime.strptime(data, "%d/%m/%Y %H:%M:%S")
+
+    return data1_obj
