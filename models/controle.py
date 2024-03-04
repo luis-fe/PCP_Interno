@@ -116,7 +116,7 @@ def TempoUltimaAtualizacao(dataHoraAtual):
         # Obtém a diferença total em segundos
         diferenca_total_segundos = diferenca.total_seconds()
 
-
+        print(diferenca_total_segundos)
         return diferenca_total_segundos
 
 
