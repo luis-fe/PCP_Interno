@@ -65,12 +65,36 @@
     font-size: 25px;
 }
 
+.LinhaModalFiltros1{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .LinhaModalFiltros button {
     margin: auto;
     padding: auto;
     font-size: 20px;
     margin-top: 20px;
     cursor: pointer;
+}
+
+.LinhaModalFiltros1 button {
+    border-radius: 10px;
+    margin: auto;
+    padding: 5px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.LinhaModalFiltros1 button:hover {
+    background-color: var(--cor2);
+    color: var(--cor1);
+}
+
+.botao-selecionado {
+    background-color: var(--cor2);
+    color: var(--cor1);
 }
 
 .LinhaModalFiltros input {
