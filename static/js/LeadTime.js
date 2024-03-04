@@ -76,11 +76,12 @@ async function OpGetObs(Op, Fase) {
     }
 }
 
-async function ConsultaOp(Api, Empresa, Filtro) {
+async function ConsultaOp(Api, Empresa, Filtro, Classificacao) {
     modalLoading.style.display = 'block'
     const Dados = {
         "empresa": Empresa,
-        "filtro": Filtro
+        "filtro": Filtro,
+        "classificar": Classificacao
     };
 
     try {
@@ -111,17 +112,27 @@ async function ConsultaOp(Api, Empresa, Filtro) {
                 botao.setAttribute('data-op', dado.numeroOP);
                 botao.setAttribute('data-fase', dado.codFase);
             
-                botao.innerHTML = `
-                    <strong><span class="CodFase">Fase: ${dado.codFase} - ${dado.nomeFase}</span><br>
-                    <span class="NumeroOp">OP:${dado.numeroOP} / Qtd: ${dado['Qtd Pcs']} Pçs</strong></span><br>
-                    <span class="Engenharias">Tipo Op: ${dado.codTipoOP}</strong></span><br>
-                    <span class="Engenharias">${dado.descricao}</strong></span><br>
+                if (dado.prioridade === '1-URGENTE') {
+                    const urgenteSymbol = document.createElement('span');
+                    urgenteSymbol.innerHTML = '🚨'; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = 'black';
+                    urgenteSymbol.style.fontSize = '30px';
+                    botao.appendChild(urgenteSymbol);
+                }
+            
+                const conteudoBotao = document.createElement('strong');
+                conteudoBotao.innerHTML = `
+                    <span class="CodFase">Fase: ${dado.codFase} - ${dado.nomeFase}</span><br>
+                    <span class="NumeroOp">OP:${dado.numeroOP} / Qtd: ${dado['Qtd Pcs']} Pçs</span><br>
+                    <span class="Engenharias">Tipo Op: ${dado.codTipoOP}</span><br>
+                    <span class="Engenharias">${dado.descricao}</span><br>
                     Responsável: ${dado.responsavel}<br>
                     Meta: ${dado.meta} dias<br>
                     Dias na Fase: ${dado['dias na Fase']}<br>
                     <span class="Justificativa">Justificativa: ${dado.justificativa}</span>
                 `;
-                
+            
+                botao.appendChild(conteudoBotao);
                 
                 switch (dado.status) {
                     case '2-Atrasado':
@@ -136,6 +147,8 @@ async function ConsultaOp(Api, Empresa, Filtro) {
                         break;
                     // Adicione outros casos conforme necessário
                 }
+
+                
                 botao.addEventListener('click', async () => {
                     await OpGetObs(dado.numeroOP, dado.codFase);
                     console.log(dado);
@@ -234,7 +247,7 @@ async function ExportarExcel(Api, Empresa, Filtro) {
         } else {
             throw new Error('Erro No Retorno');
         }
-    } catch (error) {
+     } catch (error) {
         console.error(error);
     }
 }
@@ -244,12 +257,32 @@ BotaoExcel.addEventListener('click', () => {
 });
 
 ConfirmarFiltro.addEventListener('click', () => {
-    ConsultaOp(ApiConsulta, '1', InputContem.value).catch(error => {
+    ConsultaOp(ApiConsulta, '1', InputContem.value, valorSelecionado).catch(error => {
         console.error('Erro ao consultar OP:', error);
     });
     console.log(InputContem.value);
 });
 
 window.addEventListener('load', () => {
-    ConsultaOp(ApiConsulta, '1', '');
+    ConsultaOp(ApiConsulta, '1', '', '');
 });
+
+var valorSelecionado = document.getElementById("btnLeadTime").getAttribute("data-valor");
+
+
+document.getElementById("btnLeadTime").classList.add("botao-selecionado");
+
+    // Função para selecionar o botão e deselecionar o outro
+     function selecionarBotao(botaoClicado) {
+        var btnUrgente = document.getElementById("btnUrgente");
+        var btnLeadTime = document.getElementById("btnLeadTime");
+
+        if (botaoClicado === btnUrgente) {
+            btnUrgente.classList.add("botao-selecionado");
+            btnLeadTime.classList.remove("botao-selecionado");
+            valorSelecionado = botaoClicado.getAttribute("data-valor");
+        } else {
+            btnUrgente.classList.remove("botao-selecionado");
+            btnLeadTime.classList.add("botao-selecionado");
+            valorSelecionado = botaoClicado.getAttribute("data-valor");
+        }}
