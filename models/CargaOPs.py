@@ -94,8 +94,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda x: ', '.join(f"{codNatEstoque}: {sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
 
-        requisicoes['detalhado'] = requisicoes.apply(lambda row: f'Sit: pendente {row["detalhado"]}' if 'ab.' in row["detalhado"] else
-                                                     f'Sit: OK {row["detalhado"]}' , axis=1)
+        requisicoes['detalhado'] = requisicoes.apply(lambda row: f'Sit: pendente, {row["detalhado"]}' if 'ab.' in row["detalhado"] else
+                                                     f'Sit: OK, {row["detalhado"]}' , axis=1)
 
         requisicoes['replicar'] = 'replicar'
         consulta['replicar'] = consulta.apply(lambda row: 'replicar' if row['codFase'] == '425' or row['codFase'] == '426' or row['codFase'] == '406'   else '-',
