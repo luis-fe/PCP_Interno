@@ -68,7 +68,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes['codNatEstoque'] = partes['nomeParte']
         partes.drop('nomeParte', axis=1, inplace=True)
 
-        partes['sitBaixa'] = partes.apply(lambda row: 'bx' if row['sitBaixa'] == '2' else 'ab.' , axis=1)
+        partes['sitBaixa'] = partes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '2' else '🔴ab.' , axis=1)
 
 
 
@@ -77,7 +77,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes['fase'] = requisicoes['fase'].astype(str)
         requisicoes = requisicoes[requisicoes['fase'] == '425']
         requisicoes['sitBaixa'].fillna('ab.',inplace=True)
-        requisicoes['sitBaixa'] = requisicoes.apply(lambda row: 'bx' if row['sitBaixa'] == '1' else 'ab.' , axis=1)
+        requisicoes['sitBaixa'] = requisicoes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '1' else '🔴ab.' , axis=1)
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'avi.' if row['codNatEstoque'] == 1 else row['codNatEstoque'],
                                                     axis=1)
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'golas' if row['codNatEstoque'] == 2 else row['codNatEstoque'],
