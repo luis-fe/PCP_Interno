@@ -53,6 +53,25 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta = pd.merge(consulta, terceiros, on=['numeroOP','codFase'], how='left')
 
         requisicoes = pd.read_sql(BuscasAvancadas.RequisicoesOPs(), conn)
+        partes = pd.read_sql(BuscasAvancadas.LocalizarPartesOP(), conn)
+
+
+        partes['nomeParte']= partes.apply(
+            lambda row: NomePartes(row['nomeParte'],'BORDADO','BORDADO'), axis=1)
+        partes['nomeParte']= partes.apply(
+            lambda row: NomePartes(row['nomeParte'],'SILK','SILK'), axis=1)
+        partes['nomeParte']= partes.apply(
+            lambda row: NomePartes(row['nomeParte'],'COSTAS','SILK COSTAS'), axis=1)
+
+        partes['codNatEstoque'] = partes['nomeParte']
+        partes.drop('nomeParte', axis=1, inplace=True)
+
+        partes['sitBaixa'] = partes.apply(lambda row: 'bx' if row['sitBaixa'] == '2' else 'ab' , axis=1)
+
+
+
+
+
         requisicoes['fase'] = requisicoes['fase'].astype(str)
         requisicoes = requisicoes[requisicoes['fase'] == '425']
         requisicoes['sitBaixa'].fillna('ab',inplace=True)
@@ -64,7 +83,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'setor' if row['codNatEstoque'] == 3 else row['codNatEstoque'],
                                                     axis=1)
 
+        requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
+
         requisicoes.drop(['fase','numero'], axis=1, inplace=True)
+
+
 
         # Agrupando e criando a coluna 'detalhado'
         requisicoes = requisicoes.groupby('numeroOP').apply(
@@ -480,3 +503,8 @@ def ApelidoFaccionista(entrada, referencia, saida):
     else:
         return entrada[0:9]
 
+def NomePartes(entrada, referencia, saida):
+    if referencia in entrada:
+        return saida
+    else:
+        return entrada
