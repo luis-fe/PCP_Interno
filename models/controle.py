@@ -76,17 +76,16 @@ def UltimaAtualizacao(classe, dataInicial):
 
 
 
-def ExcluirHistorico(diasDesejados) :
-
+def ExcluirHistorico(diasDesejados):
     conn = ConexaoPostgreMPL.conexao()
 
-    deletar = 'delete from pcp.controle_requisicao_csw crc  WHERE ' \
-              "rotina = 'Portal Consulta OP"  \
-            " and ((SUBSTRING(fim, 7, 4)||'-'||SUBSTRING(fim, 4, 2)||"'-'"||SUBSTRING(fim, 1, 2))::date - now()::date) < -2 "
+    deletar = "DELETE FROM pcp.controle_requisicao_csw crc " \
+              "WHERE rotina = 'Portal Consulta OP' " \
+              "AND ((SUBSTRING(fim, 7, 4)||'-'||SUBSTRING(fim, 4, 2)||'-'||SUBSTRING(fim, 1, 2))::date - now()::date) < -%s"
 
     cursor = conn.cursor()
 
-    cursor.execute(deletar,(diasDesejados,))
+    cursor.execute(deletar, (diasDesejados,))
     conn.commit()
     cursor.close()
     conn.close()
