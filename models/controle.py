@@ -82,8 +82,8 @@ def ExcluirHistorico(diasDesejados) :
 
     deletar = 'delete from pcp.controle_requisicao_csw crc  WHERE ' \
               "rotina = 'Portal Consulta OP"  \
-            " and ((SUBSTRING(fim, 7, 4)||'-'||SUBSTRING(fim, 4, 2)||'-'||" \
-              " SUBSTRING(fim, 1, 2))::date - now()::date) < -2 "
+            " and ((SUBSTRING(fim, 7, 4)||'-'||SUBSTRING(fim, 4, 2)||'-' " \
+              " ||SUBSTRING(fim, 1, 2))::date - now()::date) < -2 "
 
     cursor = conn.cursor()
 
