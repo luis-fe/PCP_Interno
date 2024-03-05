@@ -59,8 +59,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes['sitBaixa'] = requisicoes.apply(lambda row: 'bx' if row['sitBaixa'] == '1' else 'ab' , axis=1)
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'avi.' if row['codNatEstoque'] == 1 else row['codNatEstoque'],
                                                     axis=1)
-        requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'golas' if row['codNatEstoque'] == 2 else 'setores',
+        requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'golas' if row['codNatEstoque'] == 2 else row['codNatEstoque'],
                                                     axis=1)
+        requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'setor' if row['codNatEstoque'] == 3 else row['codNatEstoque'],
+                                                    axis=1)
+
         requisicoes.drop(['fase','numero'], axis=1, inplace=True)
 
         # Agrupando e criando a coluna 'detalhado'
