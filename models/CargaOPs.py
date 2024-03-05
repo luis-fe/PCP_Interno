@@ -55,7 +55,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes = pd.read_sql(BuscasAvancadas.RequisicoesOPs(), conn)
         requisicoes['fase'] = requisicoes['fase'].astype(str)
         requisicoes = requisicoes[requisicoes['fase'] == '425']
-        requisicoes['sitBaixa'].fillna('em aberto',inplace=True)
+        requisicoes['sitBaixa'].fillna('ab',inplace=True)
         requisicoes['sitBaixa'] = requisicoes.apply(lambda row: 'bx' if row['sitBaixa'] == '1' else 'ab' , axis=1)
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'avi.' if row['codNatEstoque'] == 1 else row['codNatEstoque'],
                                                     axis=1)
