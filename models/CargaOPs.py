@@ -52,6 +52,24 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = pd.merge(consulta, terceiros, on=['numeroOP','codFase'], how='left')
 
+        requisicoes = pd.read_sql(BuscasAvancadas.RequisicoesOPs(), conn)
+        requisicoes['fase'] = requisicoes['fase'].astype(str)
+        requisicoes = requisicoes[requisicoes['fase'] == '425']
+        requisicoes['sitBaixa'].fillna('em aberto',inplace=True)
+        requisicoes['sitBaixa'] = requisicoes.apply(lambda row: 'bx' if row['sitBaixa'] == '1' else 'ab' , axis=1)
+        requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'avi.' if row['codNatEstoque'] == 1 else row['codNatEstoque'],
+                                                    axis=1)
+        requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'golas' if row['codNatEstoque'] == 2 else 'setores',
+                                                    axis=1)
+        requisicoes.drop(['fase','numero'], axis=1, inplace=True)
+
+        # Agrupando e criando a coluna 'detalhado'
+        requisicoes = requisicoes.groupby('numeroOP').apply(
+            lambda x: ', '.join(f"{codNatEstoque}: {sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
+            name='detalhado')
+        requisicoes['codFase'] = '425'
+
+        consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'codFase'], how='left')
 
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
