@@ -110,7 +110,7 @@ def RequisicoesOPs():
 
 def LocalizarPartesOP():
 
-    partes = "SELECT p.codlote as numero, codopconjunto as numOPConfec , '425' as fase, op.situacao as sitBaixa, codOPParte as codNatEstoque,"\
+    partes = "SELECT p.codlote as numero, codopconjunto as numeroOP , '425' as fase, op.situacao as sitBaixa, codOPParte as codNatEstoque,"\
              " (SELECT e.descricao from tcp.Engenharia e WHERE e.codempresa = 1 and e.codengenharia = op.codProduto) as nomeParte"\
              " FROM tco.RelacaoOPsConjuntoPartes p"\
              " inner join tco.OrdemProd op on op.codEmpresa = p.Empresa and op.numeroOP = p.codOPParte "\
