@@ -71,7 +71,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda x: ', '.join(f"{codNatEstoque}: {sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
         requisicoes['replicar'] = 'replicar'
-        consulta['replicar'] = consulta.apply(lambda row: 'replicar' if row['codFase'] == '425' or row['codFase'] == '426'   else '-',
+        consulta['replicar'] = consulta.apply(lambda row: 'replicar' if row['codFase'] == '425' or row['codFase'] == '426' or row['codFase'] == '406'   else '-',
                                                     axis=1)
 
         consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'replicar'], how='left')
