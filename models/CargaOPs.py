@@ -70,9 +70,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes = requisicoes.groupby('numeroOP').apply(
             lambda x: ', '.join(f"{codNatEstoque}: {sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
-        requisicoes['codFase'] = '425'
+        requisicoes['replicar'] = 'replicar'
+        consulta['replicar'] = requisicoes.apply(lambda row: 'replicar' if row['codFase'] == '425' or row['codFase'] == '426'   else '-',
+                                                    axis=1)
 
-        consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'codFase'], how='left')
+        consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'replicar'], how='left')
 
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
@@ -278,7 +280,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['filtro'] = consulta['prioridade']+consulta['codProduto']+consulta['data_entrada']+consulta['categoria']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
-        consulta.drop(['justificativa2','justificativa1','seqRoteiro','seqAtual','nomeTipoOp'], axis=1, inplace=True)
+        consulta.drop(['justificativa2','justificativa1','seqRoteiro','seqAtual','nomeTipoOp','replicar'], axis=1, inplace=True)
         consulta.to_csv('cargaOP.csv',index=True)
 
         consulta = consulta[consulta['Area']== AREA]
