@@ -45,7 +45,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         DataMov = pd.read_sql(BuscasAvancadas.DataMov(AREA), conn)
         DataMov['seqAtual'] = DataMov['seqAtual'].astype(str)
 
-
         consulta = pd.merge(OP_emAberto,DataMov,on=['numeroOP','seqAtual'], how='left')
 
         terceiros = pd.read_sql(BuscasAvancadas.OPporTecerceirizado(),conn)

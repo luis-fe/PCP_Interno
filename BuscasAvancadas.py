@@ -96,6 +96,13 @@ def DeParaFilhoPaiCategoria():
 
     return dePara
 
-#SQL DE BUSCA DA ESTRUTURA DE ITENS - PRODUTO ACABADO - Velocidade Média
+#SQL DE BUSCA DAS REQUISICOES DAS OPS : velocidade Média : 1,20 segundos
 
+def RequisicoesOPs():
+
+    requisicoes = ' SELECT numero,numOPConfec ,  seqRoteiro as fase, sitBaixa, codNatEstoque  ' \
+                  ' FROM tcq.Requisicao r WHERE r.codEmpresa = 1 and ' \
+                  ' r.numOPConfec in (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 3)'
+
+    return requisicoes
 
