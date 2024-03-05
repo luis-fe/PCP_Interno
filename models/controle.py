@@ -85,7 +85,6 @@ def ExcluirHistorico(diasDesejados) :
             " and ((SUBSTRING(fim, 7, 4)||'-'||SUBSTRING(fim, 4, 2)||'-'||" \
               " SUBSTRING(fim, 1, 2))::date - now()::date) < -2 "
 
-
     cursor = conn.cursor()
 
     cursor.execute(deletar,(diasDesejados,))
