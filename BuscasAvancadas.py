@@ -100,7 +100,7 @@ def DeParaFilhoPaiCategoria():
 
 def RequisicoesOPs():
 
-    requisicoes = ' SELECT numero,numOPConfec ,  seqRoteiro as fase, sitBaixa, codNatEstoque  ' \
+    requisicoes = ' SELECT numero,numOPConfec as numeroop ,  seqRoteiro as fase, sitBaixa, codNatEstoque  ' \
                   ' FROM tcq.Requisicao r WHERE r.codEmpresa = 1 and ' \
                   ' r.numOPConfec in (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 3)'
 
