@@ -364,8 +364,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = pd.read_csv('cargaOP.csv')
         consulta.fillna('-', inplace=True)
-        consulta = consulta['estaPendente'].apply(
-            lambda row :ast.literal_eval(row["estaPendente"]),axis=1)
+        consulta['estaPendente'] = consulta['estaPendente'].apply(ast.literal_eval)
 
         consulta = consulta[consulta['Area'] == AREA]
 
@@ -420,8 +419,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
-        filtros = filtros['estaPendente'].apply(
-            lambda row :ast.literal_eval(row["estaPendente"]),axis=1)
+        filtros['estaPendente'] = filtros['estaPendente'].apply(ast.literal_eval)
 
 
         array = filtro.split(",")
