@@ -7,7 +7,6 @@ import ConexaoPostgreMPL
 import BuscasAvancadas
 import re
 import locale
-import ast
 
 def ResponsabilidadeFases():
     conn = ConexaoPostgreMPL.conexao()
@@ -537,8 +536,3 @@ def substituir_bx(conjunto):
     partes = ['' if 'bx' in parte else parte for parte in partes]
     return ','.join(partes)
 
-def convert_to_list(s):
-    try:
-        return json.loads(s)
-    except (json.JSONDecodeError, TypeError):
-        return []
