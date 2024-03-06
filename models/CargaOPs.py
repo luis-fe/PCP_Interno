@@ -58,10 +58,10 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         partes['nomeParte']= partes.apply(
-            lambda row: NomePartes(row['nomeParte'],'BORDADO','ParteBord'), axis=1)
+            lambda row: NomePartes(row['nomeParte'],'BORDADO','ParteBordado'), axis=1)
 
         partes['nomeParte']= partes.apply(
-            lambda row: NomePartes(row['nomeParte'],'COSTAS','ParteSilkCos'), axis=1)
+            lambda row: NomePartes(row['nomeParte'],'COSTAS','ParteSilkCostas'), axis=1)
 
         partes['nomeParte']= partes.apply(
             lambda row: NomePartes(row['nomeParte'],'SILK','ParteSilk'), axis=1)
@@ -94,7 +94,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         # Agrupando e criando a coluna 'detalhado'
         requisicoes = requisicoes.groupby('numeroOP').apply(
-            lambda x: ', '.join(f"{codNatEstoque}: {sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
+            lambda x: ', '.join(f"{codNatEstoque}{sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
         #
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: substituir_bx(row['detalhado']), axis=1)
@@ -365,6 +365,9 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta.fillna('-', inplace=True)
         ##Converter string para lista
         #consulta['estaPendente'] = consulta['estaPendente'].apply(ast.literal_eval)
+        consulta['estaPendente'] = consulta['estaPendente'].str.replace("[","")
+        consulta['estaPendente'] = consulta['estaPendente'].str.replace("]", "")
+        consulta['estaPendente'] = consulta.apply(lambda row: row['estaPendente'].split(','), axis=1)
 
         consulta = consulta[consulta['Area'] == AREA]
 
@@ -419,8 +422,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
-        ##Converter string para lista
-        #filtros['estaPendente'] = filtros['estaPendente'].apply(ast.literal_eval)
+
         # Dividir a string em partes usando a vírgula como delimitador
         filtros['estaPendente'] = filtros['estaPendente'].str.replace("[","")
         filtros['estaPendente'] = filtros['estaPendente'].str.replace("]", "")
