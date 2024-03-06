@@ -5,6 +5,7 @@ import datetime
 import pytz
 import ConexaoPostgreMPL
 import BuscasAvancadas
+import re
 import locale
 
 def ResponsabilidadeFases():
@@ -85,14 +86,19 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'setor' if row['codNatEstoque'] == 3 else row['codNatEstoque'],
                                                     axis=1)
 
+        # xx Nesse etapa é concatenado os dataframes Requsicao + Partes.
         requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
-
+        # xx Nessa etapa é excluida as colunas "fase" e "numero" para dar uma limpada no dataframe, deixando mais limpo.
         requisicoes.drop(['fase','numero'], axis=1, inplace=True)
+
 
         # Agrupando e criando a coluna 'detalhado'
         requisicoes = requisicoes.groupby('numeroOP').apply(
             lambda x: ', '.join(f"{codNatEstoque}: {sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
+        #
+        requisicoes['estaPendente'] = requisicoes.apply(lambda row: substituir_bx(row['coluna_a']), axis=1)
+
 
         requisicoes['Status Aguardando Partes'] = requisicoes.apply(lambda row: f'PENDENTE' if 'ab.' in row["detalhado"] else
                                                      f'OK' , axis=1)
@@ -515,3 +521,9 @@ def NomePartes(entrada, referencia, saida):
         return saida
     else:
         return entrada
+# Função para extrair as informações desejadas
+# Função para substituir "bx" por " " em cada conjunto de caracteres
+def substituir_bx(conjunto):
+    partes = [parte.strip() for parte in conjunto.split(',')]
+    partes = [' ' if 'bx' in parte else parte for parte in partes]
+    return ', '.join(partes)
