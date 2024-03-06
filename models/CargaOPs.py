@@ -526,4 +526,4 @@ def NomePartes(entrada, referencia, saida):
 def substituir_bx(conjunto):
     partes = [parte.strip() for parte in conjunto.split(',')]
     partes = [' ' if 'bx' in parte else parte for parte in partes]
-    return ', '.join(partes)
+    return ''.join(partes)
