@@ -464,6 +464,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             return pd.DataFrame([dados])
         else:
 
+            filtrosNovo['Qtd Pcs'] = filtrosNovo['Qtd Pcs'].astype(float)
             QtdPcs = filtrosNovo['Qtd Pcs'].sum()
 
             QtdPcs = str(QtdPcs).replace(',', '')
