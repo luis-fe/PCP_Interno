@@ -66,7 +66,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes['nomeParte']= partes.apply(
             lambda row: NomePartes(row['nomeParte'],'SILK','ParteSilk'), axis=1)
 
-        partes['codNatEstoque'] = partes['nomeParte']
+        partes['codNatEstoque'] = partes['nomeParte']+':'+partes['codNatEstoque']
         partes.drop('nomeParte', axis=1, inplace=True)
 
         partes['sitBaixa'] = partes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '2' else '🔴ab.' , axis=1)
