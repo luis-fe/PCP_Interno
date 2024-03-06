@@ -7,7 +7,7 @@ import ConexaoPostgreMPL
 import BuscasAvancadas
 import re
 import locale
-import ast
+import json
 
 def ResponsabilidadeFases():
     conn = ConexaoPostgreMPL.conexao()
@@ -364,7 +364,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = pd.read_csv('cargaOP.csv')
         consulta.fillna('-', inplace=True)
-        consulta['estaPendente'] = consulta['estaPendente'].apply(ast.literal_eval)
+        consulta['estaPendente'] = consulta['estaPendente'].apply(json.loads)
 
         consulta = consulta[consulta['Area'] == AREA]
 
@@ -419,7 +419,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
-        filtros['estaPendente'] = filtros['estaPendente'].apply(ast.literal_eval)
+        filtros['estaPendente'] = filtros['estaPendente'].apply(json.loads)
 
 
         array = filtro.split(",")
