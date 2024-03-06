@@ -527,5 +527,5 @@ def NomePartes(entrada, referencia, saida):
 # Função para substituir "bx" por " " em cada conjunto de caracteres
 def substituir_bx(conjunto):
     partes = [parte.strip() for parte in conjunto.split(',')]
-    partes = [' ' if 'bx' in parte else parte for parte in partes]
+    partes = ['' if 'bx' in parte else parte for parte in partes]
     return ','.join(partes)
