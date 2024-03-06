@@ -422,7 +422,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         ##Converter string para lista
         #filtros['estaPendente'] = filtros['estaPendente'].apply(ast.literal_eval)
         # Dividir a string em partes usando a vírgula como delimitador
-        filtros['estaPendente'] = filtros['estaPendente'].str.replace('[','')
+        filtros['estaPendente'] = filtros['estaPendente'].str.replace("['",'')
+        filtros['estaPendente'] = filtros['estaPendente'].str.replace("]'", '')
         filtros['estaPendente'] = filtros.apply(lambda row: row['estaPendente'].split(','), axis=1)
 
 
