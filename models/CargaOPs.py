@@ -364,7 +364,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = pd.read_csv('cargaOP.csv')
         consulta.fillna('-', inplace=True)
-        consulta['estaPendente'] = consulta['estaPendente'].apply(json.loads)
+        consulta['estaPendente'] = consulta['estaPendente'].apply(convert_to_list)
 
         consulta = consulta[consulta['Area'] == AREA]
 
@@ -419,7 +419,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
-        filtros['estaPendente'] = filtros['estaPendente'].apply(json.loads)
+        filtros['estaPendente'] = filtros['estaPendente'].apply(convert_to_list)
 
 
         array = filtro.split(",")
@@ -534,3 +534,9 @@ def substituir_bx(conjunto):
     partes = [parte.strip() for parte in conjunto.split(',')]
     partes = ['' if 'bx' in parte else parte for parte in partes]
     return ','.join(partes)
+
+def convert_to_list(s):
+    try:
+        return json.loads(s)
+    except (json.JSONDecodeError, TypeError):
+        return []
