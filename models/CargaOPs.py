@@ -456,7 +456,18 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             array = filtro.split(",")
             print(array)
 
-            filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
+            filtrosNovo = None
+            contador = 0
+
+            for i in array:
+                contador = 1 + contador
+
+                filtrosNovoCadeia = filtros[filtros['i'].str.contains(filtro)]
+                if i == 1:
+                    filtrosNovo = filtrosNovoCadeia
+                else:
+
+                    filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
 
         else:
             array = filtro.split(",")
