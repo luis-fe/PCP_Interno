@@ -308,6 +308,9 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
 
         consulta.drop(['justificativa2','justificativa1','seqRoteiro','seqAtual','nomeTipoOp','replicar'], axis=1, inplace=True)
+
+
+        consulta = consulta[consulta['codFase'] != '426' and consulta['codTipoOP'] != '2-PARTE DE PECA' ]
         consulta.to_csv('cargaOP.csv',index=True)
 
         consulta = consulta[consulta['Area']== AREA]
