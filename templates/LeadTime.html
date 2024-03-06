@@ -11,7 +11,7 @@
 </head>
 
 <body>
-      <div class="Corpo">
+    <div class="Corpo">
         <div class="Titulo">
             <h3>Gestão de Op's</h3>
         </div>
@@ -21,10 +21,13 @@
                 <i class="bi bi-file-earmark-arrow-down-fill" id="BotaoExcel" title="Exportar Excel"></i>
             </div>
             <div class="DivCorpoIndicadores">
-                <div class="LabelOps" style="background-color: #3498db;">
+                <div class="LabelOps" style="background-color: green">
                     <label for="text" id="LabelOps"></label>
                 </div>
-                <div class="LabelOps" style="background-color: rgb(47, 237, 110);">
+                <div class="LabelOps" style="background-color: lightsalmon">
+                    <label for="text" id="LabelQtd"></label>
+                </div>
+                <div class="LabelOps" style="background-color: #3498db;">
                     <label for="text" id="LabelOpsNormais"></label>
                 </div>
                 <div class="LabelOps" style="background-color: yellow;">
@@ -86,6 +89,9 @@
           </span>
           </div>
         </div>
+
+
+
         <div class="botaoContainer" id="botaoContainer"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.core.min.js"></script>
