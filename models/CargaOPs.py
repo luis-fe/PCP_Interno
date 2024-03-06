@@ -58,13 +58,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         partes['nomeParte']= partes.apply(
-            lambda row: NomePartes(row['nomeParte'],'BORDADO','ParteBordado'), axis=1)
+            lambda row: NomePartes(row['nomeParte'],'BORDADO','Parte Bordado'), axis=1)
 
         partes['nomeParte']= partes.apply(
-            lambda row: NomePartes(row['nomeParte'],'COSTAS','ParteSilkCostas'), axis=1)
+            lambda row: NomePartes(row['nomeParte'],'COSTAS','Parte SilkCostas'), axis=1)
 
         partes['nomeParte']= partes.apply(
-            lambda row: NomePartes(row['nomeParte'],'SILK','ParteSilk'), axis=1)
+            lambda row: NomePartes(row['nomeParte'],'SILK','Parte Silk'), axis=1)
 
         partes['codNatEstoque'] = partes['nomeParte']+':'+partes['codNatEstoque']
         partes.drop('nomeParte', axis=1, inplace=True)
