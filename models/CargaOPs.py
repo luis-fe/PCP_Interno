@@ -460,11 +460,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             filtroDif = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
 
             filtrosNovo = None
+            contador = 0
 
             for i in array:
+                contador = 1 + contador
 
                 filtrosNovoCadeia = filtroDif[filtroDif['i'].str.contains(filtro)]
-                if i == 0:
+                if i == 1:
                     filtrosNovo = filtrosNovoCadeia
                 else:
 
