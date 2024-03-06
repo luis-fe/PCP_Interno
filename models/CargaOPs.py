@@ -85,6 +85,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
                                                     axis=1)
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'setor' if row['codNatEstoque'] == 3 else row['codNatEstoque'],
                                                     axis=1)
+        requisicoes['numero'] = requisicoes['numero'].astype(str)
         requisicoes['sitBaixa'] = requisicoes['numero']+requisicoes['sitBaixa']
         # xx Nesse etapa é concatenado os dataframes Requsicao + Partes.
         requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
