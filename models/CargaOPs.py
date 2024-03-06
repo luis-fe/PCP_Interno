@@ -457,6 +457,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         else:
             array = filtro.split(",")
+            print(array)
             filtroDif = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
 
             filtrosNovo = None
