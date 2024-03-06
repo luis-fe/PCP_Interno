@@ -102,6 +102,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         # Dividir a string em partes usando a vírgula como delimitador
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: row['estaPendente'].split(','), axis=1)
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: list(filter(bool, row['estaPendente'])), axis=1)
+        requisicoes['estaPendente'] = requisicoes['estaPendente'].astype(list)
+
 
 
 
