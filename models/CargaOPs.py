@@ -434,7 +434,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
 
-        array = filtro.split(",")
+
 
         if classificar == 'tempo':
             filtros = filtros.sort_values(by=['dias na Fase'], ascending=False)  # escolher como deseja classificar
@@ -450,14 +450,25 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             filtros= filtros
 
 
+
+
         if filtroDiferente == '':
             filtrosNovo = filtros[filtros['filtro'].str.contains(filtro)]
 
         else:
-
+            array = filtro.split(",")
             filtroDif = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
-            filtrosNovo = filtroDif[filtroDif['filtro'].str.contains(filtro)]
 
+            filtrosNovo = None
+
+            for i in array:
+
+                filtrosNovoCadeia = filtroDif[filtroDif['i'].str.contains(filtro)]
+                if i == 0:
+                    filtrosNovo = filtrosNovoCadeia
+                else:
+
+                    filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
 
 
 
