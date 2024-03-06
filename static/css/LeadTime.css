@@ -60,6 +60,16 @@
     z-index: 999;
 }
 
+.ModalPendencia{
+    display: none;
+    position: absolute;
+    background-color: var(--cor4);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-left: 50px;
+    z-index: 999;
+}
 .LinhaModalFiltros label {
     margin-right: 10px;
     font-size: 25px;
@@ -135,6 +145,11 @@
 .CodFase {
     font-size: 20px;
     font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.Engenharias{
+    margin-bottom: 8px;
 }
 
 .Justificativa {
@@ -178,6 +193,9 @@
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
   }
+
+
+
          
 
 @media (max-width: 900px) {
