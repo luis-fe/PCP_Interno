@@ -39,14 +39,23 @@ def CargadasOPs():
     datainicio = controle.obterHoraAtual()
     tempo = controle.TempoUltimaAtualizacao(datainicio)
     limite = 60
+    limiteFiltros = 600
 
-    usuarios = CargaOPs.OPemProcesso(empresa,area, filtro,filtroDiferente, tempo, limite, classificar) ## Aqui defino que o tempo limite de requisicao no csw é acima de 60 segundos, evitando a simultanedade de requisicao
     if (filtro == '-' and filtroDiferente == '' and tempo >= limite  ) or (filtro == '' and filtroDiferente == '' and tempo >= limite)  :
-
+        usuarios = CargaOPs.OPemProcesso(empresa, area, filtro, filtroDiferente, tempo, limite,classificar)  ## Aqui defino que o tempo limite de requisicao no csw é acima de 60 segundos, evitando a simultanedade de requisicao
         controle.salvar('Portal Consulta OP',client_ip,datainicio)
         controle.ExcluirHistorico(3)
 
+    elif tempo >= limiteFiltros :
+        usuarios1 = CargaOPs.OPemProcesso(empresa, area, '-', '', tempo, limite,classificar)  ## Aqui defino que o tempo limite de requisicao no csw é acima de 60 segundos, evitando a simultanedade de requisicao
+
+        controle.salvar('Portal Consulta OP',client_ip,datainicio)
+        controle.ExcluirHistorico(3)
+        usuarios = CargaOPs.OPemProcesso(empresa, area, filtro, filtroDiferente, tempo, limite,classificar)  ## Aqui defino que o tempo limite de requisicao no csw é acima de 60 segundos, evitando a simultanedade de requisicao
+
+
     else:
+        usuarios = CargaOPs.OPemProcesso(empresa, area, filtro, filtroDiferente, tempo, limite,classificar)  ## Aqui defino que o tempo limite de requisicao no csw é acima de 60 segundos, evitando a simultanedade de requisicao
         print(client_ip+' '+filtro)
 
     # Obtém os nomes das colunas
