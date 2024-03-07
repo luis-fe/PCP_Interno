@@ -453,7 +453,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         if filtroDiferente == '':
-            array = filtro.split(",")
+            array = filtro.split("/")
             print(array)
 
             filtrosNovo = None
