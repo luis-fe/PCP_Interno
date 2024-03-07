@@ -457,24 +457,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     ### FIM ETAPA X.
 
 
-
-
-        if classificar == 'tempo':
-            filtros = filtros.sort_values(by=['dias na Fase'], ascending=False)  # escolher como deseja classificar
-
-        elif classificar == 'status':
-            filtros = filtros.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
-
-        elif classificar == 'prioridade':
-            print('deu certo: buscou do que ta salvo')
-            filtros = filtros.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
-
-        else:
-            filtros= filtros
-
-
-
-
         if filtroDiferente == '':
             print(nivel1Array)
 
@@ -508,6 +490,19 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
                 else:
 
                     filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
+
+        if classificar == 'tempo':
+            filtrosNovo = filtrosNovo.sort_values(by=['dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'status':
+            filtrosNovo = filtrosNovo.sort_values(by=['status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        elif classificar == 'prioridade':
+            print('deu certo: buscou do que ta salvo')
+            filtrosNovo = filtrosNovo.sort_values(by=['prioridade','status','dias na Fase'], ascending=False)  # escolher como deseja classificar
+
+        else:
+            filtrosNovo= filtrosNovo
 
 
         if filtrosNovo.empty:
