@@ -470,7 +470,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
                     filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
 
         else:
-            array = filtro.split(",")
+            array = filtro.split("/")
             print(array)
             filtroDif = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
 
@@ -575,4 +575,14 @@ def substituir_bx(conjunto):
     partes = [parte.strip() for parte in conjunto.split(',')]
     partes = ['' if 'bx' in parte else parte for parte in partes]
     return ','.join(partes)
+
+
+def ReconhecerFiltro(filtro):
+    palavras_chave = ['CAMI', 'CALCA', 'SHORT', 'BONE', 'POLO']
+
+    if any(palavra in filtro for palavra in palavras_chave):
+        return "N2"
+    else:
+        return 'N1'
+
 
