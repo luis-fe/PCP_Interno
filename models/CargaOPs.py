@@ -533,7 +533,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             return pd.DataFrame([dados])
         else:
 
-            filtrosNovo['Qtd Pcs'] = filtrosNovo['Qtd Pcs'].astype(float)
+            filtrosNovo['Qtd Pcs'] = pd.to_numeric(filtrosNovo['Qtd Pcs'], errors='coerce').fillna(0).astype(int)
             QtdPcs = filtrosNovo['Qtd Pcs'].sum()
 
             QtdPcs = str(QtdPcs).replace(',', '')
