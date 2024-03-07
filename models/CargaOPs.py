@@ -449,8 +449,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
                 print("sem filtro de nivel 2")
         else:
                 filtrarValor = nivelArray[0]
-                print(filtrarValor)
-                filtros = filtros[filtros['filtro'] == filtrarValor]
+                print(f'filtro de nivel 2 encontrado: {filtrarValor}')
+                filtros = filtros[filtros['filtro'].str.contains(filtrarValor)]
 
     ### FIM ETAPA X.
 
