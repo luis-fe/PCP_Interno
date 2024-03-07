@@ -434,21 +434,23 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
     ### ETAPA X : PROCEDIMENTO DE VARREDURA DOS TIPOS DE FILTRO INFORMADO PELO USUARIO:
     ###     NIVEL 1: NAO FILTRA O DATAFRAME, NIVEL2: FILTRA O DATAFRAME:
-        nivelArray = []
+
         matrizNivel = filtro.split("/")
+        nivel1Array = []
+        nivel2Array = []
         for busca in matrizNivel :
             nivel = ReconhecerFiltro(busca)
 
             if nivel == 'N2':
-                nivelArray.append(busca)
+                nivel2Array.append(busca)
             else:
-                print('')
+                nivel1Array.append(busca)
 
         ## Verifica se existe algum filtro de nivel2 para fazer uma filtragem nos dados
-        if len(nivelArray) == 0:
+        if len(nivel2Array) == 0:
                 print("sem filtro de nivel 2")
         else:
-                filtrarValor = nivelArray[0]
+                filtrarValor = nivel2Array[0]
                 print(f'filtro de nivel 2 encontrado: {filtrarValor}')
                 filtros = filtros[filtros['filtro'].str.contains(filtrarValor)]
 
@@ -474,14 +476,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         if filtroDiferente == '':
-            array = filtro.split("/")
-            print(array)
+            print(nivel1Array)
 
             filtrosNovo = None
             contador = 0
 
 
-            for i in array:
+            for i in nivel1Array:
                 contador = 1 + contador
 
                 filtrosNovoCadeia = filtros[filtros['filtro'].str.contains(i)]
@@ -492,14 +493,12 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
                     filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
 
         else:
-            array = filtro.split("/")
-            print(array)
+            print(nivel1Array)
             filtroDif = filtros[~filtros['filtro'].str.contains(filtroDiferente)]
 
             filtrosNovo = None
             contador = 0
-            nivelArra = []
-            for i in array:
+            for i in nivel1Array:
                 contador = 1 + contador
 
 
@@ -509,14 +508,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
                 else:
 
                     filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
-
-
-
-
-
-
-
-
 
 
         if filtrosNovo.empty:
