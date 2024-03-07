@@ -594,7 +594,7 @@ def substituir_bx(conjunto):
 
 
 def ReconhecerFiltro(filtro):
-    palavras_chave = ['CAMI', 'CALCA', 'SHORT', 'BONE', 'POLO']
+    palavras_chave = ['CAMI', 'CALCA', 'SHORT', 'BONE', 'POLO','JAQUET']
 
     if any(palavra in filtro for palavra in palavras_chave):
         return "N2"
