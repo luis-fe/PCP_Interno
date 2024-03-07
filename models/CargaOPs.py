@@ -323,7 +323,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta['filtro'] = consulta['prioridade']+consulta['codProduto']+consulta['categoria']+consulta['codFase']+'-'+consulta['nomeFase']+consulta['numeroOP']+consulta['responsavel']+consulta['status']
         consulta['filtro'] = consulta['filtro'].str.replace(' ', '')
-        consulta['filtro'] = consulta['filtro'].str.replace('2-Atrasado', 'Atrasado')
+        consulta['filtro'] = consulta['filtro'].str.replace('-001', '')
+        consulta['filtro'] = consulta['filtro'].str.replace('-2-Atrasado', 'ATRASADO')
 
         consulta.drop(['justificativa2','justificativa1','seqRoteiro','seqAtual','nomeTipoOp','replicar'], axis=1, inplace=True)
 
