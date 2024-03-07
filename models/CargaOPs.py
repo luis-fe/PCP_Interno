@@ -458,10 +458,15 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
             filtrosNovo = None
             contador = 0
+            nivelArra = []
 
             for i in array:
                 contador = 1 + contador
-
+                nivel = ReconhecerFiltro(i)
+                if nivel == 'N2':
+                    nivelArra.append(i)
+                else:
+                    print('')
                 filtrosNovoCadeia = filtros[filtros['filtro'].str.contains(i)]
                 if i == 1:
                     filtrosNovo = filtrosNovoCadeia
@@ -476,16 +481,30 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
             filtrosNovo = None
             contador = 0
-
+            nivelArra = []
             for i in array:
                 contador = 1 + contador
+                nivel = ReconhecerFiltro(i)
+                if nivel == 'N2':
+                    nivelArra.append(i)
+                else:
+                    print('')
 
-                filtrosNovoCadeia = filtroDif[filtroDif['filtros'].str.contains(i)]
+                filtrosNovoCadeia = filtroDif[filtroDif['filtro'].str.contains(i)]
                 if i == 1:
                     filtrosNovo = filtrosNovoCadeia
                 else:
 
                     filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
+
+        if len(nivelArra) == 0:
+                print("O array está vazio.")
+        else:
+                filtrarValor = nivelArra[0]
+                filtrosNovo = filtrosNovo[filtrosNovo['filtro'] == filtrarValor]
+
+
+
 
 
 
