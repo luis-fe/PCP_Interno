@@ -497,10 +497,14 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
                     filtrosNovo = pd.concat([filtrosNovo, filtrosNovoCadeia],ignore_index=True)
 
+
+
+        ## Verifica se existe algum filtro de nivel2 para fazer uma filtragem nos dados
         if len(nivelArra) == 0:
                 print("O array está vazio.")
         else:
                 filtrarValor = nivelArra[0]
+                print(filtrarValor)
                 filtrosNovo = filtrosNovo[filtrosNovo['filtro'] == filtrarValor]
 
 
