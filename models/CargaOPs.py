@@ -432,6 +432,27 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         filtros['estaPendente'] = filtros.apply(lambda row: row['estaPendente'].split(','), axis=1)
 
 
+    ### ETAPA X : PROCEDIMENTO DE VARREDURA DOS TIPOS DE FILTRO INFORMADO PELO USUARIO:
+    ###     NIVEL 1: NAO FILTRA O DATAFRAME, NIVEL2: FILTRA O DATAFRAME:
+        nivelArray = []
+        matrizNivel = filtro.split("/")
+        for busca in matrizNivel :
+            nivel = ReconhecerFiltro(busca)
+
+            if nivel == 'N2':
+                nivelArray.append(busca)
+            else:
+                print('')
+
+        ## Verifica se existe algum filtro de nivel2 para fazer uma filtragem nos dados
+        if len(nivelArray) == 0:
+                print("sem filtro de nivel 2")
+        else:
+                filtrarValor = nivelArray[0]
+                print(filtrarValor)
+                filtros = filtros[filtros['filtro'] == filtrarValor]
+
+    ### FIM ETAPA X.
 
 
 
@@ -458,15 +479,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
             filtrosNovo = None
             contador = 0
-            nivelArra = []
+
 
             for i in array:
                 contador = 1 + contador
-                nivel = ReconhecerFiltro(i)
-                if nivel == 'N2':
-                    nivelArra.append(i)
-                else:
-                    print('')
+
                 filtrosNovoCadeia = filtros[filtros['filtro'].str.contains(i)]
                 if i == 1:
                     filtrosNovo = filtrosNovoCadeia
@@ -484,11 +501,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             nivelArra = []
             for i in array:
                 contador = 1 + contador
-                nivel = ReconhecerFiltro(i)
-                if nivel == 'N2':
-                    nivelArra.append(i)
-                else:
-                    print('')
+
 
                 filtrosNovoCadeia = filtroDif[filtroDif['filtro'].str.contains(i)]
                 if i == 1:
@@ -499,13 +512,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
 
-        ## Verifica se existe algum filtro de nivel2 para fazer uma filtragem nos dados
-        if len(nivelArra) == 0:
-                print("O array está vazio.")
-        else:
-                filtrarValor = nivelArra[0]
-                print(filtrarValor)
-                filtrosNovo = filtrosNovo[filtrosNovo['filtro'] == filtrarValor]
+
 
 
 
