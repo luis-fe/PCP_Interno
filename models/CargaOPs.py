@@ -186,7 +186,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         responsabilidade = ResponsabilidadeFases()
         consulta = pd.merge(consulta,responsabilidade,on='codFase', how='left')
+        consulta = ExecoesResponsalFases(consulta,'412','4-PARTE KIT/CONJ')
+
+
+
         consulta = pd.merge(consulta,leadTime,on='codFase', how='left')
+
+
         consulta['data_entrada'].fillna('-',inplace=True)
         consulta['data_entrada'] = consulta.apply(lambda row: row['startOP'] if row['data_entrada'] == '-'  else row['data_entrada'] , axis=1)
         consulta = consulta[consulta['data_entrada'] != '-']
@@ -602,3 +608,6 @@ def ReconhecerFiltro(filtro):
         return 'N1'
 
 
+def ExecoesResponsalFases(dataframe, fase, tipoop):
+    dataframe['responsavel'] = dataframe.apply(lambda row: '' if row['codFase'] == fase and row['codTipoOP'] == tipoop else row['responsavel'], axis=1 )
+    return dataframe
