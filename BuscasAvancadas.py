@@ -60,7 +60,7 @@ def CapaPedido (empresa, iniVenda, finalVenda, tiponota):
     "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "\
     " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "\
     " FROM Ped.Pedido p"\
-    " where codEmpresa = "+empresa+ " and  dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ")"\
+    " where codEmpresa = 1  and  dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ")"\
     " order by codPedido desc "
 
     return CapaPedido
@@ -71,7 +71,7 @@ def pedidosNivelSKU (empresa, iniVenda, finalVenda, tiponota):
     empresa = "'"+str(empresa)+"'"
     pedidosNivelSKU = 'select codPedido, codProduto as reduzido, qtdeCancelada, qtdeFaturada, qtdePedida '\
                         'from ped.PedidoItemGrade  p where codEmpresa = 1 and p.codPedido in '\
-                        "(select p.codPedido FROM Ped.Pedido p where codEmpresa = "+ empresa+" and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
+                        "(select p.codPedido FROM Ped.Pedido p where codEmpresa = 1 and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
 
     return pedidosNivelSKU
 #SQL DE BUSCA DE TERCEIRIZADOS POR OP E FASE - Velocidade Média: 0,700 s
