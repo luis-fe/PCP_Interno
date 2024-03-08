@@ -68,6 +68,7 @@ def CapaPedido (empresa, iniVenda, finalVenda, tiponota):
 
 #SQL DE PEDIDOS NO NIVEL SKU - Velocidade Media 5 s para dados de 1 ano (regular)
 def pedidosNivelSKU (empresa, iniVenda, finalVenda, tiponota):
+    empresa = str(empresa)
     pedidosNivelSKU = 'select codPedido, codProduto as reduzido, qtdeCancelada, qtdeFaturada, qtdePedida '\
                         'from ped.PedidoItemGrade  p where codEmpresa = 1 and p.codPedido in '\
                         "(select p.codPedido FROM Ped.Pedido p where codEmpresa = "+ empresa+" and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
