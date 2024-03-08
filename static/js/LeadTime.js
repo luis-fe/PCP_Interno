@@ -175,7 +175,7 @@ async function ConsultaOp(Api, Empresa, Filtro, Classificacao) {
                     InputObs.focus();
 
                     // Calcular a posição considerando a barra de rolagem
-                    var rect = botao.getBoundingClientRect();
+                    var rect = botao.getBounwinddingClientRect();
                     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
                     ModalObs.style.top = rect.bottom + scrollTop + 'px';
@@ -344,6 +344,10 @@ function atualizarPagina() {
 
 }
 
+LabelOpsAtrasadas.addEventListener("click", () => {
+
+    ConsultaOp(ApiConsulta, '1', 'ATRASADO', valorSelecionado);
+})
 // Chama a função de atualização a cada 15 minutos (em milissegundos)
 const intervaloDeAtualizacao = 15 * 60 * 1000; // 15 minutos
 setInterval(atualizarPagina, intervaloDeAtualizacao);
