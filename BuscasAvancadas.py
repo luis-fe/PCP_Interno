@@ -55,7 +55,7 @@ def bloqueioComerical():
 
 # SQL CAPA DOS PEDIDOS: Velocidade media : 1,5 s (ótimo - para o intervalo de 1 ano de pedidos)
 def CapaPedido (empresa, iniVenda, finalVenda, tiponota):
-    empresa = str(empresa)
+    empresa = "'"+str(empresa)+"'"
     CapaPedido = "SELECT dataEmissao, codPedido, "\
     "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "\
     " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "\
@@ -68,7 +68,7 @@ def CapaPedido (empresa, iniVenda, finalVenda, tiponota):
 
 #SQL DE PEDIDOS NO NIVEL SKU - Velocidade Media 5 s para dados de 1 ano (regular)
 def pedidosNivelSKU (empresa, iniVenda, finalVenda, tiponota):
-    empresa = str(empresa)
+    empresa = "'"+str(empresa)+"'"
     pedidosNivelSKU = 'select codPedido, codProduto as reduzido, qtdeCancelada, qtdeFaturada, qtdePedida '\
                         'from ped.PedidoItemGrade  p where codEmpresa = 1 and p.codPedido in '\
                         "(select p.codPedido FROM Ped.Pedido p where codEmpresa = "+ empresa+" and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
