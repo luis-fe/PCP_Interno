@@ -71,7 +71,7 @@ def pedidosNivelSKU (empresa, iniVenda, finalVenda, tiponota):
     empresa = "'"+str(empresa)+"'"
     pedidosNivelSKU = 'select codPedido, codProduto as reduzido, qtdeCancelada, qtdeFaturada, qtdePedida '\
                         'from ped.PedidoItemGrade  p where codEmpresa = 1 and p.codPedido in '\
-                        "(select p.codPedido FROM Ped.Pedido p where codEmpresa = 1 and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + ")"
+                        "(select p.codPedido FROM Ped.Pedido p where codEmpresa = 1 and dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "')"
 
     return pedidosNivelSKU
 #SQL DE BUSCA DE TERCEIRIZADOS POR OP E FASE - Velocidade Média: 0,700 s
