@@ -117,3 +117,5 @@ def LocalizarPartesOP():
              " WHERE codopconjunto in (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 3 and op.codfaseatual = 426 )"
 
     return partes
+
+
