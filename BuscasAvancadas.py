@@ -57,9 +57,9 @@ def bloqueioComerical():
 def CapaPedido (empresa, iniVenda, finalVenda, tiponota):
     empresa = "'"+str(empresa)+"'"
 
-    CapaPedido = "SELECT top 1001  dataEmissao, convert(varchar(9), codPedido) as codPedido, "\
+    CapaPedido = "SELECT   dataEmissao, convert(varchar(9), codPedido) as codPedido, "\
     "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "\
-    " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "\
+    " codTipoNota, dataPrevFat, convert(varchar(9),codCliente) as codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "\
     " FROM Ped.Pedido p"\
     " where codEmpresa = "+empresa+"  and  dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ") order by codPedido desc "
 
