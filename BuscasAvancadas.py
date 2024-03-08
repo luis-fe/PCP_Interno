@@ -60,8 +60,7 @@ def CapaPedido (empresa, iniVenda, finalVenda, tiponota):
     "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "\
     " codTipoNota, dataPrevFat, codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo,qtdPecasFaturadas "\
     " FROM Ped.Pedido p"\
-    " where codEmpresa = 1  and  dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ")"\
-    " order by codPedido desc "
+    " where codEmpresa = 1  and  dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ") order by codPedido desc "
 
     return CapaPedido
 
