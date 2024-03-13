@@ -119,4 +119,27 @@ def LocalizarPartesOP():
 
     return partes
 
+#SQL DE BUSCA DAS MOVIMENTACOES ENTRE DATAS , TESTE COM 1 ANO : velocidade 9 segundos (REGULAR)
+def MovimentacoesOps():
+        dados = 'SELECT codFase, mf.numeroOP, dataMov as data_entrada, horaMov, mf.seqRoteiro, (mf.seqRoteiro + 1) as seqAtual FROM'\
+                ' tco.MovimentacaoOPFase mf'\
+                ' WHERE mf.codempresa = 1 and dataBaixa <= CURRENT_TIMESTAMP AND  '\
+                " dataBaixa > DATEADD('day', -365, CURRENT_TIMESTAMP)"
+        return dados
+
+#SQL DE BUSCA DAS MOVIMENTACOES ENTRE DATAS no dia : velocidade 0,33 segundos (otimo)
+def MovimentacoesOpsNodia():
+        dados = 'SELECT codFase, mf.numeroOP, dataMov as data_entrada, horaMov, mf.seqRoteiro, (mf.seqRoteiro + 1) as seqAtual FROM'\
+                ' tco.MovimentacaoOPFase mf'\
+                ' WHERE mf.codempresa = 1 and dataBaixa <= CURRENT_TIMESTAMP AND  '\
+                " dataBaixa > DATEADD('day', -1, CURRENT_TIMESTAMP)"
+        return dados
+
+def Motivos():
+    motivos = 'SELECT codMotivo , nome FROM tcp.Mot2Qualidade m WHERE m.Empresa = 1'
+
+    return motivos
+
+
+
 
