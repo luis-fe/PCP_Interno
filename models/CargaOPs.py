@@ -238,7 +238,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['prioridade'] = consulta.apply(lambda row: '02-QM7' if row['prioridade'] == 'QM7' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '01-NORMAL' if row['prioridade'] == 'NORMAL' else row['prioridade'],axis=1 )
 
-        consulta['prioridade'] = consulta.apply(lambda row: '0-'  if '-' not in row['prioridade'] else row['prioridade'],axis=1 )
+
+        consulta['prioridade'] = consulta.apply(lambda row: '01-'+row['prioridade'] if '-' not in row['prioridade'] else row['prioridade'],axis=1 )
 
 
         consulta['categoria'] = '-'
