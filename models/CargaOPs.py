@@ -227,7 +227,16 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['prioridade'] = consulta.apply(lambda row: '07-QM2' if row['prioridade'] == 'QM2' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '06-QP3' if row['prioridade'] == 'QP3' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '06-QM3' if row['prioridade'] == 'QM3' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '05-QP4' if row['prioridade'] == 'QP4' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '05-QM4' if row['prioridade'] == 'QM4' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '04-QP5' if row['prioridade'] == 'QP5' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '04-QM5' if row['prioridade'] == 'QM5' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '03-QP6' if row['prioridade'] == 'QP6' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '03-QM6' if row['prioridade'] == 'QM6' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '02-QP7' if row['prioridade'] == 'QP7' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '02-QM7' if row['prioridade'] == 'QM7' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '0-'  if '-' not in row['prioridade'] else row['prioridade'],axis=1 )
+        consulta['prioridade'].str.replace('FATURAMENTO','FAT.')
 
 
         consulta['categoria'] = '-'
