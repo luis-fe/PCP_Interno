@@ -349,6 +349,9 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta.to_csv('cargaOP.csv',index=True)
 
+        #Retirar o "-" da prioridade :
+        consulta['prioridade'] = consulta['prioridade'] .str.split('-').str[1]
+
         consulta = consulta[consulta['Area']== AREA]
 
         consulta.drop('filtro', axis=1, inplace=True)
@@ -416,6 +419,9 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['Qtd Pcs'] = consulta['Qtd Pcs'].replace('-', 0)
         consulta['Qtd Pcs'].fillna(0,inplace= True)
         consulta['Qtd Pcs'] = consulta['Qtd Pcs'].astype(float)
+        # Retirar o "-" da prioridade :
+        consulta['prioridade'] = consulta['prioridade'].str.split('-').str[1]
+
         QtdPcs = consulta['Qtd Pcs'].sum()
 
         QtdPcs = "{:,.0f}".format(QtdPcs)
@@ -530,6 +536,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             filtrosNovo= filtrosNovo
 
 
+
+
         if filtrosNovo.empty:
 
             dados = {
@@ -567,6 +575,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
             filtrosNovo.drop(['filtro','Unnamed: 0'], axis=1, inplace=True)
+            # Retirar o "-" da prioridade :
+            filtrosNovo['prioridade'] = filtrosNovo['prioridade'].str.split('-').str[1]
 
             dados = {
                 '0-Total DE pçs': f'{QtdPcs} Pçs',
