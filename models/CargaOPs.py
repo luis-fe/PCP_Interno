@@ -220,7 +220,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['Area'] = consulta.apply(lambda row: 'PILOTO' if row['codTipoOP'] == '13-PILOTO' else 'PRODUCAO',axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '1-URGENTE' if row['prioridade'] == 'URGENTE' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '01-P/FATURAMENTO' if row['prioridade'] == 'P/FATURAMENTO' else row['prioridade'],axis=1 )
-        consulta['prioridade'] = consulta.apply(lambda row: '01-P/FATURAMENTO' if row['prioridade'].str.contains('FATURAMENTO') else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '01-P/FATURAMENTO' if 'FATURAMENTO' in row['prioridade'] else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '02-QP1' if row['prioridade'] == 'QP1' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '03-QM1' if row['prioridade'] == 'QM1' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '04-QP2' if row['prioridade'] == 'QP2' else row['prioridade'],axis=1 )
