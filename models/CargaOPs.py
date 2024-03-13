@@ -196,6 +196,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['data_entrada'].fillna('-',inplace=True)
         consulta['data_entrada'] = consulta.apply(lambda row: row['startOP'] if row['data_entrada'] == '-'  else row['data_entrada'] , axis=1)
         consulta = consulta[consulta['data_entrada'] != '-']
+        consulta["prioridade"].fillna('NORMAL', inplace=True)
         consulta.fillna('-', inplace=True)
 
         consulta['data_entrada'] = consulta['data_entrada'].str.slice(0, 10)
@@ -235,7 +236,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['prioridade'] = consulta.apply(lambda row: '03-QM6' if row['prioridade'] == 'QM6' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '02-QP7' if row['prioridade'] == 'QP7' else row['prioridade'],axis=1 )
         consulta['prioridade'] = consulta.apply(lambda row: '02-QM7' if row['prioridade'] == 'QM7' else row['prioridade'],axis=1 )
-        consulta['prioridade'] = consulta.apply(lambda row: '01-NORMAL' if row['prioridade'] == '-' else row['prioridade'],axis=1 )
+        consulta['prioridade'] = consulta.apply(lambda row: '01-NORMAL' if row['prioridade'] == 'NORMAL' else row['prioridade'],axis=1 )
 
         consulta['prioridade'] = consulta.apply(lambda row: '0-'  if '-' not in row['prioridade'] else row['prioridade'],axis=1 )
 
