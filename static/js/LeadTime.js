@@ -175,7 +175,7 @@ async function ConsultaOp(Api, Empresa, Filtro, Classificacao) {
                     InputObs.focus();
 
                     // Calcular a posição considerando a barra de rolagem
-                    var rect = botao.getBounwinddingClientRect();
+                    var rect = botao.getBoundingClientRect();
                     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
                     ModalObs.style.top = rect.bottom + scrollTop + 'px';
