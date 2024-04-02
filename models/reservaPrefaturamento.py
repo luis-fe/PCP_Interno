@@ -12,7 +12,7 @@ def APIAtualizaPreFaturamento():
             "T5T6LNpUf - bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7"
     print(token)
     headers = {'Authorization': f'{token}'}
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, verify=False)
 
 
     # Verificar se a requisição foi bem-sucedida
