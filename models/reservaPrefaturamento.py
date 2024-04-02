@@ -32,6 +32,7 @@ def APIAtualizaPreFaturamento():
         # Criar o DataFrame
         df = pd.json_normalize(dados_dict)
 
+        """
         # Exibir o DataFrame
         # Explodir as listas em colunas separadas
         df_exploded = df.apply(pd.Series.explode)
@@ -40,10 +41,12 @@ def APIAtualizaPreFaturamento():
         coluna2 = pd.DataFrame(df_exploded['pedidoIncompleto'])
         coluna2.rename(columns={'coluna2': 'pedidoCompleto'}, inplace=True)
         coluna2['situacao'] = 'incompleto'
-
+        
         concatenar = pd.concat([coluna1, coluna2])
 
-        print(concatenar)
+        """
+
+        print(df)
     else:
         print('Falha ao obter os dados da API')
 
