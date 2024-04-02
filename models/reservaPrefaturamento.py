@@ -7,12 +7,21 @@ import pandas as pd
 
 def APIAtualizaPreFaturamento():
     url = "https://192.168.0.25/api/customci/v10/atualizarSugestaoFaturamento"
-    # Token de autenticação
-    token = "eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJsdWlzLmZlcm5hbmRvIiwiY3N3VG9rZW4iOiJsU3NVYXNCTyIsImRiTmFtZVNwYWNlIjoiY29uc2lzdGVtIiwiaXNzIjoiYXBpIiwiYXVkIjoiYXBpIiwiZXhwIjoxODQ3ODg3Nzg3fQ.xRw6vP87ROIFCs5d - 6" \
-            "T5T6LNpUf - bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7"
-    print(token)
-    headers = {'Authorization': f'{token}'}
-    response = requests.get(url, headers=headers, verify=False)
+    token = "eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJsdWlzLmZlcm5hbmRvIiwiY3N3VG9rZW4iOiJsU3NVYXNCTyIsImRiTmFtZVNwYWNlIjoiY29uc2lzdGVtIiwiaXNzIjoiYXBpIiwiYXVkIjoi" \
+            "YXBpIiwiZXhwIjoxODQ3ODg3Nzg3fQ.xRw6vP87ROIFCs5d-6T5T6LNpUf-bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7AQ"
+
+
+    # Defina os parâmetros em um dicionário
+
+    # Defina os headers
+    headers = {
+        'accept': 'application/json',
+        'empresa': '1',
+        'Authorization': f'{token}'
+    }
+
+    # Faça a requisição POST com parâmetros e headers usando o método requests.post()
+    response = requests.post(url,  headers=headers,  verify=False)
 
 
     # Verificar se a requisição foi bem-sucedida
