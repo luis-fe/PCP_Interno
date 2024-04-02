@@ -111,41 +111,160 @@ async function ConsultaOp(Api, Empresa, Filtro, Classificacao) {
 
             await DetalhamentoApi.forEach(dado => {
                 const botao = document.createElement('button');
-
+            
                 botao.classList.add('botao');
                 botao.setAttribute('data-op', dado.numeroOP);
                 botao.setAttribute('data-fase', dado.codFase);
-
-                if (dado.prioridade === '1-URGENTE') {
-                    const urgenteSymbol = document.createElement('span');
+            
+                const contentWrapper = document.createElement('div');
+                contentWrapper.style.display = 'flex';
+                contentWrapper.style.marginBottom = '15px';
+                contentWrapper.style.flexDirection = 'column';
+            
+                if (dado.prioridade === 'URGENTE') {
+                    const urgenteSymbol = document.createElement('div');
                     urgenteSymbol.innerHTML = '🚨'; // Símbolo de ponto de exclamação
                     urgenteSymbol.style.backgroundColor = 'black';
                     urgenteSymbol.style.fontSize = '30px';
-                    botao.appendChild(urgenteSymbol);
+                    urgenteSymbol.style.width = '40px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                } 
+
+                if (dado.prioridade === 'QP1' || dado.prioridade === 'QM1') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = '#FFFF00';
+                    urgenteSymbol.style.color = 'black';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
                 }
 
+                if (dado.prioridade === 'QP2' || dado.prioridade === 'QM2') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = '#FF6600';
+                    urgenteSymbol.style.color = 'black';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }
+
+                if (dado.prioridade === 'QP3' || dado.prioridade === 'QM3') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = '#008000';
+                    urgenteSymbol.style.color = 'white';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }
+                
+                if (dado.prioridade === 'QP4' || dado.prioridade === 'QM4') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = '#B059F7';
+                    urgenteSymbol.style.color = 'white';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }
+
+                if (dado.prioridade === 'QP5' || dado.prioridade === 'QM5') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = '#00CCFF';
+                    urgenteSymbol.style.color = 'black';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }
+
+                if (dado.prioridade === 'QP6' || dado.prioridade === 'QM6') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = '#FF99CC';
+                    urgenteSymbol.style.color = 'black';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }
+
+                if (dado.prioridade === 'QP7' || dado.prioridade === 'QM7') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = '#000000';
+                    urgenteSymbol.style.color = 'white';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }    
+
+                if (dado.prioridade === 'P/FAT.') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade; // Símbolo de ponto de exclamação
+                    urgenteSymbol.style.backgroundColor = 'red';
+                    urgenteSymbol.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5);'
+                    urgenteSymbol.style.color = 'white';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }  
+
+                if (dado.prioridade === 'NORMAL') {
+                    const urgenteSymbol = document.createElement('div');
+                    urgenteSymbol.innerHTML = dado.prioridade;
+                    urgenteSymbol.style.backgroundColor = '#FFFFFF';
+                    urgenteSymbol.style.color = 'black';
+                    urgenteSymbol.style.border = '1px solid black';
+                    urgenteSymbol.style.fontSize = '22px';
+                    urgenteSymbol.style.marginLeft = '-18px';
+                    urgenteSymbol.style.width = '100px';
+                    contentWrapper.appendChild(urgenteSymbol);
+                }
+            
                 const conteudoBotao = document.createElement('strong');
-
+            
                 conteudoBotao.innerHTML = `
-                <span class="CodFase">Fase: ${dado.codFase} - ${dado.nomeFase}</span><br>
-                <span class="NumeroOp">OP:${dado.numeroOP} / Qtd: ${dado['Qtd Pcs']} Pçs</span><br>
-                <span class="NumeroOp">Engenharia: ${dado.codProduto}</span><br>
-                <span class="Engenharias">${dado.descricao}</span><br>
-                <span class="Engenharias">Tipo Op: ${dado.codTipoOP}</span><br>
-                <span class="Engenharias">Responsável: ${dado.responsavel}<br>
-                <span class="Engenharias">Meta: ${dado.meta} dias<br>
-                <span class="Engenharias">Dias na Fase: ${dado['dias na Fase']}<br>
-                <span class="Justificativa">Justificativa: ${dado.justificativa}</span>
-                <span style="${dado['Status Aguardando Partes'] === 'PENDENTE' || dado['Status Aguardando Partes'] === 'OK' ? ' font-size: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;' : ''}">
-                    ${dado['Status Aguardando Partes'] === 'PENDENTE' ? '⚠️' : ''}
-                    ${dado['Status Aguardando Partes'] === 'OK' ? '✅' : ''}
-                </span>
-            `;
-            botao.onmouseover = () => {
-                if (dado['Status Aguardando Partes'] === 'PENDENTE') {
-                    mostrarModalPendente(botao, dado);
-                }
-            };
+                    <span class="CodFase">Fase: ${dado.codFase} - ${dado.nomeFase}</span><br>
+                    <span class="NumeroOp">OP:${dado.numeroOP} / Qtd: ${dado['Qtd Pcs']} Pçs</span><br>
+                    <span class="NumeroOp">Engenharia: ${dado.codProduto}</span><br>
+                    <span class="Engenharias">${dado.descricao}</span><br>
+                    <span class="Engenharias">Tipo Op: ${dado.codTipoOP}</span><br>
+                    <span class="Engenharias">Responsável: ${dado.responsavel}<br>
+                    <span class="Engenharias">Meta: ${dado.meta} dias<br>
+                    <span class="Engenharias">Dias na Fase: ${dado['dias na Fase']}<br>
+                    <span class="Justificativa">Justificativa: ${dado.justificativa}</span>
+                    <span style="${dado['Status Aguardando Partes'] === 'PENDENTE' || dado['Status Aguardando Partes'] === 'OK' ? ' font-size: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;' : ''}">
+                        ${dado['Status Aguardando Partes'] === 'PENDENTE' ? '⚠️' : ''}
+                        ${dado['Status Aguardando Partes'] === 'OK' ? '✅' : ''}
+                    </span>
+                `;
+            
+                contentWrapper.appendChild(conteudoBotao);
+                botao.appendChild(contentWrapper);
+            
+                botao.onmouseover = () => {
+                    if (dado['Status Aguardando Partes'] === 'PENDENTE') {
+                        mostrarModalPendente(botao, dado);
+                    }
+                };
 
             botao.onmouseout = () => {
                 fecharModalPendente();
@@ -305,6 +424,7 @@ ConfirmarFiltro.addEventListener('click', () => {
         console.error('Erro ao consultar OP:', error);
     });
     console.log(InputContem.value);
+    ModalFiltros.style.display = 'none'
 });
 
 window.addEventListener('load', () => {
@@ -344,10 +464,6 @@ function atualizarPagina() {
 
 }
 
-LabelOpsAtrasadas.addEventListener("click", () => {
-
-    ConsultaOp(ApiConsulta, '1', 'ATRASADO', valorSelecionado);
-})
 // Chama a função de atualização a cada 15 minutos (em milissegundos)
 const intervaloDeAtualizacao = 15 * 60 * 1000; // 15 minutos
 setInterval(atualizarPagina, intervaloDeAtualizacao);
