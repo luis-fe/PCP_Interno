@@ -26,5 +26,5 @@ def APIAtualizaPreFaturamento():
         # Exibir o DataFrame
         print(df)
     else:
-        print('Falha ao obter os dados da API'
+        print('Falha ao obter os dados da API')
 
