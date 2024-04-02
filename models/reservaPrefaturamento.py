@@ -13,7 +13,7 @@ def APIAtualizaPreFaturamento():
     T5T6LNpUf - bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7
     """
 
-    headers = {'Authorization': f'Bearer {token}'}
+    headers = {'Authorization': f'{token}'}
     response = requests.get(url, headers=headers)
 
 
