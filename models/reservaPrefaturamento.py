@@ -8,10 +8,8 @@ import pandas as pd
 def APIAtualizaPreFaturamento():
     url = "http://192.168.0.183:8000/pcp/api/AtualizarAutomacao"
     # Token de autenticação
-    token = """"
-    eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJsdWlzLmZlcm5hbmRvIiwiY3N3VG9rZW4iOiJsU3NVYXNCTyIsImRiTmFtZVNwYWNlIjoiY29uc2lzdGVtIiwiaXNzIjoiYXBpIiwiYXVkIjoiYXBpIiwiZXhwIjoxODQ3ODg3Nzg3fQ.xRw6vP87ROIFCs5d - 6
-    T5T6LNpUf - bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7
-    """
+    token = "eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJsdWlzLmZlcm5hbmRvIiwiY3N3VG9rZW4iOiJsU3NVYXNCTyIsImRiTmFtZVNwYWNlIjoiY29uc2lzdGVtIiwiaXNzIjoiYXBpIiwiYXVkIjoiYXBpIiwiZXhwIjoxODQ3ODg3Nzg3fQ.xRw6vP87ROIFCs5d - 6" \
+            "T5T6LNpUf - bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7"
     print(token)
     headers = {'Authorization': f'{token}'}
     response = requests.get(url, headers=headers)
@@ -28,5 +26,5 @@ def APIAtualizaPreFaturamento():
         # Exibir o DataFrame
         print(df)
     else:
-        print('Falha ao obter os dados da API')
+        print('Falha ao obter os dados da API'
 
