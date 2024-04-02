@@ -27,10 +27,10 @@ def APIAtualizaPreFaturamento():
     # Verificar se a requisição foi bem-sucedida
     if response.status_code == 200:
         # Converter os dados JSON em um dicionário
-        data = response.json()
+        dados_dict = response.json()
 
-        # Criar um DataFrame a partir do dicionário
-        df = pd.DataFrame(data)
+        # Criar o DataFrame
+        df = pd.json_normalize(dados_dict)
 
         # Exibir o DataFrame
         print(df)
