@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from routes import routes_blueprint
 from functools import wraps
-from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas
+from models import ABC_PLANO, CalendarioProducao, AutomacaoSugestaoPedidos, ObterInfCSW, Vendas, reservaPrefaturamento
 from werkzeug.utils import secure_filename
 import dash
 import dash_core_components as dcc
@@ -323,6 +323,7 @@ def carga_setor():
 
 
 if __name__ == '__main__':
+    reservaPrefaturamento.APIAtualizaPreFaturamento()
     while True:
         try:
     # Coloque aqui o código principal do seu aplicativo Flask
