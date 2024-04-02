@@ -298,7 +298,6 @@ def carga_setor():
 
         html.Div(id='selected-flags')
     ])
-
     @dash_app.callback(
         Output('flag-selection', 'value'),
         Input('flag-selection', 'options'),
