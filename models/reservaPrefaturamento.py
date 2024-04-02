@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def APIAtualizaPreFaturamento():
-    url = "http://192.168.0.183:8000/pcp/api/AtualizarAutomacao"
+    url = "https://192.168.0.25/api/customci/v10/atualizarSugestaoFaturamento"
     # Token de autenticação
     token = "eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJsdWlzLmZlcm5hbmRvIiwiY3N3VG9rZW4iOiJsU3NVYXNCTyIsImRiTmFtZVNwYWNlIjoiY29uc2lzdGVtIiwiaXNzIjoiYXBpIiwiYXVkIjoiYXBpIiwiZXhwIjoxODQ3ODg3Nzg3fQ.xRw6vP87ROIFCs5d - 6" \
             "T5T6LNpUf - bNsX1U2hogrsf2sbLKYKEqPTIVyPgu1YBrhEemgOhSxgEGvfFpIthDb7"
