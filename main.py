@@ -320,7 +320,6 @@ def carga_setor():
     return dash_app.server
 
 
-
 if __name__ == '__main__':
     reservaPrefaturamento.APIAtualizaPreFaturamento()
     while True:
