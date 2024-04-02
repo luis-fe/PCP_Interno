@@ -21,4 +21,3 @@ def APIAtualizaPreFaturamento():
     else:
         print('Falha ao obter os dados da API')
 
-APIAtualizaPreFaturamento()
