@@ -31,8 +31,12 @@ def APIAtualizaPreFaturamento():
 
         # Criar o DataFrame
         df = pd.json_normalize(dados_dict)
-        print(df.dtypes)
-        df_exploded = df.apply(pd.Series.explode)
+        df_exploded = pd.DataFrame({
+            'pedidoCompleto': df['pedidoCompleto'].explode().reset_index(drop=True),
+            'pedidoIncompleto': df['pedidoIncompleto'].explode().reset_index(drop=True)
+        })
+        print(df_exploded)
+
 
         """
         # Exibir o DataFrame
