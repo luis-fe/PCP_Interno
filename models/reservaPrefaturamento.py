@@ -70,7 +70,8 @@ def StatusSugestaoPedidos():
 
     pedidos = pd.merge(pedidos,entrega,on='codPedido',how='left')
     pedidos = pd.merge(pedidos,condicoespgto,on='codCondVenda',how='left')
-
+    pedidos.fillna('',inplace=True)
+    pedidos['descricao'] = pedidos['codCondVenda'] +'-'+pedidos['descricao']
     #pedidos = pd.merge(pedidos,capaSugestao,on='codPedido',how='left')
 
     return pedidos
