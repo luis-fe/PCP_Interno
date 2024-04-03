@@ -57,15 +57,18 @@ def APIAtualizaPreFaturamento():
 
 
 def StatusSugestaoPedidos():
-    pedidos = APIAtualizaPreFaturamento()
+    #pedidos = APIAtualizaPreFaturamento()
     conn = ConexaoCSW.Conexao()
 
     entrega = pd.read_sql(BuscasAvancadas.ObtendoEmbarqueUnico(),conn)
-    capaSugestao= pd.read_sql(BuscasAvancadas.CapaSugestoes(),conn)
+    pedidos= pd.read_sql(BuscasAvancadas.CapaSugestoes(),conn)
+    condicoespgto =pd.read_sql(BuscasAvancadas.CondicoesDePGTO(),conn) #codCondVenda
 
     conn.close()
 
     pedidos = pd.merge(pedidos,entrega,on='codPedido',how='left')
-    pedidos = pd.merge(pedidos,capaSugestao,on='codPedido',how='left')
+    pedidos = pd.merge(pedidos,condicoespgto,on='codCondVenda',how='left')
+
+    #pedidos = pd.merge(pedidos,capaSugestao,on='codPedido',how='left')
 
     return pedidos

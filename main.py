@@ -321,7 +321,6 @@ def carga_setor():
 
 
 if __name__ == '__main__':
-    reservaPrefaturamento.APIAtualizaPreFaturamento()
     while True:
         try:
     # Coloque aqui o código principal do seu aplicativo Flask

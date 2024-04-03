@@ -155,3 +155,6 @@ def CapaSugestoes():
                             where p.codEmpresa = 1 and s.situacaoSugestao = 0"""
     return consulta
 
+def CondicoesDePGTO():
+    consulta = """SELECT C.codigo as codCondVenda , C.descricao  FROM CAD.CondicaoDeVenda C WHERE C.codEmpresa = 1"""
+    return consulta
