@@ -88,7 +88,8 @@ def VerificaACondicao(descricaoPagto, prioridade, retorno, refe):
     if prioridade == '-' and refe in descricaoPagto:
         return retorno
     else:
-        return '-'
+        retorno = prioridade
+        return retorno
 
 
 
