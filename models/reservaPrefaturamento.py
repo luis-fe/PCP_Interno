@@ -74,16 +74,20 @@ def StatusSugestaoPedidos():
     pedidos['descricao'] = pedidos['codCondVenda'] +'-'+pedidos['descricao']
     #pedidos = pd.merge(pedidos,capaSugestao,on='codPedido',how='left')
     pedidos['prioridadeReserva'] = '-'
-    pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['descricao'],row['prioridadeReserva']),axis=1)
-
+    pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['descricao'],row['prioridadeReserva'],'Antecipado'),axis=1)
+    pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['descricao'],row['prioridadeReserva'],'Cart'),axis=1)
+    pedidos = pedidos.sort_values(by=['prioridadeReserva'],
+                                          ascending=True)  # escolher como deseja classificar
 
     return pedidos
 
 
-def VerificaACondicao(descricaoPagto, retorno):
+def VerificaACondicao(descricaoPagto, retorno, refe):
 
-    if retorno == '-' and '177' in descricaoPagto:
+    if retorno == '-' and refe in descricaoPagto:
         return '1- A VISTA Antecipado'
+    elif retorno == '-' and refe in descricaoPagto:
+        return '2- CartaoCredito'
     else:
         return retorno
 
