@@ -63,6 +63,8 @@ def StatusSugestaoPedidos():
     entrega = pd.read_sql(BuscasAvancadas.ObtendoEmbarqueUnico(),conn)
     pedidos= pd.read_sql(BuscasAvancadas.CapaSugestoes(),conn)
     condicoespgto =pd.read_sql(BuscasAvancadas.CondicoesDePGTO(),conn) #codCondVenda
+    condicoespgto['codCondVenda'] = condicoespgto['codCondVenda'].astype(str)
+    pedidos['codCondVenda'] = pedidos['codCondVenda'].astype(str)
 
     conn.close()
 
