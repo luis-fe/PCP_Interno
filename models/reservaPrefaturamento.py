@@ -35,24 +35,19 @@ def APIAtualizaPreFaturamento():
             'pedidoCompleto': df['pedidoCompleto'].explode().reset_index(drop=True),
             'pedidoIncompleto': df['pedidoIncompleto'].explode().reset_index(drop=True)
         })
-        print(df_exploded)
-
-
-        """
-        # Exibir o DataFrame
-        # Explodir as listas em colunas separadas
-        df_exploded = df.apply(pd.Series.explode)
         coluna1 = pd.DataFrame(df_exploded['pedidoCompleto'])
-        coluna1['situacao'] = 'completo'
+        coluna1['situacao Pedido'] = 'completo'
+        coluna1.rename(columns={'pedidoCompleto': 'pedido'}, inplace=True)
+        print(coluna1)
         coluna2 = pd.DataFrame(df_exploded['pedidoIncompleto'])
-        coluna2.rename(columns={'coluna2': 'pedidoCompleto'}, inplace=True)
-        coluna2['situacao'] = 'incompleto'
-        
+        coluna2['situacao Pedido'] = 'Incompleto'
+        coluna2.rename(columns={'pedidoIncompleto': 'pedido'}, inplace=True)
+        print(coluna1)
+
         concatenar = pd.concat([coluna1, coluna2])
+        print(concatenar)
 
-        """
 
-        print(df)
     else:
         print('Falha ao obter os dados da API')
 
