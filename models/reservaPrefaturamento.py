@@ -84,14 +84,12 @@ def StatusSugestaoPedidos():
     return pedidos
 
 
-def VerificaACondicao(descricaoPagto, retorno, refe):
+def VerificaACondicao(descricaoPagto, prioridade, retorno, refe):
 
-    if retorno == '-' and refe in descricaoPagto:
-        return '1- A VISTA Antecipado'
-    elif retorno == '-' and refe in descricaoPagto:
-        return '2- CartaoCredito'
-    else:
+    if prioridade == '-' and refe in descricaoPagto:
         return retorno
+    else:
+        return '-'
 
 
 
