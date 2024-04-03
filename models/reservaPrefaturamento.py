@@ -30,7 +30,8 @@ def APIAtualizaPreFaturamento():
         dados_dict = response.json()
 
         # Criar o DataFrame
-        df = pd.json_normalize(dados_dict.dtypes)
+        df = pd.json_normalize(dados_dict)
+        print(df.dtypes)
 
         """
         # Exibir o DataFrame
