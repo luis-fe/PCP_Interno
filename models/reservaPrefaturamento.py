@@ -82,7 +82,7 @@ def StatusSugestaoPedidos():
 
 def VerificaACondicao(descricaoPagto, retorno):
 
-    if retorno== '-' and descricaoPagto in ['177']:
+    if retorno == '-' and ['177'] in descricaoPagto:
         return '1- A VISTA Antecipado'
     else:
         return retorno
