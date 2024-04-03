@@ -73,5 +73,19 @@ def StatusSugestaoPedidos():
     pedidos.fillna('',inplace=True)
     pedidos['descricao'] = pedidos['codCondVenda'] +'-'+pedidos['descricao']
     #pedidos = pd.merge(pedidos,capaSugestao,on='codPedido',how='left')
+    pedidos['prioridadeReserva'] = '-'
+    pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['descricao'],row['prioridadeReserva']),axis=1)
+
 
     return pedidos
+
+
+def VerificaACondicao(descricaoPagto, retorno):
+
+    if retorno== '-' and descricaoPagto in ['177']:
+        return '1- A VISTA Antecipado'
+    else:
+        return retorno
+
+
+
