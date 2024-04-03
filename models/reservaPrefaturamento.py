@@ -32,6 +32,7 @@ def APIAtualizaPreFaturamento():
         # Criar o DataFrame
         df = pd.json_normalize(dados_dict)
         print(df.dtypes)
+        df_exploded = df.apply(pd.Series.explode)
 
         """
         # Exibir o DataFrame
