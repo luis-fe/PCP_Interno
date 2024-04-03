@@ -61,7 +61,7 @@ def ObtendoEmbarqueUnico():
     df_Entregas_Solicitadas= pd.read_sql("select top 100000 "
                                          "CAST(codPedido as varchar) as codPedido, "
                                          "numeroEntrega as entregas_Solicitadas from asgo_ped.Entregas where "
-                                         "codEmpresa = 1 and numeroEntrega = 1 order by codPedido desc",conn)
+                                         "codEmpresa = 1  order by codPedido desc",conn)
     return df_Entregas_Solicitadas
 
 

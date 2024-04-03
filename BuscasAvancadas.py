@@ -141,5 +141,17 @@ def Motivos():
     return motivos
 
 
+def ObtendoEmbarqueUnico():
 
+    df_Entregas_Solicitadas= """select top 100000 
+                                         CAST(codPedido as varchar) as codPedido, 
+                                         numeroEntrega as entregas_Solicitadas from asgo_ped.Entregas where 
+                                         codEmpresa = 1  order by codPedido desc"""
+    return df_Entregas_Solicitadas
+
+def CapaSugestoes():
+    consulta = """SELECT s.codPedido, p.codCondVenda, p.codTipoNota, p.codCliente  from ped.SugestaoPed s 
+                            join ped.Pedido  p on  p.codEmpresa = s.codEmpresa and p.codPedido = s.codPedido  
+                            where p.codEmpresa = 1 and s.situacaoSugestao = 0"""
+    return consulta
 

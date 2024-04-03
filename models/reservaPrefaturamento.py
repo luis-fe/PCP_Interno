@@ -2,6 +2,10 @@
 import requests
 import pandas as pd
 
+import BuscasAvancadas
+import ConexaoCSW
+
+
 #http://192.168.0.183:8000/pcp/api/AtualizarAutomacao
 
 
@@ -37,17 +41,31 @@ def APIAtualizaPreFaturamento():
         })
         coluna1 = pd.DataFrame(df_exploded['pedidoCompleto'])
         coluna1['situacao Pedido'] = 'completo'
-        coluna1.rename(columns={'pedidoCompleto': 'pedido'}, inplace=True)
-        print(coluna1)
+        coluna1.rename(columns={'pedidoCompleto': 'codPedido'}, inplace=True)
         coluna2 = pd.DataFrame(df_exploded['pedidoIncompleto'])
         coluna2['situacao Pedido'] = 'Incompleto'
-        coluna2.rename(columns={'pedidoIncompleto': 'pedido'}, inplace=True)
-        print(coluna1)
+        coluna2.rename(columns={'pedidoIncompleto': 'codPedido'}, inplace=True)
 
         concatenar = pd.concat([coluna1, coluna2])
-        print(concatenar)
+
+        return concatenar
 
 
     else:
         print('Falha ao obter os dados da API')
 
+
+
+def StatusSugestaoPedidos():
+    pedidos = APIAtualizaPreFaturamento()
+    conn = ConexaoCSW.Conexao()
+
+    entrega = pd.read_sql(BuscasAvancadas.ObtendoEmbarqueUnico(),conn)
+    capaSugestao= pd.read_sql(BuscasAvancadas.CapaSugestoes(),conn)
+
+    conn.close()
+
+    pedidos = pd.merge(pedidos,entrega,on='codPedido',how='left')
+    pedidos = pd.merge(pedidos,capaSugestao,on='codPedido',how='left')
+
+    return pedidos
