@@ -87,6 +87,8 @@ def StatusSugestaoPedidos():
 
 def VerificaACondicao(descricaoPagto, prioridade, retorno, refe):
 
+    refe = str(refe)
+    descricaoPagto = str(descricaoPagto)
     if prioridade == '-' and refe in descricaoPagto:
         return retorno
     else:
