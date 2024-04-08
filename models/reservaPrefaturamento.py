@@ -121,7 +121,7 @@ def VerificaACondicao(descricaoPagto, prioridade, retorno, refe):
 def PedidosItemGradeSugestao():
     conn = ConexaoPostgreMPL.conexao()
 
-    consultar = pd.read_sql('select * from pcp."PCP".pedidoitemgrade ig ',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
+    consultar = pd.read_sql('select * from "PCP".pcp.pedidoitemgrade ig ',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
 
     conn.close()
 
