@@ -161,3 +161,11 @@ from ped.SugestaoPed s
 def CondicoesDePGTO():
     consulta = """SELECT C.codigo as codCondVenda , C.descricao  FROM CAD.CondicaoDeVenda C WHERE C.codEmpresa = 1"""
     return consulta
+
+def BuscarFaturamentoSugestoes():
+    consulta = """SELECT n.codPedido, n.dataFaturamento  FROM fat.NotaFiscal n
+WHERE n.codEmpresa = 1 
+and n.codPedido > 0
+and n.codPedido in (SELECT s.codpedido from ped.SugestaoPed s WHERE s.codempresa =1 )"""
+
+    return consulta

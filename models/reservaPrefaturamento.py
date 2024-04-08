@@ -66,6 +66,18 @@ def StatusSugestaoPedidos():
     condicoespgto['codCondVenda'] = condicoespgto['codCondVenda'].astype(str)
     pedidos['codCondVenda'] = pedidos['codCondVenda'].astype(str)
 
+
+    #Buscando os faturamentos das sugestoes
+    faturamentos = pd.read_sql(BuscasAvancadas.BuscarFaturamentoSugestoes(),conn)
+    faturamentos['entregas_realiadas'] = 1
+    faturamentos = faturamentos.groupby(['codPedido']).agg({
+        'codPedido': 'first',
+        'dataFaturamento': 'max',
+        'entregas_realiadas': 'count'
+    }).reset_index()
+    pedidos = pd.merge(pedidos,faturamentos,on='codPedido',how='left')
+
+
     conn.close()
 
     pedidos = pd.merge(pedidos,entrega,on='codPedido',how='left')
@@ -86,6 +98,8 @@ def StatusSugestaoPedidos():
 
     pedidos = pedidos.sort_values(by=['prioridadeReserva'],
                                           ascending=True)  # escolher como deseja classificar
+
+
 
     return pedidos
 
