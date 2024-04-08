@@ -75,7 +75,7 @@ def StatusSugestaoPedidos():
         'entregas_realiadas': 'count'
     }).reset_index()
     pedidos = pd.merge(pedidos,faturamentos,on='codPedido',how='left')
-    pedidos['entregas_realiadas'] = pedidos.apply(lambda row : 0 if row['entregas_realiadas'] =='' else row['entregas_realiadas'], axis=1 )
+    pedidos['entregas_realiadas'].fillna(0,inplace=True)
 
 
     conn.close()
