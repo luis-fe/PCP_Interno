@@ -78,6 +78,10 @@ def StatusSugestaoPedidos():
     pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['descricao'],row['prioridadeReserva'],'2 - CARTAO','CART'),axis=1)
     pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['entregas_Solicitadas'],row['prioridadeReserva'],'3 - EMBARQUE UNICO',1.0),axis=1)
     pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['entregas_Solicitadas'],row['prioridadeReserva'],'3 - EMBARQUE UNICO','-'),axis=1)
+    pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['entregas_Solicitadas'],row['prioridadeReserva'],'3 - EMBARQUE UNICO','-'),axis=1)
+    pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['codTipoNota'],row['prioridadeReserva'],'4 - MPLUS','39-'),axis=1)
+    pedidos['prioridadeReserva'] = pedidos.apply(lambda row: VerificaACondicao(row['descricao'],row['prioridadeReserva'],'5 - OUTROS','None-'),axis=1)
+
 
     pedidos = pedidos.sort_values(by=['prioridadeReserva'],
                                           ascending=True)  # escolher como deseja classificar
