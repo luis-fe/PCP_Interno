@@ -71,7 +71,6 @@ def StatusSugestaoPedidos():
     faturamentos = pd.read_sql(BuscasAvancadas.BuscarFaturamentoSugestoes(),conn)
     faturamentos['entregas_realiadas'] = 1
     faturamentos = faturamentos.groupby(['codPedido']).agg({
-        'codPedido': 'first',
         'dataFaturamento': 'max',
         'entregas_realiadas': 'count'
     }).reset_index()
