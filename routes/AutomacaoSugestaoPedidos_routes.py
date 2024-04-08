@@ -23,7 +23,7 @@ def token_required(f):
 def ReservaPreFaturamento():
 
 
-    dataframe = reservaPrefaturamento.StatusSugestaoPedidos()
+    dataframe = reservaPrefaturamento.APIAtualizaPreFaturamento()
 
     # Obtém os nomes das colunas
     column_names = dataframe.columns

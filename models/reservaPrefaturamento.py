@@ -25,8 +25,16 @@ def APIAtualizaPreFaturamento():
         'Authorization': f'{token}'
     }
 
+    # Defina os parâmetros em um dicionário
+    dataframe = StatusSugestaoPedidos()
+    pedido = ','.join(dataframe['pedido'].astype(str))
+
+    params = {
+        'pedido': f'{pedido}'
+    }
+
     # Faça a requisição POST com parâmetros e headers usando o método requests.post()
-    response = requests.post(url,  headers=headers,  verify=False)
+    response = requests.post(url,  headers=headers,params=params,  verify=False)
 
 
     # Verificar se a requisição foi bem-sucedida
@@ -48,6 +56,8 @@ def APIAtualizaPreFaturamento():
         coluna2.rename(columns={'pedidoIncompleto': 'codPedido'}, inplace=True)
 
         concatenar = pd.concat([coluna1, coluna2])
+
+        concatenar = pd.merge(dataframe, concatenar, on='codPedido',how='left')
 
         return concatenar
 
