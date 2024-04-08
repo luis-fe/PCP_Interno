@@ -5,7 +5,13 @@ import pandas as pd
 import BuscasAvancadas
 import ConexaoCSW
 import ConexaoPostgreMPL
-
+import datetime
+import pytz
+def obterHoraAtual():
+    fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
+    agora = datetime.datetime.now(fuso_horario)
+    agora = agora.strftime('%d/%m/%Y %H:%M:%S')
+    return agora
 
 #http://192.168.0.183:8000/pcp/api/AtualizarAutomacao
 
@@ -58,6 +64,10 @@ def APIAtualizaPreFaturamento():
         concatenar = pd.concat([coluna1, coluna2])
 
         concatenar = pd.merge(dataframe, concatenar, on='codPedido',how='left')
+
+        Atualizado = obterHoraAtual()
+
+        concatenar['Atualizado'] = Atualizado
 
         return concatenar
 
