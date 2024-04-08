@@ -122,7 +122,7 @@ def PedidosItemGradeSugestao():
     conn = ConexaoPostgreMPL.conexao()
 
     consultar = pd.read_sql('select * from "PCP".pcp."pedidosItemgrade" ig ',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
-    consultar['qtdeSurgerida'].fillna(0,inplace=True)
+    consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
 
     consultar["Pçaberto"] = consultar['qtdePedida'] -consultar['qtdeCancelada'] -consultar['qtdeFaturada']
