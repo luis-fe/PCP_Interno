@@ -27,7 +27,7 @@ def APIAtualizaPreFaturamento():
 
     # Defina os parâmetros em um dicionário
     dataframe = StatusSugestaoPedidos()
-    pedido = ','.join(dataframe['pedido'].astype(str))
+    pedido = ','.join(dataframe['codPedido'].astype(str))
 
     params = {
         'pedido': f'{pedido}'
