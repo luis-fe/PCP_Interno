@@ -169,3 +169,9 @@ and n.codPedido > 0
 and n.codPedido in (SELECT s.codpedido from ped.SugestaoPed s WHERE s.codempresa =1 )"""
 
     return consulta
+def IncrementarPediosProdutos():
+    consulta = """SELECT top 1000000 p.codPedido, p.codProduto , p.qtdePedida ,  p.qtdeFaturada, p.qtdeCancelada  FROM ped.PedidoItemGrade p
+WHERE p.codEmpresa = 1 
+order by codPedido desc"""
+
+    return consulta

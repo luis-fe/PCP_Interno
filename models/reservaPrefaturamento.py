@@ -4,6 +4,7 @@ import pandas as pd
 
 import BuscasAvancadas
 import ConexaoCSW
+import ConexaoPostgreMPL
 
 
 #http://192.168.0.183:8000/pcp/api/AtualizarAutomacao
@@ -100,6 +101,8 @@ def StatusSugestaoPedidos():
                                           ascending=True)  # escolher como deseja classificar
 
 
+    PedidosItemGradeSugestao_ = PedidosItemGradeSugestao()
+    pedidos = pd.merge(pedidos,PedidosItemGradeSugestao_,on='codPedido',how='left')
 
     return pedidos
 
@@ -115,4 +118,17 @@ def VerificaACondicao(descricaoPagto, prioridade, retorno, refe):
         return retorno
 
 
+def PedidosItemGradeSugestao():
+    conn = ConexaoPostgreMPL.conexao()
 
+    consultar = pd.read_sql('select * from pcp."PCP".pedidoitemgrade ig ',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
+
+    conn.close()
+
+    consultar['aberto'] = consultar['qtdePedida'] -consultar['qtdeCancelada'] -consultar['qtdeFaturada']
+    consultar = consultar.groupby(['codPedido']).agg({
+        'aberto': 'sum'
+    }).reset_index()
+
+
+    return consultar
