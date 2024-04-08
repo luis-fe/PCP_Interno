@@ -72,7 +72,7 @@ def StatusSugestaoPedidos():
     faturamentos['entregas_realiadas'] = 1
     faturamentos = faturamentos.groupby(['codPedido']).agg({
         'codPedido': 'first',
-        'ultimoFaturamento': 'max',
+        'dataFaturamento': 'max',
         'entregas_realiadas': 'count'
     }).reset_index()
     pedidos = pd.merge(pedidos,faturamentos,on='codPedido',how='left')
