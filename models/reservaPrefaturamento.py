@@ -130,7 +130,7 @@ def PedidosItemGradeSugestao():
     consultar = consultar.groupby(['codPedido']).agg({
         'Pçaberto': 'sum',
         'QtdePedida':'sum',
-        'qtdeSurgerida':'sum'
+        'qtdeSugerida':'sum'
 
     }).reset_index()
 
