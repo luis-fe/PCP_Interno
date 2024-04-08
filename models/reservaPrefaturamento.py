@@ -125,9 +125,12 @@ def PedidosItemGradeSugestao():
 
     conn.close()
 
-    consultar['aberto'] = consultar['qtdePedida'] -consultar['qtdeCancelada'] -consultar['qtdeFaturada']
+    consultar["Pçaberto"] = consultar['qtdePedida'] -consultar['qtdeCancelada'] -consultar['qtdeFaturada']
+    consultar["qtdePedida"] = consultar['qtdePedida']-consultar['qtdeCancelada']
     consultar = consultar.groupby(['codPedido']).agg({
-        'aberto': 'sum'
+        'Pçaberto': 'sum',
+        'qtdePedida':'sum'
+
     }).reset_index()
 
 
