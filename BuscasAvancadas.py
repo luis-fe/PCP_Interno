@@ -175,3 +175,9 @@ WHERE p.codEmpresa = 1
 order by codPedido desc"""
 
     return consulta
+
+def SugestaoItemAberto():
+    consulta = """SELECT p.codPedido , p.produto as codProduto , p.qtdeSugerida , p.qtdePecasConf  FROM ped.SugestaoPedItem p
+WHERE p.codEmpresa = 1"""
+
+    return consulta

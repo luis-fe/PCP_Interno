@@ -89,6 +89,7 @@ def StatusSugestaoPedidos():
 
 
     #Buscando os faturamentos das sugestoes
+
     faturamentos = pd.read_sql(BuscasAvancadas.BuscarFaturamentoSugestoes(),conn)
     faturamentos['entregas_realiadas'] = 1
     faturamentos = faturamentos.groupby(['codPedido']).agg({
@@ -98,6 +99,12 @@ def StatusSugestaoPedidos():
     pedidos = pd.merge(pedidos,faturamentos,on='codPedido',how='left')
     pedidos['entregas_realiadas'].fillna(0,inplace=True)
 
+    sugestaoItem = pd.read_sql(BuscasAvancadas.SugestaoItemAberto(),conn)
+    sugestaoItem = sugestaoItem.groupby(['codPedido']).agg({
+        'qtdeSugerida': 'sum'
+    }).reset_index()
+
+    pedidos = pd.merge(pedidos,sugestaoItem,on=['codPedido'],how='left')
 
     conn.close()
 
@@ -151,8 +158,7 @@ def PedidosItemGradeSugestao():
     consultar["QtdePedida"] = consultar['qtdePedida']-consultar['qtdeCancelada']
     consultar = consultar.groupby(['codPedido']).agg({
         'Pçaberto': 'sum',
-        'QtdePedida':'sum',
-        'qtdeSugerida':'sum'
+        'QtdePedida':'sum'
 
     }).reset_index()
 
