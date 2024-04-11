@@ -124,6 +124,8 @@ def StatusSugestaoPedidos():
     PedidosItemGradeSugestao_ = PedidosItemGradeSugestao()
     pedidos = pd.merge(pedidos,PedidosItemGradeSugestao_,on='codPedido',how='left')
 
+    pedidos.fillna('-',inplace=True)
+
     return pedidos
 
 
