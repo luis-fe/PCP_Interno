@@ -193,6 +193,7 @@ and situacao = 1
 order BY codPedido DESC) as D"""
     return consulta
 
+
 def ConsultaEstoque():
     consulta = """select dt.reduzido as codProduto, SUM(dt.estoqueAtual) as estoqueAtual, sum(estReservPedido) as estReservPedido from
     (select codItem as reduzido, estoqueAtual,estReservPedido  from est.DadosEstoque where codEmpresa = 1 and codNatureza = 5 and estoqueAtual > 0
