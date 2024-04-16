@@ -44,7 +44,22 @@ def EstoqueSKU():
     conn.close()
     return consulta
 
+#ObtendoEntregasSolicitadas
+def ObtendoEntregasSolicitadas():
+    conn = ConexaoCSW.Conexao()
+    consulta = pd.read_sql(BuscasAvancadas.ObtendoEmbarqueUnico(), conn)
 
+    conn.close()
+    return consulta
+
+
+#Entregas_Enviados
+def ObtendoEntregas_Enviados():
+    conn = ConexaoCSW.Conexao()
+    consulta = pd.read_sql(BuscasAvancadas.Entregas_Enviados(), conn)
+
+    conn.close()
+    return consulta
 
 def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     #Convertendo tipo de nota em string "1,2, 3, .."
@@ -65,8 +80,13 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pedidos[pedidos['situacaobloq'] == 'Liberado']
 
     # 3- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
+    entregasFaturadas = ObtendoEntregas_Enviados()
+    pedidos = pd.merge(pedidos,entregasFaturadas,on='codPedido',how='left')
 
     # 4- Consulta de Embarques Solicitado pelo Cliente , informacao extraida do ERP
+    entregasSolicitadas = ObtendoEntregasSolicitadas()
+    pedidos = pd.merge(pedidos,entregasSolicitadas,on='codPedido',how='left')
+
 
     # 5 - Explodir os pedidos no nivel sku
     sku = Monitor_nivelSku(iniVenda)

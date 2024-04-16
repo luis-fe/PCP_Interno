@@ -203,3 +203,10 @@ def ConsultaEstoque():
     WHERE o.codEmpresa = 1 and o.situacao = 3 and o.codFaseAtual = '210' and ot.qtdePecas1Qualidade is not null and codItem is not null) dt
     group by dt.reduzido """
     return consulta
+
+
+def Entregas_Enviados():
+    consulta= """select  top 300000 codPedido, count(codNumNota) as entregas_enviadas, 
+                                      max(dataFaturamento) as ultimo_fat from fat.NotaFiscal  where codEmpresa = 1 and codRepresentante
+                                      not in ('200','800','300','600','700','511') and situacao = 2  group by codPedido order by codPedido desc"""
+    return consulta
