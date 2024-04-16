@@ -23,13 +23,13 @@ def token_required(f):
 @monitorPreFaturamento_routes.route('/pcp/api/monitorPreFaturamento', methods=['GET'])
 @token_required
 def get_monitorPreFaturamento():
-    dados = request.get_json()
-    empresa = dados.get('empresa')
-    iniVenda = dados.get('iniVenda')
-    finalVenda =dados.get('finalVenda')
-    tiponota = dados.get('tiponota')
-    print(type(tiponota))
-    print(type(finalVenda))
+    empresa = request.args.get('empresa')
+    iniVenda = request.args.get('iniVenda','-')
+    finalVenda = request.args.get('finalVenda')
+    tiponota = request.args.get('tiponota')
+
+
+
     usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota)
 
     # Obtém os nomes das colunas
