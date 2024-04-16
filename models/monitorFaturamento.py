@@ -25,7 +25,7 @@ def Monitor_PedidosBloqueados():
 #Carregando os Pedidos a nivel Sku
 def Monitor_nivelSku():
     conn = ConexaoPostgreMPL.conexao()
-    consulta = pd.read_sql('select * from pcp.pedidosItemgrade ', conn)
+    consulta = pd.read_sql('select * from pcp."pedidosItemgrade" ', conn)
     # retorno da funcao : codPedido, codProduto, qtdPedida, qtdFaturada, qtdCancelada, qtdSugerida, qtdePecasConf, codTipoNota
 
     conn.close()
