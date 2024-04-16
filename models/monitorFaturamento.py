@@ -25,11 +25,14 @@ def Monitor_PedidosBloqueados():
 #Carregando os Pedidos a nivel Sku
 def Monitor_nivelSku():
     conn = ConexaoPostgreMPL.conexao()
-    consulta = pd.read_sql('select * from pcp."pedidosItemgrade" ', conn)
-    # retorno da funcao : codPedido, codProduto, qtdPedida, qtdFaturada, qtdCancelada, qtdSugerida, qtdePecasConf, codTipoNota
 
+    consultar = pd.read_sql('select * from "PCP".pcp."pedidosItemgrade" ig ',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
+    consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
-    return consulta
+    consultar['qtdeEntregar'] = consultar['qtdePedida'] - consultar['qtdeFaturada'] - consultar['qtdeCancelada']
+
+
+    return consultar
 
 
 
@@ -51,10 +54,25 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos['situacaobloq'].fillna('Liberado',inplace=True)
     pedidos = pedidos[pedidos['situacaobloq'] == 'Liberado']
 
-    # 3 - Explodir os pedidos no nivel sku
+    # 3- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
 
+    # 4- Consulta de Embarques Solicitado pelo Cliente , informacao extraida do ERP
+
+    # 5 - Explodir os pedidos no nivel sku
     sku = Monitor_nivelSku()
+        # 5.1 - Considerando somente a qtdePedida maior que 0
+    sku = sku[sku['qtdeEntregar']>0]
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
+
+    # 6 Consultando n banco de dados do ERP o saldo de estoque
+
+
+
+
+    # 8 -     # Clasificando o Dataframe para analise
+    pedidos = pedidos.sort_values(by='vlrSaldo', ascending=False)  # escolher como deseja classificar
+
+
 
 
 
