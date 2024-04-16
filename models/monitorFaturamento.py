@@ -31,7 +31,7 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
 
-    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada']]
+    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida']]
 
     return consultar
 
