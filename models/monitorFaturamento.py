@@ -26,7 +26,7 @@ def Monitor_PedidosBloqueados():
 def Monitor_nivelSku():
     conn = ConexaoPostgreMPL.conexao()
 
-    consultar = pd.read_sql('select * from "PCP".pcp."pedidosItemgrade" ig ',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
+    consultar = pd.read_sql('select * from "PCP".pcp."pedidosItemgrade" ig limit 100',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
     consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
     consultar['qtdeEntregar'] = consultar['qtdePedida'] - consultar['qtdeFaturada'] - consultar['qtdeCancelada']
