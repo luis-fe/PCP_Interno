@@ -73,7 +73,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     # 8 -     # Clasificando o Dataframe para analise
     pedidos = pedidos.sort_values(by='vlrSaldo', ascending=False)  # escolher como deseja classificar
 
-
+    pedidos.to_csv('meutesteMonitor.csv')
 
 
 
