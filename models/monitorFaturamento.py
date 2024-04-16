@@ -36,6 +36,14 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
 
     return consultar
 
+#EstoquePorSku
+def EstoqueSKU():
+    conn = ConexaoCSW.Conexao()
+    consulta = pd.read_sql(BuscasAvancadas.ConsultaEstoque(), conn)
+
+    conn.close()
+    return consulta
+
 
 
 def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
@@ -67,7 +75,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
 
     # 6 Consultando n banco de dados do ERP o saldo de estoque
-
+    estoque = EstoqueSKU()
+    pedidos = pd.merge(pedidos,estoque,on='codProduto',how='left')
 
 
 
