@@ -32,7 +32,6 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     conn.close()
 
     consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada']]
-    consultar['qtdeEntregar'] = consultar['qtdePedida'] - consultar['qtdeFaturada'] - consultar['qtdeCancelada']
 
     return consultar
 
@@ -91,7 +90,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     # 5 - Explodir os pedidos no nivel sku
     sku = Monitor_nivelSku(iniVenda)
         # 5.1 - Considerando somente a qtdePedida maior que 0
-    sku = sku[sku['qtdeEntregar']>0]
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
 
     # 6 Consultando n banco de dados do ERP o saldo de estoque
@@ -103,6 +101,12 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     # 8 -     # Clasificando o Dataframe para analise
     pedidos = pedidos.sort_values(by='vlrSaldo', ascending=False)  # escolher como deseja classificar
     pedidos = pedidos[pedidos['vlrSaldo'] >0]
+
+    pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
+    pedidos = pedidos[pedidos['QtdSaldo']>0]
+    pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
+    pedidos['dataPrevAtualizada'] = pedidos.apply(lambda row: row['dataPrevAtualizada'] + row['dias_a_adicionar'], axis=1)
+
 
     pedidos.to_csv('meutesteMonitor.csv')
 
