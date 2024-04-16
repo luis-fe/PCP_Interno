@@ -35,7 +35,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     tiponota2 = tiponota2[1:]
 
     # 1 - Carregar Os pedidos (etapa 1)
-    pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota2)
+    pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
     pedidosBloqueados = Monitor_PedidosBloqueados()
 
     pedidos = pd.merge(pedidos,pedidosBloqueados,on='codPedido',how='left')
