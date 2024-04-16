@@ -105,6 +105,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
     pedidos = pedidos[pedidos['QtdSaldo']>0]
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
+    pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] = pedidos.apply(lambda row: row['dataPrevAtualizada'] + row['dias_a_adicionar'], axis=1)
 
 
