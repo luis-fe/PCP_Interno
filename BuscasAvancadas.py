@@ -181,3 +181,14 @@ def SugestaoItemAberto():
 WHERE p.codEmpresa = 1"""
 
     return consulta
+
+def SituacaoPedidos():
+    consulta = """SELECT * FROM (
+SELECT top 300000 bc.codPedido, 'analise comercial' as situacaobloq  from ped.PedidoBloqComl  bc WHERE codEmpresa = 1  
+and bc.situacaoBloq = 1
+order by codPedido desc
+UNION 
+SELECT top 300000 codPedido, 'analise credito'as situacaobloq  FROM Cre.PedidoCreditoBloq WHERE Empresa  = 1  
+and situacao = 1
+order BY codPedido DESC) as D"""
+    return consulta

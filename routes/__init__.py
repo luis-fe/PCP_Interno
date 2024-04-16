@@ -13,6 +13,7 @@ from .rotasPlataformaWeb import rotasPlataformaWeb
 from .responsabilidadeFase_routes import ResponsabilidadeFase_routes
 from .dashboardTV import dashboardTVroute
 from .AutomacaoSugestaoPedidos_routes import reservaPrefatroute
+from .monitor_routes import monitorPreFaturamento_routes
 
 #from .DashboardNovos import dashboard_routes
 # Importe mais arquivos de rotas conforme necessário
@@ -27,6 +28,7 @@ routes_blueprint.register_blueprint(rotasPlataformaWeb)
 routes_blueprint.register_blueprint(ResponsabilidadeFase_routes)
 routes_blueprint.register_blueprint(dashboardTVroute)
 routes_blueprint.register_blueprint(reservaPrefatroute)
+routes_blueprint.register_blueprint(monitorPreFaturamento_routes)
 
 #routes_blueprint.register_blueprint(dashboard_routes)
 
