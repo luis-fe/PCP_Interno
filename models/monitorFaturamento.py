@@ -23,10 +23,11 @@ def Monitor_PedidosBloqueados():
 
 
 #Carregando os Pedidos a nivel Sku
-def Monitor_nivelSku():
+def Monitor_nivelSku(datainicio):
     conn = ConexaoPostgreMPL.conexao()
 
-    consultar = pd.read_sql('select * from "PCP".pcp."pedidosItemgrade" ig limit 100',conn) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
+    consultar = pd.read_sql("""select * from "PCP".pcp."pedidosItemgrade" ig 
+where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
     consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
     consultar['qtdeEntregar'] = consultar['qtdePedida'] - consultar['qtdeFaturada'] - consultar['qtdeCancelada']
@@ -59,7 +60,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     # 4- Consulta de Embarques Solicitado pelo Cliente , informacao extraida do ERP
 
     # 5 - Explodir os pedidos no nivel sku
-    sku = Monitor_nivelSku()
+    sku = Monitor_nivelSku(iniVenda)
         # 5.1 - Considerando somente a qtdePedida maior que 0
     sku = sku[sku['qtdeEntregar']>0]
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
