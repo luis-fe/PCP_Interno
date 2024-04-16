@@ -23,6 +23,14 @@ def Monitor_PedidosBloqueados():
 
 
 #Carregando os Pedidos a nivel Sku
+def Monitor_nivelSku():
+    conn = ConexaoPostgreMPL.conexao()
+    consulta = pd.read_sql('select * from pcp.pedidosItemgrade ', conn)
+    # retorno da funcao : codPedido, codProduto, qtdPedida, qtdFaturada, qtdCancelada, qtdSugerida, qtdePecasConf, codTipoNota
+
+    conn.close()
+    return consulta
+
 
 
 def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
@@ -36,11 +44,19 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
 
     # 1 - Carregar Os pedidos (etapa 1)
     pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
-    pedidosBloqueados = Monitor_PedidosBloqueados()
 
+    # 2 - Filtrar Apenas Pedidos Não Bloqueados
+    pedidosBloqueados = Monitor_PedidosBloqueados()
     pedidos = pd.merge(pedidos,pedidosBloqueados,on='codPedido',how='left')
     pedidos['situacaobloq'].fillna('Liberado',inplace=True)
     pedidos = pedidos[pedidos['situacaobloq'] == 'Liberado']
+
+    # 3 - Explodir os pedidos no nivel sku
+
+    sku = Monitor_nivelSku()
+    pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
+
+
 
     return pedidos
 
