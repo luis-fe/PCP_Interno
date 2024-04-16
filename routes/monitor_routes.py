@@ -28,7 +28,7 @@ def get_monitorPreFaturamento():
     iniVenda = dados.get('iniVenda')
     finalVenda =dados.get('finalVenda')
     tiponota = dados.get('tiponota')
-
+    print(tiponota.type)
     usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota)
 
     # Obtém os nomes das colunas
