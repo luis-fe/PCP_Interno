@@ -256,7 +256,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     'QtdSaldo': 'sum',
     'Qtd Atende por Cor': 'sum',
     'Valor Atende por Cor': 'sum',
-    'Valor Atende': 'sum'
+    #'Valor Atende': 'sum'
     #'Sugestao(Pedido)': 'first',
     #'Valor Atende por Cor(Distrib.)': 'sum',
     #'Qnt. Cor(Distrib.)': 'sum',
