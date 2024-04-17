@@ -22,7 +22,7 @@ def token_required(f):
 
 @monitorPreFaturamento_routes.route('/pcp/api/detalhadoMonitor', methods=['GET'])
 @token_required
-def get_monitorPreFaturamento():
+def detalhadoMonitor():
     empresa = request.args.get('empresa')
     iniVenda = request.args.get('iniVenda','-')
     finalVenda = request.args.get('finalVenda')
