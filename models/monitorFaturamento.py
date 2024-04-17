@@ -5,8 +5,7 @@ import ConexaoPostgreMPL
 import datetime
 import numpy
 import locale
-import controle
-
+from models import controle
 #Carregando a Capa de pedidos do CSW : BuscasAvancadas.CapaPedido (empresa, iniVenda, finalVenda, tiponota):
 def Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota):
     conn = ConexaoCSW.Conexao()
