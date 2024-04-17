@@ -210,3 +210,13 @@ def Entregas_Enviados():
                                       max(dataFaturamento) as ultimo_fat from fat.NotaFiscal  where codEmpresa = 1 and codRepresentante
                                       not in ('200','800','300','600','700','511') and situacao = 2  group by codPedido order by codPedido desc"""
     return consulta
+
+def ValorDosItensPedido():
+    consulta = """select top 350000 item.codPedido, 
+    item.CodItem as seqCodItem, 
+    item.codProduto, 
+    item.precoUnitario, item.tipoDesconto, item.descontoItem, 
+    case when tipoDesconto = 1 then ( (item.qtdePedida * item.precoUnitario) - item.descontoItem)/item.qtdePedida when item.tipoDesconto = 0 then (item.precoUnitario * (1-(item.descontoItem/100))) else item.precoUnitario end  PrecoLiquido 
+    from ped.PedidoItem as item WHERE item.codEmpresa = 1 order by item.codPedido desc """
+
+    return consulta

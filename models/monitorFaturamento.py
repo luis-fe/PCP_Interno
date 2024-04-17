@@ -33,7 +33,7 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
 
-    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida','StatusSugestao']]
+    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida','StatusSugestao','PrecoLiquido']]
     consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
 
     return consultar
@@ -158,15 +158,20 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pedidos.sort_values(by=['dataPrevAtualizada', 'Pedido||Prod.||Cor'],
                                         ascending=[True, True])  # escolher como deseja classificar
 
+
+    #17- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
     pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')) / (
         pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
+
     pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
+
     pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()) / (
         pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
 
 
+    # 18 - Encontrando a Marca desejada
     pedidos['MARCA'] = pedidos['codItemPai'].apply(lambda x: x[:3])
     pedidos['MARCA'] = numpy.where(
         (pedidos['codItemPai'].str[:3] == '102') | (pedidos['codItemPai'].str[:3] == '202'), 'M.POLLO', 'PACO')
@@ -232,16 +237,26 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
             return 'ACESSORIOS'
         else:
             return '-'
-
-    #df_Pedidos['CATEGORIA'] = df_Pedidos['CATEGORIA'] .astype(str)
     try:
         pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
     except:
         pedidos['CATEGORIA'] = '-'
 
+    dadosConfPer = ConfiguracaoPercEntregas()
+
+    dadosCategoria = ConfiguracaoCategoria()
+    dadosCategoria = dadosCategoria.rename(columns={'Opção': 'CATEGORIA'})
+    pedidos = pd.merge(pedidos,dadosCategoria,on='CATEGORIA',how='left')
+    pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == 1 else 0,axis=1)
+    pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == 1 else 0,axis=1)
+
+
+    # Encontrando o numero restante de entregas
     pedidos['Entrgas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
     pedidos['Entrgas Restantes'] = pedidos.apply(
         lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entrgas Restantes'], axis=1)
+
+
 
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
         pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
@@ -251,7 +266,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
         lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entrgas Restantes'], axis=1)
 
     pedidos['Entrgas Restantes'] = pedidos['Entrgas Restantes'].astype(str)
-    dadosConfPer = ConfiguracaoPercEntregas()
 
     pedidos = pd.merge(pedidos, dadosConfPer, on='Entrgas Restantes', how='left')
 
@@ -296,10 +310,19 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
                                                                                      and (row['Distribuicao'] == 'SIM' and row['Qtd Atende por Cor']>0 ) else row['Distribuicao'], axis=1 )
 
 
+    pedidos['Valor Atende por Cor'] = pedidos['Qtd Atende por Cor'] * pedidos['PrecoLiquido']
+
+
+
     # Identificando a Quantidade Distribuida
     pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(
         lambda row: row['Qtd Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
     pedidos['Qnt. Cor(Distrib.)'] = pedidos['Qnt. Cor(Distrib.)'].astype(int)
+
+    pedidos['Valor Atende por Cor'] =pedidos['Valor Atende por Cor'].astype(float).round(2)
+    pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
+    pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
 
     pedidos.to_csv('meutesteMonitor.csv')
 
@@ -360,6 +383,17 @@ def ConfiguracaoPercEntregas():
 
     consultar = pd.read_sql(
             """Select * from pcp.monitor_fat_dados """, conn)
+
+    conn.close()
+
+    return consultar
+
+
+def ConfiguracaoCategoria():
+    conn = ConexaoPostgreMPL.conexao()
+
+    consultar = pd.read_sql(
+            """Select * from pcp.monitor_check_status """, conn)
 
     conn.close()
 
