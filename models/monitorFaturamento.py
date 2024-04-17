@@ -104,11 +104,24 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pedidos.sort_values(by='vlrSaldo', ascending=False)  # escolher como deseja classificar
     pedidos = pedidos[pedidos['vlrSaldo'] >0]
 
+
+    # 9 - Obtendo o saldo sku por sku e filtrando os pedidos que ficaram com saldo  zerado
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
     pedidos = pedidos[pedidos['QtdSaldo']>0]
+
+
+    pedidos['Sku_acumula'] = pedidos.groupby('codProduto').cumcount() + 1
+    pedidos['qtdeSugerida'] = pedidos['qtdeSugerida'].replace('', numpy.nan).fillna('0')
+
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
     pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] =  pedidos['dataPrevAtualizada'] + pedidos['dias_a_adicionar']
+
+    pedidos['EstoqueLivre'] = pedidos['estoqueAtual']-pedidos['estReservPedido']
+    pedidos['Necessidade'] = pedidos.groupby('codProduto')['QtdSaldo'].cumsum()
+    pedidos['Saldo +Sugerido'] = pedidos['QtdSaldo']+pedidos['qtdeSugerida']
+    pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
+    pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
 
 
     pedidos.to_csv('meutesteMonitor.csv')
