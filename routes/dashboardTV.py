@@ -31,13 +31,13 @@ def CargadasOPs():
     filtro = data.get('filtro', '-')
     area = data.get('area', 'PRODUCAO')
     filtroDiferente = data.get('filtroDiferente', '')
-
+    rotina = 'Portal Consulta OP'
     classificar = data.get('classificar', '-')
 
     print(f'foi classficado por {classificar}')
     client_ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
-    tempo = controle.TempoUltimaAtualizacao(datainicio)
+    tempo = controle.TempoUltimaAtualizacaoPCP(datainicio,rotina)
     limite = 60
     limiteFiltros = 600
 

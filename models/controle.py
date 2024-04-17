@@ -132,7 +132,49 @@ def TempoUltimaAtualizacao(dataHoraAtual, rotina):
         diferenca_total_segundos = 9999
         return diferenca_total_segundos
 
+def TempoUltimaAtualizacaoPCP(dataHoraAtual, rotina):
+    conn = ConexaoPostgreMPL.conexao()
 
+    consulta = pd.read_sql('select max(fim) as "ultimaData" from "pcp".configuracoes.controle_requisicao_csw crc '
+                          "where rotina = %s ", conn, params=(rotina,) )
+
+
+
+    conn.close()
+    utimaAtualizacao = consulta['ultimaData'][0]
+    if utimaAtualizacao != None:
+
+        if len(utimaAtualizacao) < 23:
+            print(utimaAtualizacao)
+            utimaAtualizacao = utimaAtualizacao + '.001'
+        else:
+            utimaAtualizacao = utimaAtualizacao
+
+    else:
+        print('segue o baile')
+
+
+    if utimaAtualizacao != None:
+
+        # Converte as strings para objetos datetime
+        data1_obj = datetime.strptime(dataHoraAtual, "%d/%m/%Y %H:%M:%S.%f")
+        data2_obj = datetime.strptime(utimaAtualizacao, "%d/%m/%Y %H:%M:%S.%f")
+
+        # Calcula a diferença entre as datas
+        diferenca = data1_obj - data2_obj
+
+        # Obtém a diferença em dias como um número inteiro
+        diferenca_em_dias = diferenca.days
+
+        # Obtém a diferença total em segundos
+        diferenca_total_segundos = diferenca.total_seconds()
+
+        return diferenca_total_segundos
+
+
+    else:
+        diferenca_total_segundos = 9999
+        return diferenca_total_segundos
 def conversaoData(data):
     data1_obj = datetime.strptime(data, "%d/%m/%Y %H:%M:%S.%f")
 
