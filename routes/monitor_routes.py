@@ -30,7 +30,7 @@ def get_monitorPreFaturamento():
 
 
 
-    usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota)
+    usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
