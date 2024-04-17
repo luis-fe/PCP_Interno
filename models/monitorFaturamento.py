@@ -163,11 +163,11 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     #15  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
     pedidos['Saldo +Sugerido'] = pedidos['QtdSaldo']+pedidos['qtdeSugerida']
     pedidos['Saldo Grade'] = pedidos.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
-    etapa6 = controle.salvarStatus_Etapa6(rotina, ip, etapa5, 'Calculando a necessidade a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
 
-    #16 btendo a Qtd que antende para o pedido baseado no estoque e na grade
+    #16 otendo a Qtd que antende para o pedido baseado no estoque e na grade
     pedidos['X QTDE ATENDE'] = pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
     pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
+    etapa6 = controle.salvarStatus_Etapa6(rotina, ip, etapa5, 'otendo a Qtd que antende para o pedido baseado no estoque e na grade')#Registrar etapa no controlador
 
 
     pedidos = pedidos.sort_values(by=['dataPrevAtualizada', 'Pedido||Prod.||Cor'],
@@ -262,8 +262,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     dadosCategoria = ConfiguracaoCategoria()
     dadosCategoria = dadosCategoria.rename(columns={'Opção': 'CATEGORIA'})
     pedidos = pd.merge(pedidos,dadosCategoria,on='CATEGORIA',how='left')
-    pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == 1 else 0,axis=1)
-    pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == 1 else 0,axis=1)
+    pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,axis=1)
+    pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0,axis=1)
 
 
     # Encontrando o numero restante de entregas
