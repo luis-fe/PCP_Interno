@@ -258,8 +258,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         pedidos['CATEGORIA'] = '-'
 
     dadosConfPer = ConfiguracaoPercEntregas()
-
     dadosCategoria = ConfiguracaoCategoria()
+
     dadosCategoria = dadosCategoria.rename(columns={'Opção': 'CATEGORIA'})
     pedidos = pd.merge(pedidos,dadosCategoria,on='CATEGORIA',how='left')
     pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,axis=1)
@@ -282,7 +282,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     pedidos['Entrgas Restantes'] = pedidos['Entrgas Restantes'].astype(str)
 
-    pedidos = pd.merge(pedidos, dadosConfPer, on='Entrgas Restantes', how='left')
+    pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
 
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
         pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
