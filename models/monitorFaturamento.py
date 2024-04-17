@@ -332,6 +332,9 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
 
+    pedidos['Valor Atende por Cor'] = 0
+    pedidos['Valor Atende por Cor(Distrib.)'] = 0
+
 
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
