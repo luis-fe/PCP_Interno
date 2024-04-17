@@ -267,8 +267,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     # Encontrando o numero restante de entregas
-    pedidos['Entrgas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
-    pedidos['Entrgas Restantes'] = pedidos.apply(
+    pedidos['Entregas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
+    pedidos['Entregas Restantes'] = pedidos.apply(
         lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entrgas Restantes'], axis=1)
 
 
