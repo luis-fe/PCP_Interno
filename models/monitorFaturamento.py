@@ -242,7 +242,6 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pd.read_csv('meutesteMonitor.csv')
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
-    "codPedido": 'first',
     "codTipoNota": 'first',
     #"dataPrevFat": 'first',
     "dataPrevAtualizada": 'first',
