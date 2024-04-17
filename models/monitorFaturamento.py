@@ -62,6 +62,16 @@ def ObtendoEntregas_Enviados():
     conn.close()
     return consulta
 
+#Obtendo os Sku - estrutura
+def EstruturaSku():
+    conn = ConexaoPostgreMPL.conexao()
+
+    consultar = pd.read_sql("""Select "codSKU" as "codProduto", "codItemPai", "codCor", "nomeSKU" from pcp."SKU" """,conn)
+
+    conn.close()
+
+    return consultar
+
 def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     #Convertendo tipo de nota em string "1,2, 3, .."
 
@@ -91,8 +101,10 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
 
     # 5 - Explodir os pedidos no nivel sku
     sku = Monitor_nivelSku(iniVenda)
+    estruturasku = EstruturaSku()
         # 5.1 - Considerando somente a qtdePedida maior que 0
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
+    pedidos = pd.merge(pedidos,estruturasku,on='codProduto',how='left')
 
     # 6 Consultando n banco de dados do ERP o saldo de estoque
     estoque = EstoqueSKU()
