@@ -72,7 +72,6 @@ def UltimaAtualizacao(classe, dataInicial):
     return float(diferenca_total_segundos)
 
 
-
 def ExcluirHistorico(diasDesejados):
     conn = ConexaoPostgreMPL.conexao2()
 
