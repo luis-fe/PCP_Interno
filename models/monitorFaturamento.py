@@ -296,7 +296,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
     "codTipoNota": 'first',
-    #"dataPrevFat": 'first',
+    "dataPrevFat": 'first',
     "dataPrevAtualizada": 'first',
     "codCliente": 'first',
     #"razao": 'first',
@@ -321,7 +321,8 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
     pedidos['%'] = pedidos['%']*100
     pedidos['%'] = pedidos['%'].round(0)
-    pedidos.rename(columns={'MARCA': '1-MARCA',"codPedido":"2-Pedido"}, inplace=True)
+    pedidos.rename(columns={'MARCA': '1-MARCA',"codPedido":"2-Pedido",
+                            "codTipoNota":"3-tipoNota"}, inplace=True)
 
     return pedidos
 
