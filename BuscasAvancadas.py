@@ -196,7 +196,8 @@ order BY codPedido DESC) as D"""
 
 def ConsultaEstoque():
     consulta = """select dt.reduzido as codProduto, SUM(dt.estoqueAtual) as estoqueAtual, sum(estReservPedido) as estReservPedido from
-    (select codItem as reduzido, estoqueAtual,estReservPedido  from est.DadosEstoque where codEmpresa = 1 and codNatureza = 5 and estoqueAtual > 0
+    (select codItem as reduzido, estoqueAtual,estReservPedido  from est.DadosEstoque where codEmpresa = 1 and codNatureza = 5 and estoqueAtual > 0)dt
+    group by dt.reduzido
      """
     return consulta
 def ConsultaEstoqueGarantidoPorFase():
