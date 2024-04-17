@@ -84,7 +84,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     # 1 - Carregar Os pedidos (etapa 1)
     pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
-    etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'carregar capa dos pedidos do csw') #Registrar etapa no controlador
 
 
     # 2 - Filtrar Apenas Pedidos Não Bloqueados
@@ -92,6 +91,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,pedidosBloqueados,on='codPedido',how='left')
     pedidos['situacaobloq'].fillna('Liberado',inplace=True)
     pedidos = pedidos[pedidos['situacaobloq'] == 'Liberado']
+    etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'carregar capa dos pedidos do csw +FiltroPedidos N/Bloqueados') #Registrar etapa no controlador
 
 
     # 3- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
@@ -102,7 +102,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     entregasSolicitadas = ObtendoEntregasSolicitadas()
     pedidos = pd.merge(pedidos,entregasSolicitadas,on='codPedido',how='left')
 
-    etapa2 = controle.salvarStatus_Etapa2(rotina, ip, etapa1, 'FiltrarPedidos n bloqueados+encontrar N Entregas') #Registrar etapa no controlador
+    etapa2 = controle.salvarStatus_Etapa2(rotina, ip, etapa1, 'encontrar N Entregas') #Registrar etapa no controlador
 
     # 5 - Explodir os pedidos no nivel sku
     sku = Monitor_nivelSku(iniVenda)
@@ -131,16 +131,17 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #10 Contando o numero de ocorrencias acumulado do sku no DataFrame
     pedidos['Sku_acumula'] = pedidos.groupby('codProduto').cumcount() + 1
-    etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Contando o numero de ocorrencias acumulado do sku) #Registrar etapa no controlador')#Registrar etapa no controlador
 
 
     #11 Trantando os valores vazios na qtdeSugerida
-    pedidos['qtdeSugerida'] = pedidos['qtdeSugerida'].replace('', numpy.nan).fillna('0')
+    #pedidos['qtdeSugerida'] = pedidos['qtdeSugerida'].replace('', numpy.nan).fillna('0')
 
     #12 Calculando a nova data de Previsao do pedido
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
     pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] =  pedidos['dataPrevAtualizada'] + pedidos['dias_a_adicionar']
+    etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Calculando a nova data de Previsao do pedido')#Registrar etapa no controlador
+
 
     #13.1 Obtendo o Estoque Liquido para o calculo da necessidade
     pedidos['EstoqueLivre'] = pedidos['estoqueAtual']-pedidos['estReservPedido']
