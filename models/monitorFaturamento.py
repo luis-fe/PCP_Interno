@@ -255,15 +255,19 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     'Saldo +Sugerido':'sum',
     "ultimo_fat": "first",
     "Qtd Atende": 'sum',
-    'QtdSaldo': 'sum'
+    'QtdSaldo': 'sum',
     #'Qtd Atende por Cor': 'sum'
     #'Valor Atende por Cor': 'sum'
     #'Valor Atende': 'sum'
     #'Sugestao(Pedido)': 'first',
     #'Valor Atende por Cor(Distrib.)': 'sum',
-    #'Qnt. Cor(Distrib.)': 'sum',
+    'Qnt. Cor(Distrib.)': 'sum'
     #'observacao': 'first'
     }).reset_index()
+
+    pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
+    pedidos['%'] = pedidos['%']*100
+    pedidos['%'] = pedidos['%'].round(0)
 
 
     return pedidos
