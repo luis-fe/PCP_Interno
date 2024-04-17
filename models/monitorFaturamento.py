@@ -184,6 +184,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
+    etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Indicador de % que fecha no pedido a nivel de grade ')#Registrar etapa no controlador
 
 
     # 18 - Encontrando a Marca desejada
@@ -326,6 +327,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     pedidos['Valor Atende por Cor'] = pedidos['Qtd Atende por Cor'] * pedidos['PrecoLiquido']
+    etapa8 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Obtendo valor atente por cor ')#Registrar etapa no controlador
 
 
 
