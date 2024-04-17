@@ -5,6 +5,7 @@ import ConexaoPostgreMPL
 import datetime
 import numpy
 import locale
+import controle
 
 #Carregando a Capa de pedidos do CSW : BuscasAvancadas.CapaPedido (empresa, iniVenda, finalVenda, tiponota):
 def Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota):
@@ -73,7 +74,7 @@ def EstruturaSku():
 
     return consultar
 
-def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
+def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio):
     #Convertendo tipo de nota em string "1,2, 3, .."
 
     tiponota2 = ""
@@ -84,12 +85,16 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
 
     # 1 - Carregar Os pedidos (etapa 1)
     pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
+    etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'carregar capa dos pedidos do csw') #Registrar etapa no controlador
+
 
     # 2 - Filtrar Apenas Pedidos Não Bloqueados
     pedidosBloqueados = Monitor_PedidosBloqueados()
     pedidos = pd.merge(pedidos,pedidosBloqueados,on='codPedido',how='left')
     pedidos['situacaobloq'].fillna('Liberado',inplace=True)
     pedidos = pedidos[pedidos['situacaobloq'] == 'Liberado']
+    etapa2 = controle.salvarStatus_Etapa2(rotina, ip, etapa1, 'filtrar pedidos nao bloqueados') #Registrar etapa no controlador
+
 
     # 3- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
     entregasFaturadas = ObtendoEntregas_Enviados()

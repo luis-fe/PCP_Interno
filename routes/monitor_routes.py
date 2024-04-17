@@ -27,10 +27,14 @@ def detalhadoMonitor():
     iniVenda = request.args.get('iniVenda','-')
     finalVenda = request.args.get('finalVenda')
     tiponota = request.args.get('tiponota')
+    rotina = 'detalhadoMonitor'
+    client_ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
+    controle.InserindoStatus(rotina, client_ip, datainicio)
 
+    usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, client_ip, datainicio)
+    controle.salvarStatus(rotina, client_ip, datainicio)
 
-
-    usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
