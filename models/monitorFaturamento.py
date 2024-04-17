@@ -329,8 +329,8 @@ def API(empresa, iniVenda, finalVenda, tiponota):
 
     pedidos = pedidos.sort_values(by='08-vlrSaldo', ascending=False)  # escolher como deseja classificar
     pedidos["10-Entregas Fat"].fillna(0,inplace=True)
-
-
+    pedidos["9-Entregas Solic"].fillna(0, inplace=True)
+    pedidos["11-ultimo fat"].fillna('-', inplace=True)
     return pedidos
 
 
