@@ -242,6 +242,52 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
 
     pedidos = pd.merge(pedidos, dadosConfPer, on='Entrgas Restantes', how='left')
 
+    pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
+        pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
+    pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
+    pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
+
+    # definir as condições
+    condicoes = [(pedidos['% Fecha pedido'] >= pedidos['ValorMin']) &
+                (pedidos['% Fecha pedido'] <= pedidos['ValorMax']),
+                (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
+                (pedidos['% Fecha Acumulado'] <= pedidos['ValorMax']),
+                (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
+                (pedidos['% Fecha Acumulado'] > pedidos['ValorMax']),
+                (pedidos['% Fecha pedido'] < pedidos['ValorMin'])
+                # adicionar mais condições aqui, se necessário
+                ]
+
+    # definir os valores correspondentes
+    valores = ['SIM', 'SIM','SIM(Redistribuir)','NAO']
+
+    # função para avaliar cada grupo
+    def avaliar_grupo(df_grupo):
+        if (df_grupo['Distribuicao'] == 'SIM(Redistribuir)').all():
+            return 'True'
+        if (df_grupo['Distribuicao'] == 'SIM').all():
+            return 'True'
+        else:
+            return 'False'
+
+
+
+    # atribuir os valores com base nas condições
+    pedidos['Distribuicao'] = numpy.select(condicoes, valores, default='NAO')
+    # aplicando a função para cada grupo
+    df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo)
+    # renomeando a coluna do resultado
+    df_resultado = df_resultado.rename('Resultado')
+    pedidos = pd.merge(pedidos, df_resultado, left_on='Pedido||Prod.||Cor', right_index=True)
+    pedidos['Distribuicao'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
+                                                                                     and (row['Distribuicao'] == 'SIM' and row['Qtd Atende por Cor']>0 ) else row['Distribuicao'], axis=1 )
+
+
+    # Identificando a Quantidade Distribuida
+    pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(
+        lambda row: row['Qtd Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    pedidos['Qnt. Cor(Distrib.)'] = pedidos['Qnt. Cor(Distrib.)'].astype(int)
+
     pedidos.to_csv('meutesteMonitor.csv')
 
 
