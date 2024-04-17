@@ -256,8 +256,8 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     'Saldo +Sugerido':'sum',
     "ultimo_fat": "first",
     "Qtd Atende": 'sum',
-    'QtdSaldo': 'sum',
-    'Qtd Atende por Cor': 'sum'
+    'QtdSaldo': 'sum'
+    #'Qtd Atende por Cor': 'sum'
     #'Valor Atende por Cor': 'sum'
     #'Valor Atende': 'sum'
     #'Sugestao(Pedido)': 'first',
