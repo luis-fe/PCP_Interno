@@ -76,11 +76,11 @@ def EstruturaSku():
 def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio):
     #Convertendo tipo de nota em string "1,2, 3, .."
 
-    tiponota2 = ""
-    for i in tiponota:
-        tiponota2 = tiponota2 + "," + i
+    #tiponota2 = ""
+    #for i in tiponota:
+        #tiponota2 = tiponota2 + "," + i
 
-    tiponota2 = tiponota2[1:]
+    #tiponota2 = tiponota2[1:]
 
     # 1 - Carregar Os pedidos (etapa 1)
     pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
@@ -92,7 +92,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,pedidosBloqueados,on='codPedido',how='left')
     pedidos['situacaobloq'].fillna('Liberado',inplace=True)
     pedidos = pedidos[pedidos['situacaobloq'] == 'Liberado']
-    etapa2 = controle.salvarStatus_Etapa2(rotina, ip, etapa1, 'filtrar pedidos nao bloqueados') #Registrar etapa no controlador
 
 
     # 3- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
@@ -103,6 +102,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     entregasSolicitadas = ObtendoEntregasSolicitadas()
     pedidos = pd.merge(pedidos,entregasSolicitadas,on='codPedido',how='left')
 
+    etapa2 = controle.salvarStatus_Etapa2(rotina, ip, etapa1, 'FiltrarPedidos n bloqueados+encontrar N Entregas') #Registrar etapa no controlador
 
     # 5 - Explodir os pedidos no nivel sku
     sku = Monitor_nivelSku(iniVenda)
@@ -110,6 +110,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         # 5.1 - Considerando somente a qtdePedida maior que 0
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
     pedidos = pd.merge(pedidos,estruturasku,on='codProduto',how='left')
+    etapa3 = controle.salvarStatus_Etapa3(rotina, ip, etapa2, 'Explodir os pedidos no nivel sku') #Registrar etapa no controlador
+
 
     # 6 Consultando n banco de dados do ERP o saldo de estoque
     estoque = EstoqueSKU()
@@ -124,9 +126,13 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     # 9 - Obtendo o saldo sku por sku e filtrando os pedidos que ficaram com saldo  zerado
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
+    etapa4 = controle.salvarStatus_Etapa4(rotina, ip, etapa3, 'Obtendo o saldo sku por sku') #Registrar etapa no controlador
+
 
     #10 Contando o numero de ocorrencias acumulado do sku no DataFrame
     pedidos['Sku_acumula'] = pedidos.groupby('codProduto').cumcount() + 1
+    etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Contando o numero de ocorrencias acumulado do sku) #Registrar etapa no controlador')#Registrar etapa no controlador
+
 
     #11 Trantando os valores vazios na qtdeSugerida
     pedidos['qtdeSugerida'] = pedidos['qtdeSugerida'].replace('', numpy.nan).fillna('0')
