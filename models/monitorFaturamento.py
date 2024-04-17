@@ -226,7 +226,42 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     except:
         pedidos['CATEGORIA'] = '-'
 
+    pedidos['Entrgas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
+    pedidos['Entrgas Restantes'] = pedidos.apply(
+        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entrgas Restantes'], axis=1)
+
+    pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
+        pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
+    pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
+    pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
+
     pedidos.to_csv('meutesteMonitor.csv')
+
+    pedidos = pedidos.groupby('codPedido').agg({
+    "MARCA": 'first',
+    "codPedido": 'first',
+    "codTipoNota": 'first',
+    #"dataPrevFat": 'first',
+    "dataPrevAtualizada": 'first',
+    "codCliente": 'first',
+    #"razao": 'first',
+    "vlrSaldo": 'first',
+    #"descricaoCondVenda": 'first',
+    "entregas_Solicitadas": 'first',
+    "entregas_enviadas": 'first',
+    "qtdPecasFaturadas": 'first',
+    'Saldo +Sugerido':'sum',
+    "ultimo_fat": "first",
+    "Qtd Atende": 'sum',
+    'QtdSaldo': 'sum',
+    'Qtd Atende por Cor': 'sum',
+    'Valor Atende por Cor': 'sum',
+    'Valor Atende': 'sum'
+    #'Sugestao(Pedido)': 'first',
+    #'Valor Atende por Cor(Distrib.)': 'sum',
+    #'Qnt. Cor(Distrib.)': 'sum',
+    #'observacao': 'first'
+    }).reset_index()
 
 
     return pedidos
