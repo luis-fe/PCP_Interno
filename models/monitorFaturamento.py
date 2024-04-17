@@ -140,7 +140,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
     pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] =  pedidos['dataPrevAtualizada'] + pedidos['dias_a_adicionar']
-    etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Calculando a nova data de Previsao do pedido')#Registrar etapa no controlador
 
 
     #13.1 Obtendo o Estoque Liquido para o calculo da necessidade
@@ -150,6 +149,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     #13.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
+    etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Obtendo o Estoque Liquido para o calculo da necessidade')#Registrar etapa no controlador
 
 
     #14 Separando os pedidos a nivel pedido||engenharia||cor

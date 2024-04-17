@@ -197,13 +197,15 @@ order BY codPedido DESC) as D"""
 def ConsultaEstoque():
     consulta = """select dt.reduzido as codProduto, SUM(dt.estoqueAtual) as estoqueAtual, sum(estReservPedido) as estReservPedido from
     (select codItem as reduzido, estoqueAtual,estReservPedido  from est.DadosEstoque where codEmpresa = 1 and codNatureza = 5 and estoqueAtual > 0
-    UNION
-    select  ot.codItem as reduzido , ot.qtdePecas1Qualidade as estoqueAtual, 0 as estReservPedido  from Tco.OrdemProd o
+     """
+    return consulta
+def ConsultaEstoqueGarantidoPorFase():
+    consulta = """select  ot.codItem as reduzido , ot.qtdePecas1Qualidade as estoqueAtual, 0 as estReservPedido  from Tco.OrdemProd o
     join Tco.OrdemProdTamanhos ot on ot.codEmpresa = o.codEmpresa and ot.numeroOP = o.numeroOP
     WHERE o.codEmpresa = 1 and o.situacao = 3 and o.codFaseAtual = '210' and ot.qtdePecas1Qualidade is not null and codItem is not null) dt
-    group by dt.reduzido """
-    return consulta
+    group by dt.reduzido"""
 
+    return consulta
 
 def Entregas_Enviados():
     consulta= """select  top 300000 codPedido, count(codNumNota) as entregas_enviadas, 
