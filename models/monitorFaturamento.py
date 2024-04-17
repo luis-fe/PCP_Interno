@@ -293,8 +293,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
 
 def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pd.read_csv('meutesteMonitor.csv')
-    pedidos['codPedido'] = pedidos['codPedido'].astype(int)
-    pedidos['codCliente'] = pedidos['codCliente'].astype(int)
+    pedidos['codPedido'] = pedidos['codPedido'].astype(str)
+    pedidos['codCliente'] = pedidos['codCliente'].astype(str)
 
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
