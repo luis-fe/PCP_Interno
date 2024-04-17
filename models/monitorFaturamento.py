@@ -321,11 +321,11 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
     pedidos['%'] = pedidos['%']*100
     pedidos['%'] = pedidos['%'].round(0)
-    pedidos.rename(columns={'MARCA': '1-MARCA',"codPedido":"2-Pedido",
-                            "codTipoNota":"3-tipoNota","dataPrevFat":"4-Prev.Original","dataPrevAtualizada":"4-Prev.Atualiz","codCliente":"5-codCliente",
-                            "vlrSaldo":"7-vlrSaldo","entregas_Solicitadas":"8-Entregas Solic","entregas_enviadas":"9-Entregas Fat",
-                            "ultimo_fat":"10-ultimo fat","qtdPecasFaturadas":"11-qtdPecas Fat","Qtd Atende":"12-Qtd Atende","QtdSaldo":"13- Qtd Saldo",
-                            "Qnt. Cor(Distrib.)":"20-Qnt Cor(Distrib.)","%":"21-% qtd cor"}, inplace=True)
+    pedidos.rename(columns={'MARCA': '01-MARCA',"codPedido":"02-Pedido",
+                            "codTipoNota":"03-tipoNota","dataPrevFat":"04-Prev.Original","dataPrevAtualizada":"05-Prev.Atualiz","codCliente":"06-codCliente",
+                            "vlrSaldo":"08-vlrSaldo","entregas_Solicitadas":"09-Entregas Solic","entregas_enviadas":"10-Entregas Fat",
+                            "ultimo_fat":"11-ultimo fat","qtdPecasFaturadas":"12-qtdPecas Fat","Qtd Atende":"13-Qtd Atende","QtdSaldo":"14- Qtd Saldo",
+                            "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"22-% qtd cor"}, inplace=True)
 
     return pedidos
 
