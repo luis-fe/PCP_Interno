@@ -122,26 +122,39 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
     pedidos = pedidos[pedidos['QtdSaldo']>0]
 
-
+    #10 Contando o numero de ocorrencias acumulado do sku no DataFrame
     pedidos['Sku_acumula'] = pedidos.groupby('codProduto').cumcount() + 1
+
+    #11 Trantando os valores vazios na qtdeSugerida
     pedidos['qtdeSugerida'] = pedidos['qtdeSugerida'].replace('', numpy.nan).fillna('0')
 
+    #12 Calculando a nova data de Previsao do pedido
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
     pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] =  pedidos['dataPrevAtualizada'] + pedidos['dias_a_adicionar']
 
+    #13.1 Obtendo o Estoque Liquido para o calculo da necessidade
     pedidos['EstoqueLivre'] = pedidos['estoqueAtual']-pedidos['estReservPedido']
+    #13.2 Obtendo a necessidade de estoque
     pedidos['Necessidade'] = pedidos.groupby('codProduto')['QtdSaldo'].cumsum()
-    pedidos['Saldo +Sugerido'] = pedidos['QtdSaldo']+pedidos['qtdeSugerida']
+    #13.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
 
+
+    #14 Separando os pedidos a nivel pedido||engenharia||cor
     pedidos["Pedido||Prod.||Cor"] = pedidos['codPedido'].str.cat([pedidos['codItemPai'], pedidos['codCor']],
                                                                        sep='||')
+
+
+    #15  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
+    pedidos['Saldo +Sugerido'] = pedidos['QtdSaldo']+pedidos['qtdeSugerida']
     pedidos['Saldo Grade'] = pedidos.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
+
+    #16 btendo a Qtd que antende para o pedido baseado no estoque e na grade
     pedidos['X QTDE ATENDE'] = pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
-    pedidos['Qtd Atende por Cor'] = pedidos.apply(
-        lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
+    pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
+
 
     pedidos = pedidos.sort_values(by=['dataPrevAtualizada', 'Pedido||Prod.||Cor'],
                                         ascending=[True, True])  # escolher como deseja classificar
@@ -314,7 +327,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     "ultimo_fat": "first",
     "Qtd Atende": 'sum',
     'QtdSaldo': 'sum',
-    #'Qtd Atende por Cor': 'sum'
+    'Qtd Atende por Cor': 'sum',
     #'Valor Atende por Cor': 'sum'
     #'Valor Atende': 'sum'
     'Sugestao(Pedido)': 'first',
@@ -331,7 +344,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
                             "vlrSaldo":"08-vlrSaldo","entregas_Solicitadas":"09-Entregas Solic","entregas_enviadas":"10-Entregas Fat",
                             "ultimo_fat":"11-ultimo fat","qtdPecasFaturadas":"12-qtdPecas Fat","Qtd Atende":"13-Qtd Atende","QtdSaldo":"14- Qtd Saldo",
                             "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"22-% qtd cor",
-                            "Sugestao(Pedido)":"18-Sugestao(Pedido)"}, inplace=True)
+                            "Sugestao(Pedido)":"18-Sugestao(Pedido)","Qtd Atende por Cor":"15-Qtd Atende p/Cor"}, inplace=True)
 
     pedidos = pedidos.sort_values(by='08-vlrSaldo', ascending=False)  # escolher como deseja classificar
     pedidos["10-Entregas Fat"].fillna(0,inplace=True)
