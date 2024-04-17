@@ -328,6 +328,8 @@ def API(empresa, iniVenda, finalVenda, tiponota):
                             "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"22-% qtd cor"}, inplace=True)
 
     pedidos = pedidos.sort_values(by='08-vlrSaldo', ascending=False)  # escolher como deseja classificar
+    pedidos["10-Entregas Fat"].fillna(0,inplace=True)
+
 
     return pedidos
 
