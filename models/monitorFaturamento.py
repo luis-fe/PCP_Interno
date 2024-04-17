@@ -36,6 +36,9 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida','StatusSugestao','PrecoLiquido']]
     consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
 
+    consultar['qtdeSugerida'] = consultar['qtdeSugerida'].astype(int)
+
+
     return consultar
 
 #EstoquePorSku
@@ -160,6 +163,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     #15  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
     pedidos['Saldo +Sugerido'] = pedidos['QtdSaldo']+pedidos['qtdeSugerida']
     pedidos['Saldo Grade'] = pedidos.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
+    etapa6 = controle.salvarStatus_Etapa6(rotina, ip, etapa5, 'Calculando a necessidade a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
 
     #16 btendo a Qtd que antende para o pedido baseado no estoque e na grade
     pedidos['X QTDE ATENDE'] = pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
