@@ -135,9 +135,98 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
 
+    pedidos["Pedido||Prod.||Cor"] = pedidos['codPedido'].str.cat([pedidos['codItemPai'], pedidos['codCor']],
+                                                                       sep='||')
+    pedidos['Saldo Grade'] = pedidos.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
+    pedidos['X QTDE ATENDE'] = pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
+    pedidos['Qtd Atende por Cor'] = pedidos.apply(
+        lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
+
+    pedidos = pedidos.sort_values(by=['dataPrevAtualizada', 'Pedido||Prod.||Cor'],
+                                        ascending=[True, True])  # escolher como deseja classificar
+
+    pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')) / (
+        pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
+    pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
+    pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()) / (
+        pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
+    pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
+    pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
+
+
+    pedidos['MARCA'] = pedidos['codItemPai'].apply(lambda x: x[:3])
+    pedidos['MARCA'] = numpy.where(
+        (pedidos['codItemPai'].str[:3] == '102') | (pedidos['codItemPai'].str[:3] == '202'), 'M.POLLO', 'PACO')
+
+    pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
+    pedidos['Qtd Atende por Cor'] = pedidos['Qtd Atende por Cor'].astype(int)
+    pedidos['Qtd Atende'] = pedidos['Qtd Atende'].astype(int)
+    pedidos['dataPrevAtualizada'] = pedidos['dataPrevAtualizada'].dt.strftime('%d/%m/%Y')
+
+    # função para verificar a presença de "casa" no valor da coluna "produto"
+    def categorizar_produto(produto):
+        if 'JAQUETA' in produto:
+            return 'AGASALHOS'
+        elif 'BLUSAO' in produto:
+            return 'AGASALHOS'
+        elif 'TSHIRT' in produto:
+            return 'CAMISETA'
+        elif 'POLO' in produto:
+            return 'POLO'
+        elif 'SUNGA' in produto:
+            return 'SUNGA'
+        elif 'CUECA' in produto:
+            return 'CUECA'
+        elif 'CALCA/BER MOLETOM  ' in produto:
+            return 'CALCA/BER MOLETOM '
+        elif 'CAMISA' in produto:
+            return 'CAMISA'
+        elif 'SHORT' in produto:
+            return 'BOARDSHORT'
+        elif 'TRICOT' in produto:
+            return 'TRICOT'
+        elif 'BABY' in produto:
+            return 'CAMISETA'
+        elif 'BATA' in produto:
+            return 'CAMISA'
+        elif 'CALCA' in produto:
+            return 'CALCA/BER MOLETOM'
+        elif 'CARTEIRA' in produto:
+            return 'ACESSORIOS'
+        elif 'BONE' in produto:
+            return 'ACESSORIOS'
+        elif 'TENIS' in produto:
+            return 'CALCADO'
+        elif 'CHINELO' in produto:
+            return 'CALCADO'
+        elif 'MEIA' in produto:
+            return 'ACESSORIOS'
+        elif 'BLAZER' in produto:
+            return 'AGASALHOS'
+        elif 'CINTO' in produto:
+            return 'ACESSORIOS'
+        elif 'REGATA' in produto:
+            return 'ACESSORIOS'
+        elif 'BERMUDA' in produto:
+            return 'CALCA/BER MOLETOM'
+        elif 'COLETE' in produto:
+            return 'AGASALHOS'
+        elif 'NECESSA' in produto:
+            return 'ACESSORIOS'
+        elif 'CARTA' in produto:
+            return 'ACESSORIOS'
+        elif 'SACOL' in produto:
+            return 'ACESSORIOS'
+        else:
+            return '-'
+
+    #df_Pedidos['CATEGORIA'] = df_Pedidos['CATEGORIA'] .astype(str)
+    try:
+        pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
+    except:
+        pedidos['CATEGORIA'] = '-'
 
     pedidos.to_csv('meutesteMonitor.csv')
-
 
 
     return pedidos
