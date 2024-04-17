@@ -278,10 +278,10 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
-    pedidos['Entrgas Restantes'] = pedidos.apply(
-        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entrgas Restantes'], axis=1)
+    pedidos['Entregas Restantes'] = pedidos.apply(
+        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
 
-    pedidos['Entrgas Restantes'] = pedidos['Entrgas Restantes'].astype(str)
+    pedidos['Entregas Restantes'] = pedidos['Entregas Restantes'].astype(str)
 
     pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
 
