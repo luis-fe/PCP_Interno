@@ -5,7 +5,7 @@ ARQUIVO USADO PARA CRIAR A ROTAS DO MONITOR DE FATURAMENTO
 from flask import Blueprint,Flask, render_template, jsonify, request
 from functools import wraps
 from flask_cors import CORS
-from models import Estrutura, monitorFaturamento
+from models import Estrutura, monitorFaturamento, controle
 import pandas as pd
 
 
@@ -52,9 +52,12 @@ def get_monitorPreFaturamento():
     finalVenda = request.args.get('finalVenda')
     tiponota = request.args.get('tiponota')
 
-
-
+    rotina = 'monitorPreFaturamento'
+    client_ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
+    controle.InserindoStatus(rotina, client_ip, datainicio)
     usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota)
+    controle.salvarStatus(rotina, client_ip, datainicio)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
