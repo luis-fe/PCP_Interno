@@ -327,6 +327,8 @@ def API(empresa, iniVenda, finalVenda, tiponota):
                             "ultimo_fat":"11-ultimo fat","qtdPecasFaturadas":"12-qtdPecas Fat","Qtd Atende":"13-Qtd Atende","QtdSaldo":"14- Qtd Saldo",
                             "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"22-% qtd cor"}, inplace=True)
 
+    pedidos = pedidos.sort_values(by='08-vlrSaldo', ascending=False)  # escolher como deseja classificar
+
     return pedidos
 
 
