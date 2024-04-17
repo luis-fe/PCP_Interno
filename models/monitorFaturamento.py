@@ -120,7 +120,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
 
     # 9 - Obtendo o saldo sku por sku e filtrando os pedidos que ficaram com saldo  zerado
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
-    pedidos = pedidos[pedidos['QtdSaldo']>0]
 
     #10 Contando o numero de ocorrencias acumulado do sku no DataFrame
     pedidos['Sku_acumula'] = pedidos.groupby('codProduto').cumcount() + 1
