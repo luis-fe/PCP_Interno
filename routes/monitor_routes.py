@@ -34,7 +34,7 @@ def detalhadoMonitor():
 
     usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, client_ip, datainicio)
     controle.salvarStatus(rotina, client_ip, datainicio)
-
+    usuarios = pd.DataFrame([{"Mensagem":"Salvo c/sucesso"}])
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
