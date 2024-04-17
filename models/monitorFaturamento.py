@@ -331,6 +331,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos["10-Entregas Fat"].fillna(0,inplace=True)
     pedidos["09-Entregas Solic"].fillna(0, inplace=True)
     pedidos["11-ultimo fat"].fillna('-', inplace=True)
+    pedidos["05-Prev.Atualiz"].fillna('-', inplace=True)
     return pedidos
 
 
