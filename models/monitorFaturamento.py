@@ -33,7 +33,8 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
 
-    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida']]
+    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida','StatusSugestao']]
+    consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
 
     return consultar
 
@@ -295,6 +296,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos = pd.read_csv('meutesteMonitor.csv')
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
+
 
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
