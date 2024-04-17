@@ -317,7 +317,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     #'Qtd Atende por Cor': 'sum'
     #'Valor Atende por Cor': 'sum'
     #'Valor Atende': 'sum'
-    #'Sugestao(Pedido)': 'first',
+    'Sugestao(Pedido)': 'first',
     #'Valor Atende por Cor(Distrib.)': 'sum',
     'Qnt. Cor(Distrib.)': 'sum'
     #'observacao': 'first'
@@ -330,7 +330,8 @@ def API(empresa, iniVenda, finalVenda, tiponota):
                             "codTipoNota":"03-tipoNota","dataPrevFat":"04-Prev.Original","dataPrevAtualizada":"05-Prev.Atualiz","codCliente":"06-codCliente",
                             "vlrSaldo":"08-vlrSaldo","entregas_Solicitadas":"09-Entregas Solic","entregas_enviadas":"10-Entregas Fat",
                             "ultimo_fat":"11-ultimo fat","qtdPecasFaturadas":"12-qtdPecas Fat","Qtd Atende":"13-Qtd Atende","QtdSaldo":"14- Qtd Saldo",
-                            "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"22-% qtd cor"}, inplace=True)
+                            "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"22-% qtd cor",
+                            "Sugestao(Pedido)":"18-Sugestao(Pedido)"}, inplace=True)
 
     pedidos = pedidos.sort_values(by='08-vlrSaldo', ascending=False)  # escolher como deseja classificar
     pedidos["10-Entregas Fat"].fillna(0,inplace=True)
