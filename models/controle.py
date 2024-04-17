@@ -73,7 +73,7 @@ def UltimaAtualizacao(classe, dataInicial):
 
 
 def ExcluirHistorico(diasDesejados):
-    conn = ConexaoPostgreMPL.conexao2()
+    conn = ConexaoPostgreMPL.conexao()
 
     deletar = "DELETE FROM pcp.controle_requisicao_csw crc " \
               "WHERE rotina = 'Portal Consulta OP' " \
