@@ -305,7 +305,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     "entregas_Solicitadas": 'first',
     "entregas_enviadas": 'first',
     "qtdPecasFaturadas": 'first',
-    'Saldo +Sugerido':'sum',
+    #'Saldo +Sugerido':'sum',
     "ultimo_fat": "first",
     "Qtd Atende": 'sum',
     'QtdSaldo': 'sum',
@@ -322,7 +322,10 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos['%'] = pedidos['%']*100
     pedidos['%'] = pedidos['%'].round(0)
     pedidos.rename(columns={'MARCA': '1-MARCA',"codPedido":"2-Pedido",
-                            "codTipoNota":"3-tipoNota"}, inplace=True)
+                            "codTipoNota":"3-tipoNota","dataPrevFat":"4-Prev.Original","dataPrevAtualizada":"4-Prev.Atualiz","codCliente":"5-codCliente",
+                            "vlrSaldo":"7-vlrSaldo","entregas_Solicitadas":"8-Entregas Solic","entregas_enviadas":"9-Entregas Fat",
+                            "ultimo_fat":"10-ultimo fat","qtdPecasFaturadas":"11-qtdPecas Fat","Qtd Atende":"12-Qtd Atende","QtdSaldo":"13- Qtd Saldo",
+                            "Qnt. Cor(Distrib.)":"20-Qnt Cor(Distrib.)"}, inplace=True)
 
     return pedidos
 
