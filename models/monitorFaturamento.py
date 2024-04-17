@@ -321,7 +321,7 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
     pedidos['%'] = pedidos['%']*100
     pedidos['%'] = pedidos['%'].round(0)
-
+    pedidos.rename(columns={'MARCA': '1-MARCA',"codPedido":"2-Pedido"}, inplace=True)
 
     return pedidos
 
