@@ -234,6 +234,13 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota):
         pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
+    pedidos['Entrgas Restantes'] = pedidos.apply(
+        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entrgas Restantes'], axis=1)
+
+    pedidos['Entrgas Restantes'] = pedidos['Entrgas Restantes'].astype(str)
+    dadosConfPer = ConfiguracaoPercEntregas()
+
+    pedidos = pd.merge(pedidos, dadosConfPer, on='Entrgas Restantes', how='left')
 
     pedidos.to_csv('meutesteMonitor.csv')
 
@@ -275,4 +282,12 @@ def API(empresa, iniVenda, finalVenda, tiponota):
 
 
 
+def ConfiguracaoPercEntregas():
+    conn = ConexaoPostgreMPL.conexao()
 
+    consultar = pd.read_sql(
+            """Select * from pcp.monitor_fat_dados """, conn)
+
+    conn.close()
+
+    return consultar
