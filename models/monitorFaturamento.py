@@ -184,7 +184,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
-    etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Indicador de % que fecha no pedido a nivel de grade ')#Registrar etapa no controlador
 
 
     # 18 - Encontrando a Marca desejada
@@ -269,6 +268,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,axis=1)
     pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0,axis=1)
 
+    etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'etapa 7')#Registrar etapa no controlador
+
 
     # Encontrando o numero restante de entregas
     pedidos['Entregas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
@@ -322,7 +323,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo)
     print(df_resultado)
     # renomeando a coluna do resultado
-    df_resultado = df_resultado.rename('Resultado')
+    df_resultado = df_resultado.rename(columns={'': 'Resultado'})
     pedidos = pd.merge(pedidos, df_resultado, left_on='Pedido||Prod.||Cor', right_index=True)
     pedidos['Distribuicao'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
                                                                                      and (row['Distribuicao'] == 'SIM' and row['Qtd Atende por Cor']>0 ) else row['Distribuicao'], axis=1 )
