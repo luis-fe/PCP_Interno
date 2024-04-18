@@ -121,6 +121,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,estruturasku,on='codProduto',how='left')
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
     print(pedidos['QtdSaldo'])
+    print(pedidos['qtdePedida'])
 
     pedidos['QtdSaldo'].fillna(0,inplace=True)
     pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
