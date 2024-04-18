@@ -37,7 +37,6 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
 
     consultar['qtdeSugerida'] = consultar['qtdeSugerida'].astype(int)
-    print(consultar)
 
     return consultar
 
@@ -120,9 +119,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
     pedidos = pd.merge(pedidos,estruturasku,on='codProduto',how='left')
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
-    print(pedidos['QtdSaldo'])
-    print(pedidos['qtdePedida'])
-
     pedidos['QtdSaldo'].fillna(0,inplace=True)
     pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
     etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Explodir os pedidos no nivel sku')#Registrar etapa no controlador
@@ -280,7 +276,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #18 - Encontrando no pedido o percentual que atende a distribuicao
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
-    print(pedidos['Saldo +Sugerido'])
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
     etapa18 = controle.salvarStatus_Etapa18(rotina, ip, etapa17, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
@@ -306,10 +301,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return 'True'
         else:
             return 'False'
-    print(pedidos)
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
     df_resultado.rename(columns={0: 'Resultado'}, inplace=True)
-    print(df_resultado)
 
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')#
     pedidos['Distribuicao2'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
