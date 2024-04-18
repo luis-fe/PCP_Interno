@@ -392,9 +392,11 @@ def API(empresa, iniVenda, finalVenda, tiponota):
 
     TotalQtdCor = pedidos['15-Qtd Atende p/Cor'].sum()
     TotalValorCor = pedidos['16-Valor Atende por Cor'].sum()
+    TotalValorCor = TotalValorCor.round(float,2)
 
     TotalQtdCordist = pedidos['21-Qnt Cor(Distrib.)'].sum()
     TotalValorCordist = pedidos['22-Valor Atende por Cor(Distrib.)'].sum()
+    TotalValorCordist = TotalValorCordist.round(float,2)
 
     dados = {
         '1-Total Qtd Atende por Cor': f'{TotalQtdCor} Pçs',
