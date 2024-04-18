@@ -273,8 +273,11 @@ def salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,netapa):
 
     conn = ConexaoPostgreMPL.conexao2()
 
-    etapa = str(etapa)
-    consulta = f'update "Reposicao".configuracoes.controle_requisicao_csw set etapa{netapa} = %s, "etapa{netapa}_tempo" = %s, "tempo_processamento(s)" = %s ' \
+    etapaUsar = str(etapa)
+    etapa = f'"etapa{etapaUsar}"'
+    etapaTempo = f'"etapa{netapa}_tempo"'
+
+    consulta = f'update "Reposicao".configuracoes.controle_requisicao_csw set {etapa} = %s, {etapaTempo} = %s, "tempo_processamento(s)" = %s ' \
                ' where  rotina = %s and inicio = %s and ip_origem = %s '
 
     cursor = conn.cursor()
