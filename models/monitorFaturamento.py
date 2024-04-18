@@ -64,6 +64,7 @@ def ObtendoEntregas_Enviados():
     consulta = pd.read_sql(BuscasAvancadas.Entregas_Enviados(), conn)
 
     conn.close()
+
     return consulta
 
 #Obtendo os Sku - estrutura
@@ -101,6 +102,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     # 3- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
     entregasFaturadas = ObtendoEntregas_Enviados()
     pedidos = pd.merge(pedidos,entregasFaturadas,on='codPedido',how='left')
+    pedidos['entregas_enviadas'].fillna(0,inplace=True)
     etapa3 = controle.salvarStatus_Etapa3(rotina, ip, etapa2, 'Consulta de Embarques Enviados do pedido') #Registrar etapa no controlador
 
 
