@@ -286,10 +286,11 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     condicoes = [(pedidos['% Fecha pedido'] >= pedidos['ValorMin']) &
                 (pedidos['% Fecha pedido'] <= pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
-                (pedidos['% Fecha pedido'] <= pedidos['ValorMax']),
+                (pedidos['% Fecha Acumulado'] <= pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
-                (pedidos['% Fecha pedido'] > pedidos['ValorMax']),
+                (pedidos['% Fecha Acumulado'] > pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] < pedidos['ValorMin'])
+                # adicionar mais condições aqui, se necessário
                 ]
     valores = ['SIM', 'SIM','SIM(Redistribuir)','NAO']# definir os valores correspondentes
     pedidos['Distribuicao'] = numpy.select(condicoes, valores, default=True)
