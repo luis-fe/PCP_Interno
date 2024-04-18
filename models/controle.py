@@ -288,31 +288,45 @@ def salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,netapa):
 
 
 def salvarStatus_Etapa1(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,1)
+    etapa = salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,1)
+    return etapa
 def salvarStatus_Etapa2(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,2)
+    etapa = salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,2)
+    return etapa
 def salvarStatus_Etapa3(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,3)
+    etapa = salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,3)
+    return etapa
 def salvarStatus_Etapa4(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,4)
+    etapa = salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,4)
+    return etapa
 def salvarStatus_Etapa5(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,5)
+    etapa = salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,5)
+    return etapa
 def salvarStatus_Etapa6(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,6)
+    etapa = salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,6)
+    return etapa
 def salvarStatus_Etapa7(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,7)
+    etapa = salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,7)
+    return etapa
 def salvarStatus_Etapa8(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,8)
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 8)
+    return etapa
 def salvarStatus_Etapa9(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,9)
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 9)
+    return etapa
 def salvarStatus_Etapa10(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,10)
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 10)
+    return etapa
 def salvarStatus_Etapa11(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,11)
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 11)
+    return etapa
 def salvarStatus_Etapa12(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,12)
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 12)
+    return etapa
 def salvarStatus_Etapa13(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,13)
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 13)
+    return etapa
 def salvarStatus_Etapa14(rotina, ip,datahoraInicio,etapa):
-    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,14)
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 14)
+    return etapa
 
