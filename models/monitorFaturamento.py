@@ -323,7 +323,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index(name='Resultado')
     print(df_resultado)
 
-    pedidos = pd.merge(pedidos, df_resultado, left_on='Pedido||Prod.||Cor', right_index=True)
+    pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')
     pedidos['Distribuicao2'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
                                                                                      and (row['Distribuicao'] == 'SIM' and row['Qtd Atende por Cor']>0 ) else row['Distribuicao'], axis=1 )
 
