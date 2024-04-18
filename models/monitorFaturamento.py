@@ -385,12 +385,26 @@ def API(empresa, iniVenda, finalVenda, tiponota):
     pedidos["09-Entregas Solic"].fillna(0, inplace=True)
     pedidos["11-ultimo fat"].fillna('-', inplace=True)
     pedidos["05-Prev.Atualiz"].fillna('-', inplace=True)
+    pedidos["Sugestao(Pedido)"].fillna('-', inplace=True)
 
     pedidos["16-Valor Atende por Cor"] =pedidos["16-Valor Atende por Cor"].round(2)
     pedidos["22-Valor Atende por Cor(Distrib.)"] = pedidos["22-Valor Atende por Cor(Distrib.)"].round(2)
 
+    TotalQtdCor = pedidos['15-Qtd Atende p/Cor'].sum()
+    TotalValorCor = pedidos['16-Valor Atende por Cor'].sum()
 
-    return pedidos
+    TotalQtdCordist = pedidos['15-Qtd Atende p/Cor'].sum()
+    TotalValorCordist = pedidos['16-Valor Atende por Cor'].sum()
+
+    dados = {
+        '1-Total Qtd Atende por Cor': f'{TotalQtdCor} Pçs',
+        '2-Total Valor Valor Atende por Cor': f'{TotalValorCor}',
+        '3-Total Qtd Cor(Distrib.)': f'{TotalQtdCordist} Pçs',
+        '4-Total Valor Atende por Cor(Distrib.)': f'{TotalValorCordist}',
+        '6 -Detalhamento': pedidos.to_dict(orient='records')
+
+    }
+    return pd.DataFrame([dados])
 
 
 
