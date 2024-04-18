@@ -253,8 +253,7 @@ def distinctStatus(rotina):
         return 'em andamento'
     else:
         return 'nao iniciado'
-
-def salvarStatus_Etapa1(rotina, ip,datahoraInicio,etapa):
+def salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,netapa):
     datahorafinal = obterHoraAtual()
 
     # Converte as strings para objetos datetime
@@ -274,7 +273,7 @@ def salvarStatus_Etapa1(rotina, ip,datahoraInicio,etapa):
 
     conn = ConexaoPostgreMPL.conexao2()
 
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa1 = %s, "etapa1_tempo" = %s, "tempo_processamento(s)" = %s ' \
+    consulta = f'update "Reposicao".configuracoes.controle_requisicao_csw set etapa{netapa} = %s, "etapa{netapa}_tempo" = %s, "tempo_processamento(s)" = %s ' \
                ' where  rotina = %s and inicio = %s and ip_origem = %s '
 
     cursor = conn.cursor()
@@ -287,235 +286,33 @@ def salvarStatus_Etapa1(rotina, ip,datahoraInicio,etapa):
 
     return datahorafinal
 
+
+def salvarStatus_Etapa1(rotina, ip,datahoraInicio,etapa):
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,1)
 def salvarStatus_Etapa2(rotina, ip,datahoraInicio,etapa):
-    datahorafinal = obterHoraAtual()
-
-    # Converte as strings para objetos datetime
-    data1_obj = datetime.strptime(datahoraInicio, "%d/%m/%Y %H:%M:%S.%f")
-    data2_obj = datetime.strptime(datahorafinal,  "%d/%m/%Y %H:%M:%S.%f")
-
-    # Calcula a diferença entre as datas
-    diferenca = data1_obj - data2_obj
-
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
-    # Obtém a diferença total em segundos
-    diferenca_total_segundos = diferenca.total_seconds()
-    tempoProcessamento = float(diferenca_total_segundos)
-
-
-    conn = ConexaoPostgreMPL.conexao2()
-
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa2 = %s, "etapa2_tempo" = %s, "tempo_processamento(s)" = ( %s + "tempo_processamento(s)" ) ' \
-               ' where  rotina = %s and status = %s and ip_origem = %s '
-
-    cursor = conn.cursor()
-
-    cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,'em andamento', ip,  ))
-    conn.commit()
-    cursor.close()
-
-    conn.close()
-
-    return datahorafinal
-
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,2)
 def salvarStatus_Etapa3(rotina, ip,datahoraInicio,etapa):
-    datahorafinal = obterHoraAtual()
-
-    # Converte as strings para objetos datetime
-    data1_obj = datetime.strptime(datahoraInicio, "%d/%m/%Y %H:%M:%S.%f")
-    data2_obj = datetime.strptime(datahorafinal,  "%d/%m/%Y %H:%M:%S.%f")
-
-    # Calcula a diferença entre as datas
-    diferenca = data1_obj - data2_obj
-
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
-    # Obtém a diferença total em segundos
-    diferenca_total_segundos = diferenca.total_seconds()
-    tempoProcessamento = float(diferenca_total_segundos)
-
-
-    conn = ConexaoPostgreMPL.conexao2()
-
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa3 = %s, "etapa3_tempo" = %s, "tempo_processamento(s)" = ( %s + "tempo_processamento(s)" ) ' \
-               ' where  rotina = %s and status = %s and ip_origem = %s '
-
-    cursor = conn.cursor()
-
-    cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,'em andamento', ip,  ))
-    conn.commit()
-    cursor.close()
-
-    conn.close()
-
-    return datahorafinal
-
-
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,3)
 def salvarStatus_Etapa4(rotina, ip,datahoraInicio,etapa):
-    datahorafinal = obterHoraAtual()
-
-    # Converte as strings para objetos datetime
-    data1_obj = datetime.strptime(datahoraInicio, "%d/%m/%Y %H:%M:%S.%f")
-    data2_obj = datetime.strptime(datahorafinal,  "%d/%m/%Y %H:%M:%S.%f")
-
-    # Calcula a diferença entre as datas
-    diferenca = data1_obj - data2_obj
-
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
-    # Obtém a diferença total em segundos
-    diferenca_total_segundos = diferenca.total_seconds()
-    tempoProcessamento = float(diferenca_total_segundos)
-
-
-    conn = ConexaoPostgreMPL.conexao2()
-
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa4 = %s, "etapa4_tempo" = %s, "tempo_processamento(s)" = ( %s + "tempo_processamento(s)" ) ' \
-               ' where  rotina = %s and status = %s and ip_origem = %s '
-
-    cursor = conn.cursor()
-
-    cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,'em andamento', ip,  ))
-    conn.commit()
-    cursor.close()
-
-    conn.close()
-
-    return datahorafinal
-
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,4)
 def salvarStatus_Etapa5(rotina, ip,datahoraInicio,etapa):
-    datahorafinal = obterHoraAtual()
-
-    # Converte as strings para objetos datetime
-    data1_obj = datetime.strptime(datahoraInicio, "%d/%m/%Y %H:%M:%S.%f")
-    data2_obj = datetime.strptime(datahorafinal,  "%d/%m/%Y %H:%M:%S.%f")
-
-    # Calcula a diferença entre as datas
-    diferenca = data1_obj - data2_obj
-
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
-    # Obtém a diferença total em segundos
-    diferenca_total_segundos = diferenca.total_seconds()
-    tempoProcessamento = float(diferenca_total_segundos)
-
-
-    conn = ConexaoPostgreMPL.conexao2()
-
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa5 = %s, "etapa5_tempo" = %s, "tempo_processamento(s)" = ( %s + "tempo_processamento(s)" ) ' \
-               ' where  rotina = %s and status = %s and ip_origem = %s '
-
-    cursor = conn.cursor()
-
-    cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,'em andamento', ip,  ))
-    conn.commit()
-    cursor.close()
-
-    conn.close()
-
-    return datahorafinal
-
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,5)
 def salvarStatus_Etapa6(rotina, ip,datahoraInicio,etapa):
-    datahorafinal = obterHoraAtual()
-
-    # Converte as strings para objetos datetime
-    data1_obj = datetime.strptime(datahoraInicio, "%d/%m/%Y %H:%M:%S.%f")
-    data2_obj = datetime.strptime(datahorafinal,  "%d/%m/%Y %H:%M:%S.%f")
-
-    # Calcula a diferença entre as datas
-    diferenca = data1_obj - data2_obj
-
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
-    # Obtém a diferença total em segundos
-    diferenca_total_segundos = diferenca.total_seconds()
-    tempoProcessamento = float(diferenca_total_segundos)
-
-
-    conn = ConexaoPostgreMPL.conexao2()
-
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa6 = %s, "etapa6_tempo" = %s, "tempo_processamento(s)" = ( %s + "tempo_processamento(s)" ) ' \
-               ' where  rotina = %s and status = %s and ip_origem = %s '
-
-    cursor = conn.cursor()
-
-    cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,'em andamento', ip,  ))
-    conn.commit()
-    cursor.close()
-
-    conn.close()
-
-    return datahorafinal
-
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,6)
 def salvarStatus_Etapa7(rotina, ip,datahoraInicio,etapa):
-    datahorafinal = obterHoraAtual()
-
-    # Converte as strings para objetos datetime
-    data1_obj = datetime.strptime(datahoraInicio, "%d/%m/%Y %H:%M:%S.%f")
-    data2_obj = datetime.strptime(datahorafinal,  "%d/%m/%Y %H:%M:%S.%f")
-
-    # Calcula a diferença entre as datas
-    diferenca = data1_obj - data2_obj
-
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
-    # Obtém a diferença total em segundos
-    diferenca_total_segundos = diferenca.total_seconds()
-    tempoProcessamento = float(diferenca_total_segundos)
-
-
-    conn = ConexaoPostgreMPL.conexao2()
-
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa7 = %s, "etapa7_tempo" = %s, "tempo_processamento(s)" = ( %s + "tempo_processamento(s)" ) ' \
-               ' where  rotina = %s and status = %s and ip_origem = %s '
-
-    cursor = conn.cursor()
-
-    cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,'em andamento', ip,  ))
-    conn.commit()
-    cursor.close()
-
-    conn.close()
-
-    return datahorafinal
-
-
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,7)
 def salvarStatus_Etapa8(rotina, ip,datahoraInicio,etapa):
-    datahorafinal = obterHoraAtual()
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,8)
+def salvarStatus_Etapa9(rotina, ip,datahoraInicio,etapa):
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,9)
+def salvarStatus_Etapa10(rotina, ip,datahoraInicio,etapa):
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,10)
+def salvarStatus_Etapa11(rotina, ip,datahoraInicio,etapa):
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,11)
+def salvarStatus_Etapa12(rotina, ip,datahoraInicio,etapa):
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,12)
+def salvarStatus_Etapa13(rotina, ip,datahoraInicio,etapa):
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,13)
+def salvarStatus_Etapa14(rotina, ip,datahoraInicio,etapa):
+    salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,14)
 
-    # Converte as strings para objetos datetime
-    data1_obj = datetime.strptime(datahoraInicio, "%d/%m/%Y %H:%M:%S.%f")
-    data2_obj = datetime.strptime(datahorafinal,  "%d/%m/%Y %H:%M:%S.%f")
-
-    # Calcula a diferença entre as datas
-    diferenca = data1_obj - data2_obj
-
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
-    # Obtém a diferença total em segundos
-    diferenca_total_segundos = diferenca.total_seconds()
-    tempoProcessamento = float(diferenca_total_segundos)
-
-
-    conn = ConexaoPostgreMPL.conexao2()
-
-    consulta = 'update "Reposicao".configuracoes.controle_requisicao_csw set etapa8 = %s, "etapa8_tempo" = %s, "tempo_processamento(s)" = ( %s + "tempo_processamento(s)" ) ' \
-               ' where  rotina = %s and status = %s and ip_origem = %s '
-
-    cursor = conn.cursor()
-
-    cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,'em andamento', ip,  ))
-    conn.commit()
-    cursor.close()
-
-    conn.close()
-
-    return datahorafinal
