@@ -282,6 +282,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     etapa18 = controle.salvarStatus_Etapa18(rotina, ip, etapa17, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
 
     #19 - Encontrando os valores que considera na ditribuicao
+    pedidos['ValorMin'] = pedidos['ValorMin'].astype(float)
+    pedidos['ValorMax'] = pedidos['ValorMax'].astype(float)
     condicoes = [(pedidos['% Fecha pedido'] >= pedidos['ValorMin']) &
                 (pedidos['% Fecha pedido'] <= pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
