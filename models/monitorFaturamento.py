@@ -281,8 +281,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
 
-
-
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
         pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
