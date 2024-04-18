@@ -37,7 +37,7 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
 
     consultar['qtdeSugerida'] = consultar['qtdeSugerida'].astype(int)
-
+    print(consultar)
 
     return consultar
 
