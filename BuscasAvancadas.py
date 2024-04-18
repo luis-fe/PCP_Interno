@@ -214,6 +214,17 @@ def Entregas_Enviados():
                                       not in ('200','800','300','600','700','511') and situacao = 2 and codpedido> 0 and dataFaturamento > '2020-01-01' group by codPedido order by codPedido desc"""
     return consulta
 
+def CapaSugestaoSituacao():
+
+        consulta = """SELECT c.codPedido,situacaoSugestao as codSitSituacao ,
+    case when (situacaoSugestao = 2 and dataHoraListagem>0) then 'Sugerido(Em Conferencia)' 
+    WHEN situacaoSugestao = 0 then 'Sugerido(Gerado)' WHEN situacaoSugestao = 2 then 'Sugerido(Em Conferencia)' 
+    WHEN situacaoSugestao = 1 then 'Sugerido(Gerado)' 
+    else '' end StatusSugestao
+    FROM ped.SugestaoPed c WHERE c.codEmpresa = 1  """
+
+        return consulta
+
 def ValorDosItensPedido():
     consulta = """select top 350000 item.codPedido, 
     item.CodItem as seqCodItem, 

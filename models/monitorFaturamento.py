@@ -33,8 +33,9 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     consultar['qtdeSugerida'].fillna(0,inplace=True)
     conn.close()
 
-    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida','StatusSugestao','PrecoLiquido']]
-    consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
+    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
+                                   'PrecoLiquido']]
+    #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
 
     consultar['qtdeSugerida'] = consultar['qtdeSugerida'].astype(int)
 
@@ -76,6 +77,15 @@ def EstruturaSku():
 
     return consultar
 
+def CapaSugestao():
+    conn = ConexaoCSW.Conexao()
+    consulta = pd.read_sql(BuscasAvancadas.CapaSugestaoSituacao(), conn)
+
+    conn.close()
+
+    return consulta
+
+
 def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio):
     #Convertendo tipo de nota em string "1,2, 3, .."
 
@@ -87,6 +97,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     # 1 - Carregar Os pedidos (etapa 1)
     pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
+    statusSugestao = CapaSugestao()
+    pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
 
@@ -432,3 +444,26 @@ def ConfiguracaoCategoria():
     conn.close()
 
     return consultar
+
+
+#CROD DA TABELA MAX/MIN POR EMBARQUE:
+
+def ConsultaConfiguracaoDistribuicao():
+    conn = ConexaoPostgreMPL.conexao()
+
+    consultar = pd.read_sql(
+            """Select * from pcp.monitor_fat_dados """, conn)
+
+    conn.close()
+    consultar['Entregas Restantes'] = consultar['Entregas Restantes'].astype(str)
+
+    return consultar
+
+def Update(arrayEmbarque, arrayMIN, arrayMAX):
+    conn = ConexaoPostgreMPL.conexao()
+
+    update = """update """
+
+    conn.close()
+
+    return pd.DataFrame({'Mensagem':'Alerado com sucesso','status':True})
