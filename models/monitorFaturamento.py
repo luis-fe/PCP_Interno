@@ -329,22 +329,28 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
                                                                                      and (row['Distribuicao'] == 'SIM' and row['Qtd Atende por Cor']>0 ) else row['Distribuicao'], axis=1 )
 
 
+    #Obtendo valor atente por cor
     pedidos['Valor Atende por Cor'] = pedidos['Qtd Atende por Cor'] * pedidos['PrecoLiquido']
-    etapa8 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Obtendo valor atente por cor ')#Registrar etapa no controlador
+    pedidos['Valor Atende por Cor'] =pedidos['Valor Atende por Cor'].astype(float).round(2)
+    etapa12 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Obtendo valor atente por cor ')#Registrar etapa no controlador
 
 
 
     # Identificando a Quantidade Distribuida
-    pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(
-        lambda row: row['Qtd Atende por Cor'] if row['Distribuicao2'] == 'SIM' else 0, axis=1)
+    pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Distribuicao2'] == 'SIM' else 0, axis=1)
     pedidos['Qnt. Cor(Distrib.)'] = pedidos['Qnt. Cor(Distrib.)'].astype(int)
 
-    pedidos['Valor Atende por Cor'] =pedidos['Valor Atende por Cor'].astype(float).round(2)
+
+
     pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao2'] == 'SIM' else 0, axis=1)
     pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
+    etapa13 = controle.salvarStatus_Etapa8(rotina, ip, etapa12, 'Identificando a Qnt. Cor(Distrib.)')#Registrar etapa no controlador
 
+
+    #Salvando os dados gerados em csv
     pedidos.to_csv('meutesteMonitor.csv')
+    etapa14 = controle.salvarStatus_Etapa8(rotina, ip, etapa13, 'Salvando os dados gerados em csv')#Registrar etapa no controlador
 
 
 def API(empresa, iniVenda, finalVenda, tiponota):
