@@ -99,6 +99,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
+    pedidos["StatusSugestao"].fillna('0', inplace=True)
+    pedidos['codSitSituacao'] = pedidos.apply(lambda row: '1-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '2-FimFila')
     etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
 
@@ -151,7 +153,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     # 8 -# Clasificando o Dataframe para analise
-    pedidos = pedidos.sort_values(by='vlrSaldo', ascending=False)  # escolher como deseja classificar
+    pedidos = pedidos.sort_values(by=['codSitSituacao','vlrSaldo'], ascending=False)  # escolher como deseja classificar
     etapa8 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Clasificando o Dataframe para analise')#Registrar etapa no controlador
 
 
