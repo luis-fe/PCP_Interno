@@ -285,8 +285,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
 
-    pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
-        pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
+    pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
 
@@ -294,12 +293,11 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     condicoes = [(pedidos['% Fecha pedido'] >= pedidos['ValorMin']) &
                 (pedidos['% Fecha pedido'] <= pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
-                (pedidos['% Fecha Acumulado'] <= pedidos['ValorMax']),
+                (pedidos['% Fecha pedido'] <= pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
-                (pedidos['% Fecha Acumulado'] > pedidos['ValorMax']),
+                (pedidos['% Fecha pedido'] > pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] < pedidos['ValorMin'])
-                # adicionar mais condições aqui, se necessário
-                ]
+                ]#
 
     # definir os valores correspondentes
     valores = ['SIM', 'SIM','SIM(Redistribuir)','NAO']
@@ -316,9 +314,10 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     # atribuir os valores com base nas condições
-    pedidos['Distribuicao'] = numpy.select(condicoes, valores, default='NAO')
+    pedidos['Distribuicao'] = numpy.select(condicoes, valores, default=True)
     # aplicando a função para cada grupo
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo)
+    print(df_resultado)
     # renomeando a coluna do resultado
     df_resultado = df_resultado.rename('Resultado')
     pedidos = pd.merge(pedidos, df_resultado, left_on='Pedido||Prod.||Cor', right_index=True)
