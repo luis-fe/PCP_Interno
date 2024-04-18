@@ -305,7 +305,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     df_resultado.rename(columns={0: 'Resultado'}, inplace=True)
 
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')#
-    pedidos['Distribuicao2'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
+    pedidos['Distribuicao'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
                                                                                      and (row['Distribuicao'] == 'SIM' and row['Qtd Atende por Cor']>0 ) else row['Distribuicao'], axis=1 )
     etapa19 = controle.salvarStatus_Etapa19(rotina, ip, etapa18, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
 
@@ -318,13 +318,13 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #21 Identificando a Quantidade Distribuida
-    pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Distribuicao2'] == 'SIM' else 0, axis=1)
+    pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
     pedidos['Qnt. Cor(Distrib.)'] = pedidos['Qnt. Cor(Distrib.)'].astype(int)
     etapa21 = controle.salvarStatus_Etapa21(rotina, ip, etapa20, 'Obtendo valor atente por cor')#Registrar etapa no controlador
 
 
     #22 Obtendo valor atente por cor Distribuida
-    pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao2'] == 'SIM' else 0, axis=1)
+    pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
     pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
     etapa22 = controle.salvarStatus_Etapa22(rotina, ip, etapa21, 'Obtendo valor atente por cor Distribuida')#Registrar etapa no controlador
