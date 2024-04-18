@@ -263,9 +263,6 @@ def salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,netapa):
     # Calcula a diferença entre as datas
     diferenca = data1_obj - data2_obj
 
-    # Obtém a diferença em dias como um número inteiro
-    diferenca_em_dias = diferenca.days
-
     # Obtém a diferença total em segundos
     diferenca_total_segundos = diferenca.total_seconds()
     tempoProcessamento = float(diferenca_total_segundos)
@@ -277,9 +274,10 @@ def salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,netapa):
     etapaRegistro = f'"etapa{etapaUsar}"'
     etapaTempo = f'"etapa{etapaUsar}_tempo"'
 
+
     consulta = f'update "Reposicao".configuracoes.controle_requisicao_csw set {etapaRegistro} = %s, {etapaTempo} = %s , "tempo_processamento(s)" = %s ' \
                ' where  rotina = %s and inicio = %s and ip_origem = %s '
-
+    print(consulta)
     cursor = conn.cursor()
 
     cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina,datahoraInicio, ip,  ))
