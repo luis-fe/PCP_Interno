@@ -95,3 +95,32 @@ def ConsultaConfiguracaoDistribuicao():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+@monitorPreFaturamento_routes.route('/pcp/api/UpdateConfiguracaoDistribuicao', methods=['POST'])
+@token_required
+def UpdateConfiguracaoDistribuicao():
+
+    # Obtém os dados do corpo da requisição (JSON)
+    codigo = request.get_json()
+    arrayEmbarque = codigo.get('arrayEmbarque')
+    arrayMIN = codigo.get('arrayMIN')
+    arrayMAX = codigo.get('arrayMAX')
+    print(arrayEmbarque)
+
+    rotina = 'UpdateConfiguracaoDistribuicao'
+    client_ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
+    controle.InserindoStatus(rotina, client_ip, datainicio)
+    usuarios = monitorFaturamento.Update(arrayEmbarque, arrayMIN, arrayMAX)
+    controle.salvarStatus(rotina, client_ip, datainicio)
+
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)

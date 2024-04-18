@@ -464,7 +464,24 @@ def ConsultaConfiguracaoDistribuicao():
 def Update(arrayEmbarque, arrayMIN, arrayMAX):
     conn = ConexaoPostgreMPL.conexao()
 
-    update = """update """
+
+    for i in arrayEmbarque:
+
+        embarque = arrayEmbarque[i]
+        min =arrayMIN[i]
+        max =arrayMAX[i]
+
+
+        update = """update pcp.monitor_fat_dados 
+        set "Entregas Restantes" = %s , "ValorMin" = %s ,"ValorMax" = %s  
+        where "Entregas Restantes" = %s """
+
+        cursor = conn.cursor()
+        cursor.execute(update,(embarque,min,max,embarque))
+        conn.commit()
+        cursor.close()
+
+
 
     conn.close()
 
