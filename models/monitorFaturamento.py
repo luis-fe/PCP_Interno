@@ -262,6 +262,11 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     # Trazendo as configuracoes de % configurado e repicando no dataFrame
     dadosConfPer = ConfiguracaoPercEntregas()
+    # Encontrando o numero restante de entregas
+    pedidos['Entregas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
+    pedidos['Entregas Restantes'] = pedidos.apply(
+        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
+    pedidos['Entregas Restantes'] = pedidos['Entregas Restantes'].astype(str)
     pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
 
     # Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria
@@ -274,11 +279,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria')#Registrar etapa no controlador
 
 
-    # Encontrando o numero restante de entregas
-    pedidos['entregas_Solicitadas'].fillna(0,inplace=True)
-    pedidos['Entregas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
-    pedidos['Entregas Restantes'] = pedidos.apply(
-        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
+
 
 
 
@@ -289,7 +290,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Entregas Restantes'] = pedidos.apply(
         lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
 
-    pedidos['Entregas Restantes'] = pedidos['Entregas Restantes'].astype(str)
 
 
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
