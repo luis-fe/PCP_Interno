@@ -277,7 +277,6 @@ def salvarStatus_porEtapas(rotina, ip,datahoraInicio,etapa,netapa):
 
     consulta = f'update "Reposicao".configuracoes.controle_requisicao_csw set {etapaRegistro} = %s, {etapaTempo} = %s , "tempo_processamento(s)" = %s ' \
                " where  rotina = %s  and ip_origem = %s and status = 'em andamento' "
-    print(consulta)
     cursor = conn.cursor()
 
     cursor.execute(consulta,(etapa, tempoProcessamento,tempoProcessamento,rotina, ip,  ))
