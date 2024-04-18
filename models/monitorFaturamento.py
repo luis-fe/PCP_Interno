@@ -100,7 +100,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     pedidos["StatusSugestao"].fillna('0', inplace=True)
-    pedidos['codSitSituacao'] = pedidos.apply(lambda row: '1-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '2-FimFila')
+    pedidos['codSitSituacao'] = pedidos.apply(lambda row: '1-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '2-FimFila',axis=1)
     etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
 
