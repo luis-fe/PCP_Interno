@@ -87,6 +87,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     # 1 - Carregar Os pedidos (etapa 1)
     pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
+    etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
 
     # 2 - Filtrar Apenas Pedidos Não Bloqueados
@@ -94,18 +95,21 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,pedidosBloqueados,on='codPedido',how='left')
     pedidos['situacaobloq'].fillna('Liberado',inplace=True)
     pedidos = pedidos[pedidos['situacaobloq'] == 'Liberado']
-    etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'carregar capa dos pedidos do csw +FiltroPedidos N/Bloqueados') #Registrar etapa no controlador
+    etapa2 = controle.salvarStatus_Etapa2(rotina, ip, etapa1, ' Filtrar Apenas Pedidos Não Bloqueados') #Registrar etapa no controlador
 
 
     # 3- Consulta de Embarques Enviados do pedido , utilizando a consulta de notas fiscais do ERP
     entregasFaturadas = ObtendoEntregas_Enviados()
     pedidos = pd.merge(pedidos,entregasFaturadas,on='codPedido',how='left')
+    etapa3 = controle.salvarStatus_Etapa3(rotina, ip, etapa2, 'Consulta de Embarques Enviados do pedido') #Registrar etapa no controlador
+
 
     # 4- Consulta de Embarques Solicitado pelo Cliente , informacao extraida do ERP
     entregasSolicitadas = ObtendoEntregasSolicitadas()
     pedidos = pd.merge(pedidos,entregasSolicitadas,on='codPedido',how='left')
+    pedidos['entregas_Solicitadas'].fillna(0,inplace=True)
+    etapa4 = controle.salvarStatus_Etapa4(rotina, ip, etapa3, 'Consulta de Embarques Solicitado pelo Cliente') #Registrar etapa no controlador
 
-    etapa2 = controle.salvarStatus_Etapa2(rotina, ip, etapa1, 'encontrar N Entregas') #Registrar etapa no controlador
 
     # 5 - Explodir os pedidos no nivel sku
     sku = Monitor_nivelSku(iniVenda)
@@ -113,92 +117,80 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         # 5.1 - Considerando somente a qtdePedida maior que 0
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
     pedidos = pd.merge(pedidos,estruturasku,on='codProduto',how='left')
-    etapa3 = controle.salvarStatus_Etapa3(rotina, ip, etapa2, 'Explodir os pedidos no nivel sku') #Registrar etapa no controlador
+    pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
+    pedidos['QtdSaldo'].fillna(0,inplace=True)
+    pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
+    etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Explodir os pedidos no nivel sku')#Registrar etapa no controlador
+
 
 
     # 6 Consultando n banco de dados do ERP o saldo de estoque
     estoque = EstoqueSKU()
     pedidos = pd.merge(pedidos,estoque,on='codProduto',how='left')
+    etapa6 = controle.salvarStatus_Etapa6(rotina, ip, etapa5, 'Consultando n banco de dados do ERP o saldo de estoque')#Registrar etapa no controlador
 
-
-
-    # 8 -     # Clasificando o Dataframe para analise
-    pedidos = pedidos.sort_values(by='vlrSaldo', ascending=False)  # escolher como deseja classificar
-    pedidos = pedidos[pedidos['vlrSaldo'] >0]
-
-
-    # 9 - Obtendo o saldo sku por sku e filtrando os pedidos que ficaram com saldo  zerado
-    pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
-    etapa4 = controle.salvarStatus_Etapa4(rotina, ip, etapa3, 'Obtendo o saldo sku por sku') #Registrar etapa no controlador
-
-
-    #10 Contando o numero de ocorrencias acumulado do sku no DataFrame
-    pedidos['Sku_acumula'] = pedidos.groupby('codProduto').cumcount() + 1
-
-
-    #11 Trantando os valores vazios na qtdeSugerida
-    #pedidos['qtdeSugerida'] = pedidos['qtdeSugerida'].replace('', numpy.nan).fillna('0')
-
-    #12 Calculando a nova data de Previsao do pedido
+    #7 Calculando a nova data de Previsao do pedido
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
     pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] =  pedidos['dataPrevAtualizada'] + pedidos['dias_a_adicionar']
+    pedidos['dataPrevAtualizada'].fillna('-',inplace=True)
+    etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Calculando a nova data de Previsao do pedido')#Registrar etapa no controlador
 
 
-    #13.1 Obtendo o Estoque Liquido para o calculo da necessidade
+    # 8 -# Clasificando o Dataframe para analise
+    pedidos = pedidos.sort_values(by='vlrSaldo', ascending=False)  # escolher como deseja classificar
+    etapa8 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Clasificando o Dataframe para analise')#Registrar etapa no controlador
+
+
+
+    #9 Contando o numero de ocorrencias acumulado do sku no DataFrame
+    pedidos = pedidos[pedidos['vlrSaldo'] > 0]
+    pedidos['Sku_acumula'] = pedidos.groupby('codProduto').cumcount() + 1
+    etapa9 = controle.salvarStatus_Etapa9(rotina, ip, etapa8, 'Contando o numero de ocorrencias acumulado do sku')#Registrar etapa no controlador
+
+
+    #10.1 Obtendo o Estoque Liquido para o calculo da necessidade
     pedidos['EstoqueLivre'] = pedidos['estoqueAtual']-pedidos['estReservPedido']
-    #13.2 Obtendo a necessidade de estoque
+    #10.2 Obtendo a necessidade de estoque
     pedidos['Necessidade'] = pedidos.groupby('codProduto')['QtdSaldo'].cumsum()
-    #13.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
+    #10.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
-    etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Obtendo o Estoque Liquido para o calculo da necessidade')#Registrar etapa no controlador
+    pedidos['Qtd Atende'] = pedidos['Qtd Atende'].astype(int)
+    etapa10 = controle.salvarStatus_Etapa10(rotina, ip, etapa9, 'Calculando a necessidade por sku')#Registrar etapa no controlador
 
 
-    #14 Separando os pedidos a nivel pedido||engenharia||cor
-    pedidos["Pedido||Prod.||Cor"] = pedidos['codPedido'].str.cat([pedidos['codItemPai'], pedidos['codCor']],
-                                                                       sep='||')
-
-
-    #15  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
+    #11.1 Separando os pedidos a nivel pedido||engenharia||cor
+    pedidos["Pedido||Prod.||Cor"] = pedidos['codPedido'].str.cat([pedidos['codItemPai'], pedidos['codCor']],sep='||')
+    #11.2  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
     pedidos['Saldo +Sugerido'] = pedidos['QtdSaldo']+pedidos['qtdeSugerida']
     pedidos['Saldo Grade'] = pedidos.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
+    etapa11 = controle.salvarStatus_Etapa11(rotina, ip, etapa10, 'necessidade a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
 
-    #16 otendo a Qtd que antende para o pedido baseado no estoque e na grade
+
+    #12 obtendo a Qtd que antende para o pedido baseado no estoque e na grade
     pedidos['X QTDE ATENDE'] = pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
     pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
-    etapa6 = controle.salvarStatus_Etapa6(rotina, ip, etapa5, 'otendo a Qtd que antende para o pedido baseado no estoque e na grade')#Registrar etapa no controlador
+    pedidos['Qtd Atende por Cor'] = pedidos['Qtd Atende por Cor'].astype(int)
+    etapa12 = controle.salvarStatus_Etapa12(rotina, ip, etapa11, 'obtendo a Qtd que antende para o pedido baseado no estoque e na grade')#Registrar etapa no controlador
 
 
-    pedidos = pedidos.sort_values(by=['dataPrevAtualizada', 'Pedido||Prod.||Cor'],
-                                        ascending=[True, True])  # escolher como deseja classificar
-
-
-    #17- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
-    pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')) / (
-        pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
-
+    #13- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
+    pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')) / ( pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
     pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
-
-    pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()) / (
-        pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
+    pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()) / (pedidos.groupby('codPedido')['QtdSaldo'].transform('sum'))
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
+    etapa13 = controle.salvarStatus_Etapa13(rotina, ip, etapa12, ' Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
 
 
-    # 18 - Encontrando a Marca desejada
+    # 14 - Encontrando a Marca desejada
     pedidos['codItemPai'] = pedidos['codItemPai'].astype(str)
     pedidos['MARCA'] = pedidos['codItemPai'].apply(lambda x: x[:3])
-    pedidos['MARCA'] = numpy.where(
-        (pedidos['codItemPai'].str[:3] == '102') | (pedidos['codItemPai'].str[:3] == '202'), 'M.POLLO', 'PACO')
+    pedidos['MARCA'] = numpy.where((pedidos['codItemPai'].str[:3] == '102') | (pedidos['codItemPai'].str[:3] == '202'), 'M.POLLO', 'PACO')
+    etapa14 = controle.salvarStatus_Etapa14(rotina, ip, etapa13, ' Encontrando a Marca desejada')#Registrar etapa no controlador
 
-
-    pedidos['QtdSaldo'].fillna(0,inplace=True)
-    pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
-    pedidos['Qtd Atende por Cor'] = pedidos['Qtd Atende por Cor'].astype(int)
-    pedidos['Qtd Atende'] = pedidos['Qtd Atende'].astype(int)
-    pedidos['dataPrevAtualizada'] = pedidos['dataPrevAtualizada'].dt.strftime('%d/%m/%Y')
-
+    #15
     # função para verificar a presença de "casa" no valor da coluna "produto"
     def categorizar_produto(produto):
         if 'JAQUETA' in produto:
@@ -255,46 +247,38 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return 'ACESSORIOS'
         else:
             return '-'
+   # 15 - Encontrando a categoria do produto
     try:
         pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
     except:
         pedidos['CATEGORIA'] = '-'
+    etapa15 = controle.salvarStatus_Etapa15(rotina, ip, etapa14, ' Encontrando a categoria do produto')#Registrar etapa no controlador
 
-    # Trazendo as configuracoes de % configurado e repicando no dataFrame
+    # 16- Trazendo as configuracoes de % deistribuido configurado
     dadosConfPer = ConfiguracaoPercEntregas()
-    # Encontrando o numero restante de entregas
+    # 16.1 Encontrando o numero restante de entregas
     pedidos['Entregas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
-    pedidos['Entregas Restantes'] = pedidos.apply(
-        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
+    pedidos['Entregas Restantes'] = pedidos.apply(lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
     pedidos['Entregas Restantes'] = pedidos['Entregas Restantes'].astype(str)
     pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
+    etapa16 = controle.salvarStatus_Etapa16(rotina, ip, etapa15, ' Encontrando a categoria do produto')#Registrar etapa no controlador
 
-    # Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria
+    # 17 - Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria
     dadosCategoria = ConfiguracaoCategoria()
     dadosCategoria = dadosCategoria.rename(columns={'Opção': 'CATEGORIA'})
     pedidos = pd.merge(pedidos,dadosCategoria,on='CATEGORIA',how='left')
     pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,axis=1)
     pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0,axis=1)
-
-    etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria')#Registrar etapa no controlador
-
+    etapa17 = controle.salvarStatus_Etapa17(rotina, ip, etapa16, 'Trazendo as configuracoes de categorias selecionadas')#Registrar etapa no controlador
 
 
-
-    pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
-        pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
-    pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
-    pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
-    pedidos['Entregas Restantes'] = pedidos.apply(
-        lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
-
-
-
+    #18 - Encontrando no pedido o percentual que atende a distribuicao
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
+    etapa18 = controle.salvarStatus_Etapa18(rotina, ip, etapa17, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
 
-    # definir as condições
+    #19 - Encontrando os valores que considera na ditribuicao
     condicoes = [(pedidos['% Fecha pedido'] >= pedidos['ValorMin']) &
                 (pedidos['% Fecha pedido'] <= pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
@@ -303,11 +287,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] < pedidos['ValorMin'])
                 ]
-
-
-    # definir os valores correspondentes
-    valores = ['SIM', 'SIM','SIM(Redistribuir)','NAO']
-
+    valores = ['SIM', 'SIM','SIM(Redistribuir)','NAO']# definir os valores correspondentes
+    pedidos['Distribuicao'] = numpy.select(condicoes, valores, default=True)
     # função para avaliar cada grupo
     def avaliar_grupo(df_grupo):
         if (df_grupo['Distribuicao'] == 'SIM(Redistribuir)').all():
@@ -316,41 +297,37 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return 'True'
         else:
             return 'False'
-
-
-
-    # atribuir os valores com base nas condições
-    pedidos['Distribuicao'] = numpy.select(condicoes, valores, default=True)
-    # aplicando a função para cada grupo
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index(name='Resultado')
-
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')
     pedidos['Distribuicao2'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
                                                                                      and (row['Distribuicao'] == 'SIM' and row['Qtd Atende por Cor']>0 ) else row['Distribuicao'], axis=1 )
+    etapa19 = controle.salvarStatus_Etapa19(rotina, ip, etapa18, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
 
 
-    #Obtendo valor atente por cor
+    #20- Obtendo valor atente por cor
     pedidos['Valor Atende por Cor'] = pedidos['Qtd Atende por Cor'] * pedidos['PrecoLiquido']
-    pedidos['Valor Atende por Cor'] =pedidos['Valor Atende por Cor'].astype(float).round(2)
-    etapa12 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Obtendo valor atente por cor ')#Registrar etapa no controlador
+    pedidos['Valor Atende por Cor'] = pedidos['Valor Atende por Cor'].astype(float).round(2)
+    etapa20 = controle.salvarStatus_Etapa20(rotina, ip, etapa19, 'Obtendo valor atente por cor')#Registrar etapa no controlador
 
 
 
-    # Identificando a Quantidade Distribuida
+    #21 Identificando a Quantidade Distribuida
     pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Distribuicao2'] == 'SIM' else 0, axis=1)
     pedidos['Qnt. Cor(Distrib.)'] = pedidos['Qnt. Cor(Distrib.)'].astype(int)
+    etapa21 = controle.salvarStatus_Etapa21(rotina, ip, etapa20, 'Obtendo valor atente por cor')#Registrar etapa no controlador
 
 
-
+    #22 Obtendo valor atente por cor Distribuida
     pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao2'] == 'SIM' else 0, axis=1)
     pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
-    etapa13 = controle.salvarStatus_Etapa8(rotina, ip, etapa12, 'Identificando a Qnt. Cor(Distrib.)')#Registrar etapa no controlador
+    etapa22 = controle.salvarStatus_Etapa22(rotina, ip, etapa21, 'Obtendo valor atente por cor Distribuida')#Registrar etapa no controlador
 
 
-    #Salvando os dados gerados em csv
+    #23- Salvando os dados gerados em csv
     pedidos.to_csv('meutesteMonitor.csv')
-    etapa14 = controle.salvarStatus_Etapa8(rotina, ip, etapa13, 'Salvando os dados gerados em csv')#Registrar etapa no controlador
+    etapa23 = controle.salvarStatus_Etapa23(rotina, ip, etapa22, 'Salvando os dados gerados em csv')#Registrar etapa no controlador
+
 
 
 def API(empresa, iniVenda, finalVenda, tiponota):
@@ -413,6 +390,7 @@ def ConfiguracaoPercEntregas():
             """Select * from pcp.monitor_fat_dados """, conn)
 
     conn.close()
+    consultar['Entregas Restantes'] = consultar['Entregas Restantes'].astype(str)
 
     return consultar
 
