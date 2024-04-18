@@ -188,6 +188,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     # 18 - Encontrando a Marca desejada
+    pedidos['codItemPai'] = pedidos['codItemPai'].astype(str)
     pedidos['MARCA'] = pedidos['codItemPai'].apply(lambda x: x[:3])
     pedidos['MARCA'] = numpy.where(
         (pedidos['codItemPai'].str[:3] == '102') | (pedidos['codItemPai'].str[:3] == '202'), 'M.POLLO', 'PACO')
