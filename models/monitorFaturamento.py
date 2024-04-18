@@ -299,7 +299,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return 'True'
         else:
             return 'False'
-    print(pedidos)
+    print(pedidos.columns)
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
     df_resultado.rename(columns={0: 'Resultado'}, inplace=True)
     print(df_resultado)
