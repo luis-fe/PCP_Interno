@@ -193,6 +193,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['MARCA'] = numpy.where(
         (pedidos['codItemPai'].str[:3] == '102') | (pedidos['codItemPai'].str[:3] == '202'), 'M.POLLO', 'PACO')
 
+
+    pedidos['QtdSaldo'].fillna(0,inplace=True)
     pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
     pedidos['Qtd Atende por Cor'] = pedidos['Qtd Atende por Cor'].astype(int)
     pedidos['Qtd Atende'] = pedidos['Qtd Atende'].astype(int)
