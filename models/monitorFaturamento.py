@@ -120,6 +120,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
     pedidos = pd.merge(pedidos,estruturasku,on='codProduto',how='left')
     pedidos['QtdSaldo'] = pedidos['qtdePedida']- pedidos['qtdeFaturada']-pedidos['qtdeSugerida']
+    print(pedidos['QtdSaldo'])
+
     pedidos['QtdSaldo'].fillna(0,inplace=True)
     pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
     etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Explodir os pedidos no nivel sku')#Registrar etapa no controlador
@@ -277,7 +279,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #18 - Encontrando no pedido o percentual que atende a distribuicao
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
-    print(pedidos['QtdSaldo'])
     print(pedidos['Saldo +Sugerido'])
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
