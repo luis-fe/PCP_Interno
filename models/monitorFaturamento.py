@@ -260,18 +260,22 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     except:
         pedidos['CATEGORIA'] = '-'
 
+    # Trazendo as configuracoes de % configurado e repicando no dataFrame
     dadosConfPer = ConfiguracaoPercEntregas()
-    dadosCategoria = ConfiguracaoCategoria()
+    pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
 
+    # Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria
+    dadosCategoria = ConfiguracaoCategoria()
     dadosCategoria = dadosCategoria.rename(columns={'Opção': 'CATEGORIA'})
     pedidos = pd.merge(pedidos,dadosCategoria,on='CATEGORIA',how='left')
     pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,axis=1)
     pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0,axis=1)
 
-    etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'etapa 7')#Registrar etapa no controlador
+    etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria')#Registrar etapa no controlador
 
 
     # Encontrando o numero restante de entregas
+    pedidos['entregas_Solicitadas'].fillna(0,inplace=True)
     pedidos['Entregas Restantes'] = pedidos['entregas_Solicitadas'] - pedidos['entregas_enviadas']
     pedidos['Entregas Restantes'] = pedidos.apply(
         lambda row: 1 if row['entregas_Solicitadas'] <= row['entregas_enviadas'] else row['Entregas Restantes'], axis=1)
@@ -287,7 +291,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     pedidos['Entregas Restantes'] = pedidos['Entregas Restantes'].astype(str)
 
-    pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
 
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
@@ -301,7 +304,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']) &
                 (pedidos['% Fecha pedido'] > pedidos['ValorMax']),
                 (pedidos['% Fecha pedido'] < pedidos['ValorMin'])
-                ]#
+                ]
+
 
     # definir os valores correspondentes
     valores = ['SIM', 'SIM','SIM(Redistribuir)','NAO']
@@ -321,7 +325,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Distribuicao'] = numpy.select(condicoes, valores, default=True)
     # aplicando a função para cada grupo
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index(name='Resultado')
-    print(df_resultado)
 
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')
     pedidos['Distribuicao2'] = pedidos.apply(lambda row: 'SIM(Redistribuir)' if row['Resultado'] == 'False'
