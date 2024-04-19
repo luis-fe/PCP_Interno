@@ -143,7 +143,7 @@ def ExisteCalculoAberto():
     datainicio = controle.obterHoraAtual()
 
     usuarios = monitorFaturamento.ExisteCalculoAberto(rotina)
-    usuarios = pd.DataFrame([{'mensagem':{usuarios}}])
+    usuarios = pd.DataFrame([{'mensagem':f'{usuarios}'}])
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
