@@ -465,7 +465,7 @@ def Update(arrayEmbarque, arrayMIN, arrayMAX):
     conn = ConexaoPostgreMPL.conexao()
 
 
-    for i in arrayEmbarque:
+    for i in range(len(arrayEmbarque)):
 
         embarque = arrayEmbarque[i]
         min =arrayMIN[i]
