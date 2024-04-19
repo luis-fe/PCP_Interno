@@ -485,4 +485,4 @@ def Update(arrayEmbarque, arrayMIN, arrayMAX):
 
     conn.close()
 
-    return pd.DataFrame({'Mensagem':'Alerado com sucesso','status':True})
+    return pd.DataFrame([{'Mensagem':'Alerado com sucesso','status':True}])
