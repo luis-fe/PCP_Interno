@@ -27,7 +27,7 @@ def detalhadoMonitor():
     iniVenda = request.args.get('iniVenda','-')
     finalVenda = request.args.get('finalVenda')
     tiponota = request.args.get('tiponota')
-    parametroClassificacao =request.args.get('parametroClassificacao')
+    parametroClassificacao =request.args.get('parametroClassificacao','DataPrevisao')#Faturamento ou DataPrevisao
     rotina = 'detalhadoMonitor'
     client_ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
@@ -56,13 +56,13 @@ def get_monitorPreFaturamento():
     iniVenda = request.args.get('iniVenda','-')
     finalVenda = request.args.get('finalVenda')
     tiponota = request.args.get('tiponota')
-
+    parametroClassificacao = request.args.get('parametroClassificacao', 'DataPrevisao')  # Faturamento ou DataPrevisao
     rotina = 'monitorPreFaturamento'
-    client_ip = request.remote_addr
+    ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
-    controle.InserindoStatus(rotina, client_ip, datainicio)
-    usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota)
-    controle.salvarStatus(rotina, client_ip, datainicio)
+    controle.InserindoStatus(rotina, ip, datainicio)
+    usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao)
+    controle.salvarStatus(rotina, ip, datainicio)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns

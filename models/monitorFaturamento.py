@@ -206,40 +206,69 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['MARCA'] = numpy.where((pedidos['codItemPai'].str[:3] == '102') | (pedidos['codItemPai'].str[:3] == '202'), 'M.POLLO', 'PACO')
     etapa14 = controle.salvarStatus_Etapa14(rotina, ip, etapa13, ' Encontrando a Marca desejada')#Registrar etapa no controlador
 
-    #15
     # função para verificar a presença de "casa" no valor da coluna "produto"
-    categorias = {
-        'JAQUETA': 'AGASALHOS',
-        'BLUSAO': 'AGASALHOS',
-        'TSHIRT': 'CAMISETA',
-        'POLO': 'POLO',
-        'SUNGA': 'SUNGA',
-        'CUECA': 'CUECA',
-        'CALCA/BER MOLETOM': 'CALCA/BER MOLETOM',
-        'CAMISA': 'CAMISA',
-        'SHORT': 'BOARDSHORT',
-        'TRICOT': 'TRICOT',
-        'BABY': 'CAMISETA',
-        'BATA': 'CAMISA',
-        'CALCA': 'CALCA/BER MOLETOM',
-        'CARTEIRA': 'ACESSORIOS',
-        'BONE': 'ACESSORIOS',
-        'TENIS': 'CALCADO',
-        'CHINELO': 'CALCADO',
-        'MEIA': 'ACESSORIOS',
-        'BLAZER': 'AGASALHOS',
-        'CINTO': 'ACESSORIOS',
-        'REGATA': 'ACESSORIOS',
-        'BERMUDA': 'CALCA/BER MOLETOM',
-        'COLETE': 'AGASALHOS',
-        'NECESSA': 'ACESSORIOS',
-        'CARTA': 'ACESSORIOS',
-        'SACOL': 'ACESSORIOS'
-    }
+    def categorizar_produto(produto):
+        if 'JAQUETA' in produto:
+            return 'AGASALHOS'
+        elif 'BLUSAO' in produto:
+            return 'AGASALHOS'
+        elif 'TSHIRT' in produto:
+            return 'CAMISETA'
+        elif 'POLO' in produto:
+            return 'POLO'
+        elif 'SUNGA' in produto:
+            return 'SUNGA'
+        elif 'CUECA' in produto:
+            return 'CUECA'
+        elif 'CALCA/BER MOLETOM  ' in produto:
+            return 'CALCA/BER MOLETOM '
+        elif 'CAMISA' in produto:
+            return 'CAMISA'
+        elif 'SHORT' in produto:
+            return 'BOARDSHORT'
+        elif 'TRICOT' in produto:
+            return 'TRICOT'
+        elif 'BABY' in produto:
+            return 'CAMISETA'
+        elif 'BATA' in produto:
+            return 'CAMISA'
+        elif 'CALCA' in produto:
+            return 'CALCA/BER MOLETOM'
+        elif 'CARTEIRA' in produto:
+            return 'ACESSORIOS'
+        elif 'BONE' in produto:
+            return 'ACESSORIOS'
+        elif 'TENIS' in produto:
+            return 'CALCADO'
+        elif 'CHINELO' in produto:
+            return 'CALCADO'
+        elif 'MEIA' in produto:
+            return 'ACESSORIOS'
+        elif 'BLAZER' in produto:
+            return 'AGASALHOS'
+        elif 'CINTO' in produto:
+            return 'ACESSORIOS'
+        elif 'REGATA' in produto:
+            return 'ACESSORIOS'
+        elif 'BERMUDA' in produto:
+            return 'CALCA/BER MOLETOM'
+        elif 'COLETE' in produto:
+            return 'AGASALHOS'
+        elif 'NECESSA' in produto:
+            return 'ACESSORIOS'
+        elif 'CARTA' in produto:
+            return 'ACESSORIOS'
+        elif 'SACOL' in produto:
+            return 'ACESSORIOS'
+        else:
+            return '-'
 
-    pedidos['CATEGORIA'] = numpy.where(pedidos['nomeSKU'].str.contains('|'.join(categorias.keys())),
-                                    pedidos['nomeSKU'].str.extract('({})'.format('|'.join(categorias.keys())),
-                                                                   expand=False).map(categorias), '-')
+    # 15 - Encontrando a categoria do produto
+    try:
+        pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
+        # pedidos['CATEGORIA'] = pedidos.apply(lambda row: categorizar_produto(row['nomeSKU']),axis=1)
+    except:
+        pedidos['CATEGORIA'] = '-'
     etapa15 = controle.salvarStatus_Etapa15(rotina, ip, etapa14, ' Encontrando a categoria do produto')#Registrar etapa no controlador
 
     # 16- Trazendo as configuracoes de % deistribuido configurado
@@ -320,13 +349,17 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #23- Salvando os dados gerados em csv
-    pedidos.to_csv('meutesteMonitor.csv')
-    etapa23 = controle.salvarStatus_Etapa23(rotina, ip, etapa22, 'Salvando os dados gerados em csv')#Registrar etapa no controlador
+    classificao = parametroClassificacao
+    dataemisao =iniVenda + finalVenda
+    dataemisao = dataemisao.str.replace('-','_')
+    ConexaoPostgreMPL.Funcao_InserirPCP(pedidos,pedidos['codPedido'].size,'monitorback','replace')
+    etapa23 = controle.salvarStatus_Etapa23(rotina, ip, etapa22, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
+    return pedidos
 
 
-
-def API(empresa, iniVenda, finalVenda, tiponota):
-    pedidos = pd.read_csv('meutesteMonitor.csv')
+def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao):
+    tiponota = '1,2,3,4,5,6,7,8,9998,233,237,1012,172,77'
+    pedidos = MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao)
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
     pedidos["StatusSugestao"].fillna('-', inplace=True)
