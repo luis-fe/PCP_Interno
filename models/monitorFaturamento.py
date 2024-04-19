@@ -100,6 +100,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     pedidos["StatusSugestao"].fillna('0', inplace=True)
+    pedidos["codSitSituacao"].fillna('0', inplace=True)
     pedidos['codSitSituacao'] = pedidos.apply(lambda row: '2-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '1-FimFila',axis=1)
     etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
@@ -191,7 +192,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #13- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
-    pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
+    pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')).round(2) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
     pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
     pedidos['% Fecha'] = pedidos['% Fecha'] *100
     pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()).round(2) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
@@ -265,8 +266,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return '-'
    # 15 - Encontrando a categoria do produto
     try:
-        #pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
-        pedidos['CATEGORIA'] = pedidos.apply(lambda row: categorizar_produto(row['nomeSKU']),axis=1)
+        pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
+        #pedidos['CATEGORIA'] = pedidos.apply(lambda row: categorizar_produto(row['nomeSKU']),axis=1)
     except:
         pedidos['CATEGORIA'] = '-'
     etapa15 = controle.salvarStatus_Etapa15(rotina, ip, etapa14, ' Encontrando a categoria do produto')#Registrar etapa no controlador
@@ -279,7 +280,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Entregas Restantes'] = pedidos['Entregas Restantes'].astype(str)
     pedidos['Entregas Restantes'] = pedidos['Entregas Restantes'].str.replace('.0','')
     pedidos = pd.merge(pedidos, dadosConfPer, on='Entregas Restantes', how='left')
-    etapa16 = controle.salvarStatus_Etapa16(rotina, ip, etapa15, ' Encontrando a categoria do produto')#Registrar etapa no controlador
+    etapa16 = controle.salvarStatus_Etapa16(rotina, ip, etapa15, 'Encontrando o numero restante de entregas')#Registrar etapa no controlador
 
     # 17 - Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria
     dadosCategoria = ConfiguracaoCategoria()
