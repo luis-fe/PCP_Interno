@@ -60,13 +60,13 @@ def get_monitorPreFaturamento():
     rotina = 'monitorPreFaturamento'
     ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
-    controle.InserindoStatus(rotina, ip, datainicio)
+
     if monitorFaturamento.ExisteCalculoAberto(rotina) == 'em andamento':
         usuarios = pd.DataFrame([{'0-Status':'False'}])
     else:
-
+        controle.InserindoStatus(rotina, ip, datainicio)
         usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao)
-    controle.salvarStatus(rotina, ip, datainicio)
+        controle.salvarStatus(rotina, ip, datainicio)
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
