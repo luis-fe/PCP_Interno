@@ -129,3 +129,55 @@ def UpdateConfiguracaoDistribuicao():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+@monitorPreFaturamento_routes.route('/pcp/api/detalhadoMonitor', methods=['GET'])
+@token_required
+def detalhadoMonitor():
+    empresa = request.args.get('empresa')
+    iniVenda = request.args.get('iniVenda','-')
+    finalVenda = request.args.get('finalVenda')
+    tiponota = request.args.get('tiponota')
+    parametroClassificacao =request.args.get('parametroClassificacao','DataPrevisao')#Faturamento ou DataPrevisao
+    rotina = 'detalhadoMonitor'
+    client_ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
+    controle.InserindoStatus(rotina, client_ip, datainicio)
+
+    usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, client_ip, datainicio,parametroClassificacao)
+    controle.salvarStatus(rotina, client_ip, datainicio)
+    usuarios = pd.DataFrame([{"Mensagem":"Salvo c/sucesso"}])
+
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
+@monitorPreFaturamento_routes.route('/pcp/api/ExisteCalculoAberto', methods=['GET'])
+@token_required
+def ExisteCalculoAberto():
+    empresa = request.args.get('empresa')
+    iniVenda = request.args.get('iniVenda','-')
+    finalVenda = request.args.get('finalVenda')
+    tiponota = request.args.get('tiponota')
+    parametroClassificacao = request.args.get('parametroClassificacao', 'DataPrevisao')  # Faturamento ou DataPrevisao
+    rotina = 'monitorPreFaturamento'
+    ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
+
+    usuarios = monitorFaturamento.ExisteCalculoAberto(rotina)
+    usuarios = pd.DataFrame([{'mensagem':{usuarios}}])
+
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
