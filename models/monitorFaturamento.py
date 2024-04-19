@@ -291,7 +291,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #18 - Encontrando no pedido o percentual que atende a distribuicao
     pedidos['% Fecha pedido'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
-    pedidos['% Fecha pedido'] = pedidos['% Fecha pedido']*100
     pedidos['% Fecha pedido'] = pedidos['% Fecha pedido'].astype(float).round(2)
     etapa18 = controle.salvarStatus_Etapa18(rotina, ip, etapa17, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
 
