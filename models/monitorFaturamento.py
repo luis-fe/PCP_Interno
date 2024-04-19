@@ -100,7 +100,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     pedidos["StatusSugestao"].fillna('0', inplace=True)
-    pedidos['codSitSituacao'] = pedidos.apply(lambda row: '1-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '2-FimFila',axis=1)
+    pedidos['codSitSituacao'] = pedidos.apply(lambda row: '2-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '1-FimFila',axis=1)
     etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
 
@@ -194,7 +194,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
     pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
     pedidos['% Fecha'] = pedidos['% Fecha'] *100
-    pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
+    pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()).round(2) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
     etapa13 = controle.salvarStatus_Etapa13(rotina, ip, etapa12, ' Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
@@ -265,7 +265,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return '-'
    # 15 - Encontrando a categoria do produto
     try:
-        pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
+        #pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
+        pedidos['CATEGORIA'] = pedidos.apply(lambda row: categorizar_produto(row['nomeSKU']),axis=1)
     except:
         pedidos['CATEGORIA'] = '-'
     etapa15 = controle.salvarStatus_Etapa15(rotina, ip, etapa14, ' Encontrando a categoria do produto')#Registrar etapa no controlador
