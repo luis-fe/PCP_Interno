@@ -191,10 +191,11 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #13- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
-    pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')).round(2) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
-    pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
-    pedidos['% Fecha'] = pedidos['% Fecha'] *100
-    pedidos['% Fecha Acumulado'] = (pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum()).round(2) / (pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
+    #pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')).round(2) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
+    #pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
+    #pedidos['% Fecha'] = pedidos['% Fecha'] *100
+    pedidos['% Fecha'] = pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
+    pedidos['% Fecha Acumulado'] = pedidos['% Fecha'] / pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
     etapa13 = controle.salvarStatus_Etapa13(rotina, ip, etapa12, ' Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
