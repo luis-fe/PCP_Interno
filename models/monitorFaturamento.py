@@ -456,7 +456,8 @@ def ConsultaConfiguracaoDistribuicao():
     conn = ConexaoPostgreMPL.conexao()
 
     consultar = pd.read_sql(
-            """Select * from pcp.monitor_fat_dados """, conn)
+            """Select "Entregas Restantes","ValorMin","ValorMax"  from pcp.monitor_fat_dados
+order by "Entregas Restantes"::int asc""", conn)
 
     conn.close()
     consultar['Entregas Restantes'] = consultar['Entregas Restantes'].astype(str)
