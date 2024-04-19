@@ -62,7 +62,7 @@ def get_monitorPreFaturamento():
     datainicio = controle.obterHoraAtual()
     controle.InserindoStatus(rotina, ip, datainicio)
     if monitorFaturamento.ExisteCalculoAberto(rotina) == 'em andamento':
-        usuarios = pd.DataFrame([{'0-status':False}])
+        usuarios = pd.DataFrame({'0-status':False})
     else:
         usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao)
     controle.salvarStatus(rotina, ip, datainicio)
