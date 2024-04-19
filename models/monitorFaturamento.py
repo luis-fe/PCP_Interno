@@ -429,7 +429,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
 
 def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao):
     tiponota = '1,2,3,4,5,6,7,8,9998,233,237,1012,172,77'
-    pedidos = pd.read_sql('monitor.csv')
+    pedidos = pd.read_csv('monitor.csv')
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
     pedidos["StatusSugestao"].fillna('-', inplace=True)
