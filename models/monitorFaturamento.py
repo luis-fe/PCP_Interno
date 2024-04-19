@@ -349,7 +349,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #23- Salvando os dados gerados em csv
-    ConexaoPostgreMPL.Funcao_InserirPCP(pedidos,pedidos['codPedido'].size,'monitorback','replace')
+    pedidos.to_csv('monitor.csv')
     etapa23 = controle.salvarStatus_Etapa23(rotina, ip, etapa22, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
     return pedidos
 
@@ -427,7 +427,79 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     }
     return pd.DataFrame([dados])
 
+def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao):
+    tiponota = '1,2,3,4,5,6,7,8,9998,233,237,1012,172,77'
+    pedidos = pd.read_sql('monitor.csv')
+    pedidos['codPedido'] = pedidos['codPedido'].astype(str)
+    pedidos['codCliente'] = pedidos['codCliente'].astype(str)
+    pedidos["StatusSugestao"].fillna('-', inplace=True)
 
+
+
+    pedidos = pedidos.groupby('codPedido').agg({
+    "MARCA": 'first',
+    "codTipoNota": 'first',
+    "dataPrevFat": 'first',
+    "dataPrevAtualizada": 'first',
+    "codCliente": 'first',
+    #"razao": 'first',
+    "vlrSaldo": 'first',
+    #"descricaoCondVenda": 'first',
+    "entregas_Solicitadas": 'first',
+    "entregas_enviadas": 'first',
+    "qtdPecasFaturadas": 'first',
+    'Saldo +Sugerido':'sum',
+    "ultimo_fat": "first",
+    "Qtd Atende": 'sum',
+    'QtdSaldo': 'sum',
+    'Qtd Atende por Cor': 'sum',
+    'Valor Atende por Cor': 'sum',
+    #'Valor Atende': 'sum',
+    'StatusSugestao': 'first',
+    'Valor Atende por Cor(Distrib.)': 'sum',
+    'Qnt. Cor(Distrib.)': 'sum'
+    #'observacao': 'first'
+    }).reset_index()
+
+    pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
+    pedidos['%'] = pedidos['%']*100
+    pedidos['%'] = pedidos['%'].round(0)
+    pedidos.rename(columns={'MARCA': '01-MARCA',"codPedido":"02-Pedido",
+                            "codTipoNota":"03-tipoNota","dataPrevFat":"04-Prev.Original","dataPrevAtualizada":"05-Prev.Atualiz","codCliente":"06-codCliente",
+                            "vlrSaldo":"08-vlrSaldo","entregas_Solicitadas":"09-Entregas Solic","entregas_enviadas":"10-Entregas Fat",
+                            "ultimo_fat":"11-ultimo fat","qtdPecasFaturadas":"12-qtdPecas Fat","Qtd Atende":"13-Qtd Atende","QtdSaldo":"14- Qtd Saldo",
+                            "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"23-% qtd cor",
+                            "StatusSugestao":"18-Sugestao(Pedido)","Qtd Atende por Cor":"15-Qtd Atende p/Cor","Valor Atende por Cor":"16-Valor Atende por Cor",
+                            "Valor Atende por Cor(Distrib.)":"22-Valor Atende por Cor(Distrib.)"}, inplace=True)
+
+    pedidos = pedidos.sort_values(by='08-vlrSaldo', ascending=False)  # escolher como deseja classificar
+    pedidos["10-Entregas Fat"].fillna(0,inplace=True)
+    pedidos["09-Entregas Solic"].fillna(0, inplace=True)
+    pedidos["11-ultimo fat"].fillna('-', inplace=True)
+    pedidos["05-Prev.Atualiz"].fillna('-', inplace=True)
+
+    pedidos["16-Valor Atende por Cor"] =pedidos["16-Valor Atende por Cor"].round(2)
+    pedidos["22-Valor Atende por Cor(Distrib.)"] = pedidos["22-Valor Atende por Cor(Distrib.)"].round(2)
+
+    TotalQtdCor = pedidos['15-Qtd Atende p/Cor'].sum()
+    TotalValorCor = pedidos['16-Valor Atende por Cor'].sum()
+    TotalValorCor = TotalValorCor.round(2)
+
+    TotalQtdCordist = pedidos['21-Qnt Cor(Distrib.)'].sum()
+    TotalValorCordist = pedidos['22-Valor Atende por Cor(Distrib.)'].sum()
+    TotalValorCordist = TotalValorCordist.round(2)
+
+    dados = {
+        '0-Status':False,
+        '001-Mesagem': 'API Congelada pois existe calculo em aberto',
+        '1-Total Qtd Atende por Cor': f'{TotalQtdCor} Pçs',
+        '2-Total Valor Valor Atende por Cor': f'{TotalValorCor}',
+        '3-Total Qtd Cor(Distrib.)': f'{TotalQtdCordist} Pçs',
+        '4-Total Valor Atende por Cor(Distrib.)': f'{TotalValorCordist}',
+        '6 -Detalhamento': pedidos.to_dict(orient='records')
+
+    }
+    return pd.DataFrame([dados])
 
 
 def ConfiguracaoPercEntregas():
