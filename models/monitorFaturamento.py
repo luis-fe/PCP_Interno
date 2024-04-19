@@ -349,9 +349,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #23- Salvando os dados gerados em csv
-    classificao = parametroClassificacao
-    dataemisao =iniVenda + finalVenda
-    dataemisao = dataemisao.str.replace('-','_')
     ConexaoPostgreMPL.Funcao_InserirPCP(pedidos,pedidos['codPedido'].size,'monitorback','replace')
     etapa23 = controle.salvarStatus_Etapa23(rotina, ip, etapa22, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
     return pedidos
@@ -420,6 +417,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     TotalValorCordist = TotalValorCordist.round(2)
 
     dados = {
+        '0-Status':True,
         '1-Total Qtd Atende por Cor': f'{TotalQtdCor} Pçs',
         '2-Total Valor Valor Atende por Cor': f'{TotalValorCor}',
         '3-Total Qtd Cor(Distrib.)': f'{TotalQtdCordist} Pçs',
@@ -507,5 +505,20 @@ def Classificacao(pedidos, parametro):
         pedidos['codSitSituacao'] = pedidos.apply(lambda row: '1-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '2-FimFila',axis=1)
         pedidos = pedidos.sort_values(by=['codSitSituacao','dataPrevAtualizada'], ascending=True)  # escolher como deseja classificar
         return pedidos
+
+
+# testa se existe calculo em aberto
+
+def ExisteCalculoAberto(rotina):
+        conn = ConexaoPostgreMPL.conexao2()
+        consulta = pd.read_sql("""select distinct status from "Reposicao".configuracoes.controle_requisicao_csw 
+        where rotina = %s and status = 'em andamento'""", conn, params=(rotina,))
+
+        conn.close()
+
+        if not consulta.empty:
+            return 'em andamento'
+        else:
+            return 'nao iniciado'
 
 
