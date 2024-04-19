@@ -86,7 +86,7 @@ def CapaSugestao():
     return consulta
 
 
-def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio):
+def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao):
     #Convertendo tipo de nota em string "1,2, 3, .."
 
     #tiponota2 = ""
@@ -101,7 +101,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     pedidos["StatusSugestao"].fillna('0', inplace=True)
     pedidos["codSitSituacao"].fillna('0', inplace=True)
-    pedidos['codSitSituacao'] = pedidos.apply(lambda row: '2-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '1-FimFila',axis=1)
     etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
 
@@ -154,7 +153,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     # 8 -# Clasificando o Dataframe para analise
-    pedidos = pedidos.sort_values(by=['codSitSituacao','vlrSaldo'], ascending=False)  # escolher como deseja classificar
+    pedidos = Classificacao(pedidos, parametroClassificacao)
     etapa8 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Clasificando o Dataframe para analise')#Registrar etapa no controlador
 
 
@@ -489,3 +488,18 @@ def Update(arrayEmbarque, arrayMIN, arrayMAX):
     conn.close()
 
     return pd.DataFrame([{'Mensagem':'Alerado com sucesso','status':True}])
+
+
+#Criando o modelo de classificacao
+def Classificacao(pedidos, parametro):
+
+    if parametro =='Faturamento':
+        pedidos['codSitSituacao'] = pedidos.apply(lambda row: '2-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '1-FimFila',axis=1)
+        pedidos = pedidos.sort_values(by=['codSitSituacao','vlrSaldo'], ascending=False)  # escolher como deseja classificar
+        return pedidos
+    elif parametro == 'DataPrevisao':
+        pedidos['codSitSituacao'] = pedidos.apply(lambda row: '1-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '2-FimFila',axis=1)
+        pedidos = pedidos.sort_values(by=['codSitSituacao','dataPrevAtualizada'], ascending=True)  # escolher como deseja classificar
+        return pedidos
+
+

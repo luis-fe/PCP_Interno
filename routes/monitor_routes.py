@@ -27,12 +27,13 @@ def detalhadoMonitor():
     iniVenda = request.args.get('iniVenda','-')
     finalVenda = request.args.get('finalVenda')
     tiponota = request.args.get('tiponota')
+    parametroClassificacao =request.args.get('parametroClassificacao')
     rotina = 'detalhadoMonitor'
     client_ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
     controle.InserindoStatus(rotina, client_ip, datainicio)
 
-    usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, client_ip, datainicio)
+    usuarios = monitorFaturamento.MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, client_ip, datainicio,parametroClassificacao)
     controle.salvarStatus(rotina, client_ip, datainicio)
     usuarios = pd.DataFrame([{"Mensagem":"Salvo c/sucesso"}])
 
