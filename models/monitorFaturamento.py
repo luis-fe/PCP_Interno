@@ -194,10 +194,9 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     #pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')).round(2) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
     #pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
     #pedidos['% Fecha'] = pedidos['% Fecha'] *100
-    pedidos['% Fecha'] = pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
-    pedidos['% Fecha Acumulado'] = pedidos['% Fecha'] / pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
-    pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].round(2)
-    pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'] * 100
+    pedidos['Fecha Acumulado'] = pedidos.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
+    pedidos['Saldo +Sugerido_Sum'] = pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
+    pedidos['% Fecha Acumulado'] = (pedidos['Fecha Acumulado'] / pedidos['Saldo +Sugerido_Sum']).round(2) * 100
     etapa13 = controle.salvarStatus_Etapa13(rotina, ip, etapa12, ' Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
 
 
@@ -209,67 +208,38 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #15
     # função para verificar a presença de "casa" no valor da coluna "produto"
-    def categorizar_produto(produto):
-        if 'JAQUETA' in produto:
-            return 'AGASALHOS'
-        elif 'BLUSAO' in produto:
-            return 'AGASALHOS'
-        elif 'TSHIRT' in produto:
-            return 'CAMISETA'
-        elif 'POLO' in produto:
-            return 'POLO'
-        elif 'SUNGA' in produto:
-            return 'SUNGA'
-        elif 'CUECA' in produto:
-            return 'CUECA'
-        elif 'CALCA/BER MOLETOM  ' in produto:
-            return 'CALCA/BER MOLETOM '
-        elif 'CAMISA' in produto:
-            return 'CAMISA'
-        elif 'SHORT' in produto:
-            return 'BOARDSHORT'
-        elif 'TRICOT' in produto:
-            return 'TRICOT'
-        elif 'BABY' in produto:
-            return 'CAMISETA'
-        elif 'BATA' in produto:
-            return 'CAMISA'
-        elif 'CALCA' in produto:
-            return 'CALCA/BER MOLETOM'
-        elif 'CARTEIRA' in produto:
-            return 'ACESSORIOS'
-        elif 'BONE' in produto:
-            return 'ACESSORIOS'
-        elif 'TENIS' in produto:
-            return 'CALCADO'
-        elif 'CHINELO' in produto:
-            return 'CALCADO'
-        elif 'MEIA' in produto:
-            return 'ACESSORIOS'
-        elif 'BLAZER' in produto:
-            return 'AGASALHOS'
-        elif 'CINTO' in produto:
-            return 'ACESSORIOS'
-        elif 'REGATA' in produto:
-            return 'ACESSORIOS'
-        elif 'BERMUDA' in produto:
-            return 'CALCA/BER MOLETOM'
-        elif 'COLETE' in produto:
-            return 'AGASALHOS'
-        elif 'NECESSA' in produto:
-            return 'ACESSORIOS'
-        elif 'CARTA' in produto:
-            return 'ACESSORIOS'
-        elif 'SACOL' in produto:
-            return 'ACESSORIOS'
-        else:
-            return '-'
-   # 15 - Encontrando a categoria do produto
-    try:
-        pedidos['CATEGORIA'] = pedidos['nomeSKU'].apply(categorizar_produto)
-        #pedidos['CATEGORIA'] = pedidos.apply(lambda row: categorizar_produto(row['nomeSKU']),axis=1)
-    except:
-        pedidos['CATEGORIA'] = '-'
+    categorias = {
+        'JAQUETA': 'AGASALHOS',
+        'BLUSAO': 'AGASALHOS',
+        'TSHIRT': 'CAMISETA',
+        'POLO': 'POLO',
+        'SUNGA': 'SUNGA',
+        'CUECA': 'CUECA',
+        'CALCA/BER MOLETOM': 'CALCA/BER MOLETOM',
+        'CAMISA': 'CAMISA',
+        'SHORT': 'BOARDSHORT',
+        'TRICOT': 'TRICOT',
+        'BABY': 'CAMISETA',
+        'BATA': 'CAMISA',
+        'CALCA': 'CALCA/BER MOLETOM',
+        'CARTEIRA': 'ACESSORIOS',
+        'BONE': 'ACESSORIOS',
+        'TENIS': 'CALCADO',
+        'CHINELO': 'CALCADO',
+        'MEIA': 'ACESSORIOS',
+        'BLAZER': 'AGASALHOS',
+        'CINTO': 'ACESSORIOS',
+        'REGATA': 'ACESSORIOS',
+        'BERMUDA': 'CALCA/BER MOLETOM',
+        'COLETE': 'AGASALHOS',
+        'NECESSA': 'ACESSORIOS',
+        'CARTA': 'ACESSORIOS',
+        'SACOL': 'ACESSORIOS'
+    }
+
+    pedidos['CATEGORIA'] = numpy.where(pedidos['nomeSKU'].str.contains('|'.join(categorias.keys())),
+                                    pedidos['nomeSKU'].str.extract('({})'.format('|'.join(categorias.keys())),
+                                                                   expand=False).map(categorias), '-')
     etapa15 = controle.salvarStatus_Etapa15(rotina, ip, etapa14, ' Encontrando a categoria do produto')#Registrar etapa no controlador
 
     # 16- Trazendo as configuracoes de % deistribuido configurado
