@@ -354,7 +354,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #23- Salvando os dados gerados em csv
     #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado
-    pedidos.drop(['StatusSugestao', 'situacaobloq', 'dias_a_adicionar', 'Resultado'], axis=1, inplace=True)
+    pedidos.drop(['situacaobloq', 'dias_a_adicionar', 'Resultado'], axis=1, inplace=True)
 
     pedidos.to_csv('monitor.csv')
     etapa23 = controle.salvarStatus_Etapa23(rotina, ip, etapa22, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
