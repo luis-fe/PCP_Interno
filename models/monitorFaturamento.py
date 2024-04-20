@@ -321,15 +321,14 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return 'True'
         else:
             return 'False'
-
-    df_resultado = pedidos.groupby('Pedido||Prod.||Cor').agg(
-        avaliar_grupo=('Distribuicao', avaliar_grupo)).reset_index()
+    df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
     df_resultado.rename(columns={0: 'Resultado'}, inplace=True)
 
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')
-    pedidos['Distribuicao'] = numpy.where((pedidos['Resultado'] == 'False') &
-                                       ((pedidos['Distribuicao'] == 'SIM') & (pedidos['Qtd Atende por Cor'] > 0)),
-                                       'SIM(Redistribuir)', pedidos['Distribuicao'])
+    # 19.1: Atualizando a coluna 'Distribuicao' diretamente
+    condicao = (pedidos['Resultado'] == 'False') & (
+                (pedidos['Distribuicao'] == 'SIM') & (pedidos['Qtd Atende por Cor'] > 0))
+    pedidos.loc[condicao, 'Distribuicao'] = 'SIM(Redistribuir)'
     etapa19 = controle.salvarStatus_Etapa19(rotina, ip, etapa18, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
 
 
