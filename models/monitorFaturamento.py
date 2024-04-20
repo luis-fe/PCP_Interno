@@ -321,7 +321,9 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return 'True'
         else:
             return 'False'
-    df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
+
+    df_resultado = pedidos.groupby('Pedido||Prod.||Cor').agg(
+        avaliar_grupo=('Distribuicao', avaliar_grupo)).reset_index()
     df_resultado.rename(columns={0: 'Resultado'}, inplace=True)
 
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')
