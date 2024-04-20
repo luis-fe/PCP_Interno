@@ -6,6 +6,14 @@ import datetime
 import numpy
 import locale
 from models import controle
+import pytz
+def obterHoraAtual():
+    fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
+    agora = datetime.datetime.now(fuso_horario)
+    agora = agora.strftime('%d/%m/%Y')
+    return agora
+
+
 #Carregando a Capa de pedidos do CSW : BuscasAvancadas.CapaPedido (empresa, iniVenda, finalVenda, tiponota):
 def Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota):
     conn = ConexaoCSW.Conexao()
@@ -158,13 +166,14 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
     pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] =  pedidos['dataPrevAtualizada'] + pedidos['dias_a_adicionar']
-    pedidos['dataPrevAtualizada'] = pedidos['dataPrevFat'].dt.strftime('%d/%m/%Y')
     pedidos['dataPrevAtualizada'].fillna('-',inplace=True)
+
     etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Calculando a nova data de Previsao do pedido')#Registrar etapa no controlador
 
 
     # 8 -# Clasificando o Dataframe para analise
     pedidos = Classificacao(pedidos, parametroClassificacao)
+    pedidos['dataPrevAtualizada'] = pedidos['dataPrevAtualizada'].dt.strftime('%d/%m/%Y')
     etapa8 = controle.salvarStatus_Etapa8(rotina, ip, etapa7, 'Clasificando o Dataframe para analise')#Registrar etapa no controlador
 
 
