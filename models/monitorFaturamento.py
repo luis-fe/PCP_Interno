@@ -198,7 +198,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Saldo +Sugerido_Sum'] = pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
     pedidos['% Fecha Acumulado'] = (pedidos['Fecha Acumulado'] / pedidos['Saldo +Sugerido_Sum']).round(2) * 100
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].astype(str)
-    pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].str.slice(0, 5)
+    pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].str.slice(0, 4)
     pedidos['% Fecha Acumulado'] = pedidos['% Fecha Acumulado'].astype(float)
     etapa13 = controle.salvarStatus_Etapa13(rotina, ip, etapa12, ' Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor')#Registrar etapa no controlador
 
