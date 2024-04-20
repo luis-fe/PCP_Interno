@@ -64,7 +64,16 @@ def CapaPedido (empresa, iniVenda, finalVenda, tiponota):
     " where codEmpresa = "+empresa+"  and  dataEmissao >= '" + iniVenda + "' and dataEmissao <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ")  "
 
     return CapaPedido
+def CapaPedidoPelaDataPrevOriginal (empresa, iniVenda, finalVenda, tiponota):
+    empresa = "'"+str(empresa)+"'"
 
+    CapaPedido = "SELECT   dataEmissao, convert(varchar(9), codPedido) as codPedido, "\
+    "(select c.nome as nome_cli from fat.cliente c where c.codCliente = p.codCliente) as nome_cli, "\
+    " codTipoNota, dataPrevFat, convert(varchar(9),codCliente) as codCliente, codRepresentante, descricaoCondVenda, vlrPedido as vlrSaldo, qtdPecasFaturadas "\
+    " FROM Ped.Pedido p"\
+    " where codEmpresa = "+empresa+"  and  dataPrevFat >= '" + iniVenda + "' and dataPrevFat <= '" + finalVenda + "' and codTipoNota in (" + tiponota + ")  "
+
+    return CapaPedido
 
 #SQL DE PEDIDOS NO NIVEL SKU - Velocidade Media 5 s para dados de 1 ano (regular)
 def pedidosNivelSKU (empresa, iniVenda, finalVenda, tiponota):

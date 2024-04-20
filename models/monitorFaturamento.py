@@ -14,6 +14,12 @@ def Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota):
     conn.close()
     return consulta
 
+def Monitor_CapaPedidosDataPrev(empresa, iniVenda, finalVenda, tiponota):
+    conn = ConexaoCSW.Conexao()
+    consulta = pd.read_sql(BuscasAvancadas.CapaPedidoPelaDataPrevOriginal(empresa, iniVenda, finalVenda, tiponota), conn)
+
+    conn.close()
+    return consulta
 
 # Verfiicando se o pedido nao está bloqueado :
 def Monitor_PedidosBloqueados():
@@ -86,7 +92,7 @@ def CapaSugestao():
     return consulta
 
 
-def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao):
+def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
     #Convertendo tipo de nota em string "1,2, 3, .."
 
     #tiponota2 = ""
@@ -96,7 +102,11 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     #tiponota2 = tiponota2[1:]
 
     # 1 - Carregar Os pedidos (etapa 1)
-    pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
+    if tipoData == 'DataEmissao':
+        pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
+    else:
+        pedidos = Monitor_CapaPedidosDataPrev(empresa, iniVenda, finalVenda, tiponota)
+
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     pedidos["StatusSugestao"].fillna('0', inplace=True)
@@ -148,6 +158,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['dias_a_adicionar'] = pd.to_timedelta(pedidos['entregas_enviadas']*15, unit='d') # Converte a coluna de inteiros para timedelta
     pedidos['dataPrevAtualizada']= pd.to_datetime(pedidos['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     pedidos['dataPrevAtualizada'] =  pedidos['dataPrevAtualizada'] + pedidos['dias_a_adicionar']
+    pedidos['dataPrevAtualizada'] = pedidos['dataPrevFat'].dt.strftime('%d/%m/%Y')
     pedidos['dataPrevAtualizada'].fillna('-',inplace=True)
     etapa7 = controle.salvarStatus_Etapa7(rotina, ip, etapa6, 'Calculando a nova data de Previsao do pedido')#Registrar etapa no controlador
 
@@ -361,9 +372,9 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     return pedidos
 
 
-def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao):
+def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
     tiponota = '1,2,3,4,5,6,7,8,9998,233,237,1012,172,77'
-    pedidos = MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao)
+    pedidos = MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao,tipoData)
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
     pedidos["StatusSugestao"].fillna('-', inplace=True)
@@ -434,7 +445,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     }
     return pd.DataFrame([dados])
 
-def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao):
+def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
     tiponota = '1,2,3,4,5,6,7,8,9998,233,237,1012,172,77'
     pedidos = pd.read_csv('monitor.csv')
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
