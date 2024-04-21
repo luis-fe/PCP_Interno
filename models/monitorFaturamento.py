@@ -466,7 +466,6 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     pedidos = pedidos.sort_values(by=['23-% qtd cor','08-vlrSaldo'], ascending=False)  # escolher como deseja classificar
     pedidos["10-Entregas Fat"].fillna(0,inplace=True)
     pedidos["09-Entregas Solic"].fillna(0, inplace=True)
-    pedidos["08-vlrSaldo'"].fillna(0, inplace=True)
 
     pedidos["11-ultimo fat"].fillna('-', inplace=True)
     pedidos["05-Prev.Atualiz"].fillna('-', inplace=True)
@@ -502,9 +501,6 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
     pedidos["StatusSugestao"].fillna('-', inplace=True)
-
-
-
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
     "codTipoNota": 'first',
@@ -541,15 +537,18 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
                             "StatusSugestao":"18-Sugestao(Pedido)","Qtd Atende por Cor":"15-Qtd Atende p/Cor","Valor Atende por Cor":"16-Valor Atende por Cor",
                             "Valor Atende por Cor(Distrib.)":"22-Valor Atende por Cor(Distrib.)"}, inplace=True)
 
-    pedidos = pedidos.sort_values(by='08-vlrSaldo', ascending=False)  # escolher como deseja classificar
+    pedidos = pedidos.sort_values(by=['23-% qtd cor','08-vlrSaldo'], ascending=False)  # escolher como deseja classificar
     pedidos["10-Entregas Fat"].fillna(0,inplace=True)
     pedidos["09-Entregas Solic"].fillna(0, inplace=True)
+
     pedidos["11-ultimo fat"].fillna('-', inplace=True)
     pedidos["05-Prev.Atualiz"].fillna('-', inplace=True)
+    pedidos.fillna(0, inplace=True)
 
     pedidos["16-Valor Atende por Cor"] =pedidos["16-Valor Atende por Cor"].round(2)
     pedidos["22-Valor Atende por Cor(Distrib.)"] = pedidos["22-Valor Atende por Cor(Distrib.)"].round(2)
 
+    saldo =pedidos['08-vlrSaldo'].sum()
     TotalQtdCor = pedidos['15-Qtd Atende p/Cor'].sum()
     TotalValorCor = pedidos['16-Valor Atende por Cor'].sum()
     TotalValorCor = TotalValorCor.round(2)
@@ -558,6 +557,7 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
     TotalValorCordist = pedidos['22-Valor Atende por Cor(Distrib.)'].sum()
     TotalValorCordist = TotalValorCordist.round(2)
 
+
     dados = {
         '0-Status':False,
         '001-Mesagem': 'API Congelada pois existe calculo em aberto',
@@ -565,6 +565,7 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
         '2-Total Valor Valor Atende por Cor': f'{TotalValorCor}',
         '3-Total Qtd Cor(Distrib.)': f'{TotalQtdCordist} Pçs',
         '4-Total Valor Atende por Cor(Distrib.)': f'{TotalValorCordist}',
+        '5-Valor Saldo Restante': f'{saldo}',
         '6 -Detalhamento': pedidos.to_dict(orient='records')
 
     }
