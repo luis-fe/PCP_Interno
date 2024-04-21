@@ -73,6 +73,10 @@ def Monitor_nivelSkuPrev(datainicio):
     df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].replace('None', 0)
     df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].fillna(0,inplace=True)
     df_loaded['qtdeSugerida'] = pd.to_numeric(df_loaded['qtdeSugerida'], errors='coerce').fillna(0)
+    df_loaded['qtdePedida'] = pd.to_numeric(df_loaded['qtdePedida'], errors='coerce').fillna(0)
+    df_loaded['qtdeFaturada'] = pd.to_numeric(df_loaded['qtdeFaturada'], errors='coerce').fillna(0)
+    df_loaded['qtdeCancelada'] = pd.to_numeric(df_loaded['qtdeCancelada'], errors='coerce').fillna(0)
+
 
     return df_loaded
 
@@ -669,5 +673,9 @@ def AbrirArquivoFast():
     df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].replace('None', 0)
     df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].fillna(0,inplace=True)
     df_loaded['qtdeSugerida'] = pd.to_numeric(df_loaded['qtdeSugerida'], errors='coerce').fillna(0)
+    df_loaded['qtdePedida'] = pd.to_numeric(df_loaded['qtdePedida'], errors='coerce').fillna(0)
+    df_loaded['qtdeFaturada'] = pd.to_numeric(df_loaded['qtdeFaturada'], errors='coerce').fillna(0)
+    df_loaded['qtdeCancelada'] = pd.to_numeric(df_loaded['qtdeCancelada'], errors='coerce').fillna(0)
+
     print(df_loaded)
 
