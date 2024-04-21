@@ -650,7 +650,7 @@ def ExisteCalculoAberto(rotina):
 
 def AbrirArquivoFast():
     # Carregar o arquivo Parquet
-    parquet_file = fp.ParquetFile('pedidos.parquet')
+    parquet_file = fp.ParquetFile('/home/grupompl/Automacao_WMS_InternoMPL/pedidos.parquet')
 
     # Converter para DataFrame do Pandas
     df_loaded = parquet_file.to_pandas()
