@@ -659,6 +659,10 @@ def AbrirArquivoFast():
     teste = '2024-01-01'
     df_loaded['filtro'] = df_loaded['dataPrevFat'] >= teste
     df_loaded = df_loaded[df_loaded['filtro']==True].reset_index()
-    # Exibir o DataFrame carregado
+    df_loaded = df_loaded.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
+                                   'PrecoLiquido']]
+    #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
+
+    df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].astype(int)
     print(df_loaded)
 
