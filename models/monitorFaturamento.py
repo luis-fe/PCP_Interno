@@ -57,20 +57,24 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
     return consultar
 
 def Monitor_nivelSkuPrev(datainicio):
-    conn = ConexaoPostgreMPL.conexao()
+    # Carregar o arquivo Parquet
+    parquet_file = fp.ParquetFile('/home/grupompl/Automacao_WMS_InternoMPL/pedidos.parquet')
 
-    consultar = pd.read_sql("""select * from "PCP".pcp."pedidosItemgrade" ig 
-where ig."dataPrevFat":: date >= %s """,conn,params=(datainicio,)) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
-    consultar['qtdeSugerida'].fillna(0,inplace=True)
-    conn.close()
+    # Converter para DataFrame do Pandas
+    df_loaded = parquet_file.to_pandas()
 
-    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
+    df_loaded['dataPrevFat']= pd.to_datetime(df_loaded['dataPrevFat'],errors='coerce', infer_datetime_format=True)
+    teste = datainicio
+    df_loaded['filtro'] = df_loaded['dataPrevFat'] >= teste
+    df_loaded = df_loaded[df_loaded['filtro']==True].reset_index()
+    df_loaded = df_loaded.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
                                    'PrecoLiquido']]
     #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
+    df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].replace('None', 0)
+    df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].fillna(0,inplace=True)
+    df_loaded['qtdeSugerida'] = pd.to_numeric(df_loaded['qtdeSugerida'], errors='coerce').fillna(0)
 
-    consultar['qtdeSugerida'] = consultar['qtdeSugerida'].astype(int)
-
-    return consultar
+    return df_loaded
 
 #EstoquePorSku
 def EstoqueSKU():
