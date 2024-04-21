@@ -662,9 +662,8 @@ def AbrirArquivoFast():
     df_loaded = df_loaded.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
                                    'PrecoLiquido']]
     #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
-    df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].str.replace('None',0)
+    df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].replace('None', 0)
     df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].fillna(0,inplace=True)
-
-    #df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].astype(int)
+    df_loaded['qtdeSugerida'] = pd.to_numeric(df_loaded['qtdeSugerida'], errors='coerce').fillna(0)
     print(df_loaded)
 
