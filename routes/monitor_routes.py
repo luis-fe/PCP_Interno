@@ -57,7 +57,7 @@ def get_monitorPreFaturamento():
     finalVenda = request.args.get('finalVenda')
     tiponota = request.args.get('tiponota')
     parametroClassificacao = request.args.get('parametroClassificacao', 'DataPrevisao')  # Faturamento ou DataPrevisao
-    tipoData = request.args.get('tipodData','DataEmissao') #DataEmissao x DataPrevOri
+    tipoData = request.args.get('tipoData','DataEmissao') #DataEmissao x DataPrevOri
     rotina = 'monitorPreFaturamento'
     ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
