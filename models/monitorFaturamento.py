@@ -655,6 +655,9 @@ def AbrirArquivoFast():
     # Converter para DataFrame do Pandas
     df_loaded = parquet_file.to_pandas()
 
+    df_loaded['dataPrevFat']= pd.to_datetime(df_loaded['dataPrevFat'],errors='coerce', infer_datetime_format=True)
+
+
     # Exibir o DataFrame carregado
     print(df_loaded)
 
