@@ -7,6 +7,7 @@ import numpy
 import locale
 from models import controle
 import pytz
+import fastparquet as fp
 def obterHoraAtual():
     fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
     agora = datetime.datetime.now(fuso_horario)
@@ -645,4 +646,15 @@ def ExisteCalculoAberto(rotina):
         else:
             return 'nao iniciado'
 
+
+
+def AbrirArquivoFast():
+    # Carregar o arquivo Parquet
+    parquet_file = fp.ParquetFile('pedidos.parquet')
+
+    # Converter para DataFrame do Pandas
+    df_loaded = parquet_file.to_pandas()
+
+    # Exibir o DataFrame carregado
+    print(df_loaded)
 

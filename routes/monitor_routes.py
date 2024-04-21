@@ -143,7 +143,7 @@ def ExisteCalculoAberto():
     ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
 
-    usuarios = monitorFaturamento.ExisteCalculoAberto(rotina)
+    usuarios = monitorFaturamento.AbrirArquivoFast()
     usuarios = pd.DataFrame([{'mensagem':f'{usuarios}'}])
 
     # Obtém os nomes das colunas
