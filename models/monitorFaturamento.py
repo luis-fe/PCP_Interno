@@ -658,7 +658,7 @@ def AbrirArquivoFast():
     df_loaded['dataPrevFat']= pd.to_datetime(df_loaded['dataPrevFat'],errors='coerce', infer_datetime_format=True)
     teste = '2024-01-01'
     df_loaded['filtro'] = df_loaded['dataPrevFat'] >= teste
-
+    df_loaded = df_loaded[df_loaded['filtro']==True]
     # Exibir o DataFrame carregado
     print(df_loaded)
 
