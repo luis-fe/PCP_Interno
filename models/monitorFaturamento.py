@@ -55,6 +55,22 @@ where ig."dataEmissao":: date >= %s """,conn,params=(datainicio,)) #codPedido, c
 
     return consultar
 
+def Monitor_nivelSkuPrev(datainicio):
+    conn = ConexaoPostgreMPL.conexao()
+
+    consultar = pd.read_sql("""select * from "PCP".pcp."pedidosItemgrade" ig 
+where ig."dataPrevFat":: date >= %s """,conn,params=(datainicio,)) #codPedido, codProduto, qtdePedida, qtdeFaturada, qtdeCancelada
+    consultar['qtdeSugerida'].fillna(0,inplace=True)
+    conn.close()
+
+    consultar = consultar.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
+                                   'PrecoLiquido']]
+    #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
+
+    consultar['qtdeSugerida'] = consultar['qtdeSugerida'].astype(int)
+
+    return consultar
+
 #EstoquePorSku
 def EstoqueSKU():
     conn = ConexaoCSW.Conexao()
@@ -145,7 +161,11 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     # 5 - Explodir os pedidos no nivel sku
-    sku = Monitor_nivelSku(iniVenda)
+    if tipoData == 'DataEmissao':
+        sku = Monitor_nivelSku(iniVenda)
+    else:
+        sku = Monitor_nivelSkuPrev(iniVenda)
+
     estruturasku = EstruturaSku()
         # 5.1 - Considerando somente a qtdePedida maior que 0
     pedidos = pd.merge(pedidos,sku,on='codPedido',how='left')
