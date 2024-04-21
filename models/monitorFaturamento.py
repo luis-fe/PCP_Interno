@@ -664,6 +664,7 @@ def AbrirArquivoFast():
     #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
 
     df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].fillna(0,inplace=True)
-    df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].astype(int)
+
+    #df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].astype(int)
     print(df_loaded)
 
