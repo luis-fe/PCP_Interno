@@ -431,6 +431,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     pedidos["09-Entregas Solic"].fillna(0, inplace=True)
     pedidos["11-ultimo fat"].fillna('-', inplace=True)
     pedidos["05-Prev.Atualiz"].fillna('-', inplace=True)
+    pedidos.fillna(0, inplace=True)
 
     pedidos["16-Valor Atende por Cor"] =pedidos["16-Valor Atende por Cor"].round(2)
     pedidos["22-Valor Atende por Cor(Distrib.)"] = pedidos["22-Valor Atende por Cor(Distrib.)"].round(2)
