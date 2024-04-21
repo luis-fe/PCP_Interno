@@ -419,7 +419,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
 def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
-    tiponota = '1,2,3,4,5,6,7,8,9998,233,237,1012,172,77'
+    tiponota = '1,2,3,4,5,6,7,8,10,24,40,92,201,1012,77,27,28,172,9998,66,67,233,237'
     pedidos = MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao,tipoData)
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
