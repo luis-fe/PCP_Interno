@@ -739,7 +739,7 @@ def AbrirArquivoFast():
 def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
-    estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduo',how='left' )
+    estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
     estoque2['estReservPedido'] = estoque2['estReservPedido'] + estoque2['Qnt. Cor(Distrib.)']
     pedidos1 = pd.merge(pedidos1,estoque2,on='codProduto',how='left')
     #10.1 Obtendo o Estoque Liquido para o calculo da necessidade
