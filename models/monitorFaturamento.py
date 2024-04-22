@@ -738,7 +738,7 @@ def AbrirArquivoFast():
 
 def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
-    SKUnovaReserva = pedidos1.groupby['codProduto'].agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
+    SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduo',how='left' )
     estoque2['estReservPedido'] = estoque2['estReservPedido'] + estoque2['Qnt. Cor(Distrib.)']
     pedidos1 = pd.merge(pedidos1,estoque2,on='codProduto',how='left')
@@ -819,7 +819,6 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
 def APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
     tiponota = '1,2,3,4,5,6,7,8,10,24,92,201,1012,77,27,28,172,9998,66,67,233,237'#Arrumar o Tipo de Nota 40
-    pedidos = pd.read_csv('monitor.csv')
 
     def avaliar_grupo(df_grupo):
         if (df_grupo['Distribuicao'] == 'SIM(Redistribuir)').all():
@@ -829,6 +828,7 @@ def APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datai
         else:
             return 'False'
 
+    pedidos = pd.read_csv('monitor.csv')
     pedidos = Ciclo2(pedidos,avaliar_grupo)
 
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
