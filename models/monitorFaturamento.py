@@ -479,6 +479,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     TotalValorCor = pedidos['16-Valor Atende por Cor'].sum()
     TotalValorCor = TotalValorCor.round(2)
 
+    totalPedidos = pedidos['02-Pedido'].count()
     PedidosDistribui = pedidos[pedidos['23-% qtd cor']>0]
     PedidosDistribui = PedidosDistribui['02-Pedido'].count()
 
@@ -494,7 +495,8 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
         '3-Total Qtd Cor(Distrib.)': f'{TotalQtdCordist} Pçs',
         '4-Total Valor Atende por Cor(Distrib.)': f'{TotalValorCordist}',
         '5-Valor Saldo Restante':f'{saldo}',
-        '5.1-Total Pedidos distribui':f'{PedidosDistribui}',
+        '5.1-Total Pedidos': f'{totalPedidos}',
+        '5.2-Total Pedidos distribui':f'{PedidosDistribui}',
         '6 -Detalhamento': pedidos.to_dict(orient='records')
 
     }
@@ -558,6 +560,7 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
     TotalValorCor = pedidos['16-Valor Atende por Cor'].sum()
     TotalValorCor = TotalValorCor.round(2)
 
+    totalPedidos = pedidos['02-Pedido'].count()
     PedidosDistribui = pedidos[pedidos['23-% qtd cor']>0]
     PedidosDistribui = PedidosDistribui['02-Pedido'].count()
 
@@ -567,13 +570,15 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
     TotalValorCordist = TotalValorCordist.round(2)
 
     dados = {
-        '0-Status':True,
+        '0-Status':False,
+        '001-Mesagem': 'API Congelada pois existe calculo em aberto',
         '1-Total Qtd Atende por Cor': f'{TotalQtdCor} Pçs',
         '2-Total Valor Valor Atende por Cor': f'{TotalValorCor}',
         '3-Total Qtd Cor(Distrib.)': f'{TotalQtdCordist} Pçs',
         '4-Total Valor Atende por Cor(Distrib.)': f'{TotalValorCordist}',
         '5-Valor Saldo Restante':f'{saldo}',
-        '5.1-Total Pedidos distribui':f'{PedidosDistribui}',
+        '5.1-Total Pedidos': f'{totalPedidos}',
+        '5.2-Total Pedidos distribui':f'{PedidosDistribui}',
         '6 -Detalhamento': pedidos.to_dict(orient='records')
 
     }
