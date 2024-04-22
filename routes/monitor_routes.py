@@ -171,12 +171,9 @@ def get_monitorPreFaturamento2():
     ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
 
-    if monitorFaturamento.ExisteCalculoAberto(rotina) == 'em andamento':
-        usuarios = monitorFaturamento.APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData)
-    else:
-        controle.InserindoStatus(rotina, ip, datainicio)
-        usuarios = monitorFaturamento.APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData)
-        controle.salvarStatus(rotina, ip, datainicio)
+
+    usuarios = monitorFaturamento.APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData)
+
 
     # Obtém os nomes das colunas
     column_names = usuarios.columns
