@@ -671,7 +671,7 @@ def ExisteCalculoAberto(rotina):
     consulta = pd.read_sql("""
             SELECT
                 status,
-                substring((now()::time - SUBSTRING(inicio, 12, 5)::time)::text,3,5) AS ultimoTempo
+                substring((now()::time - SUBSTRING(inicio, 12, 5)::time)::text,1,5) AS ultimoTempo
             FROM "Reposicao".configuracoes.controle_requisicao_csw where rotina = %s and status = 'em andamento'
         """, conn, params=(rotina,))
 
