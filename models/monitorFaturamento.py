@@ -668,8 +668,10 @@ def Classificacao(pedidos, parametro):
 
 def ExisteCalculoAberto(rotina):
         conn = ConexaoPostgreMPL.conexao2()
-        consulta = pd.read_sql("""select * from (  select status,(now():: time  - substring(fim,12,5)::time) as ultimoTempo from "Reposicao".configuracoes.controle_requisicao_csw 
-        where rotina = 'monitorPreFaturamento' and status = 'em andamento' limit 1) df where  ultimoTempo < '00:07:00' limit 1""", conn, params=(rotina,))
+        consulta = pd.read_sql("""
+        select * from (  select status,(now():: time  - substring(inicio,12,5)::time) as ultimoTempo from "Reposicao".configuracoes.controle_requisicao_csw 
+        where rotina = 'monitorPreFaturamento' and status = 'em andamento') df where  ultimoTempo < '00:07:00' 
+        """, conn, params=(rotina,))
 
         conn.close()
 
