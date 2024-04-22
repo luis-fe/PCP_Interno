@@ -669,7 +669,7 @@ def Classificacao(pedidos, parametro):
 def ExisteCalculoAberto(rotina):
     conn = ConexaoPostgreMPL.conexao2()
     consulta = pd.read_sql("""
-        SELECT *
+        SELECT df.status
         FROM (
             SELECT
                 status,
