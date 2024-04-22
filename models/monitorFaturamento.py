@@ -369,6 +369,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
                 ]
     valores = ['SIM', 'SIM','SIM(Redistribuir)','NAO']# definir os valores correspondentes
     pedidos['Distribuicao'] = numpy.select(condicoes, valores, default=True)
+    etapa19 = controle.salvarStatus_Etapa19(rotina, ip, etapa18, 'formula do numpy ')#Registrar etapa no controlador
+
     # função para avaliar cada grupo
     def avaliar_grupo(df_grupo):
         if (df_grupo['Distribuicao'] == 'SIM(Redistribuir)').all():
@@ -379,10 +381,9 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
             return 'False'
     df_resultado = pedidos.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
     df_resultado.rename(columns={0: 'Resultado'}, inplace=True)
-    etapa19 = controle.salvarStatus_Etapa19(rotina, ip, etapa18, 'Avaliacao do Grupo')#Registrar etapa no controlador
+    etapa20 = controle.salvarStatus_Etapa20(rotina, ip, etapa19, 'Avaliacao do Grupo')#Registrar etapa no controlador
 
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')
-    etapa20 = controle.salvarStatus_Etapa20(rotina, ip, etapa19, 'Merge entre Pedidos + ResultadoADistribuir')#Registrar etapa no controlador
 
     # 19.1: Atualizando a coluna 'Distribuicao' diretamente
     condicao = (pedidos['Resultado'] == 'False') & (
