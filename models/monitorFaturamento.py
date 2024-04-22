@@ -582,12 +582,11 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
     TotalValorCordist = TotalValorCordist.round(2)
 
     #Agrupando os clientes
-    AgrupaCliente = pedidos.groupby('06-codCliente').agg({ '02-Pedido':'first'}).reset_index()
     # Função para concatenar os valores agrupados
     def concat_values(group):
         return '/'.join(str(x) for x in group)
     # Agrupar e aplicar a função de concatenação
-    result = AgrupaCliente.groupby('06-codCliente')['02-Pedido'].apply(concat_values).reset_index()
+    result = pedidos.groupby('06-codCliente')['02-Pedido'].apply(concat_values).reset_index()
     # Renomear as colunas
     result.columns = ['06-codCliente', 'Agrupamento']
     pedidos = pd.merge(pedidos,result,on='06-codCliente',how='left')
