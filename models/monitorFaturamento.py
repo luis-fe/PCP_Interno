@@ -672,7 +672,7 @@ def ExisteCalculoAberto(rotina):
             SELECT
                 status,
                 (now()::time - SUBSTRING(inicio, 12, 5)::time) AS ultimoTempo
-            FROM "Reposicao".configuracoes.controle_requisicao_csw where rotina = %s
+            FROM "Reposicao".configuracoes.controle_requisicao_csw where rotina = %s and status = 'em andamento'
         """, conn, params=(rotina,))
 
     conn.close()
