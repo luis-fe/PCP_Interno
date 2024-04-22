@@ -405,8 +405,14 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
     pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
+
     etapa22 = controle.salvarStatus_Etapa22(rotina, ip, etapa21, 'Obtendo valor atente por cor Distribuida')#Registrar etapa no controlador
 
+
+    #Ciclo 2
+
+    pedidos1 = pedidos[pedidos['Distribuicao'] != 'NAO']
+    pedidos2 = pedidos[pedidos['Distribuicao'] == 'NAO']
 
     #23- Salvando os dados gerados em csv
     #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado
@@ -730,3 +736,176 @@ def AbrirArquivoFast():
 
     print(df_loaded)
 
+def Ciclo2(pedidos1,avaliar_grupo):
+    estoque = EstoqueSKU()
+    SKUnovaReserva = pedidos1.groupby['codProduto'].agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
+    estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduo',how='left' )
+    estoque2['estReservPedido'] = estoque2['estReservPedido'] + estoque2['Qnt. Cor(Distrib.)']
+    pedidos1 = pd.merge(pedidos1,estoque2,on='codProduto',how='left')
+    #10.1 Obtendo o Estoque Liquido para o calculo da necessidade
+    pedidos1['EstoqueLivre'] = pedidos1['estoqueAtual']-pedidos1['estReservPedido']
+    #10.2 Obtendo a necessidade de estoque
+    pedidos1['Necessidade'] = pedidos1.groupby('codProduto')['QtdSaldo'].cumsum()
+    #10.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
+    pedidos1["Qtd Atende"] = pedidos1.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
+    pedidos1["Qtd Atende"] = pedidos1.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
+    pedidos1['Qtd Atende'] = pedidos1['Qtd Atende'].astype(int)
+    # 11.1 Separando os pedidos a nivel pedido||engenharia||cor
+    pedidos1["Pedido||Prod.||Cor"] = pedidos1['codPedido'].str.cat([pedidos1['codItemPai'], pedidos1['codCor']], sep='||')
+    # 11.2  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
+    pedidos1['Saldo +Sugerido'] = pedidos1['QtdSaldo'] + pedidos1['qtdeSugerida']
+    pedidos1['Saldo Grade'] = pedidos1.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
+    #12 obtendo a Qtd que antende para o pedido baseado no estoque e na grade
+    pedidos1['X QTDE ATENDE'] = pedidos1.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
+    pedidos1['Qtd Atende por Cor'] = pedidos1.apply(lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
+    pedidos1['Qtd Atende por Cor'] = pedidos1['Qtd Atende por Cor'].astype(int)
+    #13- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
+    #pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')).round(2) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
+    #pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
+    #pedidos['% Fecha'] = pedidos['% Fecha'] *100
+    pedidos1['Fecha Acumulado'] = pedidos1.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
+    pedidos1['Saldo +Sugerido_Sum'] = pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
+    pedidos1['% Fecha Acumulado'] = (pedidos1['Fecha Acumulado'] / pedidos1['Saldo +Sugerido_Sum']).round(2) * 100
+    pedidos1['% Fecha Acumulado'] = pedidos1['% Fecha Acumulado'].astype(str)
+    pedidos1['% Fecha Acumulado'] = pedidos1['% Fecha Acumulado'].str.slice(0, 4)
+    pedidos1['% Fecha Acumulado'] = pedidos1['% Fecha Acumulado'].astype(float)
+    pedidos1['Qtd Atende por Cor'] = pedidos1.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,
+                                                  axis=1)
+    pedidos1['Qtd Atende'] = pedidos1.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0, axis=1)
+    #18 - Encontrando no pedido o percentual que atende a distribuicao
+    pedidos1['% Fecha pedido'] = (pedidos1.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
+    pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido']*100
+    pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido'].astype(float).round(2)
+    # 19 - Encontrando os valores que considera na ditribuicao
+    pedidos1['ValorMin'] = pedidos1['ValorMin'].astype(float)
+    pedidos1['ValorMax'] = pedidos1['ValorMax'].astype(float)
+    condicoes = [(pedidos1['% Fecha pedido'] >= pedidos1['ValorMin']) &
+                 (pedidos1['% Fecha pedido'] <= pedidos1['ValorMax']),
+                 (pedidos1['% Fecha pedido'] > pedidos1['ValorMax']) &
+                 (pedidos1['% Fecha Acumulado'] <= pedidos1['ValorMax']),
+                 (pedidos1['% Fecha pedido'] > pedidos1['ValorMax']) &
+                 (pedidos1['% Fecha Acumulado'] > pedidos1['ValorMax']),
+                 (pedidos1['% Fecha pedido'] < pedidos1['ValorMin'])
+                 # adicionar mais condições aqui, se necessário
+                 ]
+    valores = ['SIM', 'SIM', 'SIM(Redistribuir)', 'NAO']  # definir os valores correspondentes
+    pedidos1['Distribuicao'] = numpy.select(condicoes, valores, default=True)
+    df_resultado1 = pedidos1.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
+    df_resultado1.rename(columns={0: 'Resultado'}, inplace=True)
+
+    pedidos1 = pd.merge(pedidos1, df_resultado1, on='Pedido||Prod.||Cor', how='left')
+    # 19.1: Atualizando a coluna 'Distribuicao' diretamente
+    condicao = (pedidos1['Resultado'] == 'False') & (
+            (pedidos1['Distribuicao'] == 'SIM') & (pedidos1['Qtd Atende por Cor'] > 0))
+    pedidos1.loc[condicao, 'Distribuicao'] = 'SIM(Redistribuir)'
+    # 20- Obtendo valor atente por cor
+    pedidos1['Valor Atende por Cor'] = pedidos1['Qtd Atende por Cor'] * pedidos1['PrecoLiquido']
+    pedidos1['Valor Atende por Cor'] = pedidos1['Valor Atende por Cor'].astype(float).round(2)
+    # 21 Identificando a Quantidade Distribuida
+    pedidos1['Qnt. Cor(Distrib.)'] = pedidos1.apply(
+        lambda row: row['Qtd Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    pedidos1['Qnt. Cor(Distrib.)'] = pedidos1['Qnt. Cor(Distrib.)'].astype(int)
+
+    # 22 Obtendo valor atente por cor Distribuida
+    pedidos1['Valor Atende por Cor(Distrib.)'] = pedidos1.apply(
+        lambda row: row['Valor Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    pedidos1['Valor Atende'] = pedidos1['Qtd Atende'] * pedidos1['PrecoLiquido']
+    pedidos1['Valor Atende'] = pedidos1['Valor Atende'].astype(float).round(2)
+
+    pedidos1.to_csv('monitor1.csv')
+
+    return pedidos1
+
+
+def APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
+    tiponota = '1,2,3,4,5,6,7,8,10,24,92,201,1012,77,27,28,172,9998,66,67,233,237'#Arrumar o Tipo de Nota 40
+    pedidos = pd.read_csv('monitor1.csv')
+    pedidos['codPedido'] = pedidos['codPedido'].astype(str)
+    pedidos['codCliente'] = pedidos['codCliente'].astype(str)
+    pedidos["StatusSugestao"].fillna('-', inplace=True)
+    pedidos = pedidos.groupby('codPedido').agg({
+    "MARCA": 'first',
+    "codTipoNota": 'first',
+    "dataEmissao":'first',
+    "dataPrevFat": 'first',
+    "dataPrevAtualizada": 'first',
+    "codCliente": 'first',
+    #"razao": 'first',
+    "vlrSaldo": 'first',
+    #"descricaoCondVenda": 'first',
+    "entregas_Solicitadas": 'first',
+    "entregas_enviadas": 'first',
+    "qtdPecasFaturadas": 'first',
+    'Saldo +Sugerido':'sum',
+    "ultimo_fat": "first",
+    "Qtd Atende": 'sum',
+    'QtdSaldo': 'sum',
+    'Qtd Atende por Cor': 'sum',
+    'Valor Atende por Cor': 'sum',
+    #'Valor Atende': 'sum',
+    'StatusSugestao': 'first',
+    'Valor Atende por Cor(Distrib.)': 'sum',
+    'Qnt. Cor(Distrib.)': 'sum'
+    #'observacao': 'first'
+    }).reset_index()
+
+    pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
+    pedidos['%'] = pedidos['%']*100
+    pedidos['%'] = pedidos['%'].round(0)
+    pedidos.rename(columns={'MARCA': '01-MARCA',"codPedido":"02-Pedido",
+                            "codTipoNota":"03-tipoNota","dataPrevFat":"04-Prev.Original","dataPrevAtualizada":"05-Prev.Atualiz","codCliente":"06-codCliente",
+                            "vlrSaldo":"08-vlrSaldo","entregas_Solicitadas":"09-Entregas Solic","entregas_enviadas":"10-Entregas Fat",
+                            "ultimo_fat":"11-ultimo fat","qtdPecasFaturadas":"12-qtdPecas Fat","Qtd Atende":"13-Qtd Atende","QtdSaldo":"14- Qtd Saldo",
+                            "Qnt. Cor(Distrib.)":"21-Qnt Cor(Distrib.)","%":"23-% qtd cor",
+                            "StatusSugestao":"18-Sugestao(Pedido)","Qtd Atende por Cor":"15-Qtd Atende p/Cor","Valor Atende por Cor":"16-Valor Atende por Cor",
+                            "Valor Atende por Cor(Distrib.)":"22-Valor Atende por Cor(Distrib.)"}, inplace=True)
+
+    pedidos = pedidos.sort_values(by=['23-% qtd cor','08-vlrSaldo'], ascending=False)  # escolher como deseja classificar
+    pedidos["10-Entregas Fat"].fillna(0,inplace=True)
+    pedidos["09-Entregas Solic"].fillna(0, inplace=True)
+
+    pedidos["11-ultimo fat"].fillna('-', inplace=True)
+    pedidos["05-Prev.Atualiz"].fillna('-', inplace=True)
+    pedidos.fillna(0, inplace=True)
+
+    pedidos["16-Valor Atende por Cor"] =pedidos["16-Valor Atende por Cor"].round(2)
+    pedidos["22-Valor Atende por Cor(Distrib.)"] = pedidos["22-Valor Atende por Cor(Distrib.)"].round(2)
+
+    saldo =pedidos['08-vlrSaldo'].sum()
+    TotalQtdCor = pedidos['15-Qtd Atende p/Cor'].sum()
+    TotalValorCor = pedidos['16-Valor Atende por Cor'].sum()
+    TotalValorCor = TotalValorCor.round(2)
+
+    totalPedidos = pedidos['02-Pedido'].count()
+    PedidosDistribui = pedidos[pedidos['23-% qtd cor']>0]
+    PedidosDistribui = PedidosDistribui['02-Pedido'].count()
+
+
+    TotalQtdCordist = pedidos['21-Qnt Cor(Distrib.)'].sum()
+    TotalValorCordist = pedidos['22-Valor Atende por Cor(Distrib.)'].sum()
+    TotalValorCordist = TotalValorCordist.round(2)
+
+    #Agrupando os clientes
+    # Função para concatenar os valores agrupados
+    def concat_values(group):
+        return '/'.join(str(x) for x in group)
+    # Agrupar e aplicar a função de concatenação
+    result = pedidos.groupby('06-codCliente')['02-Pedido'].apply(concat_values).reset_index()
+    # Renomear as colunas
+    result.columns = ['06-codCliente', 'Agrupamento']
+    pedidos = pd.merge(pedidos,result,on='06-codCliente',how='left')
+
+    dados = {
+        '0-Status':False,
+        '001-Mesagem': 'API Congelada pois existe calculo em aberto',
+        '1-Total Qtd Atende por Cor': f'{TotalQtdCor} Pçs',
+        '2-Total Valor Valor Atende por Cor': f'{TotalValorCor}',
+        '3-Total Qtd Cor(Distrib.)': f'{TotalQtdCordist} Pçs',
+        '4-Total Valor Atende por Cor(Distrib.)': f'{TotalValorCordist}',
+        '5-Valor Saldo Restante':f'{saldo}',
+        '5.1-Total Pedidos': f'{totalPedidos}',
+        '5.2-Total Pedidos distribui':f'{PedidosDistribui}',
+        '6 -Detalhamento': pedidos.to_dict(orient='records')
+
+    }
+    return pd.DataFrame([dados])

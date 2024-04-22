@@ -156,3 +156,35 @@ def ExisteCalculoAberto():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+
+@monitorPreFaturamento_routes.route('/pcp/api/monitorPreFaturamento2', methods=['GET'])
+@token_required
+def get_monitorPreFaturamento2():
+    empresa = request.args.get('empresa')
+    iniVenda = request.args.get('iniVenda','-')
+    finalVenda = request.args.get('finalVenda')
+    tiponota = request.args.get('tiponota')
+    parametroClassificacao = request.args.get('parametroClassificacao', 'DataPrevisao')  # Faturamento ou DataPrevisao
+    tipoData = request.args.get('tipoData','DataEmissao') #DataEmissao x DataPrevOri
+    rotina = 'monitorPreFaturamento'
+    ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
+
+    if monitorFaturamento.ExisteCalculoAberto(rotina) == 'em andamento':
+        usuarios = monitorFaturamento.APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData)
+    else:
+        controle.InserindoStatus(rotina, ip, datainicio)
+        usuarios = monitorFaturamento.APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData)
+        controle.salvarStatus(rotina, ip, datainicio)
+
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)
