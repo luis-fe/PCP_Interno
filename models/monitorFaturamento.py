@@ -382,26 +382,26 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     etapa19 = controle.salvarStatus_Etapa19(rotina, ip, etapa18, 'Avaliacao do Grupo')#Registrar etapa no controlador
 
     pedidos = pd.merge(pedidos, df_resultado, on='Pedido||Prod.||Cor', how='left')
-    etapa20 = controle.salvarStatus_Etapa19(rotina, ip, etapa19, 'Merge entre Pedidos + ResultadoADistribuir')#Registrar etapa no controlador
+    etapa20 = controle.salvarStatus_Etapa20(rotina, ip, etapa19, 'Merge entre Pedidos + ResultadoADistribuir')#Registrar etapa no controlador
 
     # 19.1: Atualizando a coluna 'Distribuicao' diretamente
     condicao = (pedidos['Resultado'] == 'False') & (
                 (pedidos['Distribuicao'] == 'SIM') & (pedidos['Qtd Atende por Cor'] > 0))
     pedidos.loc[condicao, 'Distribuicao'] = 'SIM(Redistribuir)'
-    etapa21 = controle.salvarStatus_Etapa19(rotina, ip, etapa20, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
+    etapa21 = controle.salvarStatus_Etapa21(rotina, ip, etapa20, 'Encontrando no pedido o percentual que atende a distribuicao')#Registrar etapa no controlador
 
 
     #20- Obtendo valor atente por cor
     pedidos['Valor Atende por Cor'] = pedidos['Qtd Atende por Cor'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende por Cor'] = pedidos['Valor Atende por Cor'].astype(float).round(2)
-    etapa22 = controle.salvarStatus_Etapa20(rotina, ip, etapa21, 'Obtendo valor atente por cor')#Registrar etapa no controlador
+    etapa22 = controle.salvarStatus_Etapa22(rotina, ip, etapa21, 'Obtendo valor atente por cor')#Registrar etapa no controlador
 
 
 
     #21 Identificando a Quantidade Distribuida
     pedidos['Qnt. Cor(Distrib.)'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
     pedidos['Qnt. Cor(Distrib.)'] = pedidos['Qnt. Cor(Distrib.)'].astype(int)
-    etapa23 = controle.salvarStatus_Etapa21(rotina, ip, etapa22, 'Obtendo valor atente por cor')#Registrar etapa no controlador
+    etapa23 = controle.salvarStatus_Etapa23(rotina, ip, etapa22, 'Obtendo valor atente por cor')#Registrar etapa no controlador
 
 
     #22 Obtendo valor atente por cor Distribuida
@@ -409,7 +409,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
 
-    etapa24 = controle.salvarStatus_Etapa22(rotina, ip, etapa23, 'Obtendo valor atente por cor Distribuida')#Registrar etapa no controlador
+    etapa24 = controle.salvarStatus_Etapa24(rotina, ip, etapa23, 'Obtendo valor atente por cor Distribuida')#Registrar etapa no controlador
 
 
     #Ciclo 2
