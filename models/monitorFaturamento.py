@@ -806,10 +806,12 @@ def Ciclo2(pedidos1,avaliar_grupo):
                  ]
     valores = ['SIM', 'SIM', 'SIM(Redistribuir)', 'NAO']  # definir os valores correspondentes
     pedidos1['Distribuicao'] = numpy.select(condicoes, valores, default=True)
-    df_resultado1 = pedidos1.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
-    df_resultado1.rename(columns={0: 'Resultado'}, inplace=True)
+    df_resultado = pedidos1.loc[:, ['Pedido||Prod.||Cor', 'Distribuicao']]
+    df_resultado = df_resultado.groupby('Pedido||Prod.||Cor')['Distribuicao'].apply(avaliar_grupo).reset_index()
+    df_resultado.columns = ['Pedido||Prod.||Cor', 'Resultado']
+    df_resultado['Resultado'] = df_resultado['Resultado'].astype(str)
 
-    pedidos1 = pd.merge(pedidos1, df_resultado1, on='Pedido||Prod.||Cor', how='left')
+    pedidos1 = pd.merge(pedidos1, df_resultado, on='Pedido||Prod.||Cor', how='left')
     # 19.1: Atualizando a coluna 'Distribuicao' diretamente
     condicao = (pedidos1['Resultado'] == 'False') & (
             (pedidos1['Distribuicao'] == 'SIM') & (pedidos1['Qtd Atende por Cor'] > 0))
@@ -837,12 +839,7 @@ def APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datai
     tiponota = '1,2,3,4,5,6,7,8,10,24,92,201,1012,77,27,28,172,9998,66,67,233,237'#Arrumar o Tipo de Nota 40
 
     def avaliar_grupo(df_grupo):
-        if (df_grupo['Distribuicao'] == 'SIM(Redistribuir)').all():
-            return 'True'
-        if (df_grupo['Distribuicao'] == 'SIM').all():
-            return 'True'
-        else:
-            return 'False'
+        return len(set(df_grupo)) == 1
 
     pedidos = pd.read_csv('monitor.csv')
     pedidos = Ciclo2(pedidos,avaliar_grupo)
