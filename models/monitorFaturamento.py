@@ -737,7 +737,7 @@ def AbrirArquivoFast():
     print(df_loaded)
 def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
-    pedidos1 = pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido'], axis=1,inplace=True)
+    pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido'], axis=1,inplace=True)
     print(pedidos1['codProduto'])
 
 
