@@ -743,6 +743,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['codProduto'] = pedidos1['codProduto'].str.replace('.0','')
     print(pedidos1['codProduto'])
     estoque['codProduto']=estoque['codProduto'].astype(str)
+    print(estoque['codProduto'])
 
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
     estoque2['estReservPedido'] = estoque2['estReservPedido'] + estoque2['Qnt. Cor(Distrib.)']
