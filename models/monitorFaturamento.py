@@ -756,6 +756,9 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
 
     estoque2['estReservPedido'] = estoque2['estReservPedido'] + estoque2['Qnt. Cor(Distrib.)']
+
+
+    pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
     pedidos1 = pd.merge(pedidos1,estoque2,on='codProduto',how='left')
     #10.1 Obtendo o Estoque Liquido para o calculo da necessidade
     pedidos1['EstoqueLivre'] = pedidos1['estoqueAtual']-pedidos1['estReservPedido']
