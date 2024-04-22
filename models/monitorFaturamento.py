@@ -667,22 +667,28 @@ def Classificacao(pedidos, parametro):
 # testa se existe calculo em aberto
 
 def ExisteCalculoAberto(rotina):
-        conn = ConexaoPostgreMPL.conexao2()
-        consulta = pd.read_sql("select * from" 
-        '(select status,(now():: time  - substring(inicio,12,5)::time) as ultimoTempo from "Reposicao".configuracoes.controle_requisicao_csw '
-        " where rotina = %s and status = 'em andamento') df "
-        " where  df.ultimoTempo < '00:07:00' ", conn, params=(rotina,))
+    conn = ConexaoPostgreMPL.conexao2()
+    consulta = pd.read_sql("""
+        SELECT *
+        FROM (
+            SELECT
+                status,
+                (now()::time - SUBSTRING(inicio, 12, 5)::time) AS ultimoTempo
+            FROM "Reposicao".configuracoes.controle_requisicao_csw
+            WHERE rotina = %s AND status = 'em andamento'
+        ) AS df
+        WHERE df.ultimoTempo < INTERVAL '00:07:00'
+        """, conn, params=(rotina,))
 
-        conn.close()
-        print(consulta)
-        if not consulta.empty:
-            if consulta['status'][0] =='em andamento':
-                return 'em andamento'
-            else:
-                return 'nao iniciado'
-
+    conn.close()
+    print(consulta)
+    if not consulta.empty:
+        if consulta['status'][0] == 'em andamento':
+            return 'em andamento'
         else:
             return 'nao iniciado'
+    else:
+        return 'nao iniciado'
 
 
 
