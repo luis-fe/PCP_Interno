@@ -739,7 +739,9 @@ def AbrirArquivoFast():
 def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
-    pedidos1['codProduto']=pedidos1['codProduto'].astype(int)
+    pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
+    estoque['codProduto']=estoque['codProduto'].astype(str)
+
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
     estoque2['estReservPedido'] = estoque2['estReservPedido'] + estoque2['Qnt. Cor(Distrib.)']
     pedidos1 = pd.merge(pedidos1,estoque2,on='codProduto',how='left')
