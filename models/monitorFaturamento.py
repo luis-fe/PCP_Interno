@@ -738,7 +738,7 @@ def AbrirArquivoFast():
 def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
 
-    pedidos1 = pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido'],inplace=True)
+    pedidos1 = pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido'],inplace=True, axis=1)
     pedidos1['codProduto'].fillna(0,inplace=True)
     pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
     pedidos1['codProduto'] = pedidos1['codProduto'].str.replace('.0','')
