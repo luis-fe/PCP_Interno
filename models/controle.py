@@ -358,4 +358,10 @@ def salvarStatus_Etapa22(rotina, ip,datahoraInicio,etapa):
 def salvarStatus_Etapa23(rotina, ip,datahoraInicio,etapa):
     etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 23)
     return etapa
+def salvarStatus_Etapa24(rotina, ip,datahoraInicio,etapa):
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 24)
+    return etapa
+def salvarStatus_Etapa25(rotina, ip,datahoraInicio,etapa):
+    etapa = salvarStatus_porEtapas(rotina, ip, datahoraInicio, etapa, 25)
+    return etapa
 
