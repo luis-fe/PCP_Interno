@@ -740,6 +740,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
     pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
+    print(pedidos1['codProduto'])
     estoque['codProduto']=estoque['codProduto'].astype(str)
 
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
