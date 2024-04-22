@@ -669,15 +669,10 @@ def Classificacao(pedidos, parametro):
 def ExisteCalculoAberto(rotina):
     conn = ConexaoPostgreMPL.conexao2()
     consulta = pd.read_sql("""
-        SELECT df.status
-        FROM (
             SELECT
                 status,
                 (now()::time - SUBSTRING(inicio, 12, 5)::time) AS ultimoTempo
-            FROM "Reposicao".configuracoes.controle_requisicao_csw
-            WHERE rotina = %s AND status = 'em andamento'
-        ) AS df
-        WHERE df.ultimoTempo < INTERVAL '00:07:00'
+            FROM "Reposicao".configuracoes.controle_requisicao_csw where rotina = %s
         """, conn, params=(rotina,))
 
     conn.close()
