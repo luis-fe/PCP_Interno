@@ -737,7 +737,7 @@ def AbrirArquivoFast():
     print(df_loaded)
 def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
-    pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido'], axis=1,inplace=True)
+    pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido','Qtd Atende','Saldo +Sugerido','Saldo Grade'], axis=1,inplace=True)
     print(pedidos1['codProduto'])
 
 
@@ -761,8 +761,6 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1["Qtd Atende"] = pedidos1.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
     pedidos1["Qtd Atende"] = pedidos1.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
     pedidos1['Qtd Atende'] = pedidos1['Qtd Atende'].astype(int)
-    # 11.1 Separando os pedidos a nivel pedido||engenharia||cor
-    pedidos1["Pedido||Prod.||Cor"] = pedidos1['codPedido'].str.cat([pedidos1['codItemPai'], pedidos1['codCor']], sep='||')
     # 11.2  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
     pedidos1['Saldo +Sugerido'] = pedidos1['QtdSaldo'] + pedidos1['qtdeSugerida']
     pedidos1['Saldo Grade'] = pedidos1.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
