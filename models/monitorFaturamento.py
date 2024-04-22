@@ -378,7 +378,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         return len(set(df_grupo)) == 1
 
     df_resultado = pedidos.loc[:, ['Pedido||Prod.||Cor', 'Distribuicao']]
-    df_resultado = df_resultado.groupby('Pedido||Prod.||Cor').apply(avaliar_grupo).reset_index()
+    df_resultado = df_resultado.groupby('Pedido||Prod.||Cor')['Distribuicao'].apply(avaliar_grupo).reset_index()
     df_resultado.columns = ['Pedido||Prod.||Cor', 'Resultado']
     df_resultado['Resultado'] = df_resultado['Resultado'].astype(str)
     etapa20 = controle.salvarStatus_Etapa20(rotina, ip, etapa19, 'Avaliacao do Grupo')#Registrar etapa no controlador
