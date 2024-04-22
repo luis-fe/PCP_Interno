@@ -430,6 +430,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
     "codTipoNota": 'first',
+    "dataEmissao":'first',
     "dataPrevFat": 'first',
     "dataPrevAtualizada": 'first',
     "codCliente": 'first',
@@ -511,6 +512,7 @@ def APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,
     pedidos = pedidos.groupby('codPedido').agg({
     "MARCA": 'first',
     "codTipoNota": 'first',
+    "dataEmissao":'first',
     "dataPrevFat": 'first',
     "dataPrevAtualizada": 'first',
     "codCliente": 'first',
