@@ -674,7 +674,7 @@ def ExisteCalculoAberto(rotina):
         """, conn, params=(rotina,))
 
         conn.close()
-
+        print(consulta)
         if not consulta.empty:
             if consulta['status'][0] =='em andamento':
                 return 'em andamento'
