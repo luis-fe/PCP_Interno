@@ -735,7 +735,6 @@ def AbrirArquivoFast():
     df_loaded['qtdeCancelada'] = pd.to_numeric(df_loaded['qtdeCancelada'], errors='coerce').fillna(0)
 
     print(df_loaded)
-
 def Ciclo2(pedidos1,avaliar_grupo):
     estoque = EstoqueSKU()
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
