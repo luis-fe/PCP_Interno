@@ -343,8 +343,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     # 17 - Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria
     dadosCategoria = ConfiguracaoCategoria()
     pedidos = pd.merge(pedidos,dadosCategoria,on='CATEGORIA',how='left')
-    pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,axis=1)
-    pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0,axis=1)
+    pedidos.loc[pedidos['Status'] != '1', 'Qtd Atende por Cor'] = 0
+    pedidos.loc[pedidos['Status'] != '1', 'Qtd Atende'] = 0
     etapa17 = controle.salvarStatus_Etapa17(rotina, ip, etapa16, 'Trazendo as configuracoes de categorias selecionadas')#Registrar etapa no controlador
 
 
