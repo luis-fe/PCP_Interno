@@ -633,7 +633,7 @@ def ConfiguracaoCategoria():
 
     consultar = pd.read_sql(
             """
-            Select "Opção" as CATEGORIA, "Status" from pcp.monitor_check_status 
+            Select "Opção" as "CATEGORIA", "Status" from pcp.monitor_check_status 
             """, conn)
 
     conn.close()
