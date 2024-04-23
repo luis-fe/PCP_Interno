@@ -342,7 +342,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     # 17 - Trazendo as configuracoes de categorias selecionadas e aplicando regras de categoria
     dadosCategoria = ConfiguracaoCategoria()
-    dadosCategoria = dadosCategoria.rename(columns={'Opção': 'CATEGORIA'})
     pedidos = pd.merge(pedidos,dadosCategoria,on='CATEGORIA',how='left')
     pedidos['Qtd Atende por Cor'] = pedidos.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,axis=1)
     pedidos['Qtd Atende'] = pedidos.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0,axis=1)
@@ -633,7 +632,9 @@ def ConfiguracaoCategoria():
     conn = ConexaoPostgreMPL.conexao()
 
     consultar = pd.read_sql(
-            """Select * from pcp.monitor_check_status """, conn)
+            """
+            Select "Opção" as Categoria, "Status" from pcp.monitor_check_status 
+            """, conn)
 
     conn.close()
 
