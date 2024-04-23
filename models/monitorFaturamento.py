@@ -226,7 +226,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Necessidade'] = pedidos.groupby('codProduto')['QtdSaldo'].cumsum()
     #10.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
     pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
-    pedidos["Qtd Atende"] = pedidos.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
+    pedidos.loc[pedidos['qtdeSugerida'] > 0, 'Qtd Atende'] = pedidos['qtdeSugerida']
+
     pedidos['Qtd Atende'] = pedidos['Qtd Atende'].astype(int)
     etapa10 = controle.salvarStatus_Etapa10(rotina, ip, etapa9, 'Calculando a necessidade por sku')#Registrar etapa no controlador
 
@@ -422,7 +423,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos.drop(['situacaobloq', 'dias_a_adicionar', 'Resultado'], axis=1, inplace=True)
     pedidos['dataPrevAtualizada'] = pedidos['dataPrevAtualizada'].dt.strftime('%d/%m/%Y')
 
-    pedidos.to_csv('monitor.csv')
+    fp.write('monitor.parquet', pedidos)
     etapa25 = controle.salvarStatus_Etapa25(rotina, ip, etapa24, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
     return pedidos
 
