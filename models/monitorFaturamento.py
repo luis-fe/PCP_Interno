@@ -760,10 +760,11 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
     pedidos1 = pedidos1[pedidos1['StatusSugestao'] == 'Nao Sugerido']
 
-    pedidos1.drop(['Fecha Acumulado','% Fecha Acumulado',
-                   'EstoqueLivre','estoqueAtual','estReservPedido',
-                   'Qtd Atende','Qtd Atende por Cor','Qnt. Cor(Distrib.)','Distribuicao',
-                   'Saldo +Sugerido','Saldo Grade','Necessidade','X QTDE ATENDE','Saldo +Sugerido_Sum'], axis=1,inplace=True)
+    pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido',
+                   'Necessidade','Qtd Atende','Saldo +Sugerido',
+                   'Saldo Grade','X QTDE ATENDE','Qtd Atende por Cor','Fecha Acumulado',
+                   'Saldo +Sugerido_Sum','% Fecha Acumulado','% Fecha pedido','Distribuicao','Valor Atende por Cor','Qnt. Cor(Distrib.)'
+                   ,'Valor Atende por Cor(Distrib.)','Valor Atende'], axis=1,inplace=True)
 
 
 
@@ -828,7 +829,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1.loc[condicao, 'Distribuicao'] = 'SIM(Redistribuir)'
 
 
-    #8- Encontradno os novos valores para o ciclo2
+    #8- Encontradno os novos valores para o ciclo2:
     pedidos1['Valor Atende por Cor'] = pedidos1['Qtd Atende por Cor'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende por Cor'] = pedidos1['Valor Atende por Cor'].astype(float).round(2)
     pedidos1['Qnt. Cor(Distrib.)'] = pedidos1['Qtd Atende por Cor'].where(pedidos1['Distribuicao'] == 'SIM', 0)
