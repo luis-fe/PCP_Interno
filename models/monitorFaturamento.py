@@ -752,6 +752,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     #etapa 1: recarregando estoque
     estoque = EstoqueSKU() # é feito uma nova releitura do estoque
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
+    pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
 
     pedidos1.drop(['Fecha Acumulado','% Fecha Acumulado',
                    'EstoqueLivre','estoqueAtual','estReservPedido','PrecoLiquido',
@@ -769,7 +770,6 @@ def Ciclo2(pedidos1,avaliar_grupo):
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
 
     #Etapa3 filtrando somente os pedidos nao distibuidos e fazendo o merge com o estoque
-    pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
     pedidos1 = pd.merge(pedidos1,estoque2,on='codProduto',how='left')
     pedidos1['EstoqueLivre'] = pedidos1['estoqueAtual']-pedidos1['estReservPedido']-pedidos1['ciclo1']
 
