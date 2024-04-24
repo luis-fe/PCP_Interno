@@ -134,14 +134,6 @@ def CapaSugestao():
 
 
 def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
-    #Convertendo tipo de nota em string "1,2, 3, .."
-
-    #tiponota2 = ""
-    #for i in tiponota:
-        #tiponota2 = tiponota2 + "," + i
-
-    #tiponota2 = tiponota2[1:]
-
     # 1 - Carregar Os pedidos (etapa 1)
     if tipoData == 'DataEmissao':
         pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
@@ -782,20 +774,22 @@ def Ciclo2(pedidos1,avaliar_grupo):
     #10.2 Obtendo a necessidade de estoque
     pedidos1['Necessidade'] = pedidos1.groupby('codProduto')['QtdSaldo'].cumsum()
     #10.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
-    pedidos1["Qtd Atende"] = pedidos1.apply(lambda row: row['QtdSaldo']  if row['Necessidade'] <= row['EstoqueLivre'] else 0, axis=1)
+    pedidos1['Qtd Atende'] = pedidos1['QtdSaldo'].where(pedidos1['Necessidade'] <= pedidos1['EstoqueLivre'], 0)
+
     pedidos1["Qtd Atende"] = pedidos1.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
+    pedidos1.loc[pedidos1['qtdeSugerida'] > 0, 'Qtd Atende'] = pedidos1['qtdeSugerida']
+
+
     pedidos1['Qtd Atende'] = pedidos1['Qtd Atende'].astype(int)
     # 11.2  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
     pedidos1['Saldo +Sugerido'] = pedidos1['QtdSaldo'] + pedidos1['qtdeSugerida']
     pedidos1['Saldo Grade'] = pedidos1.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
     #12 obtendo a Qtd que antende para o pedido baseado no estoque e na grade
     pedidos1['X QTDE ATENDE'] = pedidos1.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
-    pedidos1['Qtd Atende por Cor'] = pedidos1.apply(lambda row: row['Saldo +Sugerido'] if row['Saldo Grade'] == row['X QTDE ATENDE'] else 0, axis=1)
+    pedidos1['Qtd Atende por Cor'] = pedidos1['Saldo +Sugerido'].where(pedidos1['Saldo Grade'] == pedidos1['X QTDE ATENDE'],0)
     pedidos1['Qtd Atende por Cor'] = pedidos1['Qtd Atende por Cor'].astype(int)
     #13- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
-    #pedidos['% Fecha'] = (pedidos.groupby('Pedido||Prod.||Cor')['Qtd Atende por Cor'].transform('sum')).round(2) / ( pedidos.groupby('codPedido')['Saldo +Sugerido'].transform('sum')).round(2)
-    #pedidos['% Fecha'] = pedidos['% Fecha'].round(2)
-    #pedidos['% Fecha'] = pedidos['% Fecha'] *100
+
     pedidos1['Fecha Acumulado'] = pedidos1.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
     pedidos1['Saldo +Sugerido_Sum'] = pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
     pedidos1['% Fecha Acumulado'] = (pedidos1['Fecha Acumulado'] / pedidos1['Saldo +Sugerido_Sum']).round(2) * 100
@@ -858,7 +852,11 @@ def APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datai
     def avaliar_grupo(df_grupo):
         return len(set(df_grupo)) == 1
 
-    pedidos = pd.read_csv('monitor.csv')
+    # Carregar o arquivo Parquet
+    parquet_file = fp.ParquetFile('monitor.parquet')
+    # Converter para DataFrame do Pandas
+    pedidos = parquet_file.to_pandas()
+
     pedidos = Ciclo2(pedidos,avaliar_grupo)
 
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
