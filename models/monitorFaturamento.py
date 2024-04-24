@@ -150,7 +150,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
-    pedidos["StatusSugestao"].fillna('0', inplace=True)
+    pedidos["StatusSugestao"].fillna('Nao Sugerido', inplace=True)
     pedidos["codSitSituacao"].fillna('0', inplace=True)
     etapa1 = controle.salvarStatus_Etapa1(rotina, ip, datainicio, 'Carregar Os pedidos ') #Registrar etapa no controlador
 
@@ -443,7 +443,6 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
     pedidos["StatusSugestao"].fillna('-', inplace=True)
-    pedidos["StatusSugestao"].replace(0,'Não Sugerido')
 
 
 
