@@ -414,6 +414,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['dataPrevAtualizada'] = pedidos['dataPrevAtualizada'].dt.strftime('%d/%m/%Y')
     pedidos["descricaoCondVenda"].fillna('-',inplace=True)
     pedidos["ultimo_fat"].fillna('-', inplace=True)
+    pedidos["Status"].fillna('-', inplace=True)
+
     #Ciclo 2
     situacao = pedidos.groupby('codPedido')['Valor Atende por Cor(Distrib.)'].sum().reset_index()
     situacao = situacao[situacao['Valor Atende por Cor(Distrib.)'] > 0]
