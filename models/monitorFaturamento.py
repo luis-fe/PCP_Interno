@@ -751,6 +751,8 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
     #etapa 1: recarregando estoque
     estoque = EstoqueSKU() # é feito uma nova releitura do estoque
+    SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
+
     pedidos1.drop(['Fecha Acumulado','% Fecha Acumulado',
                    'EstoqueLivre','estoqueAtual','estReservPedido','PrecoLiquido',
                    'Qtd Atende','Qtd Atende por Cor','Qnt. Cor(Distrib.)','Distribuicao',
@@ -763,7 +765,6 @@ def Ciclo2(pedidos1,avaliar_grupo):
     estoque['codProduto']=estoque['codProduto'].astype(str)
 
     # 2.1 Somando todas as cores que conseguiu distriubuir no ciclo 1 para depois abater
-    SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
     SKUnovaReserva.rename(columns={'Qnt. Cor(Distrib.)': 'ciclo1'}, inplace=True)
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
 
