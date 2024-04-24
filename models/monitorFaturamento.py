@@ -758,7 +758,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
     print(SKUnovaReserva['codProduto'])
     pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
-    pedidos1 = pedidos1[pedidos1['Sugestao(Pedido)'] == 'Nao Sugerido']
+    pedidos1 = pedidos1[pedidos1['StatusSugestao'] == 'Nao Sugerido']
 
     pedidos1.drop(['Fecha Acumulado','% Fecha Acumulado',
                    'EstoqueLivre','estoqueAtual','estReservPedido',
