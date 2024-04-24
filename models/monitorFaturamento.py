@@ -685,15 +685,17 @@ def Update(arrayEmbarque, arrayMIN, arrayMAX):
 
 #Criando o modelo de classificacao
 def Classificacao(pedidos, parametro):
-
-    if parametro =='Faturamento':
-        pedidos['codSitSituacao'] = pedidos.apply(lambda row: '2-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '1-FimFila',axis=1)
-        pedidos = pedidos.sort_values(by=['codSitSituacao','vlrSaldo'], ascending=False)  # escolher como deseja classificar
-        return pedidos
+    if parametro == 'Faturamento':
+        # Define os valores de 'codSitSituacao' com base na condição para Faturamento
+        pedidos.loc[(pedidos['codSitSituacao'] == '0') | (pedidos['codSitSituacao'] == '1'), 'codSitSituacao'] = '2-InicioFila'
+        pedidos.loc[(pedidos['codSitSituacao'] != '0') & (pedidos['codSitSituacao'] != '1'), 'codSitSituacao'] = '1-FimFila'
+        pedidos = pedidos.sort_values(by=['codSitSituacao', 'vlrSaldo'], ascending=False)
     elif parametro == 'DataPrevisao':
-        pedidos['codSitSituacao'] = pedidos.apply(lambda row: '1-InicioFila' if row['codSitSituacao'] == '0' or row['codSitSituacao'] == '1' else '2-FimFila',axis=1)
-        pedidos = pedidos.sort_values(by=['codSitSituacao','dataPrevAtualizada'], ascending=True)  # escolher como deseja classificar
-        return pedidos
+        # Define os valores de 'codSitSituacao' com base na condição para DataPrevisao
+        pedidos.loc[(pedidos['codSitSituacao'] == '0') | (pedidos['codSitSituacao'] == '1'), 'codSitSituacao'] = '1-InicioFila'
+        pedidos.loc[(pedidos['codSitSituacao'] != '0') & (pedidos['codSitSituacao'] != '1'), 'codSitSituacao'] = '2-FimFila'
+        pedidos = pedidos.sort_values(by=['codSitSituacao', 'dataPrevAtualizada'], ascending=True)
+    return pedidos
 
 
 # testa se existe calculo em aberto
