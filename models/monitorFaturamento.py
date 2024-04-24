@@ -755,7 +755,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
 
     pedidos1.drop(['Fecha Acumulado','% Fecha Acumulado',
-                   'EstoqueLivre','estoqueAtual','estReservPedido','PrecoLiquido',
+                   'EstoqueLivre','estoqueAtual','estReservPedido',
                    'Qtd Atende','Qtd Atende por Cor','Qnt. Cor(Distrib.)','Distribuicao',
                    'Saldo +Sugerido','Saldo Grade','Necessidade','X QTDE ATENDE','Saldo +Sugerido_Sum'], axis=1,inplace=True)
 
