@@ -751,9 +751,10 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
     #etapa 1: recarregando estoque
     estoque = EstoqueSKU() # é feito uma nova releitura do estoque
-    pedidos1.drop(['Fecha Acumulado',
-                   'EstoqueLivre','estoqueAtual','estReservPedido',
-                   'Qtd Atende','Saldo +Sugerido','Saldo Grade','Necessidade','X QTDE ATENDE','Qtd Atende por Cor'], axis=1,inplace=True)
+    pedidos1.drop(['Fecha Acumulado','% Fecha Acumulado',
+                   'EstoqueLivre','estoqueAtual','estReservPedido','PrecoLiquido',
+                   'Qtd Atende','Qtd Atende por Cor','Qnt. Cor(Distrib.)','Distribuicao',
+                   'Saldo +Sugerido','Saldo Grade','Necessidade','X QTDE ATENDE','Saldo +Sugerido_Sum'], axis=1,inplace=True)
 
     # etapa 2: Aqui é feito um tratamento de dados para fazer o merge entre a quantidade pré reservada no primeiro ciclo
     pedidos1['codProduto'].fillna(0,inplace=True)
@@ -783,7 +784,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['Qtd Atende por Cor'] = pedidos1['Qtd Atende por Cor'].astype(int)
 
 
-
+    #Etapa 6: Encontrando o novo % Fecha Acumalado para o ciclo2
     pedidos1['Fecha Acumulado'] = pedidos1.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
     pedidos1['Saldo +Sugerido_Sum'] = pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
     pedidos1['% Fecha Acumulado'] = (pedidos1['Fecha Acumulado'] / pedidos1['Saldo +Sugerido_Sum']).round(2) * 100
@@ -796,7 +797,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido'] * 100
     pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido'].astype(float).round(2)
 
-
+    # Etapa: Obtendo novos valores para a distribuicao
     pedidos1['ValorMin'] = pedidos1['ValorMin'].astype(float)
     pedidos1['ValorMax'] = pedidos1['ValorMax'].astype(float)
     condicoes = [(pedidos1['% Fecha pedido'] >= pedidos1['ValorMin']) &
@@ -819,13 +820,12 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
     pedidos1 = pd.merge(pedidos1, df_resultado, on='Pedido||Prod.||Cor', how='left')
 
-    # 19.1: Atualizando a coluna 'Distribuicao' diretamente
     condicao = (pedidos1['Resultado'] == 'False') & (
             (pedidos1['Distribuicao'] == 'SIM') & (pedidos1['Qtd Atende por Cor'] > 0))
     pedidos1.loc[condicao, 'Distribuicao'] = 'SIM(Redistribuir)'
 
 
-
+    #Encontradno os novos valores para o ciclo2
     pedidos1['Valor Atende por Cor'] = pedidos1['Qtd Atende por Cor'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende por Cor'] = pedidos1['Valor Atende por Cor'].astype(float).round(2)
     pedidos1['Qnt. Cor(Distrib.)'] = pedidos1['Qtd Atende por Cor'].where(pedidos1['Distribuicao'] == 'SIM', 0)
@@ -833,6 +833,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['Valor Atende por Cor(Distrib.)'] = pedidos1['Valor Atende por Cor'].where(pedidos1['Distribuicao'] == 'SIM',0)
     pedidos1['Valor Atende'] = pedidos1['Qtd Atende'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende'] = pedidos1['Valor Atende'].astype(float).round(2)
+
 
 
     return pedidos1
