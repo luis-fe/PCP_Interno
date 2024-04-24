@@ -185,3 +185,31 @@ def get_monitorPreFaturamento2():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+@monitorPreFaturamento_routes.route('/pcp/api/GerarCSV', methods=['GET'])
+@token_required
+def GerarCSV():
+    empresa = request.args.get('empresa')
+    iniVenda = request.args.get('iniVenda','-')
+    finalVenda = request.args.get('finalVenda')
+    tiponota = request.args.get('tiponota')
+    parametroClassificacao = request.args.get('parametroClassificacao', 'DataPrevisao')  # Faturamento ou DataPrevisao
+    tipoData = request.args.get('tipoData','DataEmissao') #DataEmissao x DataPrevOri
+    rotina = 'monitorPreFaturamento'
+    ip = request.remote_addr
+    datainicio = controle.obterHoraAtual()
+
+
+    usuarios = monitorFaturamento.ConverterDataFrameCSV()
+
+
+    # Obtém os nomes das colunas
+    column_names = usuarios.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    OP_data = []
+    for index, row in usuarios.iterrows():
+        op_dict = {}
+        for column_name in column_names:
+            op_dict[column_name] = row[column_name]
+        OP_data.append(op_dict)
+    return jsonify(OP_data)

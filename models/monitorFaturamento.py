@@ -937,3 +937,15 @@ def APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datai
 
     }
     return pd.DataFrame([dados])
+
+
+def ConverterDataFrameCSV():
+    # Carregar o arquivo Parquet
+    parquet_file = fp.ParquetFile('/home/grupompl/Automacao_WMS_InternoMPL/pedidos.parquet')
+
+    # Converter para DataFrame do Pandas
+    pedidos1 = parquet_file.to_pandas()
+
+    pedidos1.to_csv('monitor2.csv')
+
+    return pd.DataFrame([{'Mensagem':'Gerado csv'}])
