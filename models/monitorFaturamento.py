@@ -54,8 +54,7 @@ def Monitor_nivelSku(datainicio):
     df_loaded = df_loaded.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
                                    'PrecoLiquido']]
     #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
-    df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].replace('None', 0)
-    df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].fillna(0,inplace=True)
+
     df_loaded['qtdeSugerida'] = pd.to_numeric(df_loaded['qtdeSugerida'], errors='coerce').fillna(0)
     df_loaded['qtdePedida'] = pd.to_numeric(df_loaded['qtdePedida'], errors='coerce').fillna(0)
     df_loaded['qtdeFaturada'] = pd.to_numeric(df_loaded['qtdeFaturada'], errors='coerce').fillna(0)
@@ -78,8 +77,7 @@ def Monitor_nivelSkuPrev(datainicio):
     df_loaded = df_loaded.loc[:, ['codPedido', 'codProduto', 'qtdePedida', 'qtdeFaturada', 'qtdeCancelada','qtdeSugerida',#'StatusSugestao',
                                    'PrecoLiquido']]
     #consultar = consultar.rename(columns={'StatusSugestao': 'Sugestao(Pedido)'})
-    df_loaded['qtdeSugerida'] = df_loaded['qtdeSugerida'].replace('None', 0)
-    df_loaded['qtdeSugerida'] =df_loaded['qtdeSugerida'].fillna(0,inplace=True)
+
     df_loaded['qtdeSugerida'] = pd.to_numeric(df_loaded['qtdeSugerida'], errors='coerce').fillna(0)
     df_loaded['qtdePedida'] = pd.to_numeric(df_loaded['qtdePedida'], errors='coerce').fillna(0)
     df_loaded['qtdeFaturada'] = pd.to_numeric(df_loaded['qtdeFaturada'], errors='coerce').fillna(0)
@@ -749,17 +747,17 @@ def AbrirArquivoFast():
 
     print(df_loaded)
 def Ciclo2(pedidos1,avaliar_grupo):
-    estoque = EstoqueSKU()
+    #O Ciclo2 e´usado para redistribuir as quantidades dos skus  que nao conseguiram atender na distribuicao dos pedidos no primeiro ciclo.
+    estoque = EstoqueSKU() # é feito uma nova releitura do estoque
     pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido','Qtd Atende','Saldo +Sugerido','Saldo Grade'], axis=1,inplace=True)
-    print(pedidos1['codProduto'])
 
-
+    #Aqui é feito um tratamento de dados para fazer o merge entre a quantidade pré reservada no primeiro ciclo
     pedidos1['codProduto'].fillna(0,inplace=True)
     pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
     pedidos1['codProduto'] = pedidos1['codProduto'].str.replace('.0','')
     estoque['codProduto']=estoque['codProduto'].astype(str)
-    SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
 
+    SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
 
 
