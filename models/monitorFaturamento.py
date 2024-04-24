@@ -408,18 +408,18 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['Valor Atende por Cor(Distrib.)'] = pedidos['Valor Atende por Cor'].where(pedidos['Distribuicao'] == 'SIM', 0)
     pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
+    pedidos.drop(['situacaobloq', 'dias_a_adicionar', 'Resultado'], axis=1, inplace=True)
 
     etapa24 = controle.salvarStatus_Etapa24(rotina, ip, etapa23, 'Obtendo valor atente por cor Distribuida')#Registrar etapa no controlador
 
 
     #Ciclo 2
-
-    pedidos1 = pedidos[pedidos['Distribuicao'] != 'NAO']
-    pedidos2 = pedidos[pedidos['Distribuicao'] == 'NAO']
+    pedidos1 = Ciclo2(pedidos, avaliar_grupo)
+    pedidos2 = pedidos[(pedidos['Distribuicao'] != 'NAO') & (pedidos['StatusSugestao'] != 'Nao Sugerido')]
+    pedidos = pd.concat([pedidos1, pedidos2])
 
     #23- Salvando os dados gerados em csv
     #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado
-    pedidos.drop(['situacaobloq', 'dias_a_adicionar', 'Resultado'], axis=1, inplace=True)
     pedidos['dataPrevAtualizada'] = pedidos['dataPrevAtualizada'].dt.strftime('%d/%m/%Y')
 
     fp.write('monitor.parquet', pedidos)
@@ -756,7 +756,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
 
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
-    print(SKUnovaReserva['codProduto'])
+
     pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
     pedidos1 = pedidos1[pedidos1['StatusSugestao'] == 'Nao Sugerido']
 
