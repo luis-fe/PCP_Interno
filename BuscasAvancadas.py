@@ -7,11 +7,15 @@
 def OP_Aberto():
 
 
-    OP_emAberto = 'SELECT (select pri.descricao  FROM tcp.PrioridadeOP pri WHERE pri.Empresa = 1 and o.codPrioridadeOP = pri.codPrioridadeOP ) as prioridade, dataInicio as startOP, codProduto  , numeroOP , codTipoOP , codFaseAtual as codFase , codSeqRoteiroAtual as seqAtual, ' \
-                  'codPrioridadeOP, codLote , codEmpresa, (SELECT f.nome from tcp.FasesProducao f WHERE f.codempresa = 1 and f.codfase = o.codFaseAtual) as nomeFase, ' \
-                  '(select e.descricao from tcp.Engenharia e WHERE e.codempresa = o.codEmpresa and e.codengenharia = o.codProduto) as descricao' \
-                  ' FROM tco.OrdemProd o '\
-                   ' WHERE o.codEmpresa = 1 and o.situacao = 3'
+    OP_emAberto = """
+    SELECT (select pri.descricao  FROM tcp.PrioridadeOP pri WHERE pri.Empresa = 1 and o.codPrioridadeOP = pri.codPrioridadeOP ) as prioridade, dataInicio as startOP, codProduto  , numeroOP , codTipoOP , codFaseAtual as codFase , codSeqRoteiroAtual as seqAtual,
+                  codPrioridadeOP, codLote , 
+                  (select l.descricao as lote FROM tcl.Lote l WHERE l.codEmpresa = 1 and l.codlote = o.codlote  )as lote,
+                  codEmpresa, (SELECT f.nome from tcp.FasesProducao f WHERE f.codempresa = 1 and f.codfase = o.codFaseAtual) as nomeFase, 
+                  (select e.descricao from tcp.Engenharia e WHERE e.codempresa = o.codEmpresa and e.codengenharia = o.codProduto) as descricao
+                  FROM tco.OrdemProd o 
+                   WHERE o.codEmpresa = 1 and o.situacao = 3 
+                   """
 
     return OP_emAberto
 
