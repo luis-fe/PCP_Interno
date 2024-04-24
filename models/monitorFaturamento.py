@@ -688,12 +688,12 @@ def Classificacao(pedidos, parametro):
     if parametro == 'Faturamento':
         # Define os valores de 'codSitSituacao' com base na condição para Faturamento
         pedidos.loc[(pedidos['codSitSituacao'] == '0') | (pedidos['codSitSituacao'] == '1'), 'codSitSituacao'] = '2-InicioFila'
-        pedidos.loc[(pedidos['codSitSituacao'] != '0') & (pedidos['codSitSituacao'] != '1'), 'codSitSituacao'] = '1-FimFila'
+        pedidos.loc[(pedidos['codSitSituacao'] != '2-InicioFila'), 'codSitSituacao'] = '1-FimFila'
         pedidos = pedidos.sort_values(by=['codSitSituacao', 'vlrSaldo'], ascending=False)
     elif parametro == 'DataPrevisao':
         # Define os valores de 'codSitSituacao' com base na condição para DataPrevisao
         pedidos.loc[(pedidos['codSitSituacao'] == '0') | (pedidos['codSitSituacao'] == '1'), 'codSitSituacao'] = '1-InicioFila'
-        pedidos.loc[(pedidos['codSitSituacao'] != '0') & (pedidos['codSitSituacao'] != '1'), 'codSitSituacao'] = '2-FimFila'
+        pedidos.loc[(pedidos['codSitSituacao'] != '2-InicioFila'), 'codSitSituacao'] = '1-FimFila'
         pedidos = pedidos.sort_values(by=['codSitSituacao', 'dataPrevAtualizada'], ascending=True)
     return pedidos
 
