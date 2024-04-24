@@ -747,46 +747,42 @@ def AbrirArquivoFast():
 
     print(df_loaded)
 def Ciclo2(pedidos1,avaliar_grupo):
-    #O Ciclo2 e´usado para redistribuir as quantidades dos skus  que nao conseguiram atender na distribuicao dos pedidos no primeiro ciclo.
-    estoque = EstoqueSKU() # é feito uma nova releitura do estoque
-    pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido','Qtd Atende','Saldo +Sugerido','Saldo Grade'], axis=1,inplace=True)
+    ###### O Ciclo2 e´usado para redistribuir as quantidades dos skus  que nao conseguiram atender na distribuicao dos pedidos no primeiro ciclo.
 
-    #Aqui é feito um tratamento de dados para fazer o merge entre a quantidade pré reservada no primeiro ciclo
+    #etapa 1: recarregando estoque
+    estoque = EstoqueSKU() # é feito uma nova releitura do estoque
+    pedidos1.drop(['Fecha Acumulado',
+                   'EstoqueLivre','estoqueAtual','estReservPedido',
+                   'Qtd Atende','Saldo +Sugerido','Saldo Grade','Necessidade','X QTDE ATENDE','Qtd Atende por Cor'], axis=1,inplace=True)
+
+    # etapa 2: Aqui é feito um tratamento de dados para fazer o merge entre a quantidade pré reservada no primeiro ciclo
     pedidos1['codProduto'].fillna(0,inplace=True)
     pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
     pedidos1['codProduto'] = pedidos1['codProduto'].str.replace('.0','')
     estoque['codProduto']=estoque['codProduto'].astype(str)
 
+    # 2.1 Somando todas as cores que conseguiu distriubuir no ciclo 1 para depois abater
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
+    SKUnovaReserva.rename(columns={'Qnt. Cor(Distrib.)': 'ciclo1'}, inplace=True)
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
 
-
-
-    estoque2['estReservPedido'] = estoque2['estReservPedido'] + estoque2['Qnt. Cor(Distrib.)']
-
-
+    #Etapa3 filtrando somente os pedidos nao distibuidos e fazendo o merge com o estoque
     pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
     pedidos1 = pd.merge(pedidos1,estoque2,on='codProduto',how='left')
-    #10.1 Obtendo o Estoque Liquido para o calculo da necessidade
-    pedidos1['EstoqueLivre'] = pedidos1['estoqueAtual']-pedidos1['estReservPedido']
-    #10.2 Obtendo a necessidade de estoque
+    pedidos1['EstoqueLivre'] = pedidos1['estoqueAtual']-pedidos1['estReservPedido']-pedidos1['ciclo1']
+
+    #Etapa 4 - Calculando a Nova Necessidade e descobrindo o quanto atente por cor
     pedidos1['Necessidade'] = pedidos1.groupby('codProduto')['QtdSaldo'].cumsum()
-    #10.3 0 Obtendo a Qtd que antende para o pedido baseado no estoque
     pedidos1['Qtd Atende'] = pedidos1['QtdSaldo'].where(pedidos1['Necessidade'] <= pedidos1['EstoqueLivre'], 0)
-
-    pedidos1["Qtd Atende"] = pedidos1.apply(lambda row: row['qtdeSugerida'] if row['qtdeSugerida']>0 else row['Qtd Atende'], axis=1)
     pedidos1.loc[pedidos1['qtdeSugerida'] > 0, 'Qtd Atende'] = pedidos1['qtdeSugerida']
-
-
     pedidos1['Qtd Atende'] = pedidos1['Qtd Atende'].astype(int)
-    # 11.2  Calculando a necessidade a nivel de grade Pedido||Prod.||Cor
     pedidos1['Saldo +Sugerido'] = pedidos1['QtdSaldo'] + pedidos1['qtdeSugerida']
     pedidos1['Saldo Grade'] = pedidos1.groupby('Pedido||Prod.||Cor')['Saldo +Sugerido'].transform('sum')
-    #12 obtendo a Qtd que antende para o pedido baseado no estoque e na grade
     pedidos1['X QTDE ATENDE'] = pedidos1.groupby('Pedido||Prod.||Cor')['Qtd Atende'].transform('sum')
     pedidos1['Qtd Atende por Cor'] = pedidos1['Saldo +Sugerido'].where(pedidos1['Saldo Grade'] == pedidos1['X QTDE ATENDE'],0)
     pedidos1['Qtd Atende por Cor'] = pedidos1['Qtd Atende por Cor'].astype(int)
-    #13- Indicador de % que fecha no pedido a nivel de grade Pedido||Prod.||Cor'
+
+
 
     pedidos1['Fecha Acumulado'] = pedidos1.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
     pedidos1['Saldo +Sugerido_Sum'] = pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
@@ -794,14 +790,13 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['% Fecha Acumulado'] = pedidos1['% Fecha Acumulado'].astype(str)
     pedidos1['% Fecha Acumulado'] = pedidos1['% Fecha Acumulado'].str.slice(0, 4)
     pedidos1['% Fecha Acumulado'] = pedidos1['% Fecha Acumulado'].astype(float)
-    pedidos1['Qtd Atende por Cor'] = pedidos1.apply(lambda row: row['Qtd Atende por Cor'] if row['Status'] == '1' else 0,
-                                                  axis=1)
-    pedidos1['Qtd Atende'] = pedidos1.apply(lambda row: row['Qtd Atende'] if row['Status'] == '1' else 0, axis=1)
-    #18 - Encontrando no pedido o percentual que atende a distribuicao
-    pedidos1['% Fecha pedido'] = (pedidos1.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
-    pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido']*100
+
+    pedidos1['% Fecha pedido'] = (pedidos1.groupby('codPedido')['Qtd Atende por Cor'].transform('sum')) / (
+        pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))
+    pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido'] * 100
     pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido'].astype(float).round(2)
-    # 19 - Encontrando os valores que considera na ditribuicao
+
+
     pedidos1['ValorMin'] = pedidos1['ValorMin'].astype(float)
     pedidos1['ValorMax'] = pedidos1['ValorMax'].astype(float)
     condicoes = [(pedidos1['% Fecha pedido'] >= pedidos1['ValorMin']) &
@@ -815,31 +810,30 @@ def Ciclo2(pedidos1,avaliar_grupo):
                  ]
     valores = ['SIM', 'SIM', 'SIM(Redistribuir)', 'NAO']  # definir os valores correspondentes
     pedidos1['Distribuicao'] = numpy.select(condicoes, valores, default=True)
+
+
     df_resultado = pedidos1.loc[:, ['Pedido||Prod.||Cor', 'Distribuicao']]
     df_resultado = df_resultado.groupby('Pedido||Prod.||Cor')['Distribuicao'].apply(avaliar_grupo).reset_index()
     df_resultado.columns = ['Pedido||Prod.||Cor', 'Resultado']
     df_resultado['Resultado'] = df_resultado['Resultado'].astype(str)
 
     pedidos1 = pd.merge(pedidos1, df_resultado, on='Pedido||Prod.||Cor', how='left')
+
     # 19.1: Atualizando a coluna 'Distribuicao' diretamente
     condicao = (pedidos1['Resultado'] == 'False') & (
             (pedidos1['Distribuicao'] == 'SIM') & (pedidos1['Qtd Atende por Cor'] > 0))
     pedidos1.loc[condicao, 'Distribuicao'] = 'SIM(Redistribuir)'
-    # 20- Obtendo valor atente por cor
+
+
+
     pedidos1['Valor Atende por Cor'] = pedidos1['Qtd Atende por Cor'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende por Cor'] = pedidos1['Valor Atende por Cor'].astype(float).round(2)
-    # 21 Identificando a Quantidade Distribuida
-    pedidos1['Qnt. Cor(Distrib.)'] = pedidos1.apply(
-        lambda row: row['Qtd Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    pedidos1['Qnt. Cor(Distrib.)'] = pedidos1['Qtd Atende por Cor'].where(pedidos1['Distribuicao'] == 'SIM', 0)
     pedidos1['Qnt. Cor(Distrib.)'] = pedidos1['Qnt. Cor(Distrib.)'].astype(int)
-
-    # 22 Obtendo valor atente por cor Distribuida
-    pedidos1['Valor Atende por Cor(Distrib.)'] = pedidos1.apply(
-        lambda row: row['Valor Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    pedidos1['Valor Atende por Cor(Distrib.)'] = pedidos1['Valor Atende por Cor'].where(pedidos1['Distribuicao'] == 'SIM',0)
     pedidos1['Valor Atende'] = pedidos1['Qtd Atende'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende'] = pedidos1['Valor Atende'].astype(float).round(2)
 
-    pedidos1.to_csv('monitor1.csv')
 
     return pedidos1
 
