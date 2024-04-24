@@ -751,7 +751,13 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
     #etapa 1: recarregando estoque
     estoque = EstoqueSKU() # é feito uma nova releitura do estoque
+
+    pedidos1['codProduto'].fillna(0,inplace=True)
+    pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
+    pedidos1['codProduto'] = pedidos1['codProduto'].str.replace('.0','')
+
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
+    print(SKUnovaReserva)
     pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
 
     pedidos1.drop(['Fecha Acumulado','% Fecha Acumulado',
@@ -759,14 +765,11 @@ def Ciclo2(pedidos1,avaliar_grupo):
                    'Qtd Atende','Qtd Atende por Cor','Qnt. Cor(Distrib.)','Distribuicao',
                    'Saldo +Sugerido','Saldo Grade','Necessidade','X QTDE ATENDE','Saldo +Sugerido_Sum'], axis=1,inplace=True)
 
-    # etapa 2: Aqui é feito um tratamento de dados para fazer o merge entre a quantidade pré reservada no primeiro ciclo
-    pedidos1['codProduto'].fillna(0,inplace=True)
-    pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
-    pedidos1['codProduto'] = pedidos1['codProduto'].str.replace('.0','')
-    estoque['codProduto']=estoque['codProduto'].astype(str)
+
 
     # 2.1 Somando todas as cores que conseguiu distriubuir no ciclo 1 para depois abater
     SKUnovaReserva.rename(columns={'Qnt. Cor(Distrib.)': 'ciclo1'}, inplace=True)
+    estoque['codProduto']=estoque['codProduto'].astype(str)
     estoque2 = pd.merge(estoque,SKUnovaReserva, on='codProduto',how='left' )
 
     #Etapa3 filtrando somente os pedidos nao distibuidos e fazendo o merge com o estoque
@@ -785,7 +788,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['Qtd Atende por Cor'] = pedidos1['Qtd Atende por Cor'].astype(int)
 
 
-    #Etapa 6: Encontrando o novo % Fecha Acumalado para o ciclo2
+    #Etapa 5: Encontrando o novo % Fecha Acumalado para o ciclo2
     pedidos1['Fecha Acumulado'] = pedidos1.groupby('codPedido')['Qtd Atende por Cor'].cumsum().round(2)
     pedidos1['Saldo +Sugerido_Sum'] = pedidos1.groupby('codPedido')['Saldo +Sugerido'].transform('sum')
     pedidos1['% Fecha Acumulado'] = (pedidos1['Fecha Acumulado'] / pedidos1['Saldo +Sugerido_Sum']).round(2) * 100
@@ -798,7 +801,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido'] * 100
     pedidos1['% Fecha pedido'] = pedidos1['% Fecha pedido'].astype(float).round(2)
 
-    # Etapa: Obtendo novos valores para a distribuicao
+    # Etapa6: Obtendo novos valores para a distribuicao
     pedidos1['ValorMin'] = pedidos1['ValorMin'].astype(float)
     pedidos1['ValorMax'] = pedidos1['ValorMax'].astype(float)
     condicoes = [(pedidos1['% Fecha pedido'] >= pedidos1['ValorMin']) &
@@ -813,20 +816,19 @@ def Ciclo2(pedidos1,avaliar_grupo):
     valores = ['SIM', 'SIM', 'SIM(Redistribuir)', 'NAO']  # definir os valores correspondentes
     pedidos1['Distribuicao'] = numpy.select(condicoes, valores, default=True)
 
-
+    #Etapa 7: Avaliando se no nivel de pedido||sku||cor possui situacao de quebra
     df_resultado = pedidos1.loc[:, ['Pedido||Prod.||Cor', 'Distribuicao']]
     df_resultado = df_resultado.groupby('Pedido||Prod.||Cor')['Distribuicao'].apply(avaliar_grupo).reset_index()
     df_resultado.columns = ['Pedido||Prod.||Cor', 'Resultado']
     df_resultado['Resultado'] = df_resultado['Resultado'].astype(str)
-
     pedidos1 = pd.merge(pedidos1, df_resultado, on='Pedido||Prod.||Cor', how='left')
-
+    #7.1 Aplicando nova situacao no redistriuir
     condicao = (pedidos1['Resultado'] == 'False') & (
             (pedidos1['Distribuicao'] == 'SIM') & (pedidos1['Qtd Atende por Cor'] > 0))
     pedidos1.loc[condicao, 'Distribuicao'] = 'SIM(Redistribuir)'
 
 
-    #Encontradno os novos valores para o ciclo2
+    #8- Encontradno os novos valores para o ciclo2
     pedidos1['Valor Atende por Cor'] = pedidos1['Qtd Atende por Cor'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende por Cor'] = pedidos1['Valor Atende por Cor'].astype(float).round(2)
     pedidos1['Qnt. Cor(Distrib.)'] = pedidos1['Qtd Atende por Cor'].where(pedidos1['Distribuicao'] == 'SIM', 0)
