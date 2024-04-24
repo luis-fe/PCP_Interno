@@ -415,7 +415,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #Ciclo 2
     pedidos1 = pedidos[pedidos['Distribuicao'] == 'NAO']
-    pedidos1 = pedidos[pedidos1['StatusSugestao'] == 'Nao Sugerido']
     pedidos1 = Ciclo2(pedidos1, avaliar_grupo)
 
     pedidos2 = pedidos[(pedidos['Distribuicao'] != 'NAO')]
@@ -755,6 +754,9 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
     #etapa 1: recarregando estoque
     estoque = EstoqueSKU() # é feito uma nova releitura do estoque
+    pedidos1 = pedidos1[pedidos1['StatusSugestao'] == 'Nao Sugerido']
+    pedidos2 = pedidos1[pedidos1['StatusSugestao'] != 'Nao Sugerido']
+
 
     pedidos1['codProduto'].fillna(0,inplace=True)
     pedidos1['codProduto']=pedidos1['codProduto'].astype(str)
@@ -841,7 +843,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['Valor Atende'] = pedidos1['Qtd Atende'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende'] = pedidos1['Valor Atende'].astype(float).round(2)
 
-
+    pedidos1 = pd.concat([pedidos1, pedidos2])
 
     return pedidos1
 
