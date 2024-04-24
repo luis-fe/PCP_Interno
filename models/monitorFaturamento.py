@@ -414,8 +414,12 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #Ciclo 2
-    pedidos1 = Ciclo2(pedidos, avaliar_grupo)
+    pedidos1 = pedidos[pedidos['Distribuicao'] == 'NAO']
+    pedidos1 = pedidos[pedidos1['StatusSugestao'] == 'Nao Sugerido']
+    pedidos1 = Ciclo2(pedidos1, avaliar_grupo)
+
     pedidos2 = pedidos[(pedidos['Distribuicao'] != 'NAO')]
+
     pedidos = pd.concat([pedidos1, pedidos2])
 
     #23- Salvando os dados gerados em csv
@@ -757,8 +761,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
     SKUnovaReserva = pedidos1.groupby('codProduto').agg({'Qnt. Cor(Distrib.)': 'sum'}).reset_index()
 
-    pedidos1 = pedidos1[pedidos1['Distribuicao'] == 'NAO']
-    pedidos1 = pedidos1[pedidos1['StatusSugestao'] == 'Nao Sugerido']
+
 
     pedidos1.drop(['EstoqueLivre','estoqueAtual','estReservPedido',
                    'Necessidade','Qtd Atende','Saldo +Sugerido',
