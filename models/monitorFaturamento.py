@@ -415,7 +415,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #Ciclo 2
     pedidos1 = Ciclo2(pedidos, avaliar_grupo)
-    pedidos2 = pedidos[(pedidos['Distribuicao'] != 'NAO') & (pedidos['StatusSugestao'] != 'Nao Sugerido')]
+    pedidos2 = pedidos[(pedidos['Distribuicao'] != 'NAO')]
     pedidos = pd.concat([pedidos1, pedidos2])
 
     #23- Salvando os dados gerados em csv
