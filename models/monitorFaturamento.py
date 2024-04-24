@@ -414,10 +414,16 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #Ciclo 2
-    pedidos1 = pedidos[pedidos['Distribuicao'] == 'NAO']
-    pedidos1 = Ciclo2(pedidos1, avaliar_grupo)
+    situacao = pedidos.groupby('codPedido')['Valor Atende por Cor(Distrib.)'].sum().reset_index()
+    situacao = situacao[situacao['Valor Atende por Cor(Distrib.)'] > 0]
+    situacao.columns = ['codPedido','totalPçDis']
+    pedidos = pd.merge(pedidos,situacao,on='codPedido',how='left')
+    pedidos.fillna(0,inplace=True)
 
-    pedidos2 = pedidos[(pedidos['Distribuicao'] != 'NAO')]
+    pedidos1 = pedidos[pedidos['totalPçDis'] == 0]
+    pedidos1 = Ciclo2(pedidos1, avaliar_grupo)
+    pedidos2 = pedidos[pedidos['totalPçDis'] > 0]
+
 
     pedidos = pd.concat([pedidos1, pedidos2])
 
