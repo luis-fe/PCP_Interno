@@ -410,7 +410,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
 
     #22 Obtendo valor atente por cor Distribuida
-    pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    #pedidos['Valor Atende por Cor(Distrib.)'] = pedidos.apply(lambda row: row['Valor Atende por Cor'] if row['Distribuicao'] == 'SIM' else 0, axis=1)
+    pedidos['Valor Atende por Cor(Distrib.)'] = pedidos['Valor Atende por Cor'].where(pedidos['Distribuicao'] == 'SIM', 0)
     pedidos['Valor Atende'] = pedidos['Qtd Atende'] * pedidos['PrecoLiquido']
     pedidos['Valor Atende'] =pedidos['Valor Atende'].astype(float).round(2)
 
