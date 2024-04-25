@@ -424,8 +424,10 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos.fillna(0,inplace=True)
 
     pedidos1 = pedidos[pedidos['totalPçDis'] == 0]
+    pedidos1['SituacaoDistrib'] = 'Redistribui'
     pedidos1 = Ciclo2(pedidos1, avaliar_grupo)
     pedidos2 = pedidos[pedidos['totalPçDis'] > 0]
+    pedidos2['SituacaoDistrib'] = 'Distribuido1'
 
 
     pedidos = pd.concat([pedidos1, pedidos2])
@@ -470,7 +472,8 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     #'Valor Atende': 'sum',
     'StatusSugestao': 'first',
     'Valor Atende por Cor(Distrib.)': 'sum',
-    'Qnt. Cor(Distrib.)': 'sum'
+    'Qnt. Cor(Distrib.)': 'sum',
+    'SituacaoDistrib':'first'
     #'observacao': 'first'
     }).reset_index()
 
@@ -505,6 +508,8 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     PedidosDistribui = pedidos[pedidos['23-% qtd cor']>0]
     PedidosDistribui = PedidosDistribui['02-Pedido'].count()
 
+    pedidosRedistribuido = pedidos[pedidos['SituacaoDistrib'] == 'Distribuido2'].count()
+
 
     TotalQtdCordist = pedidos['21-Qnt Cor(Distrib.)'].sum()
     TotalValorCordist = pedidos['22-Valor Atende por Cor(Distrib.)'].sum()
@@ -528,7 +533,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
         '4-Total Valor Atende por Cor(Distrib.)': f'{TotalValorCordist}',
         '5-Valor Saldo Restante':f'{saldo}',
         '5.1-Total Pedidos': f'{totalPedidos}',
-        '5.2-Total Pedidos distribui':f'{PedidosDistribui}',
+        '5.2-Total Pedidos distribui':f'{PedidosDistribui},({pedidosRedistribuido} pedidos redistribuido)',
         '6 -Detalhamento': pedidos.to_dict(orient='records')
 
     }
@@ -777,7 +782,7 @@ def Ciclo2(pedidos1,avaliar_grupo):
                    'Necessidade','Qtd Atende','Saldo +Sugerido',
                    'Saldo Grade','X QTDE ATENDE','Qtd Atende por Cor','Fecha Acumulado',
                    'Saldo +Sugerido_Sum','% Fecha Acumulado','% Fecha pedido','Distribuicao','Valor Atende por Cor','Qnt. Cor(Distrib.)'
-                   ,'Valor Atende por Cor(Distrib.)','Valor Atende'], axis=1,inplace=True)
+                   ,'Valor Atende por Cor(Distrib.)','Valor Atende','totalPçDis','SituacaoDistrib'], axis=1,inplace=True)
 
 
 
@@ -850,6 +855,13 @@ def Ciclo2(pedidos1,avaliar_grupo):
     pedidos1['Valor Atende por Cor(Distrib.)'] = pedidos1['Valor Atende por Cor'].where(pedidos1['Distribuicao'] == 'SIM',0)
     pedidos1['Valor Atende'] = pedidos1['Qtd Atende'] * pedidos1['PrecoLiquido']
     pedidos1['Valor Atende'] = pedidos1['Valor Atende'].astype(float).round(2)
+
+    situacao = pedidos1.groupby('codPedido')['Valor Atende por Cor(Distrib.)'].sum().reset_index()
+    situacao = situacao[situacao['Valor Atende por Cor(Distrib.)'] > 0]
+    situacao.columns = ['codPedido', 'totalPçDis']
+    pedidos1 = pd.merge(pedidos1, situacao, on='codPedido', how='left')
+
+    pedidos1['SituacaoDistrib'] = numpy.where(pedidos1['totalPçDis'] > 0, 'Distribuido2', 'Nao Redistribui')
 
     pedidos1 = pd.concat([pedidos1, pedidos2])
 
