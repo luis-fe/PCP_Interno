@@ -508,8 +508,8 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     PedidosDistribui = pedidos[pedidos['23-% qtd cor']>0]
     PedidosDistribui = PedidosDistribui['02-Pedido'].count()
 
-    pedidosRedistribuido = pedidos[pedidos['SituacaoDistrib'] == 'Distribuido2'].count()
-
+    pedidosRedistribuido = pedidos[pedidos['SituacaoDistrib'] == 'Distribuido2']
+    pedidosRedistribuido = pedidosRedistribuido['SituacaoDistrib'].count()
 
     TotalQtdCordist = pedidos['21-Qnt Cor(Distrib.)'].sum()
     TotalValorCordist = pedidos['22-Valor Atende por Cor(Distrib.)'].sum()
