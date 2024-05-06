@@ -132,7 +132,7 @@ def TempoUltimaAtualizacao(dataHoraAtual, rotina):
         return diferenca_total_segundos
 
 def TempoUltimaAtualizacaoPCP(dataHoraAtual, rotina):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexao2()
 
     consulta = pd.read_sql('select max(fim) as "ultimaData" from "Reposicao".configuracoes.controle_requisicao_csw crc '
                           "where rotina = %s ", conn, params=(rotina,) )
