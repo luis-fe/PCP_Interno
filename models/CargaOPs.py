@@ -672,3 +672,20 @@ def extrair_ano(descricaoLote):
         return match.group(0)
     else:
         return None
+
+
+def DistinctColecao():
+    conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
+
+    # Etapa Trazendo as OP'em aberto, bem como as suas caracteristicas
+    OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
+    # Etapa Tratando a informacao da Descricao do Lote para o formato COLECAO
+    OP_emAberto['lote'] = OP_emAberto['lote'].astype(str)
+    OP_emAberto['lote'].fillna('-', inplace=True)
+    OP_emAberto['COLECAO'] = OP_emAberto['lote'].apply(TratamentoInformacaoColecao)
+    OP_emAberto['COLECAO'] = OP_emAberto['COLECAO'] + ' ' + OP_emAberto['lote'].apply(extrair_ano)
+    conn.close()
+
+    OP_emAberto = OP_emAberto.loc[:,['COLECAO']]
+
+    return OP_emAberto
