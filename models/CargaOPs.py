@@ -26,12 +26,11 @@ def obterHoraAtual():
 
 
 # Passo 1: Buscando as OP's em aberto no CSW
-def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60, classificar = '-', colecao = ''):
+def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60, classificar = '-', colecaoF = ''):
     filtro = filtro.upper()
-    colecao = FiltroColecao(colecao)
+    colecao = FiltroColecao(colecaoF)
 
-
-    if (filtro == '-' and filtroDiferente == '' and tempo >= limite and colecao =='' ) or (filtro == '' and filtroDiferente == '' and tempo >= limite and colecao =='')   :
+    if (filtro == '-' and filtroDiferente == '' and tempo >= limite and colecaoF =='' ) or (filtro == '' and filtroDiferente == '' and tempo >= limite and colecaoF =='')   :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
         # Etapa Trazendo as OP'em aberto, bem como as suas caracteristicas
