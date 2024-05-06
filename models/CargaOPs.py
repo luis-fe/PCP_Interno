@@ -28,7 +28,7 @@ def obterHoraAtual():
 # Passo 1: Buscando as OP's em aberto no CSW
 def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60, classificar = '-', colecao = ''):
     filtro = filtro.upper()
-    colecao = FiltroColecao(colecao)
+    #colecao = FiltroColecao(colecao)
     if (filtro == '-' and filtroDiferente == '' and tempo >= limite and colecao =='' ) or (filtro == '' and filtroDiferente == '' and tempo >= limite and colecao =='')   :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
@@ -407,7 +407,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta = pd.read_csv('cargaOP.csv')
         consulta.fillna('-', inplace=True)
 
-        consulta = pd.merge(consulta,colecao,on='COLECAO')
+        #consulta = pd.merge(consulta,colecao,on='COLECAO')
 
 
         ##Converter string para lista
@@ -472,7 +472,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
-        filtros = pd.merge(filtros,colecao,on='COLECAO')
+        #filtros = pd.merge(filtros,colecao,on='COLECAO')
 
 
         # Dividir a string em partes usando a vírgula como delimitador
