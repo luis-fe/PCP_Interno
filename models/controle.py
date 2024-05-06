@@ -134,7 +134,7 @@ def TempoUltimaAtualizacao(dataHoraAtual, rotina):
 def TempoUltimaAtualizacaoPCP(dataHoraAtual, rotina):
     conn = ConexaoPostgreMPL.conexao()
 
-    consulta = pd.read_sql('select max(fim) as "ultimaData" from pcp.controle_requisicao_csw crc '
+    consulta = pd.read_sql('select max(fim) as "ultimaData" from "Reposicao".configuracoes.controle_requisicao_csw crc '
                           "where rotina = %s ", conn, params=(rotina,) )
 
 

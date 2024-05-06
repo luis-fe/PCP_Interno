@@ -33,6 +33,7 @@ def CargadasOPs():
     filtroDiferente = data.get('filtroDiferente', '')
     rotina = 'Portal Consulta OP'
     classificar = data.get('classificar', '-')
+    colecao = data.get('colecao','')
 
     print(f'foi classficado por {classificar}')
     client_ip = request.remote_addr
