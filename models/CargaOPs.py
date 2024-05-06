@@ -38,7 +38,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         OP_emAberto['lote'] = OP_emAberto['lote'].astype(str)
         OP_emAberto['lote'].fillna('-',inplace=True)
         OP_emAberto['COLECAO'] = OP_emAberto['lote'].apply(TratamentoInformacaoColecao)
-        OP_emAberto['COLECAO'] = OP_emAberto['COLECAO'] + '' + OP_emAberto['lote'].apply(extrair_ano)
+        OP_emAberto['COLECAO'] = OP_emAberto['COLECAO'] + ' ' + OP_emAberto['lote'].apply(extrair_ano)
 
 
         OP_emAberto['seqAtual'] = OP_emAberto['seqAtual'].astype(str)
