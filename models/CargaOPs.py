@@ -26,10 +26,10 @@ def obterHoraAtual():
 
 
 # Passo 1: Buscando as OP's em aberto no CSW
-def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60, classificar = '-'):
+def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60, classificar = '-', colecao = ''):
     filtro = filtro.upper()
-
-    if (filtro == '-' and filtroDiferente == '' and tempo >= limite  ) or (filtro == '' and filtroDiferente == '' and tempo >= limite)   :
+    colecao = FiltroColecao(colecao)
+    if (filtro == '-' and filtroDiferente == '' and tempo >= limite and colecao =='' ) or (filtro == '' and filtroDiferente == '' and tempo >= limite and colecao =='')   :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
         # Etapa Trazendo as OP'em aberto, bem como as suas caracteristicas
@@ -400,10 +400,16 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         return pd.DataFrame([dados])
+
+
     elif filtro == '-' or filtro == '':
 
         consulta = pd.read_csv('cargaOP.csv')
         consulta.fillna('-', inplace=True)
+
+        consulta = pd.merge(consulta,colecao,on='COLECAO')
+
+
         ##Converter string para lista
         #consulta['estaPendente'] = consulta['estaPendente'].apply(ast.literal_eval)
         consulta['estaPendente'] = consulta['estaPendente'].str.replace("[","")
@@ -466,6 +472,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
+        filtros = pd.merge(filtros,colecao,on='COLECAO')
+
 
         # Dividir a string em partes usando a vírgula como delimitador
         filtros['estaPendente'] = filtros['estaPendente'].str.replace("[","")
@@ -692,3 +700,33 @@ def DistinctColecao():
     OP_emAberto = OP_emAberto.drop_duplicates()
 
     return OP_emAberto
+
+def FiltroColecao(colecao):
+    # Transformando o array em um dataFrame
+    if colecao == '' or colecao == '-':
+        return '-'
+    else:
+        df = pd.DataFrame(colecao, columns=['COLECAO'])
+        df['filtrado'] = True
+        #Carregando o distinct
+        distinct  = DistinctColecao()
+        distinct = pd.merge(distinct, df, on='COLECAO',how='left')
+
+        contagemDistinct = distinct['COLECAO'].count()
+
+        distinct2 = distinct[distinct['filtrado'] == True]
+        contagemDistinct2 = distinct2['COLECAO'].count()
+
+        if contagemDistinct == contagemDistinct2:
+            return '-'
+        else:
+            return distinct2
+
+
+
+
+
+
+
+
+
