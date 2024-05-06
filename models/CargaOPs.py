@@ -407,7 +407,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta = pd.read_csv('cargaOP.csv')
         consulta.fillna('-', inplace=True)
 
-        #consulta = pd.merge(consulta,colecao,on='COLECAO')
+        if colecao != '-':
+            consulta = pd.merge(consulta,colecao,on='COLECAO')
 
 
         ##Converter string para lista
@@ -472,7 +473,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     else:
         filtros = pd.read_csv('cargaOP.csv')
         filtros = filtros[filtros['Area']== AREA]
-        #filtros = pd.merge(filtros,colecao,on='COLECAO')
+        if colecao != '-':
+            filtros = pd.merge(filtros, colecao, on='COLECAO')
 
 
         # Dividir a string em partes usando a vírgula como delimitador
