@@ -35,6 +35,9 @@ def CargadasOPs():
     classificar = data.get('classificar', '-')
     colecao = data.get('colecao','')
 
+    if colecao == []:
+        colecao = ''
+
     print(f'foi classficado por {classificar}')
     client_ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
