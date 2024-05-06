@@ -655,14 +655,13 @@ def ExecoesResponsalFases(dataframe, fase, tipoop):
 
 
 def TratamentoInformacaoColecao(descricaoLote):
-
-    if ['INVERNO'] in descricaoLote:
+    if 'INVERNO' in descricaoLote:
         return 'INVERNO'
-    elif ['PRI'] in descricaoLote:
+    elif 'PRI' in descricaoLote:
         return 'VERAO'
-    elif ['ALT'] in descricaoLote:
-        return 'ALO VERAO'
-    elif ['VER'] in descricaoLote:
+    elif 'ALT' in descricaoLote:
+        return 'ALTO VERAO'
+    elif 'VER' in descricaoLote:
         return 'VERAO'
     else:
         return 'ENCOMENDAS'
