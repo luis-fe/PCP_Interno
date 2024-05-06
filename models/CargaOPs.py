@@ -32,7 +32,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     if (filtro == '-' and filtroDiferente == '' and tempo >= limite  ) or (filtro == '' and filtroDiferente == '' and tempo >= limite)   :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
+        # Etapa Trazendo as OP'em aberto, bem como as suas caracteristicas
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
+        # Etapa Tratando a informacao da Descricao do Lote para o formato COLECAO
+        OP_emAberto['COLECAO'] = OP_emAberto['lote'].apply(TratamentoInformacaoColecao)
+        OP_emAberto['COLECAO'] = OP_emAberto['COLECAO'] + '' + OP_emAberto['lote'].apply(extrair_ano)
+
+
         OP_emAberto['seqAtual'] = OP_emAberto['seqAtual'].astype(str)
         OP_emAberto['codTipoOP'] = OP_emAberto['codTipoOP'].astype(str)
 
@@ -644,3 +650,24 @@ def ReconhecerFiltro(filtro):
 def ExecoesResponsalFases(dataframe, fase, tipoop):
     dataframe['responsavel'] = dataframe.apply(lambda row: '' if row['codFase'] == fase and row['codTipoOP'] == tipoop else row['responsavel'], axis=1 )
     return dataframe
+
+
+def TratamentoInformacaoColecao(descricaoLote):
+
+    if ['INVERNO'] in descricaoLote:
+        return 'INVERNO'
+    elif ['PRI'] in descricaoLote:
+        return 'VERAO'
+    elif ['ALT'] in descricaoLote:
+        return 'ALO VERAO'
+    elif ['VER'] in descricaoLote:
+        return 'VERAO'
+    else:
+        return 'ENCOMENDAS'
+
+def extrair_ano(descricaoLote):
+    match = re.search(r'\b2\d{3}\b', descricaoLote)
+    if match:
+        return match.group(0)
+    else:
+        return None
