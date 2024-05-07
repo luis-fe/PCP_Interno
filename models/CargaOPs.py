@@ -389,7 +389,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         totalAtencao = "{:,.0f}".format(totalAtencao)
         totalAtencao = totalAtencao.replace(',','')
 
-        consulta = consulta.head(1000)
+        consulta = consulta.head(50)
 
 
 
