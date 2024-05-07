@@ -63,6 +63,7 @@ def CargadasOPs():
         print(client_ip+' '+filtro)
 
     # Obtém os nomes das colunas
+    usuarios = usuarios.head(1000)
     column_names = usuarios.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     OP_data = []
