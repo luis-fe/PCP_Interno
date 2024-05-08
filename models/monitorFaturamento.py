@@ -424,13 +424,15 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.merge(pedidos,situacao,on='codPedido',how='left')
     pedidos.fillna(0,inplace=True)
 
+
+
     pedidos1 = pedidos[pedidos['totalPçDis'] == 0]
     pedidos1['SituacaoDistrib'] = 'Redistribui'
     pedidos1 = Ciclo2(pedidos1, avaliar_grupo)
     pedidos2 = pedidos[pedidos['totalPçDis'] > 0]
     pedidos2['SituacaoDistrib'] = 'Distribuido1'
 
-    print(pedidos[pedidos['codPedido']=='322439'])
+    pedidos[pedidos['codPedido']=='322439'].to_csv('minhaAnalise.csv')
 
     pedidos = pd.concat([pedidos1, pedidos2])
 
