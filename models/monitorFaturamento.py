@@ -432,7 +432,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos2 = pedidos[pedidos['totalPçDis'] > 0]
     pedidos2['SituacaoDistrib'] = 'Distribuido1'
 
-    pedidos[pedidos['codPedido']=='322439'].to_csv('minhaAnalise.csv')
 
     pedidos = pd.concat([pedidos1, pedidos2])
 
@@ -440,7 +439,6 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado
 
     fp.write('monitor.parquet', pedidos)
-    print(pedidos[pedidos['codPedido']=='322439'])
 
     etapa25 = controle.salvarStatus_Etapa25(rotina, ip, etapa24, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
     return pedidos
@@ -775,9 +773,15 @@ def Ciclo2(pedidos1,avaliar_grupo):
     ###### O Ciclo2 e´usado para redistribuir as quantidades dos skus  que nao conseguiram atender na distribuicao dos pedidos no primeiro ciclo.
 
     #etapa 1: recarregando estoque
+
     estoque = EstoqueSKU() # é feito uma nova releitura do estoque
+    print('verificar se foi pra redistribuicao')
+    print(pedidos1[pedidos1['codPedido']=='322439'])
+
     pedidos1 = pedidos1[pedidos1['StatusSugestao'] == 'Nao Sugerido']
     pedidos2 = pedidos1[pedidos1['StatusSugestao'] != 'Nao Sugerido']
+    print('testando os pedios 2 no cilco')
+    print(pedidos2[pedidos2['codPedido']=='322439'])
 
 
     pedidos1['codProduto'].fillna(0,inplace=True)
