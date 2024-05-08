@@ -430,6 +430,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos2 = pedidos[pedidos['totalPçDis'] > 0]
     pedidos2['SituacaoDistrib'] = 'Distribuido1'
 
+    print(pedidos[pedidos['codPedido']=='322439'])
 
     pedidos = pd.concat([pedidos1, pedidos2])
 
@@ -437,6 +438,8 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado
 
     fp.write('monitor.parquet', pedidos)
+    print(pedidos[pedidos['codPedido']=='322439'])
+
     etapa25 = controle.salvarStatus_Etapa25(rotina, ip, etapa24, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
     return pedidos
 
