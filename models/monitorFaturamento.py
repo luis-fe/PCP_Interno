@@ -166,7 +166,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['entregas_Solicitadas'].fillna(0,inplace=True)
     etapa4 = controle.salvarStatus_Etapa4(rotina, ip, etapa3, 'Consulta de Embarques Solicitado pelo Cliente') #Registrar etapa no controlador
 
-
+    print(pedidos[pedidos['codPedido']=='322439'])
     # 5 - Explodir os pedidos no nivel sku
     if tipoData == 'DataEmissao':
         sku = Monitor_nivelSku(iniVenda)
@@ -182,6 +182,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
     etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Explodir os pedidos no nivel sku')#Registrar etapa no controlador
 
+    print(pedidos[pedidos['codPedido']=='322439'])
 
 
     # 6 Consultando n banco de dados do ERP o saldo de estoque
