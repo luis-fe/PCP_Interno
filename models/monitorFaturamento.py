@@ -484,6 +484,9 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
     pedidos['%'] = pedidos['%']*100
     pedidos['%'] = pedidos['%'].round(0)
+    print(pedidos[pedidos['codPedido']=='322439'])
+
+
     pedidos.rename(columns={'MARCA': '01-MARCA',"codPedido":"02-Pedido",
                             "codTipoNota":"03-tipoNota","dataPrevFat":"04-Prev.Original","dataPrevAtualizada":"05-Prev.Atualiz","codCliente":"06-codCliente",
                             "vlrSaldo":"08-vlrSaldo","entregas_Solicitadas":"09-Entregas Solic","entregas_enviadas":"10-Entregas Fat",
