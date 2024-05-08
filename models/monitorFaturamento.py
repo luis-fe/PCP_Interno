@@ -769,17 +769,16 @@ def AbrirArquivoFast():
     df_loaded['qtdeCancelada'] = pd.to_numeric(df_loaded['qtdeCancelada'], errors='coerce').fillna(0)
 
     print(df_loaded)
-def Ciclo2(pedidos1,avaliar_grupo):
+def Ciclo2(pedidos,avaliar_grupo):
     ###### O Ciclo2 e´usado para redistribuir as quantidades dos skus  que nao conseguiram atender na distribuicao dos pedidos no primeiro ciclo.
 
     #etapa 1: recarregando estoque
 
     estoque = EstoqueSKU() # é feito uma nova releitura do estoque
     print('verificar se foi pra redistribuicao')
-    print(pedidos1[pedidos1['codPedido']=='322439'])
 
-    pedidos1 = pedidos1[pedidos1['StatusSugestao'] == 'Nao Sugerido']
-    pedidos2 = pedidos1[pedidos1['StatusSugestao'] != 'Nao Sugerido']
+    pedidos1 = pedidos[pedidos['StatusSugestao'] == 'Nao Sugerido']
+    pedidos2 = pedidos[pedidos['StatusSugestao'] != 'Nao Sugerido']
     print('testando os pedios 2 no cilco')
     print(pedidos2[pedidos2['codPedido']=='322439'])
 
@@ -876,9 +875,9 @@ def Ciclo2(pedidos1,avaliar_grupo):
 
     pedidos1['SituacaoDistrib'] = numpy.where(pedidos1['totalPçDis'] > 0, 'Distribuido2', 'Nao Redistribui')
 
-    pedidos1 = pd.concat([pedidos1, pedidos2])
+    pedidosNovo = pd.concat([pedidos1, pedidos2])
 
-    return pedidos1
+    return pedidosNovo
 
 
 def APICongeladaCiclo2(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
