@@ -114,11 +114,22 @@ def DeParaFilhoPaiCategoria():
 
 def RequisicoesOPs():
 
-    requisicoes = ' SELECT numero,numOPConfec as numeroOP ,  seqRoteiro as fase, sitBaixa, codNatEstoque  ' \
-                  ' FROM tcq.Requisicao r WHERE r.codEmpresa = 1 and ' \
-                  ' r.numOPConfec in (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 3)'
+    requisicoes = """
+    SELECT numero,numOPConfec as numeroOP ,  seqRoteiro as fase, sitBaixa, codNatEstoque
+                  FROM tcq.Requisicao r WHERE r.codEmpresa = 1 and
+                  r.numOPConfec in (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 3)
+    """
 
     return requisicoes
+
+def RequisicaoOPsPartes():
+    requisicao = """
+        SELECT numero,numOPConfec as codOPParte  ,  seqRoteiro as fase, sitBaixa, codNatEstoque
+                  FROM tcq.Requisicao r 
+                  inner join tco.RelacaoOPsConjuntoPartes p on p.codOPConjunto = r.numOPConfec 
+                  WHERE r.codEmpresa = 1 and
+                  r.numOPConfec in (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 3)
+    """
 
 #SQL DE BUSCA DAS PARTES DAS OPS : velocidade Média : 0,35 segundos (OTIMO)
 

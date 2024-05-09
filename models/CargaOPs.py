@@ -65,7 +65,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = pd.merge(consulta, terceiros, on=['numeroOP','codFase'], how='left')
 
-        requisicoes = pd.read_sql(BuscasAvancadas.RequisicoesOPs(), conn)
 
 
         # ETAPA BUSCANDO AS PARTES DA OP MAE
@@ -93,6 +92,12 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes.drop('nomeParte', axis=1, inplace=True)
         partes['sitBaixa'] = partes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '2' else '🔴ab.' , axis=1)
 
+
+
+        requisicoes = pd.read_sql(BuscasAvancadas.RequisicoesOPs(), conn)
+        requisicoesPartes = pd.read_sql(BuscasAvancadas.RequisicaoOPsPartes(), conn)
+
+        requisicoes = pd.concat([requisicoes, requisicoesPartes], ignore_index=True)
 
 
         requisicoes['fase'] = requisicoes['fase'].astype(str)
