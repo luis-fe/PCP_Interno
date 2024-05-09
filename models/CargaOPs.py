@@ -74,7 +74,10 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes2.rename(columns={'codNatEstoque': 'nova_codNatEstoque'}, inplace=True)
         partes2 = partes2.loc[:, ['nova_codNatEstoque', 'numeroOP']].reset_index()
         partes2 = pd.merge(partes2, partes, on='numeroOP')
-        partes2 = partes2[partes2['nova_codNatEstoque'] != partes2['codNatEstoque']]
+        partes2 = partes2[partes2['nova_codNatEstoque'] != partes2['codNatEstoque']].reset_index()
+        partes2.drop(['numeroOP'],axis=1,inplace=True)
+        partes2.rename(columns={'nova_codNatEstoque': 'numeroOP'}, inplace=True)
+
 
         print(partes2)
 
