@@ -81,6 +81,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes['sitBaixa'] = partes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '2' else '🔴ab.' , axis=1)
 
         # ETAPA BUSCANDO PARTES NAS PARTES
+        print(requisicoes)
 
 
 
@@ -114,7 +115,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda x: ', '.join(f"{codNatEstoque}{sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
 
-        print(requisicoes)
 
         #
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: substituir_bx(row['detalhado']), axis=1)
