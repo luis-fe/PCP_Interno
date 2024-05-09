@@ -124,7 +124,7 @@ def RequisicoesOPs():
 
 def RequisicaoOPsPartes():
     requisicao = """
-        SELECT numero,numOPConfec as codOPParte  ,  seqRoteiro as fase, sitBaixa, codNatEstoque
+        SELECT numero,codOPParte as numeroOP  ,  seqRoteiro as fase, sitBaixa, codNatEstoque
                   FROM tcq.Requisicao r 
                   inner join tco.RelacaoOPsConjuntoPartes p on p.codOPConjunto = r.numOPConfec 
                   WHERE r.codEmpresa = 1 and
