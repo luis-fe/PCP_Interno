@@ -33,9 +33,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
     if (filtro == '-' and filtroDiferente == '' and tempo >= limite and colecaoF =='' ) or (filtro == '' and filtroDiferente == '' and tempo >= limite and colecaoF =='')   :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
 
-        # Etapa Trazendo as OP'em aberto, bem como as suas caracteristicas
+        # Etapa 3 Trazendo as OP'em aberto, bem como as suas caracteristicas
+        #################################################################################################
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
-        # Etapa Tratando a informacao da Descricao do Lote para o formato COLECAO
+        # Etapa 2 Tratando a informacao da Descricao do Lote para o formato COLECAO
+        #################################################################################################
         OP_emAberto['lote'] = OP_emAberto['lote'].astype(str)
         OP_emAberto['lote'].fillna('-',inplace=True)
         OP_emAberto['COLECAO'] = OP_emAberto['lote'].apply(TratamentoInformacaoColecao)
@@ -44,7 +46,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         OP_emAberto['seqAtual'] = OP_emAberto['seqAtual'].astype(str)
         OP_emAberto['codTipoOP'] = OP_emAberto['codTipoOP'].astype(str)
-
+        #################################################################################################
+        # Etapa 4 Trazendo a informacao do tipo
         tipoOP = pd.read_sql(BuscasAvancadas.TipoOP(), conn)
         tipoOP['codTipoOP'] = tipoOP['codTipoOP'].astype(str)
 

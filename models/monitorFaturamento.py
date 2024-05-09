@@ -166,7 +166,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['entregas_Solicitadas'].fillna(0,inplace=True)
     etapa4 = controle.salvarStatus_Etapa4(rotina, ip, etapa3, 'Consulta de Embarques Solicitado pelo Cliente') #Registrar etapa no controlador
 
-    print(pedidos[pedidos['codPedido']=='322439'])
+    print(pedidos[pedidos['codPedido']=='323256'])
     # 5 - Explodir os pedidos no nivel sku
     if tipoData == 'DataEmissao':
         sku = Monitor_nivelSku(iniVenda)
@@ -182,7 +182,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos['QtdSaldo'] = pedidos['QtdSaldo'].astype(int)
     etapa5 = controle.salvarStatus_Etapa5(rotina, ip, etapa4, 'Explodir os pedidos no nivel sku')#Registrar etapa no controlador
 
-    print(pedidos[pedidos['codPedido']=='322439'])
+    print(pedidos[pedidos['codPedido']=='323256'])
 
 
     # 6 Consultando n banco de dados do ERP o saldo de estoque
@@ -484,7 +484,7 @@ def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametro
     pedidos['%'] = pedidos['Qnt. Cor(Distrib.)']/(pedidos['Saldo +Sugerido'])
     pedidos['%'] = pedidos['%']*100
     pedidos['%'] = pedidos['%'].round(0)
-    print(pedidos[pedidos['codPedido']=='322439'])
+    print(pedidos[pedidos['codPedido']=='323256'])
 
 
     pedidos.rename(columns={'MARCA': '01-MARCA',"codPedido":"02-Pedido",
@@ -780,7 +780,7 @@ def Ciclo2(pedidos,avaliar_grupo):
     pedidos1 = pedidos[pedidos['StatusSugestao'] == 'Nao Sugerido']
     pedidos2 = pedidos[pedidos['StatusSugestao'] != 'Nao Sugerido']
     print('testando os pedios 2 no cilco')
-    print(pedidos2[pedidos2['codPedido']=='322439'])
+    print(pedidos2[pedidos2['codPedido']=='323256'])
 
 
     pedidos1['codProduto'].fillna(0,inplace=True)
