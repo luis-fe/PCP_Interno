@@ -80,9 +80,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes.drop('nomeParte', axis=1, inplace=True)
         partes['sitBaixa'] = partes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '2' else '🔴ab.' , axis=1)
 
-        # ETAPA BUSCANDO PARTES NAS PARTES
-        print(requisicoes)
-
 
 
         requisicoes['fase'] = requisicoes['fase'].astype(str)
@@ -102,6 +99,12 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
+
+        # ETAPA BUSCANDO PARTES NAS PARTES
+        print(requisicoes)
+
+
+
 
 
         # xx Nessa etapa é excluida as colunas "fase" e "numero" para dar uma limpada no dataframe, deixando mais limpo.
