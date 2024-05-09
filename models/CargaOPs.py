@@ -148,9 +148,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
                                                      f'OK' , axis=1)
 
         requisicoes['replicar'] = 'replicar'
-        consulta['replicar'] = consulta.apply(lambda row: 'replicar' if (row['codFase'] == '425') | (row['codFase'] == '426') | (row['codFase'] == '406')
-        | (row['codFase'] == '410')
-        else '-',axis=1)
+        consulta['replicar'] = consulta.apply(
+            lambda row: 'replicar' if row['codFase'] in ['425', '426', '406', '410','413','414','435','415'] else '-', axis=1)
 
         consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'replicar'], how='left')
 
