@@ -70,9 +70,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         # ETAPA BUSCANDO AS PARTES DA OP MAE
         partes = pd.read_sql(BuscasAvancadas.LocalizarPartesOP(), conn)
-        print(partes)
+        partes2 = partes.copy()  # Criar uma cópia do DataFrame original
+        partes2.rename(columns={'codNatEstoque': 'nova_codNatEstoque'}, inplace=True)
+        partes2 = partes2.loc[:, ['nova_codNatEstoque', 'numeroOP']].reset_index()
+        partes2 = pd.merge(partes2, partes, on='numeroOP')
+        partes2 = partes2[partes2['nova_codNatEstoque'] != partes2['codNatEstoque']]
 
-
+        print(partes2)
 
 
         partes['nomeParte']= partes.apply(
