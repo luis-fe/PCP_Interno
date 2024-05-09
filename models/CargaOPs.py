@@ -78,8 +78,9 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes2.drop(['numeroOP'],axis=1,inplace=True)
         partes2.rename(columns={'nova_codNatEstoque': 'numeroOP'}, inplace=True)
 
+        partes = pd.concat([partes, partes2], ignore_index=True)
 
-        print(partes2)
+        print(partes)
 
 
         partes['nomeParte']= partes.apply(
