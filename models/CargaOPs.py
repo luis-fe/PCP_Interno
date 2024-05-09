@@ -85,9 +85,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes['contagem2'] = partes.groupby('numeroOP')['contagem'].transform('sum')
 
 
-
-
-
         requisicoes['fase'] = requisicoes['fase'].astype(str)
         requisicoes = requisicoes[requisicoes['fase'] == '425']
         requisicoes['sitBaixa'].fillna('ab.',inplace=True)
