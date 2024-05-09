@@ -70,6 +70,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         # ETAPA BUSCANDO AS PARTES DA OP MAE
         partes = pd.read_sql(BuscasAvancadas.LocalizarPartesOP(), conn)
+        print(requisicoes)
+
+
+
+
         partes['nomeParte']= partes.apply(
             lambda row: NomePartes(row['nomeParte'],'BORDADO','Parte Bordado'), axis=1)
         partes['nomeParte']= partes.apply(
@@ -101,7 +106,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
 
         # ETAPA BUSCANDO PARTES NAS PARTES
-        print(requisicoes)
 
 
 
