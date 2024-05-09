@@ -395,6 +395,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         dados = {
+        '000-StatusCongelado':False,
         '0-Total DE pçs':f'{QtdPcs} Pçs',
         '1-Total OP':f'{totalOP} Ops',
         '2- OPs Atrasadas':f'{totalAtraso} Ops',
