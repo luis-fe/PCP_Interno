@@ -101,17 +101,21 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
-        print(requisicoes)
 
 
         # xx Nessa etapa é excluida as colunas "fase" e "numero" para dar uma limpada no dataframe, deixando mais limpo.
         requisicoes.drop(['fase','numero'], axis=1, inplace=True)
 
 
+
+
         # Agrupando e criando a coluna 'detalhado'
         requisicoes = requisicoes.groupby(['numeroOP']).apply(
             lambda x: ', '.join(f"{codNatEstoque}{sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
+
+        print(requisicoes)
+
         #
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: substituir_bx(row['detalhado']), axis=1)
         requisicoes['estaPendente'] = requisicoes['estaPendente'].str.replace('🔴ab.','')
