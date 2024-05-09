@@ -81,8 +81,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         partes['sitBaixa'] = partes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '2' else '🔴ab.' , axis=1)
 
         # ETAPA BUSCANDO PARTES NAS PARTES
-        partes['contagem'] = 1
-        partes['contagem2'] = partes.groupby('numeroOP')['contagem'].transform('sum')
+
 
 
         requisicoes['fase'] = requisicoes['fase'].astype(str)
@@ -98,7 +97,12 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes['numero'] = requisicoes['numero'].astype(str)
         requisicoes['sitBaixa'] = requisicoes['numero']+requisicoes['sitBaixa']
         # xx Nesse etapa é concatenado os dataframes Requsicao + Partes.
+
+
+
         requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
+        requisicoes['contagem'] = 1
+        requisicoes['contagem2'] = partes.groupby('numeroOP')['contagem'].transform('sum')
         # xx Nessa etapa é excluida as colunas "fase" e "numero" para dar uma limpada no dataframe, deixando mais limpo.
         requisicoes.drop(['fase','numero'], axis=1, inplace=True)
 
