@@ -70,7 +70,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         # ETAPA BUSCANDO AS PARTES DA OP MAE
         partes = pd.read_sql(BuscasAvancadas.LocalizarPartesOP(), conn)
-        print(requisicoes)
+        print(partes)
 
 
 
