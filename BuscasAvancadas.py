@@ -130,6 +130,7 @@ def RequisicaoOPsPartes():
                   WHERE r.codEmpresa = 1 and
                   r.numOPConfec in (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 3)
     """
+    return requisicao
 
 #SQL DE BUSCA DAS PARTES DAS OPS : velocidade Média : 0,35 segundos (OTIMO)
 
