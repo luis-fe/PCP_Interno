@@ -66,22 +66,23 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta = pd.merge(consulta, terceiros, on=['numeroOP','codFase'], how='left')
 
         requisicoes = pd.read_sql(BuscasAvancadas.RequisicoesOPs(), conn)
+
+
+        # ETAPA BUSCANDO AS PARTES DA OP MAE
         partes = pd.read_sql(BuscasAvancadas.LocalizarPartesOP(), conn)
-
-
         partes['nomeParte']= partes.apply(
             lambda row: NomePartes(row['nomeParte'],'BORDADO','Parte Bordado'), axis=1)
-
         partes['nomeParte']= partes.apply(
             lambda row: NomePartes(row['nomeParte'],'COSTAS','Parte SilkCostas'), axis=1)
-
         partes['nomeParte']= partes.apply(
             lambda row: NomePartes(row['nomeParte'],'SILK','Parte Silk'), axis=1)
-
         partes['codNatEstoque'] = partes['nomeParte']+':'+partes['codNatEstoque']
         partes.drop('nomeParte', axis=1, inplace=True)
-
         partes['sitBaixa'] = partes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '2' else '🔴ab.' , axis=1)
+
+        # ETAPA BUSCANDO PARTES NAS PARTES
+        partes['contagem'] = 1
+        partes['contagem2'] = partes.groupby('numeroOP')['contagem'].transform('sum')
 
 
 
