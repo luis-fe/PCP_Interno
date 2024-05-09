@@ -101,8 +101,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         requisicoes = pd.concat([requisicoes, partes], ignore_index=True)
-        requisicoes['contagem'] = 1
-        requisicoes['contagem'] = requisicoes.groupby('numeroOP')['contagem'].transform('sum')
+        print(requisicoes)
 
 
         # xx Nessa etapa é excluida as colunas "fase" e "numero" para dar uma limpada no dataframe, deixando mais limpo.
