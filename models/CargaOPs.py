@@ -109,7 +109,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         # Agrupando e criando a coluna 'detalhado'
-        requisicoes = requisicoes.groupby(['numeroOP','contagem']).apply(
+        requisicoes = requisicoes.groupby(['numeroOP']).apply(
             lambda x: ', '.join(f"{codNatEstoque}{sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
         #
