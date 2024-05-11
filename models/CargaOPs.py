@@ -176,12 +176,12 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         # Função para remover os valores do array se começarem com "acabamento"
         def remove_acabamento_from_array(arr):
             if isinstance(arr, list):  # Verifica se arr é uma lista
-                return [item for item in arr if not item.startswith('acabamento')]
+                return [item if not item.startswith('acabamento') else '-' for item in arr]
             else:
                 return arr  # Retorna arr inalterado se não for uma lista
         # Aplicando a função à coluna detalhado apenas se cofFase não for '406'
         consulta['estaPendente'] = consulta.apply(
-            lambda row: remove_acabamento_from_array(row['estaPendente']) if row['codFase'] != '406' else row['estaPendente'],
+            lambda row: remove_acabamento_from_array(row['estaPendente']) if row['codFase'] != '406' else row['detalhado'],
             axis=1)
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
