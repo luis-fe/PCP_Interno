@@ -54,6 +54,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         OP_emAbertoAvimamento['codFase'] = OP_emAbertoAvimamento.apply(lambda row: '145' if row['codFase'] == '145'else '406', axis=1  )
         OP_emAbertoAvimamento['nomeFase'] = OP_emAbertoAvimamento.apply(lambda row: row['nomeFase'] if row['codFase'] == '145'else 'ALMOX. DE AVIAMENTOS', axis=1  )
 
+        dataGeracaoRequisicao = """SELECT r.numeroOP,r.dataBaixa as dataGerReqOP  FROM tco.MovimentacaoOPFase  r
+WHERE r.codEmpresa = 1 and r.codFase = 409 and r.numeroOP in (select numeroOP from tco.OrdemProd op WHERE op.codempresa =1 and op.situacao = 3)
+"""
+        dataGeracaoRequisicao =  pd.read_sql(dataGeracaoRequisicao, conn)
+        OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,dataGeracaoRequisicao,on='numeroOP')
+
+
         reqAbertas =  pd.read_sql(BuscasAvancadas.RequisicoesAbertas(), conn)
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,reqAbertas,on='numeroOP')
 
@@ -273,6 +280,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         consulta['data_entrada'].fillna('-',inplace=True)
+        consulta['data_entrada'] = consulta.apply(lambda row: row['dataGerReqOP'] if row['codFase'] == '406'  else row['data_entrada'] , axis=1)
+
         consulta['data_entrada'] = consulta.apply(lambda row: row['startOP'] if row['data_entrada'] == '-'  else row['data_entrada'] , axis=1)
         consulta = consulta[consulta['data_entrada'] != '-']
         consulta["prioridade"].fillna('NORMAL', inplace=True)
