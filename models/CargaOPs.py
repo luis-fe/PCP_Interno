@@ -156,13 +156,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda x: ', '.join(f"{codNatEstoque}{sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
 
-        # Função para remover a parte específica
-        def remove_acabamento(text):
-            return re.sub(r'acabamento\d+🔴\w+,\s*', '', text)
 
-        # Aplicando a função à coluna detalhado
-        requisicoes['detalhado'] = requisicoes.apply(
-            lambda row: remove_acabamento(row['detalhado']) if row['codFase'] != '406' else row['detalhado'], axis=1)
 
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: substituir_bx(row['detalhado']), axis=1)
         requisicoes['estaPendente'] = requisicoes['estaPendente'].str.replace('🔴ab.','')
@@ -178,6 +172,14 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda row: 'replicar' if row['codFase'] in ['425', '426', '406', '410','413','414','435','415'] else '-', axis=1)
 
         consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'replicar'], how='left')
+
+        # Função para remover a parte específica
+        def remove_acabamento(text):
+            return re.sub(r'acabamento\d+🔴\w+,\s*', '', text)
+
+        # Aplicando a função à coluna detalhado
+        consulta['detalhado'] = consulta.apply(
+            lambda row: remove_acabamento(row['detalhado']) if row['codFase'] != '406' else row['detalhado'], axis=1)
 
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
