@@ -39,8 +39,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         ##Excecao Almoxarifado aviamentos
         OP_emAbertoAvimamento = OP_emAberto.copy()  # Criar uma cópia do DataFrame original
-        roteiroSeparacao =  pd.read_sql("""    SELECT r.numeroOP , r.codSeqRoteiro FROM tco.RoteiroOP r
-WHERE r.codEmpresa = 1 and r.codFase = %s and r.numeroOP in (select numeroOP from tco.OrdemProd op WHERE op.codempresa =1 and op.situacao = 3)""", conn, params=(409,))
+        roteiroSeparacao =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro(409), conn)
+        roteiroCDCostura =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro(428), conn)
 
 
         # Etapa 2 Tratando a informacao da Descricao do Lote para o formato COLECAO
