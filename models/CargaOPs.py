@@ -29,6 +29,7 @@ def obterHoraAtual():
 def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999, limite = 60, classificar = '-', colecaoF = ''):
     filtro = filtro.upper()
     colecao = FiltroColecao(colecaoF)
+    print(colecao)
 
     if (filtro == '-' and filtroDiferente == '' and tempo >= limite and colecaoF =='' ) or (filtro == '' and filtroDiferente == '' and tempo >= limite and colecaoF =='')   :
         conn = ConexaoCSW.Conexao()  # Conexao aberta do CSW
