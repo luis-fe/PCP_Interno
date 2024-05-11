@@ -44,7 +44,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,roteiroSeparacao,on='numeroOP')
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,roteiroCDCostura,on='numeroOP')
 
-        OP_emAbertoAvimamento = OP_emAbertoAvimamento[(OP_emAbertoAvimamento['seq409'] <= OP_emAbertoAvimamento['sqeAtual']) &(OP_emAbertoAvimamento['seq428'] >= OP_emAbertoAvimamento['sqeAtual']) ]
+        OP_emAbertoAvimamento = OP_emAbertoAvimamento[(OP_emAbertoAvimamento['seq409'] <= OP_emAbertoAvimamento['seqAtual']) &(OP_emAbertoAvimamento['seq428'] >= OP_emAbertoAvimamento['seqAtual']) ]
 
         print(OP_emAbertoAvimamento)
 
