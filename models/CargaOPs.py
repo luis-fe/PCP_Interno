@@ -179,7 +179,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         # Aplicando a função à coluna detalhado apenas se cofFase não for '406'
         consulta['detalhado'] = consulta.apply(
-            lambda row: remove_acabamento_from_array(row['detalhado']) if row['cofFase'] != '406' else row['detalhado'],
+            lambda row: remove_acabamento_from_array(row['detalhado']) if row['codFase'] != '406' else row['detalhado'],
             axis=1)
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
