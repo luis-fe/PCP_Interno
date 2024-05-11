@@ -183,7 +183,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda row: remove_acabamento_from_array(row['estaPendente']) if row['codFase'] != '406' else row['detalhado'],
             axis=1)
 
-        requisicoes['Status Aguardando Partes'] = requisicoes.apply(lambda row: f'PENDENTE' if 'ab.' in row["detalhado"] or row["estaPendente"] != [""] else
+        consulta['Status Aguardando Partes'] = consulta.apply(lambda row: f'PENDENTE' if 'ab.' in row["detalhado"] or row["estaPendente"] != [""]  else
                                                      f'OK' , axis=1)
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
