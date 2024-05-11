@@ -176,7 +176,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         # Função para remover os valores do array se começarem com "acabamento"
         def remove_acabamento_from_array(arr):
             if isinstance(arr, list):  # Verifica se arr é uma lista
-                return [item if not item.startswith('acabamento') else '-' for item in arr]
+                return [item if not item.startswith('acabamento') else '' for item in arr]
             else:
                 return arr  # Retorna arr inalterado se não for uma lista
         # Aplicando a função à coluna detalhado apenas se cofFase não for '406'
