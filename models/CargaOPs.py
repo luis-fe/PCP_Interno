@@ -173,9 +173,14 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'replicar'], how='left')
 
-        # Função para remover a parte específica
+        # Função para remover os valores do array se começarem com "acabamento"
+        def remove_acabamento_from_array(arr):
+            return [item for item in arr if not item.startswith('acabamento')]
 
-
+        # Aplicando a função à coluna detalhado apenas se cofFase não for '406'
+        consulta['detalhado'] = consulta.apply(
+            lambda row: remove_acabamento_from_array(row['detalhado']) if row['cofFase'] != '406' else row['detalhado'],
+            axis=1)
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
                                     'having empresa = 1 and textolinha is not null',conn)
