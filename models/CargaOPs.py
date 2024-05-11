@@ -162,7 +162,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         # Aplicando a função à coluna detalhado
         requisicoes['detalhado'] = requisicoes.apply(
-            lambda row: remove_acabamento(row['detalhado']) if row['cofFase'] != '406' else row['detalhado'], axis=1)
+            lambda row: remove_acabamento(row['detalhado']) if row['codFase'] != '406' else row['detalhado'], axis=1)
 
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: substituir_bx(row['detalhado']), axis=1)
         requisicoes['estaPendente'] = requisicoes['estaPendente'].str.replace('🔴ab.','')
