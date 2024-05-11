@@ -156,14 +156,19 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
             lambda x: ', '.join(f"{codNatEstoque}{sitBaixa}" for codNatEstoque, sitBaixa in zip(x['codNatEstoque'], x['sitBaixa']))).reset_index(
             name='detalhado')
 
+        # Função para remover a parte específica
+        def remove_acabamento(text):
+            return re.sub(r'acabamento\d+🔴\w+,\s*', '', text)
 
-        #
+        # Aplicando a função à coluna detalhado
+        requisicoes['detalhado'] = requisicoes.apply(
+            lambda row: remove_acabamento(row['detalhado']) if row['cofFase'] != '406' else row['detalhado'], axis=1)
+
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: substituir_bx(row['detalhado']), axis=1)
         requisicoes['estaPendente'] = requisicoes['estaPendente'].str.replace('🔴ab.','')
         # Dividir a string em partes usando a vírgula como delimitador
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: row['estaPendente'].split(','), axis=1)
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: list(filter(bool, row['estaPendente'])), axis=1)
-
 
         requisicoes['Status Aguardando Partes'] = requisicoes.apply(lambda row: f'PENDENTE' if 'ab.' in row["detalhado"] else
                                                      f'OK' , axis=1)
