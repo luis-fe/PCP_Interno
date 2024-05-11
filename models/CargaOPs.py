@@ -41,6 +41,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         OP_emAbertoAvimamento = OP_emAberto.copy()  # Criar uma cópia do DataFrame original
         roteiroSeparacao =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('409'), conn)
         roteiroCDCostura =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('428'), conn)
+        OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,roteiroSeparacao,on='numeroop')
+        print(OP_emAbertoAvimamento)
 
 
         # Etapa 2 Tratando a informacao da Descricao do Lote para o formato COLECAO
@@ -86,7 +88,6 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         partes = pd.concat([partes, partes2], ignore_index=True)
 
-        print(partes)
 
 
         partes['nomeParte']= partes.apply(
