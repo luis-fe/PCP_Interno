@@ -42,6 +42,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         roteiroSeparacao =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('409'), conn)
         roteiroCDCostura =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('428'), conn)
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,roteiroSeparacao,on='numeroOP')
+        OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,roteiroCDCostura,on='numeroOP')
+
         print(OP_emAbertoAvimamento)
 
 
