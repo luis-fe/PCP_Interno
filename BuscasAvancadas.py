@@ -31,7 +31,7 @@ def RequisicoesAbertas():
     consulta = """
     SELECT DISTINCT r.numOPConfec as numeroOP   from tcq.Requisicao r
 WHERE r.codEmpresa = 1 and r.numOPConfec in (select numeroOP from tco.OrdemProd op WHERE op.codempresa =1 and op.situacao = 3)
-and sitBaixa <> 1
+and sitBaixa <> 1 and r.seqRoteiro <> 408 
     """
     return consulta
 
