@@ -36,12 +36,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         # Etapa 3 Trazendo as OP'em aberto, bem como as suas caracteristicas
         #################################################################################################
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
-        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='406' ]
-        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='145' ]
-
 
         ##Excecao Almoxarifado aviamentos
         OP_emAbertoAvimamento = OP_emAberto.copy()  # Criar uma cópia do DataFrame original
+        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='145' ]
+        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='406' ]
+
+
         roteiroSeparacao =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('409'), conn)
         roteiroCDCostura =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('428'), conn)
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,roteiroSeparacao,on='numeroOP')
@@ -51,7 +52,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         OP_emAbertoAvimamento['seq428'] = OP_emAbertoAvimamento['seq428'].astype(int)
         OP_emAbertoAvimamento = OP_emAbertoAvimamento[(OP_emAbertoAvimamento['seq409'] < OP_emAbertoAvimamento['seqAtual']) &(OP_emAbertoAvimamento['seq428'] >= OP_emAbertoAvimamento['seqAtual']) ].reset_index()
         OP_emAbertoAvimamento['codFase'] = OP_emAbertoAvimamento.apply(lambda row: '145' if row['codFase'] == '145'else '406', axis=1  )
-        OP_emAbertoAvimamento['nomeFase'] = 'ALMOX. DE AVIAMENTOS'
+        OP_emAbertoAvimamento['nomeFase'] = OP_emAbertoAvimamento.apply(lambda row: row['nomeFase'] if row['codFase'] == '145'else 'ALMOX. DE AVIAMENTOS', axis=1  )
+
         reqAbertas =  pd.read_sql(BuscasAvancadas.RequisicoesAbertas(), conn)
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,reqAbertas,on='numeroOP')
 
