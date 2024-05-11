@@ -174,12 +174,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'replicar'], how='left')
 
         # Função para remover a parte específica
-        def remove_acabamento(text):
-            return re.sub(r'acabamento\d+🔴\w+,\s*', '', text)
 
-        # Aplicando a função à coluna detalhado
-        consulta['detalhado'] = consulta.apply(
-            lambda row: remove_acabamento(row['detalhado']) if row['codFase'] != '406' else row['detalhado'], axis=1)
 
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
