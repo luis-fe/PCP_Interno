@@ -36,7 +36,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         # Etapa 3 Trazendo as OP'em aberto, bem como as suas caracteristicas
         #################################################################################################
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
-
+        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='406']
         ##Excecao Almoxarifado aviamentos
         OP_emAbertoAvimamento = OP_emAberto.copy()  # Criar uma cópia do DataFrame original
         roteiroSeparacao =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('409'), conn)
