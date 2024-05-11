@@ -120,9 +120,11 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
 
         requisicoes['fase'] = requisicoes['fase'].astype(str)
-        requisicoes = requisicoes[(requisicoes['fase'] == '425')|(requisicoes['fase'] == '415')]
+        requisicoes = requisicoes[(requisicoes['fase'] == '425')|(requisicoes['fase'] == '415')|(requisicoes['fase'] == '433')]
         requisicoes['sitBaixa'].fillna('ab.',inplace=True)
         requisicoes['sitBaixa'] = requisicoes.apply(lambda row: '🟢bx' if row['sitBaixa'] == '1' else '🔴ab.' , axis=1)
+        requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'acabamento' if (row['codNatEstoque'] == 1  and row['fase'] == '433')else row['codNatEstoque'],
+                                                    axis=1)
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'avi.' if row['codNatEstoque'] == 1 else row['codNatEstoque'],
                                                     axis=1)
         requisicoes['codNatEstoque'] = requisicoes.apply(lambda row: 'golas' if row['codNatEstoque'] == 2 else row['codNatEstoque'],
