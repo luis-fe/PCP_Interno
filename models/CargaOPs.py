@@ -46,7 +46,12 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         OP_emAbertoAvimamento['seqAtual'] = OP_emAbertoAvimamento['seqAtual'].astype(int)
         OP_emAbertoAvimamento['seq409'] = OP_emAbertoAvimamento['seq409'].astype(int)
         OP_emAbertoAvimamento['seq428'] = OP_emAbertoAvimamento['seq428'].astype(int)
-        OP_emAbertoAvimamento = OP_emAbertoAvimamento[(OP_emAbertoAvimamento['seq409'] <= OP_emAbertoAvimamento['seqAtual']) &(OP_emAbertoAvimamento['seq428'] >= OP_emAbertoAvimamento['seqAtual']) ]
+        OP_emAbertoAvimamento = OP_emAbertoAvimamento[(OP_emAbertoAvimamento['seq409'] < OP_emAbertoAvimamento['seqAtual']) &(OP_emAbertoAvimamento['seq428'] >= OP_emAbertoAvimamento['seqAtual']) ].reset_index()
+        OP_emAbertoAvimamento['codFase'] = '406'
+        OP_emAbertoAvimamento['nomeFase'] = 'ALMOX. DE AVIAMENTOS'
+        reqAbertas =  pd.read_sql(BuscasAvancadas.RequisicoesAbertas(), conn)
+        OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,reqAbertas,on='numeroOP')
+
 
         print(OP_emAbertoAvimamento)
 

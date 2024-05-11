@@ -27,6 +27,14 @@ WHERE r.codEmpresa = 1 and r.codFase = """\
     """
     return consulta
 
+def RequisicoesAbertas():
+    consulta = """
+    SELECT DISTINCT r.numOPConfec as numeroOP   from tcq.Requisicao r
+WHERE r.codEmpresa = 1 and r.numOPConfec in (select numeroOP from tco.OrdemProd op WHERE op.codempresa =1 and op.situacao = 3)
+and sitBaixa <> 1
+    """
+    return consulta
+
 
 ## SQL BUSCANDO AS " DATA/HORA DE MOVIMENTACAO DAS ORDEM DE PRODUCAO EM ABERTO " - velocidade media: 4,500 s (regular)
 
