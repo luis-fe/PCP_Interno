@@ -18,7 +18,12 @@ def OP_Aberto():
                    """
 
     return OP_emAberto
-
+def PesquisarSequenciaRoteiro(codfase):
+    consulta = """
+    SELECT r.numeroOP , r.codSeqRoteiro FROM tco.RoteiroOP r
+WHERE r.codEmpresa = 1 and r.codFase = %s and r.numeroOP in (select numeroOP from tco.OrdemProd op WHERE op.codempresa =1 and op.situacao = 3)
+    """
+    return consulta
 
 
 ## SQL BUSCANDO AS " DATA/HORA DE MOVIMENTACAO DAS ORDEM DE PRODUCAO EM ABERTO " - velocidade media: 4,500 s (regular)

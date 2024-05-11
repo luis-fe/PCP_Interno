@@ -36,6 +36,13 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         # Etapa 3 Trazendo as OP'em aberto, bem como as suas caracteristicas
         #################################################################################################
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
+
+        ##Excecao Almoxarifado aviamentos
+        OP_emAbertoAvimamento = OP_emAberto.copy()  # Criar uma cópia do DataFrame original
+        roteiroSeparacao =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro(409), conn, params=(409,))
+        roteiroCDCostura =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro(428), conn, params=(428,))
+
+
         # Etapa 2 Tratando a informacao da Descricao do Lote para o formato COLECAO
         #################################################################################################
         OP_emAberto['lote'] = OP_emAberto['lote'].astype(str)
