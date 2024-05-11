@@ -52,8 +52,8 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         reqAbertas =  pd.read_sql(BuscasAvancadas.RequisicoesAbertas(), conn)
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,reqAbertas,on='numeroOP')
 
+        OP_emAberto = pd.concat([OP_emAberto, OP_emAbertoAvimamento], ignore_index=True)
 
-        print(OP_emAbertoAvimamento)
 
 
         # Etapa 2 Tratando a informacao da Descricao do Lote para o formato COLECAO
