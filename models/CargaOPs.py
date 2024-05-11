@@ -164,8 +164,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: row['estaPendente'].split(','), axis=1)
         requisicoes['estaPendente'] = requisicoes.apply(lambda row: list(filter(bool, row['estaPendente'])), axis=1)
 
-        requisicoes['Status Aguardando Partes'] = requisicoes.apply(lambda row: f'PENDENTE' if 'ab.' in row["detalhado"] or row["estaPendente"] != [""] else
-                                                     f'OK' , axis=1)
+
 
         requisicoes['replicar'] = 'replicar'
         consulta['replicar'] = consulta.apply(
@@ -183,6 +182,9 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         consulta['estaPendente'] = consulta.apply(
             lambda row: remove_acabamento_from_array(row['estaPendente']) if row['codFase'] != '406' else row['detalhado'],
             axis=1)
+
+        requisicoes['Status Aguardando Partes'] = requisicoes.apply(lambda row: f'PENDENTE' if 'ab.' in row["detalhado"] or row["estaPendente"] != [""] else
+                                                     f'OK' , axis=1)
 
         justificativa = pd.read_sql('SELECT CONVERT(varchar(12), codop) as numeroOP, codfase as codFase, textolinha as justificativa1 FROM tco.ObservacoesGiroFasesTexto  t '
                                     'having empresa = 1 and textolinha is not null',conn)
