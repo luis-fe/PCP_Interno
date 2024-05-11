@@ -175,8 +175,10 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         # Função para remover os valores do array se começarem com "acabamento"
         def remove_acabamento_from_array(arr):
-            return [item for item in arr if not item.startswith('acabamento')]
-
+            if isinstance(arr, list):  # Verifica se arr é uma lista
+                return [item for item in arr if not item.startswith('acabamento')]
+            else:
+                return arr  # Retorna arr inalterado se não for uma lista
         # Aplicando a função à coluna detalhado apenas se cofFase não for '406'
         consulta['detalhado'] = consulta.apply(
             lambda row: remove_acabamento_from_array(row['detalhado']) if row['codFase'] != '406' else row['detalhado'],
