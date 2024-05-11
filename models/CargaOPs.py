@@ -36,7 +36,10 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         # Etapa 3 Trazendo as OP'em aberto, bem como as suas caracteristicas
         #################################################################################################
         OP_emAberto = pd.read_sql(BuscasAvancadas.OP_Aberto(), conn)
-        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='406']
+        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='406' ]
+        OP_emAberto = OP_emAberto[OP_emAberto['codFase']!='145' ]
+
+
         ##Excecao Almoxarifado aviamentos
         OP_emAbertoAvimamento = OP_emAberto.copy()  # Criar uma cópia do DataFrame original
         roteiroSeparacao =  pd.read_sql(BuscasAvancadas.PesquisarSequenciaRoteiro('409'), conn)
@@ -47,7 +50,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
         OP_emAbertoAvimamento['seq409'] = OP_emAbertoAvimamento['seq409'].astype(int)
         OP_emAbertoAvimamento['seq428'] = OP_emAbertoAvimamento['seq428'].astype(int)
         OP_emAbertoAvimamento = OP_emAbertoAvimamento[(OP_emAbertoAvimamento['seq409'] < OP_emAbertoAvimamento['seqAtual']) &(OP_emAbertoAvimamento['seq428'] >= OP_emAbertoAvimamento['seqAtual']) ].reset_index()
-        OP_emAbertoAvimamento['codFase'] = '406'
+        OP_emAbertoAvimamento['codFase'] = OP_emAbertoAvimamento.apply(lambda row: '145' if row['codFase'] == '145'else '406', axis=1  )
         OP_emAbertoAvimamento['nomeFase'] = 'ALMOX. DE AVIAMENTOS'
         reqAbertas =  pd.read_sql(BuscasAvancadas.RequisicoesAbertas(), conn)
         OP_emAbertoAvimamento = pd.merge(OP_emAbertoAvimamento,reqAbertas,on='numeroOP')
@@ -169,7 +172,7 @@ def OPemProcesso(empresa, AREA, filtro = '-', filtroDiferente = '', tempo = 9999
 
         requisicoes['replicar'] = 'replicar'
         consulta['replicar'] = consulta.apply(
-            lambda row: 'replicar' if row['codFase'] in ['425', '426', '406', '410','413','414','435','415'] else '-', axis=1)
+            lambda row: 'replicar' if row['codFase'] in ['425', '426', '406', '410','413','414','435','415','145'] else '-', axis=1)
 
         consulta = pd.merge(consulta, requisicoes, on=['numeroOP', 'replicar'], how='left')
 
