@@ -18,7 +18,7 @@ def OP_Aberto():
                    """
 
     return OP_emAberto
-def PesquisarSequenciaRoteiro(codfase):
+def PesquisarSequenciaRoteiro():
     consulta = """
     SELECT r.numeroOP , r.codSeqRoteiro FROM tco.RoteiroOP r
 WHERE r.codEmpresa = 1 and r.codFase = %s and r.numeroOP in (select numeroOP from tco.OrdemProd op WHERE op.codempresa =1 and op.situacao = 3)
