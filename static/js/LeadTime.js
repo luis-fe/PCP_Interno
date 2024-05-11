@@ -7,8 +7,8 @@ const Token = 'a44pcp22';
 let VarOp = '';
 let VarFase = '';
 let VarObs = '';
-let contem = ''
-let ordenacao =''
+let contem = '';
+let ordenacao ='';
 let colecoesSelecionadas = [];
 
 const LabelOp = document.getElementById('NumeroOP');
@@ -18,12 +18,14 @@ var divCorpo = document.getElementById('Corpo');
 const ModalJustificativa = document.getElementById('ModalJustificativa')
 
 
-$(document).ready(()=> {
+$(document).ready(async () => {
+    await $('#modalLoading').modal('show');
     ConsultarOps(ApiConsulta, '1', `${contem}`, ordenacao, colecoesSelecionadas);
-    ConsultaColecoes()
+    ConsultaColecoes();
 });
 
-$('#cardInfos5').click(function () {
+$('#cardInfos5').click(async function () {
+    await $('#modalLoading').modal('show');
     ConsultarOps(ApiConsulta, '1', `${contem}/atrasad`, ordenacao, colecoesSelecionadas);
 });
 
@@ -41,11 +43,7 @@ document.getElementById('SalvarObs').addEventListener('click', function () {
 
 })
 
-
-
-
 function ConsultarOps(Api, Empresa, Filtro, Classificacao, Colecao) {
-    $('#modalLoading').modal('show');
 
     const Dados = {
         "empresa": Empresa,
@@ -65,6 +63,8 @@ function ConsultarOps(Api, Empresa, Filtro, Classificacao, Colecao) {
         data: JSON.stringify(Dados),
         contentType: 'application/json',
         success: function (response) {
+            $('#ModalFiltros').modal('hide');
+            $('#modalLoading').modal('hide');
             console.log('Resposta da API:', response);
             $('#Corpo').empty();
 
@@ -107,116 +107,10 @@ function ConsultarOps(Api, Empresa, Filtro, Classificacao, Colecao) {
                     (item['Status Aguardando Partes'] === 'OK' ? '✅' : '')
                 );
 
-                if (item.prioridade === 'URGENTE') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = '🚨'; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = 'black';
-                    urgenteSymbol.style.fontSize = '30px';
-                    urgenteSymbol.style.width = '40px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'QP1' || item.prioridade === 'QM1') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = '#FFFF00';
-                    urgenteSymbol.style.color = 'black';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'QP2' || item.prioridade === 'QM2') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = '#FF6600';
-                    urgenteSymbol.style.color = 'black';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'QP3' || item.prioridade === 'QM3') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = '#008000';
-                    urgenteSymbol.style.color = 'white';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'QP4' || item.prioridade === 'QM4') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = '#B059F7';
-                    urgenteSymbol.style.color = 'white';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'QP5' || item.prioridade === 'QM5') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = '#00CCFF';
-                    urgenteSymbol.style.color = 'black';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'QP6' || item.prioridade === 'QM6') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = '#FF99CC';
-                    urgenteSymbol.style.color = 'black';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'QP7' || item.prioridade === 'QM7') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = '#000000';
-                    urgenteSymbol.style.color = 'white';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'P/FAT.') {
-                    const urgenteSymbol = document.createElement('div');
-                    urgenteSymbol.innerHTML = item.prioridade; // Símbolo de ponto de exclamação
-                    urgenteSymbol.style.backgroundColor = 'red';
-                    urgenteSymbol.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5);'
-                    urgenteSymbol.style.color = 'white';
-                    urgenteSymbol.style.border = '1px solid black';
-                    urgenteSymbol.style.fontSize = '22px';
-                    urgenteSymbol.style.marginLeft = '-18px';
-                    urgenteSymbol.style.width = '100px';
-                    cardBody.append(urgenteSymbol);
-                }
-
-                if (item.prioridade === 'NORMAL') {
+                if (item.prioridade) {
                     const urgenteSymbol = document.createElement('div');
                     urgenteSymbol.innerHTML = item.prioridade;
-                    urgenteSymbol.style.backgroundColor = '#FFFFFF';
+                    urgenteSymbol.style.backgroundColor = '#FFFF00';
                     urgenteSymbol.style.color = 'black';
                     urgenteSymbol.style.border = '1px solid black';
                     urgenteSymbol.style.fontSize = '22px';
@@ -242,39 +136,30 @@ function ConsultarOps(Api, Empresa, Filtro, Classificacao, Colecao) {
 
                 divCard.click(async function () {
                     try {
-                        // Aguarde a conclusão da função Justificativas
                         await Justificativas(item.numeroOP, item.codFase);
 
-                        // Atualize o conteúdo da LabelOp e do InputObs
                         LabelOp.innerHTML = `OP: ${item.numeroOP}`;
                         InputObs.value = `${VarObs}`;
                         InputObs.focus();
 
-                        // Calcular a posição considerando a barra de rolagem da divCorpo
                         var rect = $(this)[0].getBoundingClientRect();
-                        var scrollTop = $('#Corpo').scrollTop(); // Obtém a quantidade de rolagem vertical da divCorpo
+                        var scrollTop = $('#Corpo').scrollTop();
                         var topOffset = rect.top + scrollTop;
 
-                        // Ajustar a posição da modal usando a função css()
                         $('#ModalJustificativa').css({
                             top: Math.min(rect.bottom + scrollTop, $('#Corpo').offset().top + $('#Corpo').height() - $('#ModalJustificativa').height()) + 'px',
                             left: rect.left + 'px',
-                            display: 'block' // Esta propriedade talvez não seja necessária
+                            display: 'block'
                         });
 
-                        // Atualizar as variáveis VarOp e VarFase
                         VarOp = item.numeroOP;
                         VarFase = item.codFase;
                     } catch (error) {
                         console.error('Erro ao aguardar a justificativa:', error);
-                        // Lidar com o erro aqui, se necessário
                     }
                 });
 
             });
-            $('#ModalFiltros').modal('hide');
-            $('#modalLoading').modal('hide');
-            
         },
         error: function (xhr, status, error) {
             console.error('Erro ao chamar a API:', status, error);
@@ -282,7 +167,6 @@ function ConsultarOps(Api, Empresa, Filtro, Classificacao, Colecao) {
         }
     });
 }
-
 
 function atualizarJustificativaCard(op, fase, justificativa) {
     const card = document.querySelector(`#Corpo div[data-op="${op}"][data-fase="${fase}"]`);
@@ -299,7 +183,6 @@ function atualizarJustificativaCard(op, fase, justificativa) {
     }
 }
 
-
 function ConsultaColecoes() {
 
     $.ajax({
@@ -312,24 +195,24 @@ function ConsultaColecoes() {
         contentType: 'application/json',
         success: function (response) {
             const divOpcoes = $('#divOpcoes');
-    divOpcoes.empty();
-    response.forEach(opcao => {
-        // Crie o elemento do checkbox
-        const checkbox = $('<div class="form-check">')
-            .append(
-                $('<input class="form-check-input" type="checkbox">')
-                .attr('value', opcao.COLECAO)
-                .attr('id', `checkbox${opcao.COLECAO}`)
-            )
-            .append(
-                $('<label class="form-check-label">')
-                .attr('for', `checkbox${opcao.COLECAO}`)
-                .text(opcao.COLECAO) // Corrigido para usar opcao.COLECAO
-            );
+            divOpcoes.empty();
+            response.forEach(opcao => {
+                // Crie o elemento do checkbox
+                const checkbox = $('<div class="form-check">')
+                    .append(
+                        $('<input class="form-check-input" type="checkbox">')
+                        .attr('value', opcao.COLECAO)
+                        .attr('id', `checkbox${opcao.COLECAO}`)
+                    )
+                    .append(
+                        $('<label class="form-check-label">')
+                        .attr('for', `checkbox${opcao.COLECAO}`)
+                        .text(opcao.COLECAO) // Corrigido para usar opcao.COLECAO
+                    );
 
-        // Adicione o checkbox à div de opções
-        divOpcoes.append(checkbox);
-    });
+                // Adicione o checkbox à div de opções
+                divOpcoes.append(checkbox);
+            });
         },
         error: function (xhr, status, error) {
             console.error('Erro ao chamar a API:', status, error);
@@ -344,7 +227,6 @@ function ConsultaColecoes() {
         }
     });
 }
-
 
 function salvarJustificativa() {
     const dadoApi = {
@@ -387,8 +269,6 @@ function salvarJustificativa() {
         }
     });
 }
-
-
 
 async function Justificativas(Op, Fase) {
     await $.ajax({
@@ -440,7 +320,7 @@ function fecharModalPendente() {
 }
 
 // Função para aplicar os filtros
-function aplicarFiltros() {
+async function aplicarFiltros() {
     contem = $("#InputContem").val();
     ordenacao = $("input[name='opcoesOrdenacao']:checked").data("valor");
 
@@ -458,13 +338,54 @@ function aplicarFiltros() {
         }
     });
 
+    await $('#modalLoading').modal('show');
     ConsultarOps(ApiConsulta, 1, contem, ordenacao, colecoesSelecionadas);
 }
 
 
 
+async function ExportarExcel(Api, Empresa, Filtro) {
+    const Dados = {
+        "empresa": Empresa,
+        "filtro": Filtro
+    };
+
+    try {
+        const response = await fetch(`${Api}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': Token
+            },
+            body: JSON.stringify(Dados),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const DetalhamentoApi = data[0]['3 -Detalhamento'];
+            const nomeArquivo = 'Dados Ops.xlsx';
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(DetalhamentoApi);
+
+            // Adicionar a planilha ao workbook
+            XLSX.utils.book_append_sheet(wb, ws, "Dados Op's");
+
+            // Salvar o arquivo
+            XLSX.writeFile(wb, nomeArquivo);
+
+        } else {
+            throw new Error('Erro No Retorno');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+$('#BotaoExcel').click(() => {
+    ExportarExcel(ApiConsulta, '1', $("#InputContem").val());
+})
 // Evento de clique no botão "Aplicar Filtros"
 $("#ConfirmarFiltro").click(function () {
     aplicarFiltros();
 });
-
