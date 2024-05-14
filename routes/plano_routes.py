@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from functools import wraps
-
 from models import Plano, CalendarioProducao
 
 plano_routes = Blueprint('plano_routes', __name__)
@@ -14,12 +13,12 @@ def token_required(f):
 
     return decorated_function
 
+#Obter todos os Planos
 @plano_routes.route('/pcp/api/Plano', methods=['GET'])
 @token_required
 def get_Plano():
     plano = Plano.ObeterPlanos()
-    # Obtém os nomes das colunas
-    # Obtém os nomes das colunas
+
     column_names = plano.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     OP_data = []
@@ -29,6 +28,8 @@ def get_Plano():
             op_dict[column_name] = row[column_name]
         OP_data.append(op_dict)
     return jsonify(OP_data)
+
+
 @plano_routes.route('/pcp/api/ColecoesPlano/<string:codigoplano>', methods=['GET'])
 @token_required
 def get_ColecoesPlano(codigoplano):
@@ -84,14 +85,14 @@ def Status_Plano(codigoPlano):
     # inserir o novo usuário no banco de dados
     codigo2, descricaoAnt, iniVendaAnt, finalVendaAnt, inicioFatAnt, finalFatAnt= Plano.ConsultarPlano(codigoPlano)
     if codigo2 != 0:
-        return jsonify({'00 message': f'Plano {codigoPlano}-{descricaoAnt} ja existe', '001 status':True,'01- Codigo Plano':codigoPlano
+        return jsonify({'00 Mensagem': f'Plano {codigoPlano}-{descricaoAnt} ja existe', '001 status':True,'01- Codigo Plano':codigoPlano
                        , '02- Descricao do Plano':descricaoAnt, '03- Inicio Venda':iniVendaAnt,
                         '04- Final Venda':finalVendaAnt,'05- Inicio Faturamento':inicioFatAnt,'06- Final Faturamento':finalFatAnt}), 201
     else:
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'00 message': f'Plano {codigoPlano} nao existe', '001 status':False}), 201
+        return jsonify({'00 Mensagem': f'Plano {codigoPlano} nao existe', '001 status':False}), 201
 
-@plano_routes.route('/pcp/api/Plano', methods=['PUT'])
+@plano_routes.route('/pcp/api/Plano', methods=['POST'])
 @token_required
 def criar_Plano():
     # Obtenha os dados do corpo da requisição
@@ -110,11 +111,11 @@ def criar_Plano():
     c, c2, c3, c4, c5, c6 = Plano.ConsultarPlano(codigo)
 
     if c != 0:
-        return jsonify({'message': f'Plano {codigo}-{descricao} ja existe', 'status':False}), 201
+        return jsonify({'Mensagem': f'Plano {codigo}-{descricao} ja existe', 'status':False}), 201
     else:
         Plano.InserirPlano(codigo, descricao, inicoVenda, finalVenda, inicioFat, finalFat, usuario, dataGeracao)
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Plano {codigo}-{descricao} criado com sucesso', 'status':True}), 201
+        return jsonify({'Mensagem': f'Plano {codigo}-{descricao} criado com sucesso', 'status':True}), 201
 @plano_routes.route('/pcp/api/Plano/<string:codigoPlano>', methods=['DELETE'])
 @token_required
 def delet_Plano(codigoPlano):
@@ -133,34 +134,42 @@ def delet_Plano(codigoPlano):
             end_dict[column_name] = row[column_name]
         end_data.append(end_dict)
     return jsonify(end_data)
-@plano_routes.route('/pcp/api/Plano/<string:codigo>', methods=['POST'])
+
+
+# API FEIA PARA REALIZAR UM UPDATE NAS INFORMACOES DO PLANO
+@plano_routes.route('/pcp/api/Plano/<string:codigo>', methods=['PUT'])
 @token_required
 def update_Plano(codigo):
 
-    # Obtém os dados do corpo da requisição (JSON)
+    # Etapa 1: Obtém os dados do corpo da requisição (JSON)
+    #########################################################################################################
     data = request.get_json()
-    codigo = str(codigo)
-    descricao = data.get('descricao', '0')
-    inicioVenda = data.get('inicioVenda', '0')
-    finalVenda = data.get('finalVenda', '0')
-    inicioFaturamento = data.get('inicioFaturamento', '0')
-    finalFaturamento = data.get('finalFaturamento', '0')
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
-    codigo2 = Plano.ConsultarPlano(codigo)
-    if codigo2 == 0:
-        return jsonify({'message': f'Plano {codigo}  nao existe! ', 'Status': False})
-    else:
-        avaliar = CalendarioProducao.Avaliar_ExisteFeriadoPadrao(codigo)
+    codigo = str(codigo) #o codigo do plano a ser editado vai ser informado na url
+    descricao = data.get('descricao', '0') # CASO NAO INFORMADO RETORNA PADRAO '0'
+    inicioVenda = data.get('inicioVenda', '0')# CASO NAO INFORMADO RETORNA PADRAO '0'
+    finalVenda = data.get('finalVenda', '0')# CASO NAO INFORMADO RETORNA PADRAO '0'
+    inicioFaturamento = data.get('inicioFaturamento', '0')# CASO NAO INFORMADO RETORNA PADRAO '0'
+    finalFaturamento = data.get('finalFaturamento', '0')# CASO NAO INFORMADO RETORNA PADRAO '0'
+    ###########################################################################################################
+
+    # Etapa 2: Verifica se o plano existe
+    ###########################################################################################################
+    consultaV1, consultaV2,consultaV3,consultaV4,consultaV5 ,consultaV6  = Plano.ConsultarPlano(codigo)
+    if consultaV1 == 0: # 2.1 Caso o Plano nao exista retorna no JSON a resposta:
+        return jsonify({'Mensagem': f'Plano {codigo}  nao existe! ', 'Status': False})
+
+    else: # 2.2 Caso o Plano exista
+        avaliar = CalendarioProducao.Avaliar_ExisteFeriadoPadrao(codigo) #2.21 Avaliando se existe tabela de feriado
         if avaliar == True:
             Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
             CalendarioProducao.InserirPadrao_FeriadosPlano(codigo)
-            return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
+            return jsonify({'Mensagem': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
 
         else:
             print('segue o baile')
             Plano.EditarPlano(codigo, descricao, inicioVenda, finalVenda, inicioFaturamento, finalFaturamento)
-            return jsonify({'message': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
-@plano_routes.route('/pcp/api/ColecaoPlano/<string:codigoplano>', methods=['PUT'])
+            return jsonify({'Mensagem': f'Plano {codigo}-{descricao} atualizado com sucesso', 'Status':True})
+@plano_routes.route('/pcp/api/ColecaoPlano/<string:codigoplano>', methods=['POST'])
 @token_required
 def criar_PlanoColecao(codigoplano):
     # Obtenha os dados do corpo da requisição

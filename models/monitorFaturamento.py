@@ -996,9 +996,9 @@ def ConverterDataFrameCSV():
     return pd.DataFrame([{'Mensagem':'Gerado csv'}])
 
 
+# Funcao para organizar o Monitor em datas de embarque (entrega) e atribuir a OP pré reservado para cada sku a nivel de pedido
 def ReservaOPMonitor():
-    # Carregar os dados da OP
-
+    # Passo 1 : Carregar os dados da OP
     consulta = """
     select o.codreduzido as "codProduto", id, "qtdAcumulada", "ocorrencia_sku" from "off".ordemprod o where "qtdAcumulada" > 0
     """
@@ -1055,6 +1055,18 @@ def ReservaOPMonitor():
 
     #monitor['recalculoData'] = ((monitor.groupby('codPedido')['Saldo +Sugerido'].cumsum())/(monitor.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))).round(0)
     monitor['recalculoData'] = monitor.groupby('codPedido')['Saldo Grade'].cumsum()
+
+    def avaliar_grupo(df_grupo):
+        return len(set(df_grupo)) == 1
+
+    df_resultado = monitor.loc[:, ['Pedido||Prod.||Cor', 'id_op']]
+    df_resultado = df_resultado.groupby('Pedido||Prod.||Cor')['id_op'].apply(avaliar_grupo).reset_index()
+    df_resultado.columns = ['Pedido||Prod.||Cor', 'ResultadoAva']
+    df_resultado['ResultadoAva'] = df_resultado['ResultadoAva'].astype(str)
+    monitor = pd.merge(monitor,df_resultado,on='Pedido||Prod.||Cor',how='left')
+
+
+
     monitor.to_csv('monitorTeste.csv')
     conn.close()
 

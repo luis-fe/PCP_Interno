@@ -30,7 +30,7 @@ def InserirPlano(codigo, descricao, iniVenda, fimVenda, iniFat, fimFat, usuario,
     return pd.DataFrame([{'Mensagem': f'Plano {codigo}-{descricao} criado com sucesso!', 'Status': True}])
 
 
-
+# Funcao utilizada para consulta um plano em especifico
 def ConsultarPlano(codigo):
     conn = ConexaoPostgreMPL.conexao()
     planos = pd.read_sql('SELECT * FROM pcp."Plano" '
