@@ -4,6 +4,8 @@ from datetime import datetime
 import locale
 import pandas as pd
 import math
+
+import BuscasAvancadas
 from models import FuncoesGlobais, Plano, metaPlano
 import ConexaoPostgreMPL
 import ConexaoCSW
@@ -63,7 +65,11 @@ def VendasporSku(client_ip,plano , aprovado= True, excel = False,pagina=0 ,itens
             Pedido.fillna('-', inplace=True)
 
             if aprovado == True:
-                Pedido = PedidosBloqueado(Pedido)
+                pedidosBloqueados = Monitor_PedidosBloqueados()
+                Pedido = pd.merge(Pedido, pedidosBloqueados, on='codPedido', how='left')
+                Pedido['situacaobloq'].fillna('Liberado', inplace=True)
+                Pedido = Pedido[Pedido['situacaobloq'] == 'Liberado']
+
             else:
                 Pedido = Pedido
 
@@ -195,6 +201,12 @@ def ABC_Plano(plano):
 
 
 
+def Monitor_PedidosBloqueados():
+    conn = ConexaoCSW.Conexao()
+    consulta = pd.read_sql(BuscasAvancadas.SituacaoPedidos(), conn)
+
+    conn.close()
+    return consulta
 
 
 

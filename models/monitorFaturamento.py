@@ -994,3 +994,72 @@ def ConverterDataFrameCSV():
     pedidos1.to_csv('monitor2.csv')
 
     return pd.DataFrame([{'Mensagem':'Gerado csv'}])
+
+
+def ReservaOPMonitor():
+    # Carregar os dados da OP
+
+    consulta = """
+    select o.codreduzido as "codProduto", id, "qtdAcumulada", "ocorrencia_sku" from "off".ordemprod o where "qtdAcumulada" > 0
+    """
+
+    # Carregar o arquivo Parquet
+    #parquet_file = fp.ParquetFile('/home/grupompl/PCP_Interno/monitor.parquet')
+    parquet_file = fp.ParquetFile('monitor.parquet')
+
+    # Converter para DataFrame do Pandas
+    monitor = parquet_file.to_pandas()
+    # Condição para o cálculo da coluna 'NecessodadeOP'
+    condicao = (monitor['Qtd Atende'] > 0)
+
+    # Cálculo da coluna 'NecessodadeOP' de forma vetorizada
+    monitor['NecessodadeOP'] = numpy.where(condicao, 0, monitor['QtdSaldo'])
+    monitor['NecessodadeOPAcum'] = monitor.groupby('codProduto')['NecessodadeOP'].cumsum()
+    conn = ConexaoPostgreMPL.conexao2()
+    consulta = pd.read_sql(consulta, conn)
+    monitor['id_op'] = '-'
+    monitor['Op Reservada'] = '-'
+
+    for i in range(6):
+        i = i +1 # Utilizado para obter a iteracao
+        consultai = consulta[consulta['ocorrencia_sku'] == i] # filtra o dataframe consulta de acordo com a iteracao
+
+        # Apresenta o numero de linhas do dataframe filtrado
+        x = consultai['codProduto'].count()
+        print(f'iteracao {i}: {x}')
+
+        #Realiza um merge com outro dataFrame Chamado Monitor
+        monitor = pd.merge(monitor,consultai,on='codProduto',how='left')
+
+        # Condição para o cálculo da coluna 'id_op'
+        condicao = (monitor['NecessodadeOP'] == 0) | (monitor['NecessodadeOPAcum'] <= monitor['qtdAcumulada'])|(monitor['id_op'] =='Atendeu')
+        # Cálculo da coluna 'id_op' de forma vetorizada
+        monitor['id_op'] = numpy.where(condicao, 'Atendeu', 'nao atendeu')
+        monitor['Op Reservada'] = monitor.apply(lambda r: r['id'] if (r['id_op'] == 'Atendeu') & (r['NecessodadeOP'] >0) & (r['Op Reservada'] == '-') else r['Op Reservada'], axis= 1 )
+
+        # Define NecessodadeOP para 0 onde id_op é 'Atendeu'
+        monitor.loc[monitor['id_op'] == 'Atendeu', 'NecessodadeOP'] = 0
+
+        # Remove as colunas para depois fazer novo merge
+        monitor = monitor.drop(['id', 'qtdAcumulada', 'ocorrencia_sku'], axis=1)
+
+    # Condição para o cálculo da coluna 'Op Reservada'
+    condicao = (monitor['Op Reservada'] == '-') & (monitor['id_op'] == 'Atendeu')
+    # Atribui '9999||' onde a condição é verdadeira
+    monitor.loc[condicao, 'Op Reservada'] = '9999||'    #fp.write('monitor2.parquet', monitor)
+
+
+
+    monitor = monitor.sort_values(by=['codSitSituacao', 'dataPrevAtualizada', 'Op Reservada','Pedido||Prod.||Cor'],
+                                  ascending=[True, True, False, True]).reset_index()
+
+    #monitor['recalculoData'] = ((monitor.groupby('codPedido')['Saldo +Sugerido'].cumsum())/(monitor.groupby('codPedido')['Saldo +Sugerido'].transform('sum'))).round(0)
+    monitor['recalculoData'] = monitor.groupby('codPedido')['Saldo Grade'].cumsum()
+    monitor.to_csv('monitorTeste.csv')
+    conn.close()
+
+
+
+    return consulta
+
+#ReservaOPMonitor()

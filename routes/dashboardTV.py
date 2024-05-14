@@ -162,6 +162,10 @@ def AcompVendas():
 
     if congelado == 'False' or congelado == 'false' or congelado == '':
         congelado = False
+
+    elif congelado == False:
+        congelado = False
+
     else:
         congelado = True
 
