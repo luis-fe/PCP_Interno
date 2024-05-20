@@ -137,9 +137,9 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
     else:
         pedidos = Monitor_CapaPedidosDataPrev(empresa, iniVenda, finalVenda, tiponota)
+    valores_excluir = ['24', '140', '608', '693', '715', '717']
 
-
-    pedidos = pedidos[pedidos['codRepresentante'] != '24' ]
+    pedidos = pedidos[~pedidos['codRepresentante'].astype(str).isin(valores_excluir)]
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     pedidos["StatusSugestao"].fillna('Nao Sugerido', inplace=True)
@@ -1238,4 +1238,4 @@ def ReservaOPMonitor():
 
     return consulta
 
-ReservaOPMonitor()
+#ReservaOPMonitor()
