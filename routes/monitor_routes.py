@@ -58,13 +58,8 @@ def get_monitorPreFaturamento():
     tiponota = request.args.get('tiponota')
     parametroClassificacao = request.args.get('parametroClassificacao', 'DataPrevisao')  # Faturamento ou DataPrevisao
     tipoData = request.args.get('tipoData','DataEmissao') #DataEmissao x DataPrevOri
-    arrayRepres_excluir = request.args.getlist('Representante_excluir')
-    if not arrayRepres_excluir:
-        arrayRepres_excluir = []  # Define o valor padrão
-
-    arrayRepre_Incluir = request.args.getlist('escolherRepresentante')
-    if not arrayRepre_Incluir:
-        arrayRepre_Incluir = []  # Define o valor padrão
+    arrayRepres_excluir = request.args.get('arrayRepres_excluir','')
+    arrayRepre_Incluir = request.args.get('arrayRepre_Incluir','')
 
     rotina = 'monitorPreFaturamento'
     ip = request.remote_addr
