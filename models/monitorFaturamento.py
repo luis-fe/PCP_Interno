@@ -150,6 +150,9 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
         print(escolherRepresentante)
         #valores_excluir = ['24', '140', '608', '693', '715', '717']
         pedidos = pedidos[pedidos['codRepresentante'].astype(str).isin(escolherRepresentante)]
+    else:
+        print('nao validou escolherRepresentante')
+
 
 
     statusSugestao = CapaSugestao()
