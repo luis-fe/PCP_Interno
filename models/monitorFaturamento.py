@@ -147,7 +147,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     if escolherRepresentante != '':
         escolherRepresentante = escolherRepresentante.split(', ')
-
+        print(escolherRepresentante)
         #valores_excluir = ['24', '140', '608', '693', '715', '717']
         pedidos = pedidos[pedidos['codRepresentante'].astype(str).isin(escolherRepresentante)]
 
