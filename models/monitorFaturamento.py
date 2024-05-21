@@ -131,15 +131,23 @@ def CapaSugestao():
     return consulta
 
 
-def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
+def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData, Representante_excluir, escolherRepresentante ):
     # 1 - Carregar Os pedidos (etapa 1)
     if tipoData == 'DataEmissao':
         pedidos = Monitor_CapaPedidos(empresa, iniVenda, finalVenda, tiponota)
     else:
         pedidos = Monitor_CapaPedidosDataPrev(empresa, iniVenda, finalVenda, tiponota)
-    valores_excluir = ['24', '140', '608', '693', '715', '717']
 
-    pedidos = pedidos[~pedidos['codRepresentante'].astype(str).isin(valores_excluir)]
+
+    if Representante_excluir != []:
+        valores_excluir = ['24', '140', '608', '693', '715', '717']
+        pedidos = pedidos[~pedidos['codRepresentante'].astype(str).isin(valores_excluir)]
+
+    if escolherRepresentante != []:
+        valores_excluir = ['24', '140', '608', '693', '715', '717']
+        pedidos = pedidos[pedidos['codRepresentante'].astype(str).isin(valores_excluir)]
+
+
     statusSugestao = CapaSugestao()
     pedidos = pd.merge(pedidos,statusSugestao,on='codPedido',how='left')
     pedidos["StatusSugestao"].fillna('Nao Sugerido', inplace=True)
@@ -446,9 +454,9 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     return pedidos
 
 
-def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData):
+def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData,arrayRepres_excluir, arrayRepre_Incluir):
     tiponota = '1,2,3,4,5,6,7,8,10,24,92,201,1012,77,27,28,172,9998,66,67,233,237'#Arrumar o Tipo de Nota 40
-    pedidos = MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao,tipoData)
+    pedidos = MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao,tipoData, arrayRepres_excluir, arrayRepre_Incluir)
     pedidos['codPedido'] = pedidos['codPedido'].astype(str)
     pedidos['codCliente'] = pedidos['codCliente'].astype(str)
     pedidos["StatusSugestao"].fillna('-', inplace=True)

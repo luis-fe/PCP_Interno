@@ -58,6 +58,9 @@ def get_monitorPreFaturamento():
     tiponota = request.args.get('tiponota')
     parametroClassificacao = request.args.get('parametroClassificacao', 'DataPrevisao')  # Faturamento ou DataPrevisao
     tipoData = request.args.get('tipoData','DataEmissao') #DataEmissao x DataPrevOri
+    arrayRepres_excluir = request.args.get('arrayRepres_excluir',[])
+    arrayRepre_Incluir = request.args.get('arrayRepre_Incluir',[])
+
     rotina = 'monitorPreFaturamento'
     ip = request.remote_addr
     datainicio = controle.obterHoraAtual()
@@ -66,7 +69,7 @@ def get_monitorPreFaturamento():
         usuarios = monitorFaturamento.APICongelada(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData)
     else:
         controle.InserindoStatus(rotina, ip, datainicio)
-        usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData)
+        usuarios = monitorFaturamento.API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData, arrayRepres_excluir, arrayRepre_Incluir)
         controle.salvarStatus(rotina, ip, datainicio)
 
     # Obtém os nomes das colunas
