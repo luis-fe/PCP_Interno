@@ -194,6 +194,7 @@ def ObtendoEmbarqueUnico():
 def CapaSugestoes():
     consulta = """SELECT s.codPedido, p.codCondVenda, p.codTipoNota, p.codCliente, 
 (SELECT  c.nome FROM fat.Cliente c where c.codempresa = 1 and c.codCliente = p.codCliente) as nomeCliente,
+(SELECT  c.NOMEESTADO FROM fat.Cliente c where c.codempresa = 1 and c.codCliente = p.codCliente) as UF,
 (SELECT  c.fantasia FROM fat.Cliente c where c.codempresa = 1 and c.codCliente = p.codCliente) as nomeFantasia
 from ped.SugestaoPed s 
                             join ped.Pedido  p on  p.codEmpresa = s.codEmpresa and p.codPedido = s.codPedido  
