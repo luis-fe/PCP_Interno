@@ -60,14 +60,30 @@ def Faturamento_ano(ano, empresa):
         " e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
     elif empresa == 'Varejo':
-        retornaCsw = pd.read_sql(
-        "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
-        " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
-        " FROM ped.SugestaoPed e "
-        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido "
-        ' WHERE e.codEmpresa in (100, 101)'
-        " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
-        " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
+        retornaCsw = pd.read_sql("""
+            SELECT  
+                i.codPedido, 
+                e.vlrSugestao, 
+                SUM(i.qtdePecasConf) AS conf, 
+                SUM(i.qtdeSugerida) AS qtde,  
+                i.codSequencia,  
+                (SELECT codTipoNota  
+                 FROM ped.Pedido p 
+                 WHERE p.codEmpresa = i.codEmpresa 
+                   AND p.codpedido = i.codPedido) AS codigo 
+            FROM ped.SugestaoPed e 
+            INNER JOIN ped.SugestaoPedItem i 
+                ON i.codEmpresa = e.codEmpresa 
+               AND i.codPedido = e.codPedido 
+            WHERE e.codEmpresa IN (100, 101)
+              AND e.dataGeracao > '2023-01-01' 
+              AND situacaoSugestao = 2
+            GROUP BY 
+                i.codPedido, 
+                e.vlrSugestao,  
+                i.codSequencia
+        """, conn)
+
         query = 'select n.codTipoDeNota as tiponota, n.dataEmissao, n.vlrTotal as faturado ' \
                 'FROM Fat.NotaFiscal n ' \
                 'where n.codPedido >= 0 ' \
@@ -98,7 +114,7 @@ def Faturamento_ano(ano, empresa):
         "SELECT  i.codPedido, e.vlrSugestao, sum(i.qtdePecasConf) as conf , sum(i.qtdeSugerida) as qtde,  i.codSequencia,  "
         " (SELECT codTipoNota  FROM ped.Pedido p WHERE p.codEmpresa = i.codEmpresa and p.codpedido = i.codPedido) as codigo "
         " FROM ped.SugestaoPed e "
-        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido "
+        " inner join ped.SugestaoPedItem i on i.codEmpresa = e.codEmpresa and i.codPedido = e.codPedido and i.codsequencia = e.codsequencia "
         ' WHERE e.codEmpresa =' + empresa +
         " and e.dataGeracao > '2023-01-01' and situacaoSugestao = 2"
         " group by i.codPedido, e.vlrSugestao,  i.codSequencia ", conn)
