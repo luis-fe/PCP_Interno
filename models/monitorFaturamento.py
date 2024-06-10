@@ -1251,5 +1251,3 @@ def ReservaOPMonitor():
 
 
     return consulta
-
-ReservaOPMonitor()
