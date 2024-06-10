@@ -1244,6 +1244,7 @@ def ReservaOPMonitor():
     monitor['NecessodadeOP'] = numpy.where(condicao, 0, monitor['QtdSaldo'])
     monitor['NecessodadeOPAcum'] = monitor.groupby('codProduto')['NecessodadeOP'].cumsum()
     monitor.fillna('', inplace=True)
+    monitor['codProduto'] = monitor['codProduto'].astype(str)
 
     monitor.to_csv('monitorTeste.csv')
     conn.close()
