@@ -453,12 +453,13 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
     pedidos = pd.concat([pedidos1, pedidos2])
 
     #23- Salvando os dados gerados em csv
-    #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado
-    print(pedidos)
+    #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado    monitor.fillna('', inplace=True)
+    pedidos.fillna(0,inplace=True)
+    print(pedidos['codProduto'])
+
     fp.write('monitor.parquet', pedidos)
 
     etapa25 = controle.salvarStatus_Etapa25(rotina, ip, etapa24, 'Salvando os dados gerados no postgre')#Registrar etapa no controlador
-    return pedidos
 
 def API(empresa, iniVenda, finalVenda, tiponota,rotina, ip, datainicio,parametroClassificacao, tipoData,arrayRepres_excluir, arrayRepre_Incluir):
     tiponota = '1,2,3,4,5,6,7,8,10,24,92,201,1012,77,27,28,172,9998,66,67,233,237'#Arrumar o Tipo de Nota 40
@@ -1243,12 +1244,11 @@ def ReservaOPMonitor():
     # Cálculo da coluna 'NecessodadeOP' de forma vetorizada
     monitor['NecessodadeOP'] = numpy.where(condicao, 0, monitor['QtdSaldo'])
     monitor['NecessodadeOPAcum'] = monitor.groupby('codProduto')['NecessodadeOP'].cumsum()
-    monitor.fillna('', inplace=True)
-    monitor['codProduto'] = monitor['codProduto'].astype(str)
+
 
     monitor.to_csv('monitorTeste.csv')
     conn.close()
 
 
 
-    return consulta
+    return monitor
