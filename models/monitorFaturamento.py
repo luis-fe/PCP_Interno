@@ -1243,7 +1243,7 @@ def ReservaOPMonitor():
     # Cálculo da coluna 'NecessodadeOP' de forma vetorizada
     monitor['NecessodadeOP'] = numpy.where(condicao, 0, monitor['QtdSaldo'])
     monitor['NecessodadeOPAcum'] = monitor.groupby('codProduto')['NecessodadeOP'].cumsum()
-
+    monitor.fillna('', inplace=True)
 
     monitor.to_csv('monitorTeste.csv')
     conn.close()
