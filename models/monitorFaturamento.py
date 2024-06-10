@@ -42,7 +42,7 @@ def Monitor_PedidosBloqueados():
 #Carregando os Pedidos a nivel Sku
 def Monitor_nivelSku(datainicio):
     # Carregar o arquivo Parquet
-    parquet_file = fp.ParquetFile('/home/grupompl/Automacao_WMS_InternoMPL/pedidos.parquet')
+    parquet_file = fp.ParquetFile('/home/grupompl/Wms_InternoMPL/pedidos.parquet')
 
     # Converter para DataFrame do Pandas
     df_loaded = parquet_file.to_pandas()
@@ -1253,4 +1253,4 @@ def ReservaOPMonitor():
 
     return consulta
 
-#ReservaOPMonitor()
+ReservaOPMonitor()
