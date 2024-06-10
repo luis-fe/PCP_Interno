@@ -454,7 +454,7 @@ def MonitorDePreFaturamento(empresa, iniVenda, finalVenda, tiponota,rotina, ip, 
 
     #23- Salvando os dados gerados em csv
     #retirar as seguintes colunas: StatusSugestao, situacaobloq, dias_a_adicionar, Resultado    monitor.fillna('', inplace=True)
-    pedidos.fillna(0,inplace=True)
+    pedidos['codProduto'] = pedidos['codProduto'].astype(str)
     print(pedidos['codProduto'])
 
     fp.write('monitor.parquet', pedidos)
